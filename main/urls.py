@@ -17,19 +17,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .initialize import create_manager_group, create_technician_group, create_incoming_group, create_basic_pcr_protocol
+from initialize import create_basic_pcr_protocol
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("accounts/", include("accounts.urls")),
+    path("/", include("accounts.urls")),
     path("pcr/", include("pcr.urls")),
 ]
 
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-
-create_incoming_group()
-create_technician_group()
-create_manager_group()
+# create_basic_pcr_protocol()

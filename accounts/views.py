@@ -10,11 +10,11 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 
-from .decorators import unauthenticated_user, manager_only, lab_access
+from .decorators import unauthenticated_user
 from django.contrib.auth.models import Group, User
 
 from .tokens import account_activation_token
-from .models import EmailOrUsernameModelBackend, Profile
+from .models import EmailOrUsernameModelBackend
 
 
 # login user with their username or email and password
@@ -68,15 +68,8 @@ def activate(request, uidb64, token):
     user.is_active = True
     user.save()
 
-    Profile.objects.create(
-      username=user,
-      email=user.email,
-      first_name=user.first_name,
-      last_name=user.last_name,
-    )
-
-    default_group = Group.objects.get(name="Incoming")
-    user.groups.add(default_group)
+    # default_group = Group.objects.get(name="Incoming")
+    # user.groups.add(default_group)
 
     messages.success(request, 'Thank you for your email confirmation. Now you can login your account.')
     return redirect('login')
@@ -124,69 +117,7 @@ def logoutUser(request):
 
 # view dashboard of all users and work progress
 @login_required(login_url='login')
-@lab_access
-def accounts(request):
+def dashboard(request):
 
-  is_manager = request.user.groups.filter(name="Manager").exists()
-
-  incomings = User.objects.filter(groups__name="Incoming")
-
-  managers = User.objects.filter(groups__name="Manager")
-
-  technicians = User.objects.filter(groups__name="Technician")
-
-  context = {'incomings': incomings, 'managers': managers, 'technicians': technicians, 'is_manager': is_manager}
-  return render(request, "accounts.html", context)
-
-
-# view user profile page
-@login_required(login_url='login')
-def profile(request):
-   user = request.user.profile
-   form = ProfileForm(instance=user)
-
-   is_incoming = request.user.groups.filter(name="Incoming").exists()
-
-   if request.method == 'POST':
-    form = ProfileForm(request.POST, request.FILES, instance=user)
-    if form.is_valid():
-      form.save()
-
-      user_model = User.objects.filter(username=request.user)
-
-      user_model.update(
-        first_name=user.first_name,
-        last_name=user.last_name
-      )
-
-      return redirect('accounts')
-
-   context = {'form': form, 'is_incoming': is_incoming}
-   return render(request, "profile.html", context)
-
-
-@login_required(login_url='login')
-@manager_only
-def assignUserRoles(request, pk):
-
-  user = User.objects.get(pk=pk)
-  form = AssignRolesForm(instance=user)
-
-  if request.method == "POST":
-    form = AssignRolesForm(request.POST, instance=user)
-    if form.is_valid():
-      form.save()
-      return redirect('accounts')
-
-  context = {'form': form}
-  return render(request, "roles.html", context)
-
-
-@login_required(login_url='login')
-@lab_access
-def view(request, username):
-
-  user = User.objects.get(username=username)
-
-  context = {'user': user}
-  return render(request, "user.html", context)
+  context = {}
+  return render(request, "dashboard.html", context)

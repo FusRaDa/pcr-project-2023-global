@@ -1,34 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 
 
-# Create your models here.
-class Profile(models.Model):
-    username = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=200, null=True)
-    last_name = models.CharField(max_length=200, null=True)
-    email = models.CharField(max_length=200, null=True)
-    profile_image = models.ImageField(blank=True, upload_to='profiles/')
-    date_created = models.DateTimeField(auto_now_add=True, null=True)
-
-    def __str__(self):
-        return (self.first_name + " " + self.last_name)
-
-    @property
-    def image_url(self):
-        if self.profile_image and hasattr(self.profile_image, 'url'):
-            return self.profile_image.url
-        else:
-            return "/images/profile-icon.png"
-        
-    @property
-    def group_access(self):
-        query = self.username.groups.values_list('name', flat=True)
-        return query[0]
-
-        
 class EmailOrUsernameModelBackend(ModelBackend):
     """
     This is a ModelBackend that allows authentication
