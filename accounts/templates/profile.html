@@ -1,0 +1,46 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} LabPrep Profile {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+
+<div class="container my-5">
+
+  {% if is_incoming %}
+  <div class="row">
+    <div class="col text-center">
+      <p class="text-center">**Your current assigned role is: Incoming. Ask your manager to assign you a different role for lab access.**</p>
+    </div>
+  </div>
+  {% endif %}
+  
+  
+  <div class="row profile-row">
+
+
+    <div class="col text-center">
+      <p class="mb-1">Role: {{request.user.profile.group_access}} </p>
+      <img class="profile-pic" src={{request.user.profile.image_url}}>
+      <p class="mb-0 mt-1">{{request.user.profile.username}}</p>
+      <p>{{request.user.profile.email}}</p>
+    </div>
+
+    <div class="col text-center">
+      <form method="POST" action="" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        {{form.as_p}}
+
+        <input class='button' type="submit" name="Update">
+      </form>
+    </div>
+
+
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} LabPrep Accounts {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+
+<p> Accounts Here</p>
+
+<div class="container my-5">
+<h3>Incoming</h3>
+{% if not incomings %}
+<p class="text-center">No users have been assigned here.</p>
+{% endif %}
+  <div class="row">
+{% for incoming in incomings %}
+
+    <div class="col-sm-3">
+      <div class="card">
+          <a href="{% url 'view' incoming %}">
+            <img class="card-img-top" src={{incoming.profile.image_url}} alt="Card image cap">
+          </a>
+        <div class="card-body">
+          <h5 class="card-title text-center">{{incoming.first_name}} {{incoming.last_name}}</h5>
+          <p class="card-text text-center">{{incoming.email}}</p>
+          {% if is_manager %}
+            <p class="text-center">
+              <a href="{% url 'roles' incoming.id %}" class="card-link">Change Role</a>
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+{% endfor %}
+  </div>
+</div>
+
+
+<div class="container my-5">
+  <h3>Technicians</h3>
+  {% if not technicians %}
+  <p class="text-center">No users have been assigned here.</p>
+  {% endif %}
+  <div class="row">
+{% for technician in technicians %}
+
+    <div class="col-sm-3">
+      <div class="card">
+        <a href="{% url 'view' technician %}">
+          <img class="card-img-top" src={{technician.profile.image_url}} alt="Card image cap">
+        </a>
+        <div class="card-body">
+          <h5 class="card-title text-center">{{technician.first_name}} {{technician.last_name}}</h5>
+          <p class="card-text text-center">{{technician.email}}</p>
+          {% if is_manager %}
+            <p class="text-center">
+              <a href="{% url 'roles' technician.id %}" class="card-link">Change Role</a>
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+{% endfor %}
+  </div>
+</div>
+
+
+<div class="container my-5">
+  <h3>Managers</h3>
+  {% if not managers %}
+  <p class="text-center">No users have been assigned here.</p>
+  {% endif %}
+  <div class="row">
+{% for manager in managers %}
+ 
+    <div class="col-sm-3">
+      <div class="card">
+        <a href="{% url 'view' manager%}">
+          <img class="card-img-top" src={{manager.profile.image_url}} alt="Card image cap">
+        </a>
+        <div class="card-body">
+          <h5 class="card-title text-center">{{manager.first_name}} {{manager.last_name}}</h5>
+          <p class="card-text text-center">{{manager.email}}</p>
+          {% if is_manager %}
+            <p class="text-center">
+              <a href="{% url 'roles' manager.id %}" class="card-link">Change Role</a>
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+{% endfor %}
+  </div>
+</div>
+
+
+
+
+{% endblock %}
