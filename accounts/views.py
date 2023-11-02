@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect
-from .forms import CreateUserForm
 from django.contrib import messages
 from django.contrib.auth import login, logout, get_user_model
-from django.contrib.auth.decorators import login_required
 
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
@@ -15,6 +13,8 @@ from django.contrib.auth.models import Group, User
 
 from .tokens import account_activation_token
 from .models import EmailOrUsernameModelBackend
+from .forms import CreateUserForm
+from initialize import create_basic_pcr_protocol
 
 
 # login user with their username or email and password
@@ -68,6 +68,8 @@ def activate(request, uidb64, token):
     user.is_active = True
     user.save()
 
+    create_basic_pcr_protocol(user)
+
     # default_group = Group.objects.get(name="Incoming")
     # user.groups.add(default_group)
 
@@ -113,11 +115,3 @@ def register(request):
 def logoutUser(request):
   logout(request)
   return redirect('login')
-
-
-# view dashboard of all users and work progress
-@login_required(login_url='login')
-def dashboard(request):
-
-  context = {}
-  return render(request, "dashboard.html", context)
