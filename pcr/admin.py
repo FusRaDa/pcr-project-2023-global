@@ -5,8 +5,10 @@ from .models import *
 
 pcr_models = [
   Reagent, Flourescence, Control, 
-  Assay, AssayList, ExtractionProtocol, Batch, Sample, 
-  SampleList, ThermalCyclerProtocol, Plate
+  Assay, AssayList, ExtractionProtocol, 
+  Batch, Sample, SampleList, 
+  ThermalCyclerProtocol, Plate, ReagentOrder,
+  ControlOrder,
 ]
 
 admin.site.register(pcr_models)

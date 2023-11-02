@@ -14,7 +14,7 @@ from django.contrib.auth.models import Group, User
 from .tokens import account_activation_token
 from .models import EmailOrUsernameModelBackend
 from .forms import CreateUserForm
-from initialize import create_basic_pcr_protocol
+from .initialize import create_presets
 
 
 # login user with their username or email and password
@@ -68,7 +68,7 @@ def activate(request, uidb64, token):
     user.is_active = True
     user.save()
 
-    create_basic_pcr_protocol(user)
+    create_presets(user)
 
     # default_group = Group.objects.get(name="Incoming")
     # user.groups.add(default_group)

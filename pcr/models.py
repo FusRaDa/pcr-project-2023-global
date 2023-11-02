@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 
 # **START OF REAGENT FUNCTIONALITY** #
 class Reagent(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
 
   # exclude Template DNA - in the future have a DB where users can add reagents to their accounts
   class VolumeUnits(models.TextChoices):
@@ -55,28 +55,28 @@ class Reagent(models.Model):
   
 # **START OF ASSAY FUNCTIONALITY** #
 class Flourescence(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
 
   # Many-to-many with Assay
   name = models.CharField(blank=False, unique=True, max_length=25)
-  order_displayed = models.IntegerField(validators=[MinValueValidator(1)]) # order displayed will be a integer system that will determine the order these models will be shown when que'd
-
+  
   def __str__(self):
     return self.name
 
 
 class Control(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
+
   # Many-to-many with Assay
   name = models.CharField(blank=False, unique=True, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
-  order_displayed = models.IntegerField(validators=[MinValueValidator(0)], default=0)
 
   def __str__(self):
     return self.name
   
 
 class Assay(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
 
   # block number of instances https://stackoverflow.com/questions/44266260/django-how-can-i-limit-the-number-of-objects-that-a-user-can-create
   class Types(models.TextChoices):
@@ -86,16 +86,16 @@ class Assay(models.Model):
   name = models.CharField(blank=False, unique=True, max_length=25)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25)
 
-  controls = models.ManyToManyField(Control)
   fluorescence = models.ManyToManyField(Flourescence)
-  reagents = models.ManyToManyField(Reagent)
+  controls = models.ManyToManyField(Control, through='ControlOrder')
+  reagents = models.ManyToManyField(Reagent, through='ReagentOrder')
 
   def __str__(self):
     return self.name
   
 
 class AssayList(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
 
   # AssayList is used to bundle assays together making creating a batch easier rather then selecting all assays
   name = models.CharField(unique=True, blank=False, max_length=25)
@@ -103,12 +103,30 @@ class AssayList(models.Model):
 
   def __str__(self):
     return self.name
+
 # **END OF ASSAY FUNCTIONALITY** #
+  
+
+# **START OF ORDER FUNCTIONALITY** #
+# THROUGH Table in relation to control -> assay AND reagent -> assay
+class ControlOrder(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
+  order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # 1-lowest priority > highest priority, 0 will be last
+  control = models.ForeignKey(Control, on_delete=models.CASCADE)
+  assay = models.ForeignKey(Assay, on_delete=models.CASCADE)
+
+
+class ReagentOrder(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
+  order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # 1-lowest priority > highest priority, 0 will be last
+  reagent = models.ForeignKey(Reagent, on_delete=models.CASCADE)
+  assay = models.ForeignKey(Assay, on_delete=models.CASCADE)
+# **END OF ORDER FUNCTIONALITY** #
 
 
 # **START OF SAMPLE FUNCTIONALITY** #
 class ExtractionProtocol(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
 
   # create a validation in form/views if assaylist and ExtractionProtocol type is not compatible - example: Assay (type) require RNA but batch type is DNA
   class Types(models.TextChoices):
@@ -123,24 +141,25 @@ class ExtractionProtocol(models.Model):
 
 
 class Batch(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
 
   # Batch refers to a list of samples that are to be extracted
   name = models.CharField(blank=False, unique=True, max_length=25)
   number_of_samples = models.IntegerField(validators=[MinValueValidator(1)]) # number of samples in batch
   lab_id = models.CharField(unique=True, blank=False, max_length=5) # This will be a short STRING to be shown on the plate such as ABC
 
-  assay_list = models.ForeignKey(AssayList, on_delete=models.PROTECT) # a batch can only refer to one list of assays (AssayList) - user can edit samples individually after batch is created
-  extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.PROTECT)
+  assay_list = models.ForeignKey(AssayList, on_delete=models.RESTRICT) # a batch can only refer to one list of assays (AssayList) - user can edit samples individually after batch is created
+  extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.RESTRICT)
 
   
 class Sample(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
 
   lab_id_num = models.CharField(unique=True, blank=False, max_length=10) # lab id with number - auto generated by combining lab_id from Batch and adding a number to it
-  sample_id = models.CharField(blank=False, max_length=25) # actual id of sample - manually generated by user by turning csv into html or copy/paste (JS)
+  sample_id = models.CharField(blank=True, max_length=25) # actual id of sample - manually generated by user by turning csv into html or copy/paste (JS)
 
-  assay = models.ManyToManyField(Assay) # assays assigned to each sample according to AssayList assigned in Batch - users can also edit samples at this stage
+  assay_name = models.CharField(blank=True, max_length=25)
+  assays = models.ManyToManyField(Assay) # assays assigned to each sample according to AssayList assigned in Batch - users can also edit samples at this stage
 
   batch = models.ForeignKey(Batch, on_delete=models.CASCADE) # automatically assigned to newly created batch - cannot be changed
  
@@ -151,7 +170,7 @@ class Sample(models.Model):
 
 # **START OF PLATE FUNCTIONALITY** #
 class SampleList(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
 
   name = models.CharField(blank=False, max_length=25)
   samples = models.ManyToManyField(Sample) # user can select samples individually or by batch
@@ -161,7 +180,7 @@ class SampleList(models.Model):
   
 
 class ThermalCyclerProtocol(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
 
   name = models.CharField(blank=False, max_length=25)
   denature_temp = models.DecimalField(decimal_places=2, max_digits=12) # Celsius
@@ -177,7 +196,7 @@ class ThermalCyclerProtocol(models.Model):
   
   
 class Plate(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, blank=False)
 
   class Types(models.TextChoices):
     DNA = 'DNA', _('DNA')
@@ -195,11 +214,13 @@ class Plate(models.Model):
   lot_number = models.CharField(blank=False, max_length=25)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25) # type of genetic material in plate - a plate CANNOT do both DNA & RNA
   plate_size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
-  protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.PROTECT, blank=False) # protocol can only be deleted if no plates are using it
+  protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, blank=False) # protocol can only be deleted if no plates are using it
 
   samples = models.ManyToManyField(SampleList)
 
   def __str__(self):
     return self.name
   # **END OF PLATE FUNCTIONALITY** #
+
+
   

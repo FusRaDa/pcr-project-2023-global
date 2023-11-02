@@ -1,7 +1,8 @@
 from pcr.models import *
 
-# according to https://www.sigmaaldrich.com/US/en/technical-documents/protocol/genomics/pcr/standard-pcr
-def create_basic_pcr_protocol(user):
+def create_presets(user):
+
+  # according to https://www.sigmaaldrich.com/US/en/technical-documents/protocol/genomics/pcr/standard-pcr
   ThermalCyclerProtocol.objects.create(
     user = user,
     name = "Basic Thermal Cycling Protocol",
@@ -14,10 +15,8 @@ def create_basic_pcr_protocol(user):
     number_of_cycles = 30,
   )
 
-
-def create_reagents(user):
-
-  Reagent.objects.create(
+  # Reagents for c.bovis and helico
+  water = Reagent.objects.create(
     user = user,
     name = "DEPC Water",
     lot_number = "LOT_NUMBER_01",
@@ -27,7 +26,7 @@ def create_reagents(user):
     unit_volume = Reagent.VolumeUnits.LITER,
   )
 
-  Reagent.objects.create(
+  cbov_fprimer = Reagent.objects.create(
     user = user,
     name = "C.bovis F-primer",
     lot_number = "LOT_NUMBER_02",
@@ -39,7 +38,7 @@ def create_reagents(user):
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
   )
 
-  Reagent.objects.create(
+  cbov_rprimer = Reagent.objects.create(
     user = user,
     name = "C.bovis R-primer",
     lot_number = "LOT_NUMBER_03",
@@ -51,7 +50,7 @@ def create_reagents(user):
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
   )
 
-  Reagent.objects.create(
+  helico_fprimer = Reagent.objects.create(
     user = user,
     name = "Helico generic F-primer",
     lot_number = "LOT_NUMBER_02",
@@ -63,9 +62,9 @@ def create_reagents(user):
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
   )
 
-  Reagent.objects.create(
+  helico_rprimer = Reagent.objects.create(
     user = user,
-    name = "Helico generic F-primer",
+    name = "Helico generic R-primer",
     lot_number = "LOT_NUMBER_02",
     catalog_number = "CATALOG_NUMBER_02",
     storage_location = "STORAGE_LOCATION",
@@ -75,7 +74,7 @@ def create_reagents(user):
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
   )
 
-  Reagent.objects.create(
+  q_multiplex = Reagent.objects.create(
     user = user,
     name = "Qiagen Multiplex PCR Master Mix",
     lot_number = "LOT_NUMBER_04",
@@ -87,50 +86,84 @@ def create_reagents(user):
     unit_concentration = Reagent.ConcentrationUnits.X,
   )
 
-def create_flourescence(user):
-
-  Flourescence.objects.create(
+  # Flourescence for cbovis and helico
+  tex = Flourescence.objects.create(
     user = user,
     name = "TEX",
   )
 
-  Flourescence.objects.create(
+  fam = Flourescence.objects.create(
     user = user,
     name = "FAM",
   )
 
-def create_controls(user):
-
-  Control.objects.create(
+  # Controls for cbovis and helico
+  bact3 = Control.objects.create(
     user = user,
     lot_number = "LOT_NUMBER",
     name = "Bact-PC 1000c"
   )
 
-  Control.objects.create(
+  bact2 = Control.objects.create(
     user = user,
     lot_number = "LOT_NUMBER",
     name = "Bact-PC 100c"
   )
 
-  Control.objects.create(
+  bact1 = Control.objects.create(
     user = user,
     lot_number = "LOT_NUMBER",
     name = "Bact-PC 10c"
   )
 
-  Control.objects.create(
+  bact0 = Control.objects.create(
     user = user,
     lot_number = "LOT_NUMBER",
     name = "Bact-PC 1c"
   )
 
-  Control.objects.create(
+  negctrl = Control.objects.create(
     user = user,
     lot_number = "LOT_NUMBER",
     name = "NegCtrl Water"
   )
 
+  cbovis = Assay.objects.create(
+     user = user,
+     name = "C.Bovis",
+     type = Assay.Types.DNA,
+  )
 
-# def create_assay_dna(user):
-#   Reagent
+  helico = Assay.objects.create(
+    user = user,
+    name = "Helico",
+    type = Assay.Types.DNA
+
+  ) 
+
+  cbovis.controls.add(bact3, bact2, bact1, bact0, negctrl)
+  cbovis.fluorescence.add(tex)
+  cbovis.reagents.add(water, cbov_fprimer, cbov_rprimer, q_multiplex)
+
+  helico.controls.add(bact3, negctrl)
+  helico.fluorescence.add(fam)
+  helico.reagents.add(water, helico_fprimer, helico_rprimer, q_multiplex)
+
+  cbovis_assay = AssayList.objects.create(
+    user = user,
+    name = "CBOV312",
+  )
+
+  helico_assay = AssayList.objects.create(
+    user = user,
+    name = "HELI996",
+  )
+
+  cbov_heli = AssayList.objects.create(
+    user = user,
+    name = "CBOV_HELI34",
+  )
+
+  cbovis_assay.assays.add(cbovis)
+  helico_assay.assays.add(helico)
+  cbov_heli.assays.add(cbovis, helico)
