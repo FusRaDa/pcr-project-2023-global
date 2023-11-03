@@ -4,6 +4,7 @@ from django.contrib import messages
 
 from .models import *
 from .forms import *
+from .functions import create_samples
 
 
 # Create your views here.
@@ -13,7 +14,7 @@ def viewBatches(request):
   batches = Batch.objects.filter(username=request.user.username)
 
   context = {'batches': batches}
-  return render(request, "batches.html", context)
+  return render(request, 'batches.html', context)
 
 
 @login_required(login_url='login')
@@ -32,9 +33,13 @@ def createBatches(request):
 
       number_of_samples = form.cleaned_data['number_of_samples']
       lab_id = form.cleaned_data['lab_id']
+
+      create_samples(
+        number_of_samples=number_of_samples, 
+        lab_id=lab_id, 
+        user=user,
+      )
       
-
-
       return redirect('batch_samples')
     
   else:
@@ -42,14 +47,17 @@ def createBatches(request):
       messages.error(request, error)
   
   context = {'form': form}
-  return render(request, "batches.html", context)
+  return render(request, 'batches.html', context)
 
 
-@login_required(login_required='login')
+@login_required(login_url='login')
 def batchSamples(request, pk):
 
   batch = Batch.objects.get(pk=pk)
   samples = batch.sample_set.all()
+
+  context = {'samples': samples}
+  return render(request, 'batch_samples.html', context)
 
  
 

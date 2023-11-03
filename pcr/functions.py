@@ -21,8 +21,8 @@ def create_samples(number_of_samples, lab_id, user):
   # create negative control
   control = Sample.objects.create(
     user = user,
-    lab_id_numb = "NegCtrl",
-    sample_id = "Water",
+    lab_id_numb = str(lab_id + "-" + number_of_samples + 1),
+    sample_id = "NegCtrl-Water",
     assay_name = batch.assay_list.name,
     batch = batch,
   )
