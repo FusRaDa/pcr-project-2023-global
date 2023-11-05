@@ -81,15 +81,6 @@ class Control(models.Model):
   name = models.CharField(blank=False, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
 
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'lot_number'], 
-        name='control_unique',
-        violation_error_message = "A control with this lot number already exists."
-      )
-    ]
-
   def __str__(self):
     return self.name
   
@@ -146,23 +137,21 @@ class AssayList(models.Model):
 # **START OF ORDER FUNCTIONALITY** #
 # THROUGH Table in relation to control -> assay AND reagent -> assay
 class ControlOrder(models.Model):
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # 1-lowest priority > highest priority, 0 will be last
   control = models.ForeignKey(Control, on_delete=models.CASCADE)
   assay = models.ForeignKey(Assay, on_delete=models.CASCADE)
 
   def __str__(self):
-    return f'{self.user}-{self.control}-{self.order}'
+    return f'{self.control}-{self.order}'
   
 
 class ReagentOrder(models.Model):
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # 1-lowest priority > highest priority, 0 will be last
   reagent = models.ForeignKey(Reagent, on_delete=models.CASCADE)
   assay = models.ForeignKey(Assay, on_delete=models.CASCADE)
 
   def __str__(self):
-    return f'{self.user}-{self.reagent}-{self.order}'
+    return f'{self.reagent}-{self.order}'
 # **END OF ORDER FUNCTIONALITY** #
 
 
