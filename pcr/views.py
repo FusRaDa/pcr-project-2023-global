@@ -11,7 +11,7 @@ from .functions import create_samples
 @login_required(login_url='login')
 def viewBatches(request):
 
-  batches = Batch.objects.filter(username=request.user.username)
+  batches = Batch.objects.filter(user=request.user)
 
   context = {'batches': batches}
   return render(request, 'batches.html', context)

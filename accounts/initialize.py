@@ -53,8 +53,8 @@ def create_presets(user):
   helico_fprimer = Reagent.objects.create(
     user = user,
     name = "Helico generic F-primer",
-    lot_number = "LOT_NUMBER_02",
-    catalog_number = "CATALOG_NUMBER_02",
+    lot_number = "LOT_NUMBER_04",
+    catalog_number = "CATALOG_NUMBER_04",
     storage_location = "STORAGE_LOCATION",
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
@@ -65,8 +65,8 @@ def create_presets(user):
   helico_rprimer = Reagent.objects.create(
     user = user,
     name = "Helico generic R-primer",
-    lot_number = "LOT_NUMBER_02",
-    catalog_number = "CATALOG_NUMBER_02",
+    lot_number = "LOT_NUMBER_05",
+    catalog_number = "CATALOG_NUMBER_05",
     storage_location = "STORAGE_LOCATION",
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
@@ -77,8 +77,8 @@ def create_presets(user):
   q_multiplex = Reagent.objects.create(
     user = user,
     name = "Qiagen Multiplex PCR Master Mix",
-    lot_number = "LOT_NUMBER_04",
-    catalog_number = "CATALOG_NUMBER_04",
+    lot_number = "LOT_NUMBER_06",
+    catalog_number = "CATALOG_NUMBER_06",
     storage_location = "STORAGE_LOCATION",
     volume = 1.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,

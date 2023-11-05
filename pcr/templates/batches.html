@@ -5,6 +5,21 @@
 {% block title %} Batches - LabPrep {% endblock %} 
 
 {% block content %}
-batches
+
+<div class="container h-100">
+  <div class="d-flex justify-content-center h-100">
+
+    <h1>View All Batches</h1>
+
+    <ul>
+    {% for batch in batches %}
+      
+      <li>{{batch.name}}</li>
+
+    {% endfor %}
+    </ul>
+    
+  </div>
+</div>
 
 {% endblock %}

@@ -29,7 +29,7 @@ def loginPage(request):
 
     if user is not None:
       login(request, user)
-      return redirect('master_sheet')
+      return redirect('batches')
     else:
       messages.info(request, 'username OR password is incorrect')
 
