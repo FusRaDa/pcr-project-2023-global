@@ -5,10 +5,119 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
 
+# **START OF INVENTORY FUNCTIONALITY** #
+# materials are exclusively meant to be for extraction
+class Location(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-# Create your models here.
+  name = models.CharField(blank=False, max_length=25)
 
-# **START OF REAGENT FUNCTIONALITY** #
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(
+        fields=['user', 'name'], 
+        name='location_unique',
+        violation_error_message = "A location with the same name already exists."
+      )
+    ]
+  
+  def __str__(self):
+    return self.name
+
+
+class Plate(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+  name = models.CharField(blank=False, max_length=25)
+  brand = models.CharField(blank=False, max_length=25)
+  lot_number = models.CharField(blank=False, max_length=25)
+  catalog_number = models.CharField(blank=False, max_length=25)
+
+  storage_location = models.ManyToManyField(Location)
+
+  class Sizes(models.TextChoices):
+    EIGHT = 8, _('8')
+    TWENTY_FOUR = 24, _('24')
+    FOURTY_EIGHT = 48, _('48')
+    NINETY_SIX = 96, _('96')
+    THREE_HUNDRED_EIGHTY_FOUR = 384, _('384')
+    CUSTOM = models.IntegerField(validators=[MinValueValidator(1)])
+
+  plate_size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
+
+  number = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(
+        fields=['user', 'lot_number', 'catalog_number'], 
+        name='plate_unique',
+        violation_error_message = "Tubes with the same lot and catalog number already exists."
+      )
+    ]
+
+  def __str__(self):
+    return self.name
+
+
+class Tube(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+  name = models.CharField(blank=False, max_length=25)
+  brand = models.CharField(blank=False, max_length=25)
+  lot_number = models.CharField(blank=False, max_length=25)
+  catalog_number = models.CharField(blank=False, max_length=25)
+
+  storage_location = models.ManyToManyField(Location)
+
+  number = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  number_per_sample = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+
+  last_updated = models.DateTimeField(auto_now=True)
+
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(
+        fields=['user', 'lot_number', 'catalog_number'], 
+        name='tube_unique',
+        violation_error_message = "Tubes with the same lot and catalog number already exists."
+      )
+    ]
+
+  def __str__(self):
+    return self.name
+
+
+# solutions are exclusively meant to be for extraction
+class Solution(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+  name = models.CharField(blank=False, max_length=25)
+  brand = models.CharField(blank=False, max_length=25)
+  lot_number = models.CharField(blank=False, max_length=25)
+  catalog_number = models.CharField(blank=False, max_length=25)
+  
+  storage_location = models.ManyToManyField(Location)
+
+  volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
+  volume_per_sample = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
+
+  last_updated = models.DateTimeField(auto_now=True)
+
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(
+        fields=['user', 'lot_number', 'catalog_number'], 
+        name='solution_unique',
+        violation_error_message = "Solutions with the same lot and catalog number already exists."
+      )
+    ]
+
+  def __str__(self):
+    return self.name
+
+
+# reagents are exclusively meant to be for PCR
 class Reagent(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -28,10 +137,10 @@ class Reagent(models.Model):
     X = 'X', _('X')
 
   name = models.CharField(blank=False, max_length=25)
+  brand = models.CharField(blank=False, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
   catalog_number = models.CharField(blank=False, max_length=25)
-  storage_location = models.CharField(max_length=25)
-  last_updated = models.DateTimeField(auto_now=True)
+  storage_location = models.ManyToManyField(Location)
 
   volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
@@ -39,21 +148,22 @@ class Reagent(models.Model):
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, validators=[MinValueValidator(0)], max_digits=12)
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=ConcentrationUnits.MILLIMOLES, max_length=25)
 
+  last_updated = models.DateTimeField(auto_now=True)
+
   class Meta:
     constraints = [
       models.UniqueConstraint(
         fields=['user', 'lot_number', 'catalog_number'], 
         name='reagent_unique',
-        violation_error_message = "A reagent with the same lot and catalog number already exists."
+        violation_error_message = "Reagents with the same lot and catalog number already exists."
       )
     ]
     
-    
   def __str__(self):
     return self.name
-# **END OF REAGENT FUNCTIONALITY** #
+# **END OF INVENTORY FUNCTIONALITY** #
   
-  
+
 # **START OF ASSAY FUNCTIONALITY** #
 class Flourescence(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -111,7 +221,7 @@ class Assay(models.Model):
 
   def __str__(self):
     return self.name
-  
+
 
 class AssayList(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -132,10 +242,11 @@ class AssayList(models.Model):
   def __str__(self):
     return self.name
 # **END OF ASSAY FUNCTIONALITY** #
-  
+
 
 # **START OF ORDER FUNCTIONALITY** #
 # THROUGH Table in relation to control -> assay AND reagent -> assay
+# users can decide what order controls will be que's/displayed
 class ControlOrder(models.Model):
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # 1-lowest priority > highest priority, 0 will be last
   control = models.ForeignKey(Control, on_delete=models.CASCADE)
@@ -144,7 +255,7 @@ class ControlOrder(models.Model):
   def __str__(self):
     return f'{self.control}-{self.order}'
   
-
+# users can decide what order reagents will be que's/displayed
 class ReagentOrder(models.Model):
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # 1-lowest priority > highest priority, 0 will be last
   reagent = models.ForeignKey(Reagent, on_delete=models.CASCADE)
@@ -168,7 +279,8 @@ class ExtractionProtocol(models.Model):
   name = models.CharField(blank=False, unique=True, max_length=25)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25) # type of genetic material being extracted from samples in batch
 
-  reagents = models.ManyToManyField(Reagent)
+  tubes = models.ManyToManyField(Tube)
+  solutions = models.ManyToManyField(Solution)
 
   class Meta:
     constraints = [
@@ -190,11 +302,13 @@ class Batch(models.Model):
   name = models.CharField(blank=False, max_length=25)
   number_of_samples = models.IntegerField(validators=[MinValueValidator(1)]) # number of samples in batch
   lab_id = models.CharField(blank=False, max_length=5) # This will be a short STRING to be shown on the plate such as ABC
-  date_created = models.DateTimeField(default=now, editable=False)
 
   assay_list = models.ForeignKey(AssayList, on_delete=models.RESTRICT) # a batch can only refer to one list of assays (AssayList) - user can edit samples individually after batch is created
   extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.RESTRICT)
 
+  date_performed = models.DateTimeField()
+  date_created = models.DateTimeField(default=now, editable=False)
+  
   class Meta:
     constraints = [
       models.UniqueConstraint(
@@ -207,7 +321,7 @@ class Batch(models.Model):
   def __str__(self):
     return f'{self.name}-{self.lab_id}'
 
-  
+
 class Sample(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -233,17 +347,7 @@ class Sample(models.Model):
 # **END OF SAMPLE FUNCTIONALITY** #
 
 
-# **START OF PLATE FUNCTIONALITY** #
-class SampleList(models.Model):
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-  name = models.CharField(blank=False, max_length=25)
-  samples = models.ManyToManyField(Sample) # user can select samples individually or by batch
-
-  def __str__(self):
-    return self.name
-  
-
+# **START OF PROCESS (PCR) FUNCTIONALITY** #
 class ThermalCyclerProtocol(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -267,34 +371,34 @@ class ThermalCyclerProtocol(models.Model):
 
   def __str__(self):
     return self.name
-  
-  
-class Plate(models.Model):
+
+
+class Process(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+  samples = models.ManyToManyField(Sample)
+  protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT) # protocol can only be deleted if no plates are using it
+  plate = models.ForeignKey(Plate, on_delete=models.RESTRICT)
+
+  date_performed = models.DateTimeField()
+  date_created = models.DateTimeField(default=now, editable=False)
+
+  def __str__(self):
+    return self.samples.name
+
+
+class ProcessPlate(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   class Types(models.TextChoices):
     DNA = 'DNA', _('DNA')
     RNA = 'RNA', _('RNA')
 
-  class Sizes(models.TextChoices):
-    EIGHT = 8, _('8')
-    TWENTY_FOUR = 24, _('24')
-    FOURTY_EIGHT = 48, _('48')
-    NINETY_SIX = 96, _('96')
-    THREE_HUNDRED_EIGHTY_FOUR = 384, _('384')
-    CUSTOM = models.IntegerField(validators=[MinValueValidator(1)])
-
-  name = models.CharField(blank=False, max_length=25)
-  lot_number = models.CharField(blank=False, max_length=25)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25) # type of genetic material in plate - a plate CANNOT do both DNA & RNA
-  plate_size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
-  protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, blank=False) # protocol can only be deleted if no plates are using it
 
-  samples = models.ManyToManyField(SampleList)
+  process = models.ForeignKey(Process, on_delete=models.CASCADE)
 
-  def __str__(self):
-    return self.name
-  # **END OF PLATE FUNCTIONALITY** #
-
-
-  
+  samples = models.ManyToManyField(Sample)
+  protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT) # protocol can only be deleted if no plates are using it
+  plate = models.ForeignKey(Plate, on_delete=models.RESTRICT)
+# **END OF PROCESS (PCR) FUNCTIONALITY** #
