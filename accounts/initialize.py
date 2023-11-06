@@ -143,17 +143,17 @@ def create_presets(user):
   helico.fluorescence.add(fam)
   helico.reagents.add(water, helico_fprimer, helico_rprimer, q_multiplex)
 
-  cbovis_assay = AssayList.objects.create(
+  cbovis_assay = AssayCode.objects.create(
     user = user,
     name = "CBOV312",
   )
 
-  helico_assay = AssayList.objects.create(
+  helico_assay = AssayCode.objects.create(
     user = user,
     name = "HELI996",
   )
 
-  cbov_heli = AssayList.objects.create(
+  cbov_heli = AssayCode.objects.create(
     user = user,
     name = "CBOV_HELI34",
   )

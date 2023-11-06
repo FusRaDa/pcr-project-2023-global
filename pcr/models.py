@@ -4,8 +4,13 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
+# **PURPOSE** #
+# pcr models are exclusive to each user, 
+# here users will have their own supplies 
+# and the process of PCR & extraction
+# **PURPOSE** #
 
-# **START OF INVENTORY FUNCTIONALITY** #
+# **START OF USER INVENTORY FUNCTIONALITY** #
 # materials are exclusively meant to be for extraction
 class Location(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -88,35 +93,6 @@ class Tube(models.Model):
     return self.name
 
 
-# solutions are exclusively meant to be for extraction
-class Solution(models.Model):
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-  name = models.CharField(blank=False, max_length=25)
-  brand = models.CharField(blank=False, max_length=25)
-  lot_number = models.CharField(blank=False, max_length=25)
-  catalog_number = models.CharField(blank=False, max_length=25)
-  
-  storage_location = models.ManyToManyField(Location)
-
-  volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
-  volume_per_sample = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
-
-  last_updated = models.DateTimeField(auto_now=True)
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'lot_number', 'catalog_number'], 
-        name='solution_unique',
-        violation_error_message = "Solutions with the same lot and catalog number already exists."
-      )
-    ]
-
-  def __str__(self):
-    return self.name
-
-
 # reagents are exclusively meant to be for PCR
 class Reagent(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -161,7 +137,61 @@ class Reagent(models.Model):
     
   def __str__(self):
     return self.name
-# **END OF INVENTORY FUNCTIONALITY** #
+# **END OF USER INVENTORY FUNCTIONALITY** #
+
+
+# **START OF EXTRACTION FUNCTIONALITY** # 
+class ExtractionProtocol(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+  # create a validation in form/views if assaylist and ExtractionProtocol type is not compatible - example: Assay (type) require RNA but batch type is DNA
+  class Types(models.TextChoices):
+    DNA = 'DNA', _('DNA')
+    RNA = 'RNA', _('RNA')
+    TOTAL_NUCLEIC = 'TOTAL_NUCLEIC', _('Total Nucleic') # Both DNA & RNA
+
+  name = models.CharField(blank=False, unique=True, max_length=25)
+  type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25) # type of genetic material being extracted from samples in batch
+
+  tubes = models.ManyToManyField(Tube, through='TubeExtraction')
+  reagents = models.ManyToManyField(Reagent, through='ReagentExtraction')
+
+  doc_url = models.URLField() # store url to document there from company
+
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(
+        fields=['user', 'name'], 
+        name='extraction_protocol_unique',
+        violation_error_message = "An extraction protocol with this name already exists."
+      )
+    ]
+
+  def __str__(self):
+    return self.name
+  
+
+class TubeExtraction(models.Model):
+  tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
+  extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.CASCADE)
+
+  order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # users can decide what order reagents will be que's/displayed: 1-lowest priority > highest priority, 0 will be last
+  amount_per_sample = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+
+  def __str__(self):
+    return f'{self.reagent}-{self.order}'
+  
+
+class ReagentExtraction(models.Model):
+  reagent = models.ForeignKey(Reagent, on_delete=models.CASCADE)
+  extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.CASCADE)
+
+  order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # users can decide what order reagents will be que's/displayed: 1-lowest priority > highest priority, 0 will be last
+  amount_per_sample = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
+
+  def __str__(self):
+    return f'{self.reagent}-{self.order}'
+# **END OF EXTRACTION FUNCTIONALITY** # 
   
 
 # **START OF ASSAY FUNCTIONALITY** #
@@ -207,8 +237,8 @@ class Assay(models.Model):
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25)
 
   fluorescence = models.ManyToManyField(Flourescence)
-  controls = models.ManyToManyField(Control, through='ControlOrder')
-  reagents = models.ManyToManyField(Reagent, through='ReagentOrder')
+  controls = models.ManyToManyField(Control)
+  reagents = models.ManyToManyField(Reagent, through='ReagentAssay')
 
   class Meta:
     constraints = [
@@ -223,7 +253,18 @@ class Assay(models.Model):
     return self.name
 
 
-class AssayList(models.Model):
+class ReagentAssay(models.Model):
+  reagent = models.ForeignKey(Reagent, on_delete=models.CASCADE)
+  assay = models.ForeignKey(Assay, on_delete=models.CASCADE)
+
+  order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # users can decide what order reagents will be que's/displayed: 1-lowest priority > highest priority, 0 will be last
+  amount_per_sample = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
+
+  def __str__(self):
+    return f'{self.reagent}-{self.order}'
+
+
+class AssayCode(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   # AssayList is used to bundle assays together making creating a batch easier rather then selecting all assays
@@ -244,57 +285,7 @@ class AssayList(models.Model):
 # **END OF ASSAY FUNCTIONALITY** #
 
 
-# **START OF ORDER FUNCTIONALITY** #
-# THROUGH Table in relation to control -> assay AND reagent -> assay
-# users can decide what order controls will be que's/displayed
-class ControlOrder(models.Model):
-  order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # 1-lowest priority > highest priority, 0 will be last
-  control = models.ForeignKey(Control, on_delete=models.CASCADE)
-  assay = models.ForeignKey(Assay, on_delete=models.CASCADE)
-
-  def __str__(self):
-    return f'{self.control}-{self.order}'
-  
-# users can decide what order reagents will be que's/displayed
-class ReagentOrder(models.Model):
-  order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # 1-lowest priority > highest priority, 0 will be last
-  reagent = models.ForeignKey(Reagent, on_delete=models.CASCADE)
-  assay = models.ForeignKey(Assay, on_delete=models.CASCADE)
-
-  def __str__(self):
-    return f'{self.reagent}-{self.order}'
-# **END OF ORDER FUNCTIONALITY** #
-
-
 # **START OF SAMPLE FUNCTIONALITY** #
-class ExtractionProtocol(models.Model):
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-  # create a validation in form/views if assaylist and ExtractionProtocol type is not compatible - example: Assay (type) require RNA but batch type is DNA
-  class Types(models.TextChoices):
-    DNA = 'DNA', _('DNA')
-    RNA = 'RNA', _('RNA')
-    TOTAL_NUCLEIC = 'TOTAL_NUCLEIC', _('Total Nucleic') # Both DNA & RNA
-
-  name = models.CharField(blank=False, unique=True, max_length=25)
-  type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25) # type of genetic material being extracted from samples in batch
-
-  tubes = models.ManyToManyField(Tube)
-  solutions = models.ManyToManyField(Solution)
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'name'], 
-        name='extraction_protocol_unique',
-        violation_error_message = "An extraction protocol with this name already exists."
-      )
-    ]
-
-  def __str__(self):
-    return self.name
-
-
 class Batch(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -303,7 +294,7 @@ class Batch(models.Model):
   number_of_samples = models.IntegerField(validators=[MinValueValidator(1)]) # number of samples in batch
   lab_id = models.CharField(blank=False, max_length=5) # This will be a short STRING to be shown on the plate such as ABC
 
-  assay_list = models.ForeignKey(AssayList, on_delete=models.RESTRICT) # a batch can only refer to one list of assays (AssayList) - user can edit samples individually after batch is created
+  assay_list = models.ForeignKey(AssayCode, on_delete=models.RESTRICT) # a batch can only refer to one list of assays (AssayList) - user can edit samples individually after batch is created
   extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.RESTRICT)
 
   date_performed = models.DateTimeField()
