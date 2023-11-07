@@ -19,6 +19,7 @@ def create_presets(user):
   water = Reagent.objects.create(
     user = user,
     name = "DEPC Water",
+    brand = "BRAND", 
     lot_number = "LOT_NUMBER_01",
     catalog_number = "CATALOG_NUMBER_01",
     volume = 1.00,
@@ -28,6 +29,7 @@ def create_presets(user):
   cbov_fprimer = Reagent.objects.create(
     user = user,
     name = "C.bovis F-primer",
+    brand = "BRAND",
     lot_number = "LOT_NUMBER_02",
     catalog_number = "CATALOG_NUMBER_02",
     volume = 100.00,
@@ -39,6 +41,7 @@ def create_presets(user):
   cbov_rprimer = Reagent.objects.create(
     user = user,
     name = "C.bovis R-primer",
+    brand = "BRAND",
     lot_number = "LOT_NUMBER_03",
     catalog_number = "CATALOG_NUMBER_03",
     volume = 100.00,
@@ -50,6 +53,7 @@ def create_presets(user):
   helico_fprimer = Reagent.objects.create(
     user = user,
     name = "Helico generic F-primer",
+    brand = "BRAND", 
     lot_number = "LOT_NUMBER_04",
     catalog_number = "CATALOG_NUMBER_04",
     volume = 100.00,
@@ -61,6 +65,7 @@ def create_presets(user):
   helico_rprimer = Reagent.objects.create(
     user = user,
     name = "Helico generic R-primer",
+    brand = "BRAND", 
     lot_number = "LOT_NUMBER_05",
     catalog_number = "CATALOG_NUMBER_05",
     volume = 100.00,
@@ -72,6 +77,7 @@ def create_presets(user):
   q_multiplex = Reagent.objects.create(
     user = user,
     name = "Qiagen Multiplex PCR Master Mix",
+    brand = "BRAND",
     lot_number = "LOT_NUMBER_06",
     catalog_number = "CATALOG_NUMBER_06",
     volume = 1.00,
@@ -94,70 +100,122 @@ def create_presets(user):
   # Controls for cbovis and helico
   bact3 = Control.objects.create(
     user = user,
+    name = "Bact-PC 1000c",
     lot_number = "LOT_NUMBER",
-    name = "Bact-PC 1000c"
+    amount = 100.00,
   )
 
   bact2 = Control.objects.create(
     user = user,
+    name = "Bact-PC 100c",
     lot_number = "LOT_NUMBER",
-    name = "Bact-PC 100c"
+    amount = 100.00,
   )
 
   bact1 = Control.objects.create(
     user = user,
+    name = "Bact-PC 10c",
     lot_number = "LOT_NUMBER",
-    name = "Bact-PC 10c"
+    amount = 100.00,
   )
 
   bact0 = Control.objects.create(
     user = user,
+    name = "Bact-PC 1c",
     lot_number = "LOT_NUMBER",
-    name = "Bact-PC 1c"
+    amount = 100.00,
   )
 
   negctrl = Control.objects.create(
     user = user,
+    name = "NegCtrl Water",
     lot_number = "LOT_NUMBER",
-    name = "NegCtrl Water"
+    amount = 100.00,
   )
 
-  cbovis = Assay.objects.create(
+  cbovis_assay = Assay.objects.create(
      user = user,
      name = "C.Bovis",
      type = Assay.Types.DNA,
   )
 
-  helico = Assay.objects.create(
+  helico_assay = Assay.objects.create(
     user = user,
     name = "Helico",
     type = Assay.Types.DNA
-
   ) 
 
-  cbovis.controls.add(bact3, bact2, bact1, bact0, negctrl)
-  cbovis.fluorescence.add(tex)
-  cbovis.reagents.add(water, cbov_fprimer, cbov_rprimer, q_multiplex)
+  cbovis_assay.controls.add(bact3, bact2, bact1, bact0, negctrl)
+  cbovis_assay.fluorescence.add(tex)
+  cbovis_assay.reagents.add(water, cbov_fprimer, cbov_rprimer, q_multiplex)
 
-  helico.controls.add(bact3, negctrl)
-  helico.fluorescence.add(fam)
-  helico.reagents.add(water, helico_fprimer, helico_rprimer, q_multiplex)
+  helico_assay.controls.add(bact3, negctrl)
+  helico_assay.fluorescence.add(fam)
+  helico_assay.reagents.add(water, helico_fprimer, helico_rprimer, q_multiplex)
 
-  cbovis_assay = AssayCode.objects.create(
+  ReagentAssay.objects.create(
+    reagent = water, 
+    assay = cbovis_assay,
+    amount_per_sample = 18.00,
+  )
+
+  ReagentAssay.objects.create(
+    reagent = cbov_fprimer, 
+    assay = cbovis_assay,
+    amount_per_sample = 1.00,
+  )
+
+  ReagentAssay.objects.create(
+    reagent = cbov_rprimer, 
+    assay = cbovis_assay,
+    amount_per_sample = 1.00,
+  )
+
+  ReagentAssay.objects.create(
+    reagent = q_multiplex, 
+    assay = cbovis_assay,
+    amount_per_sample = 25.00,
+  )
+
+  ReagentAssay.objects.create(
+    reagent = water, 
+    assay = helico_assay,
+    amount_per_sample = 15.00,
+  )
+
+  ReagentAssay.objects.create(
+    reagent = helico_fprimer, 
+    assay = helico_assay,
+    amount_per_sample = 2.50,
+  )
+
+  ReagentAssay.objects.create(
+    reagent = helico_rprimer, 
+    assay = helico_assay,
+    amount_per_sample = 2.50,
+  )
+
+  ReagentAssay.objects.create(
+    reagent = q_multiplex, 
+    assay = helico_assay,
+    amount_per_sample = 25.00,
+  )
+
+  cbovis_code = AssayCode.objects.create(
     user = user,
     name = "CBOV312",
   )
 
-  helico_assay = AssayCode.objects.create(
+  helico_code = AssayCode.objects.create(
     user = user,
     name = "HELI996",
   )
 
-  cbov_heli = AssayCode.objects.create(
+  cbov_heli_code = AssayCode.objects.create(
     user = user,
     name = "CBOV_HELI34",
   )
 
-  cbovis_assay.assays.add(cbovis)
-  helico_assay.assays.add(helico)
-  cbov_heli.assays.add(cbovis, helico)
+  cbovis_code.assays.add(cbovis_assay)
+  helico_code.assays.add(helico_assay)
+  cbov_heli_code.assays.add(cbovis_assay, helico_assay)

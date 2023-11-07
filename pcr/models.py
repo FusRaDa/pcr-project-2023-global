@@ -116,7 +116,7 @@ class Reagent(models.Model):
     X = 'X', _('X')
 
   name = models.CharField(blank=False, max_length=25)
-  brand = models.CharField(blank=False, max_length=25)
+  brand = models.CharField(blank=True, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
   catalog_number = models.CharField(blank=False, max_length=25)
   storage_location = models.ManyToManyField(Location)
@@ -224,6 +224,7 @@ class Control(models.Model):
   # Many-to-many with Assay
   name = models.CharField(blank=False, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
+  amount =  models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
 
   def __str__(self):
     return self.name
