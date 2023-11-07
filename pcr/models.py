@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 # and the process of PCR & extraction
 # **PURPOSE** #
 
+
 # **START OF USER INVENTORY FUNCTIONALITY** #
 # materials are exclusively meant to be for extraction
 class Location(models.Model):
@@ -49,8 +50,10 @@ class Plate(models.Model):
     CUSTOM = models.IntegerField(validators=[MinValueValidator(1)])
 
   plate_size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
 
-  number = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  last_updated = models.DateTimeField(auto_now=True)
+  date_created = models.DateTimeField(default=now, editable=False)
 
   class Meta:
     constraints = [
@@ -75,10 +78,10 @@ class Tube(models.Model):
 
   storage_location = models.ManyToManyField(Location)
 
-  number = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-  number_per_sample = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+ 
   last_updated = models.DateTimeField(auto_now=True)
+  date_created = models.DateTimeField(default=now, editable=False)
 
   class Meta:
     constraints = [
@@ -125,6 +128,7 @@ class Reagent(models.Model):
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=ConcentrationUnits.MILLIMOLES, max_length=25)
 
   last_updated = models.DateTimeField(auto_now=True)
+  date_created = models.DateTimeField(default=now, editable=False)
 
   class Meta:
     constraints = [
@@ -152,7 +156,7 @@ class ExtractionProtocol(models.Model):
 
   name = models.CharField(blank=False, unique=True, max_length=25)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25) # type of genetic material being extracted from samples in batch
-
+  
   tubes = models.ManyToManyField(Tube, through='TubeExtraction')
   reagents = models.ManyToManyField(Reagent, through='ReagentExtraction')
 
