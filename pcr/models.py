@@ -35,11 +35,11 @@ class Plate(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   name = models.CharField(blank=False, max_length=25)
-  brand = models.CharField(blank=False, max_length=25)
+  brand = models.CharField(blank=True, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
   catalog_number = models.CharField(blank=False, max_length=25)
 
-  storage_location = models.ManyToManyField(Location)
+  location = models.ManyToManyField(Location)
 
   class Sizes(models.TextChoices):
     EIGHT = 8, _('8')
@@ -49,7 +49,7 @@ class Plate(models.Model):
     THREE_HUNDRED_EIGHTY_FOUR = 384, _('384')
     CUSTOM = models.IntegerField(validators=[MinValueValidator(1)])
 
-  plate_size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
+  size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
 
   last_updated = models.DateTimeField(auto_now=True)
@@ -72,11 +72,11 @@ class Tube(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   name = models.CharField(blank=False, max_length=25)
-  brand = models.CharField(blank=False, max_length=25)
+  brand = models.CharField(blank=True, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
   catalog_number = models.CharField(blank=False, max_length=25)
 
-  storage_location = models.ManyToManyField(Location)
+  location = models.ManyToManyField(Location)
 
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
  
@@ -100,6 +100,11 @@ class Tube(models.Model):
 class Reagent(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+  class Usages(models.TextChoices):
+    EXTRACTION = 'EXTRACTION', _('EXTRACTION')
+    PCR = 'PCR', _('PCR')
+    GENERAL = 'GENERAL', _('GENERAL')
+
   # exclude Template DNA - in the future have a DB where users can add reagents to their accounts
   class VolumeUnits(models.TextChoices):
     LITER = 'LITER', _('L')
@@ -119,7 +124,9 @@ class Reagent(models.Model):
   brand = models.CharField(blank=True, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
   catalog_number = models.CharField(blank=False, max_length=25)
-  storage_location = models.ManyToManyField(Location)
+  location = models.ManyToManyField(Location)
+
+  usage = models.CharField(choices=Usages, blank=False, default=Usages.GENERAL, max_length=25)
 
   volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
@@ -224,7 +231,7 @@ class Control(models.Model):
   # Many-to-many with Assay
   name = models.CharField(blank=False, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
-  amount =  models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
+  amount = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
 
   def __str__(self):
     return self.name
@@ -239,6 +246,7 @@ class Assay(models.Model):
     RNA = 'RNA', _('RNA') # RT-PCR
 
   name = models.CharField(blank=False, max_length=25)
+  sample_volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25)
 
   fluorescence = models.ManyToManyField(Flourescence)
