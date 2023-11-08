@@ -105,7 +105,6 @@ class Reagent(models.Model):
     PCR = 'PCR', _('PCR')
     GENERAL = 'GENERAL', _('GENERAL')
 
-  # exclude Template DNA - in the future have a DB where users can add reagents to their accounts
   class VolumeUnits(models.TextChoices):
     LITER = 'LITER', _('L')
     MILLILITER = 'MILLILITER', _('mL')
@@ -126,7 +125,9 @@ class Reagent(models.Model):
   catalog_number = models.CharField(blank=False, max_length=25)
   location = models.ManyToManyField(Location)
 
-  usage = models.CharField(choices=Usages, blank=False, default=Usages.GENERAL, max_length=25)
+  is_pcr_water = models.BooleanField(default=False) # if True, is used to fill well
+
+  usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.GENERAL, max_length=25)
 
   volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
@@ -184,21 +185,21 @@ class ExtractionProtocol(models.Model):
 
 class TubeExtraction(models.Model):
   tube = models.ForeignKey(Tube, on_delete=models.CASCADE)
-  extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.CASCADE)
+  protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.CASCADE)
 
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # users can decide what order reagents will be que's/displayed: 1-lowest priority > highest priority, 0 will be last
-  amount_per_sample = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  amount_per_sample = models.IntegerField(blank=True, null=True,validators=[MinValueValidator(0)], default=0)
 
   def __str__(self):
-    return f'{self.reagent}-{self.order}'
+    return f'{self.tube}-{self.order}'
   
 
 class ReagentExtraction(models.Model):
   reagent = models.ForeignKey(Reagent, on_delete=models.CASCADE)
-  extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.CASCADE)
+  protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.CASCADE)
 
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # users can decide what order reagents will be que's/displayed: 1-lowest priority > highest priority, 0 will be last
-  amount_per_sample = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
+  amount_per_sample = models.DecimalField(decimal_places=2, blank=True, null=True, validators=[MinValueValidator(0)], max_digits=12) # in microliters
 
   def __str__(self):
     return f'{self.reagent}-{self.order}'
@@ -240,15 +241,22 @@ class Control(models.Model):
 class Assay(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+  class Method(models.TextChoices):
+    qPCR = 'qPCR', _('qPCR')
+    PCR = 'PCR', _('PCR')
+
   # block number of instances https://stackoverflow.com/questions/44266260/django-how-can-i-limit-the-number-of-objects-that-a-user-can-create
   class Types(models.TextChoices):
     DNA = 'DNA', _('DNA') # PCR
     RNA = 'RNA', _('RNA') # RT-PCR
 
   name = models.CharField(blank=False, max_length=25)
-  sample_volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
+  method = models.CharField(choices=Method.choices, blank=False, default=Method.qPCR, max_length=25)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25)
 
+  sample_volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
+  reaction_volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
+  
   fluorescence = models.ManyToManyField(Flourescence)
   controls = models.ManyToManyField(Control)
   reagents = models.ManyToManyField(Reagent, through='ReagentAssay')
@@ -267,14 +275,26 @@ class Assay(models.Model):
 
 
 class ReagentAssay(models.Model):
+
+  class ConcentrationUnits(models.TextChoices):
+    NOT_APPLICABLE = 'NOT_APPLICABLE', _('NOT_APPLICABLE')
+    MOLES = 'MOLES', _('M')
+    MILLIMOLES = 'MILLIMOLES', _('mM')
+    MICROMOLES = 'MICROMOLES', _('\u00B5M')
+    NANOMOLES = 'NANOMOLES', _('nM')
+    UNITS = 'UNITS', _('U/\u00B5L')
+    X = 'X', _('X')
+
   reagent = models.ForeignKey(Reagent, on_delete=models.CASCADE)
   assay = models.ForeignKey(Assay, on_delete=models.CASCADE)
 
+  final_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, validators=[MinValueValidator(0)], max_digits=12) # in microliters
+  final_concentration_unit = models.CharField(choices=ConcentrationUnits.choices, default=ConcentrationUnits.MICROMOLES, max_length=25)
+
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # users can decide what order reagents will be que's/displayed: 1-lowest priority > highest priority, 0 will be last
-  amount_per_sample = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
 
   def __str__(self):
-    return f'{self.reagent}-{self.order}'
+    return f'{self.reagent}-{self.assay}'
 
 
 class AssayCode(models.Model):

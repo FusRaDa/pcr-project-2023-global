@@ -1,4 +1,4 @@
-from .models import Sample, Batch, AssayList
+from .models import Sample, Batch, AssayCode
 
 
 def create_samples(number_of_samples, lab_id, user):

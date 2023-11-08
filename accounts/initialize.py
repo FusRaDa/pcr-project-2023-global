@@ -15,9 +15,8 @@ def create_presets(user):
     number_of_cycles = 30,
   )
   
-
   # **INVENTORY SECTION** #
-  plate96 = Plate.objects.create(
+  Plate.objects.create(
     user = user,
     name = "Generic 96-well plates",
     lot_number = "LOT_NUMBER_01",
@@ -26,7 +25,7 @@ def create_presets(user):
     amount = 50,
   )
 
-  plate48 = Plate.objects.create(
+  Plate.objects.create(
     user = user,
     name = "Generic 48-well plates",
     lot_number = "LOT_NUMBER_02",
@@ -35,7 +34,7 @@ def create_presets(user):
     amount = 50,
   )
 
-  plate384 = Plate.objects.create(
+  Plate.objects.create(
     user = user,
     name = "Generic 384-well plates",
     lot_number = "LOT_NUMBER_03",
@@ -63,8 +62,8 @@ def create_presets(user):
   tubes3 = Tube.objects.create(
     user = user,
     name = "Generic 2ml open column",
-    lot_number = "LOT_NUMBER_02",
-    catalog_number = "CATALOG_NUMBER_02",
+    lot_number = "LOT_NUMBER_03",
+    catalog_number = "CATALOG_NUMBER_03",
     amount = 500,
   )
 
@@ -77,7 +76,7 @@ def create_presets(user):
     catalog_number = "CATALOG_NUMBER_07",
     usage = Reagent.Usages.EXTRACTION,
     volume = 500.00,
-    unit_volue = Reagent.VolumeUnits.MICROLITER,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
   )
 
   al_buffer = Reagent.objects.create(
@@ -88,7 +87,7 @@ def create_presets(user):
     catalog_number = "CATALOG_NUMBER_08",
     usage = Reagent.Usages.EXTRACTION,
     volume = 50.00,
-    unit_volue = Reagent.VolumeUnits.MILLILITER,
+    unit_volume = Reagent.VolumeUnits.MILLILITER,
   )
 
   ethanol = Reagent.objects.create(
@@ -99,7 +98,7 @@ def create_presets(user):
     catalog_number = "CATALOG_NUMBER_09",
     usage = Reagent.Usages.EXTRACTION,
     volume = 1.00,
-    unit_volue = Reagent.VolumeUnits.LITER,
+    unit_volume = Reagent.VolumeUnits.LITER,
   )
 
   aw1_buffer = Reagent.objects.create(
@@ -110,7 +109,7 @@ def create_presets(user):
     catalog_number = "CATALOG_NUMBER_10",
     usage = Reagent.Usages.EXTRACTION,
     volume = 100.00,
-    unit_volue = Reagent.VolumeUnits.MILLILITER,
+    unit_volume = Reagent.VolumeUnits.MILLILITER,
   )
 
   aw2_buffer = Reagent.objects.create(
@@ -121,7 +120,7 @@ def create_presets(user):
     catalog_number = "CATALOG_NUMBER_11",
     usage = Reagent.Usages.EXTRACTION,
     volume = 100.00,
-    unit_volue = Reagent.VolumeUnits.MILLILITER,
+    unit_volume = Reagent.VolumeUnits.MILLILITER,
   )
 
   ae_buffer = Reagent.objects.create(
@@ -132,7 +131,7 @@ def create_presets(user):
     catalog_number = "CATALOG_NUMBER_12",
     usage = Reagent.Usages.EXTRACTION,
     volume = 50.00,
-    unit_volue = Reagent.VolumeUnits.MILLILITER,
+    unit_volume = Reagent.VolumeUnits.MILLILITER,
   )
 
   atl_buffer = Reagent.objects.create(
@@ -143,7 +142,7 @@ def create_presets(user):
     catalog_number = "CATALOG_NUMBER_13",
     usage = Reagent.Usages.EXTRACTION,
     volume = 50.00,
-    unit_volue = Reagent.VolumeUnits.MILLILITER,
+    unit_volume = Reagent.VolumeUnits.MILLILITER,
   )
 
   # Reagents for PCR (c.bovis and helico)
@@ -153,14 +152,15 @@ def create_presets(user):
     brand = "BRAND", 
     lot_number = "LOT_NUMBER_01",
     catalog_number = "CATALOG_NUMBER_01",
+    is_pcr_water = True,
     usage = Reagent.Usages.PCR,
     volume = 1.00,
     unit_volume = Reagent.VolumeUnits.LITER,
   )
 
-  cbov_fprimer = Reagent.objects.create(
+  cbov_frprimer = Reagent.objects.create(
     user = user,
-    name = "C.bovis F-primer",
+    name = "C.bovis F+R-primer",
     brand = "BRAND",
     lot_number = "LOT_NUMBER_02",
     catalog_number = "CATALOG_NUMBER_02",
@@ -171,9 +171,9 @@ def create_presets(user):
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
   )
 
-  cbov_rprimer = Reagent.objects.create(
+  cbov_pprimer = Reagent.objects.create(
     user = user,
-    name = "C.bovis R-primer",
+    name = "C.bovis probe",
     brand = "BRAND",
     lot_number = "LOT_NUMBER_03",
     catalog_number = "CATALOG_NUMBER_03",
@@ -184,7 +184,7 @@ def create_presets(user):
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
   )
 
-  helico_f_r_primer = Reagent.objects.create(
+  helico_frprimer = Reagent.objects.create(
     user = user,
     name = "Helico generic F+R-primer",
     brand = "BRAND", 
@@ -199,7 +199,7 @@ def create_presets(user):
 
   helico_pprimer = Reagent.objects.create(
     user = user,
-    name = "Helico generic P-primer",
+    name = "Helico generic probe",
     brand = "BRAND", 
     lot_number = "LOT_NUMBER_05",
     catalog_number = "CATALOG_NUMBER_05",
@@ -230,6 +230,7 @@ def create_presets(user):
     user = user,
     name = "DNA Extraction - Tissue",
     type = ExtractionProtocol.Types.DNA,
+    doc_url = "https://www.qiagen.com/us/resources/resourcedetail?id=68f29296-5a9f-40fa-8b3d-1c148d0b3030&lang=en",
   )
 
   dna_ext_tissue.tubes.add(tubes1, tubes2, tubes3)
@@ -239,12 +240,14 @@ def create_presets(user):
     user = user,
     name = "DNA Extraction - Fecal",
     type = ExtractionProtocol.Types.DNA,
+    doc_url = "https://www.qiagen.com/us/resources/resourcedetail?id=2a3f2c0b-2e8a-49fd-b442-829108ae1a4a&lang=en",
   )
 
   dna_ext_fecal.tubes.add(tubes1, tubes2, tubes3)
   dna_ext_fecal.reagents.add(proteinase_k, al_buffer, ethanol, aw1_buffer, aw2_buffer, ae_buffer, atl_buffer)
+  
+  
   # **EXTRACTION SECTION** #
-
   # Flourescence for cbovis and helico
   tex = Flourescence.objects.create(
     user = user,
@@ -292,73 +295,30 @@ def create_presets(user):
     amount = 100.00,
   )
 
+  # assays: cbovis & helico
   cbovis_assay = Assay.objects.create(
      user = user,
      name = "C.Bovis",
      type = Assay.Types.DNA,
+     sample_volume = 5.00,
+     reaction_volume = 20.00,
   )
 
   helico_assay = Assay.objects.create(
     user = user,
     name = "Helico",
-    type = Assay.Types.DNA
+    type = Assay.Types.DNA,
+    sample_volume = 8.00,
+    reaction_volume = 20.00,
   ) 
 
   cbovis_assay.controls.add(bact3, bact2, bact1, bact0, negctrl)
   cbovis_assay.fluorescence.add(tex)
-  cbovis_assay.reagents.add(water, cbov_fprimer, cbov_rprimer, i_taq)
+  cbovis_assay.reagents.add(water, cbov_frprimer, cbov_pprimer, i_taq)
 
   helico_assay.controls.add(bact3, negctrl)
   helico_assay.fluorescence.add(fam)
-  helico_assay.reagents.add(water, helico_f_r_primer, helico_pprimer, i_taq)
-
-  ReagentAssay.objects.create(
-    reagent = water, 
-    assay = cbovis_assay,
-    amount_per_sample = 3.90,
-  )
-
-  ReagentAssay.objects.create(
-    reagent = cbov_fprimer, 
-    assay = cbovis_assay,
-    amount_per_sample = 0.90,
-  )
-
-  ReagentAssay.objects.create(
-    reagent = cbov_rprimer, 
-    assay = cbovis_assay,
-    amount_per_sample = 0.20,
-  )
-
-  ReagentAssay.objects.create(
-    reagent = i_taq, 
-    assay = cbovis_assay,
-    amount_per_sample = 10.00,
-  )
-
-  ReagentAssay.objects.create(
-    reagent = water, 
-    assay = helico_assay,
-    amount_per_sample = 1.20,
-  )
-
-  ReagentAssay.objects.create(
-    reagent = helico_f_r_primer, 
-    assay = helico_assay,
-    amount_per_sample = 0.60,
-  )
-
-  ReagentAssay.objects.create(
-    reagent = helico_pprimer, 
-    assay = helico_assay,
-    amount_per_sample = 0.20,
-  )
-
-  ReagentAssay.objects.create(
-    reagent = i_taq, 
-    assay = helico_assay,
-    amount_per_sample = 10.00,
-  )
+  helico_assay.reagents.add(water, helico_frprimer, helico_pprimer, i_taq)
 
   cbovis_code = AssayCode.objects.create(
     user = user,
