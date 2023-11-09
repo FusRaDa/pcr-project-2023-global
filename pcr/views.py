@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 
 from .models import *
@@ -21,15 +22,15 @@ def viewBatches(request):
 def createBatches(request):
 
   user = request.user
-  form = CreateBatchForm()
+  form = BatchForm()
 
   if request.method == "POST":
-    form = CreateBatchForm(request.POST)
+    form = BatchForm(request.POST)
 
     if form.is_valid():
       batch = form.save(commit=False)
       batch.user = user
-      instance = batch.save()
+      batch = form.save()
 
       number_of_samples = form.cleaned_data['number_of_samples']
       lab_id = form.cleaned_data['lab_id']
@@ -40,7 +41,7 @@ def createBatches(request):
         user=user,
       )
 
-      return redirect('batch_samples', args=(user, instance.pk))
+      return redirect('batch_samples', pk=batch.id)
     
   else:
     for error in list(form.errors.values()):
@@ -51,12 +52,17 @@ def createBatches(request):
 
 
 @login_required(login_url='login')
-def batchSamples(request, user, pk):
+def batchSamples(request, pk):
 
-  batch = Batch.objects.get(user=user, pk=pk)
-  samples = batch.sample_set.all()
+  context = {}
 
-  context = {'samples': samples}
+  try:
+    batch = Batch.objects.get(user=request.user, pk=pk)
+    samples = batch.sample_set.all()
+    context = {'samples': samples}
+  except ObjectDoesNotExist:
+    return redirect('batches')
+
   return render(request, 'batch_samples.html', context)
 
  

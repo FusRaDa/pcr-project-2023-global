@@ -327,10 +327,9 @@ class Batch(models.Model):
   number_of_samples = models.IntegerField(validators=[MinValueValidator(1)]) # number of samples in batch
   lab_id = models.CharField(blank=False, max_length=5) # This will be a short STRING to be shown on the plate such as ABC
 
-  code = models.ForeignKey(AssayCode, on_delete=models.RESTRICT) # a batch can only refer to one list of assays (AssayList) - user can edit samples individually after batch is created
+  code = models.ForeignKey(AssayCode, on_delete=models.RESTRICT) # a batch can only refer to one list of assays (AssayList) - but users can individually edit samples after
   extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.RESTRICT)
 
-  date_performed = models.DateTimeField()
   date_created = models.DateTimeField(default=now, editable=False)
   
   class Meta:
@@ -404,7 +403,6 @@ class Process(models.Model):
   protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT) # protocol can only be deleted if no plates are using it
   plate = models.ForeignKey(Plate, on_delete=models.RESTRICT)
 
-  date_performed = models.DateTimeField()
   date_created = models.DateTimeField(default=now, editable=False)
 
   def __str__(self):
