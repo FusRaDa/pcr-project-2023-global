@@ -12,7 +12,7 @@ from .functions import create_samples
 @login_required(login_url='login')
 def viewBatches(request):
 
-  batches = Batch.objects.filter(user=request.user)
+  batches = Batch.objects.filter(user=request.user).order_by('date_created')
 
   context = {'batches': batches}
   return render(request, 'batches.html', context)
@@ -41,7 +41,7 @@ def createBatches(request):
         user=user,
       )
 
-      return redirect('batch_samples', pk=batch.id)
+      return redirect('batch_samples', username=request.user.username, pk=batch.id)
     
   else:
     for error in list(form.errors.values()):
@@ -52,12 +52,13 @@ def createBatches(request):
 
 
 @login_required(login_url='login')
-def batchSamples(request, pk):
+def batchSamples(request, username, pk):
 
   context = {}
 
   try:
-    batch = Batch.objects.get(user=request.user, pk=pk)
+    user = User.objects.get(username=username)
+    batch = Batch.objects.get(user=user, pk=pk)
     samples = batch.sample_set.all()
     context = {'samples': samples}
   except ObjectDoesNotExist:

@@ -6,6 +6,8 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{% static 'css/batches.css' %}">
+
 <div class="container h-100">
 
     <div class="row">
@@ -19,15 +21,33 @@
         <a href="{% url 'create_batch'%}">Create Batch</a>
       </div>
     </div>
-  
-    {% for batch in batches %}
-    <div class="row">
-      <div class="col d-flex justify-content-center"> 
-        <li>{{batch.name}}</li>
-      </div>
+
+    <div class="row font-weight-bold">
+      <div class="col border border-dark">Date Created</div>
+      <div class="col border border-dark">Name</div>
+      <div class="col border border-dark">Assay Code</div>
+      <div class="col border border-dark">Number of Assays</div>
+      <div class="col border border-dark">Number of Samples</div>
+      <div class="col border border-dark">Total Tests</div>
+      <div class="col border border-dark">Extraction Protocol</div>
+      <div class="col border border-dark">Lab ID</div>
     </div>
+
+    {% for batch in batches %}
+    <a href="{% url 'batch_samples' request.user.username batch.pk%}">
+    <div class="row row-table">
+      <div class="col border border-dark">{{batch.date_created}}</div>
+      <div class="col border border-dark">{{batch.name}}</div>
+      <div class="col border border-dark">{{batch.code}}</div>
+      <div class="col border border-dark">{{batch.number_of_assays}}</div>
+      <div class="col border border-dark">{{batch.number_of_samples}}</div>
+      <div class="col border border-dark">{{batch.total_tests}}</div>
+      <div class="col border border-dark">{{batch.extraction_protocol}}</div>
+      <div class="col border border-dark">{{batch.lab_id}}</div>
+    </div>
+  </a>
     {% endfor %}
-  
+    
 </div>
 
 {% endblock %}

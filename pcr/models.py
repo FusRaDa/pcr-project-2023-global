@@ -341,6 +341,15 @@ class Batch(models.Model):
       )
     ]
 
+  @property
+  def number_of_assays(self):
+    return self.code.assays.count()
+
+  @property
+  def total_tests(self):
+    num = self.code.assays.count()
+    return self.number_of_samples * num
+
   def __str__(self):
     return f'{self.name}-{self.lab_id}'
 
