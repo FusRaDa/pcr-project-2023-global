@@ -6,5 +6,5 @@ from .models import *
 class CreateBatchForm(ModelForm):
   class Meta:
     model = Batch
-    exclude = ["user"]
+    exclude = ["user", 'date_performed']
 

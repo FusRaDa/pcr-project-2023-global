@@ -7,19 +7,27 @@
 {% block content %}
 
 <div class="container h-100">
-  <div class="d-flex justify-content-center h-100">
 
-    <h1>View All Batches</h1>
+    <div class="row">
+      <div class="col d-flex justify-content-center"> 
+        <h1>View All Batches</h1>
+      </div>
+    </div>
 
-    <ul>
+    <div class="row">
+      <div class="col d-flex justify-content-center"> 
+        <a href="{% url 'create_batch'%}">Create Batch</a>
+      </div>
+    </div>
+  
     {% for batch in batches %}
-      
-      <li>{{batch.name}}</li>
-
+    <div class="row">
+      <div class="col d-flex justify-content-center"> 
+        <li>{{batch.name}}</li>
+      </div>
+    </div>
     {% endfor %}
-    </ul>
-    
-  </div>
+  
 </div>
 
 {% endblock %}

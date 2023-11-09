@@ -29,7 +29,7 @@ def createBatches(request):
     if form.is_valid():
       batch = form.save(commit=False)
       batch.user = user
-      batch.save()
+      instance = batch.save()
 
       number_of_samples = form.cleaned_data['number_of_samples']
       lab_id = form.cleaned_data['lab_id']
@@ -39,21 +39,21 @@ def createBatches(request):
         lab_id=lab_id, 
         user=user,
       )
-      
-      return redirect('batch_samples')
+
+      return redirect('batch_samples', args=(user, instance.pk))
     
   else:
     for error in list(form.errors.values()):
       messages.error(request, error)
   
   context = {'form': form}
-  return render(request, 'batches.html', context)
+  return render(request, 'create_batch.html', context)
 
 
 @login_required(login_url='login')
-def batchSamples(request, pk):
+def batchSamples(request, user, pk):
 
-  batch = Batch.objects.get(pk=pk)
+  batch = Batch.objects.get(user=user, pk=pk)
   samples = batch.sample_set.all()
 
   context = {'samples': samples}

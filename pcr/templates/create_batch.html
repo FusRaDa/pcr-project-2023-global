@@ -1,0 +1,44 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Create Batch {% endblock %} 
+
+{% block content %}
+<div class="container h-100">
+
+    <div class="row">
+      <div class="col d-flex justify-content-center">
+        <h3>Create a new batch</h3>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col d-flex justify-content-center">
+        <form method="POST">
+          {% csrf_token %}
+          {{form}}
+          <input type="Submit" name="Create batch">
+        </form>
+      </div>
+
+      <div class="col d-flex justify-content-center">
+        <figure>
+        <figcaption>A batch...</figcaption>
+          <ul> 
+            <li>is a list of samples.</li>
+            <li>can only have one extraction protocol.</li>
+            <li>can only have one assay code but you can edit their following samples individually once created.</li>
+            <li>must have a lab ID to distinguish each sample.</li>
+          </ul>
+        </figure>
+      </div>
+
+    </div>
+
+</div>
+
+{{form.errors}}
+
+{% endblock %}

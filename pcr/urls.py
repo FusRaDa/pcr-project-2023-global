@@ -3,6 +3,6 @@ from . import views
 
 urlpatterns = [
   path("", views.viewBatches, name="batches"),
-  path("batch/", views.createBatches, name="batch"),
-  path("batch/<str:pk>", views.batchSamples, name="batch_samples")
+  path("create-batch/", views.createBatches, name="create_batch"),
+  path("batch-samples/<str:user>/<str:pk>", views.batchSamples, name="batch_samples")
 ]

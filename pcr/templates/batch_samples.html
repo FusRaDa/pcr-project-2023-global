@@ -1,0 +1,25 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Batch Samples {% endblock %} 
+
+{% block content %}
+
+<div class="container h-100">
+  <div class="d-flex justify-content-center h-100">
+
+    <h1>Batch Samples</h1>
+
+    <ul>
+    {% for sample in samples %}
+      
+      <li>{{sample.lab_id_num}}</li>
+
+    {% endfor %}
+    </ul>
+    
+  </div>
+</div>
+
+{% endblock %}

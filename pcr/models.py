@@ -308,7 +308,7 @@ class AssayCode(models.Model):
     constraints = [
       models.UniqueConstraint(
         fields=['user', 'name'], 
-        name='assay_list_unique',
+        name='assay_code_unique',
         violation_error_message = "An assay list/group with this name already exists."
       )
     ]
@@ -327,7 +327,7 @@ class Batch(models.Model):
   number_of_samples = models.IntegerField(validators=[MinValueValidator(1)]) # number of samples in batch
   lab_id = models.CharField(blank=False, max_length=5) # This will be a short STRING to be shown on the plate such as ABC
 
-  assay_list = models.ForeignKey(AssayCode, on_delete=models.RESTRICT) # a batch can only refer to one list of assays (AssayList) - user can edit samples individually after batch is created
+  code = models.ForeignKey(AssayCode, on_delete=models.RESTRICT) # a batch can only refer to one list of assays (AssayList) - user can edit samples individually after batch is created
   extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.RESTRICT)
 
   date_performed = models.DateTimeField()
