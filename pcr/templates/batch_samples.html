@@ -56,17 +56,37 @@
     <div class="col border border-dark">Assays</div>
   </div>
 
-  {% for sample in samples %}
-  <div class="row">
-    <div class="col border border-dark">{{sample.lab_id_num}}</div>
-    <div class="col border border-dark">{{sample.sample_id}}</div>
-    <div class="col border border-dark">
-      {% for assay in sample.assays.all %}
-        <span>{{assay}},</span>
+  <form action="" method="POST">
+  {% for samples, formset in data %}
+    <div class="row">
+
+      <div class="col border border-dark">{{samples.lab_id_num}}</div>
+      <div class="col border border-dark">{{formset.sample_id}}</div>
+
+      <div class="col border border-dark">
+      {% for assay in samples.assays.all%}
+        {% if samples.assays.all|length > 1%}
+        <span>
+          {{assay}} |
+        </span>
+        {% else %}
+        <span>
+          {{assay}}
+        </span>
+        {% endif %}
       {% endfor %}
+      </div>
+
     </div>
-  </div>
   {% endfor %}
+    <div class="row justify-content-center"> 
+      <input type="Submit" name="Update Samples">
+    </div>
+  </form>
+  
+
+
+  
 
 
   <div class="modal fade" id="pcr-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

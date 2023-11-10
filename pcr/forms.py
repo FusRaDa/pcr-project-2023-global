@@ -88,9 +88,15 @@ class BatchForm(ModelForm):
 
 
 class SampleForm(ModelForm):
+
+  def __init__(self, *args, **kwargs):
+    super(SampleForm, self).__init__(*args, **kwargs)
+    self.fields['lab_id_num'].disabled = True
+    self.fields['assays'].disabled = True
+
   class Meta:
     model = Sample
-    exclude = ['user', 'lab_id_num', 'batch']
+    exclude = ['user', 'batch']
 # SAMPLE #
 
 

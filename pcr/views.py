@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.forms import inlineformset_factory, formset_factory
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 
@@ -61,20 +62,38 @@ def deleteBatch(username, pk):
     return redirect('batches')
   except ObjectDoesNotExist:
     return redirect('batches')
-  
+
 
 @login_required(login_url='login')
 def batchSamples(request, username, pk):
 
   context = {}
+  SampleFormSet = inlineformset_factory(
+    Batch, 
+    Sample, 
+    form=SampleForm,
+    extra=0, 
+    can_delete=False,
+    )
+  formset = None
 
   try:
     user = User.objects.get(username=username)
     batch = Batch.objects.get(user=user, pk=pk)
+
     samples = batch.sample_set.all()
-    context = {'samples': samples, "batch": batch}
+    formset = SampleFormSet(instance=batch)
+
+    data = zip(samples, formset)
+
+    if formset.is_valid():
+      formset.save()
+      return redirect('batches')
+   
   except ObjectDoesNotExist:
     return redirect('batches')
+  
+  context = {'batch': batch, 'data': data}
 
   return render(request, 'batch_samples.html', context)
 
