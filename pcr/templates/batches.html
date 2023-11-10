@@ -35,17 +35,17 @@
 
     {% for batch in batches %}
     <a href="{% url 'batch_samples' request.user.username batch.pk%}">
-    <div class="row row-table">
-      <div class="col border border-dark">{{batch.date_created}}</div>
-      <div class="col border border-dark">{{batch.name}}</div>
-      <div class="col border border-dark">{{batch.code}}</div>
-      <div class="col border border-dark">{{batch.number_of_assays}}</div>
-      <div class="col border border-dark">{{batch.number_of_samples}}</div>
-      <div class="col border border-dark">{{batch.total_tests}}</div>
-      <div class="col border border-dark">{{batch.extraction_protocol}}</div>
-      <div class="col border border-dark">{{batch.lab_id}}</div>
-    </div>
-  </a>
+      <div class="row row-table">
+        <div class="col border border-dark">{{batch.date_created}}</div>
+        <div class="col border border-dark">{{batch.name}}</div>
+        <div class="col border border-dark">{{batch.code}}</div>
+        <div class="col border border-dark">{{batch.number_of_assays}}</div>
+        <div class="col border border-dark">{{batch.number_of_samples}}</div>
+        <div class="col border border-dark">{{batch.total_tests}}</div>
+        <div class="col border border-dark">{{batch.extraction_protocol}}</div>
+        <div class="col border border-dark">{{batch.lab_id}}</div>
+      </div>
+    </a>
     {% endfor %}
     
 </div>

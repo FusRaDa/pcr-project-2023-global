@@ -52,6 +52,18 @@ def createBatches(request):
 
 
 @login_required(login_url='login')
+def deleteBatch(username, pk):
+
+  try:
+    user = User.objects.get(username=username)
+    batch = Batch.objects.get(user=user, pk=pk)
+    batch.delete()
+    return redirect('batches')
+  except ObjectDoesNotExist:
+    return redirect('batches')
+  
+
+@login_required(login_url='login')
 def batchSamples(request, username, pk):
 
   context = {}
@@ -60,7 +72,7 @@ def batchSamples(request, username, pk):
     user = User.objects.get(username=username)
     batch = Batch.objects.get(user=user, pk=pk)
     samples = batch.sample_set.all()
-    context = {'samples': samples}
+    context = {'samples': samples, "batch": batch}
   except ObjectDoesNotExist:
     return redirect('batches')
 

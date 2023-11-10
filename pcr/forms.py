@@ -90,7 +90,7 @@ class BatchForm(ModelForm):
 class SampleForm(ModelForm):
   class Meta:
     model = Sample
-    exclude = ['user', 'batch']
+    exclude = ['user', 'lab_id_num', 'batch']
 # SAMPLE #
 
 
