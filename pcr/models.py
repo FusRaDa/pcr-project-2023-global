@@ -368,8 +368,14 @@ class Sample(models.Model):
     constraints = [
       models.UniqueConstraint(
         fields=['user', 'lab_id_num'], 
-        name='sample_unique',
+        name='user_lab_id_unique',
         violation_error_message = "A batch with this lab ID already exists.",
+      ),
+
+      models.UniqueConstraint(
+        fields=['batch', 'sample_id'], 
+        name='batch_sample_id_unique',
+        violation_error_message = "Two or more samples in this batch contain the same sample ID.",
       )
     ]
 

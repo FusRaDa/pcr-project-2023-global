@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.forms import inlineformset_factory, formset_factory
+from django.forms import inlineformset_factory
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 
@@ -86,14 +86,20 @@ def batchSamples(request, username, pk):
 
     data = zip(samples, formset)
 
-    if formset.is_valid():
-      formset.save()
-      return redirect('batches')
+    if request.method == 'POST':
+      formset = SampleFormSet(request.POST, instance=batch)
+      if formset.is_valid():
+        print(formset.data)
+        formset.save()
+        return redirect('batches')
+      else:
+        print(formset.errors)
+        print(formset.non_form_errors())
    
   except ObjectDoesNotExist:
     return redirect('batches')
   
-  context = {'batch': batch, 'data': data}
+  context = {'batch': batch, 'data': data, 'formset': formset}
 
   return render(request, 'batch_samples.html', context)
 
