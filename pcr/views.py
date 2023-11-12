@@ -53,15 +53,22 @@ def createBatches(request):
 
 
 @login_required(login_url='login')
-def deleteBatch(username, pk):
+def deleteBatch(request, username, pk):
 
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no batch to delete.")
+    return redirect('batches')
+  
   try:
-    user = User.objects.get(username=username)
     batch = Batch.objects.get(user=user, pk=pk)
     batch.delete()
-    return redirect('batches')
   except ObjectDoesNotExist:
+    messages.error(request, "There is no batch to delete.")
     return redirect('batches')
+
+  return redirect('batches')
 
 
 @login_required(login_url='login')
@@ -77,28 +84,33 @@ def batchSamples(request, username, pk):
     )
   formset = None
 
-  try:
-    user = User.objects.get(username=username)
-    batch = Batch.objects.get(user=user, pk=pk)
+  user = User.objects.get(username=username)
 
-    samples = batch.sample_set.all()
-    formset = SampleFormSet(instance=batch)
-
-    data = zip(samples, formset)
-
-    if request.method == 'POST':
-      formset = SampleFormSet(request.POST, instance=batch)
-      if formset.is_valid():
-        print(formset.data)
-        formset.save()
-        return redirect('batches')
-      else:
-        print(formset.errors)
-        print(formset.non_form_errors())
-   
-  except ObjectDoesNotExist:
+  if request.user != user:
+    messages.error(request, "There is no batch to view.")
     return redirect('batches')
   
+  try:
+    batch = Batch.objects.get(user=user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no batch to view.")
+    return redirect('batches')
+
+  samples = batch.sample_set.all()
+  formset = SampleFormSet(instance=batch)
+
+  data = zip(samples, formset)
+
+  if request.method == 'POST':
+    formset = SampleFormSet(request.POST, instance=batch)
+    if formset.is_valid():
+      print(formset.data)
+      formset.save()
+      return redirect('batches')
+    else:
+      print(formset.errors)
+      print(formset.non_form_errors())
+   
   context = {'batch': batch, 'data': data, 'formset': formset}
 
   return render(request, 'batch_samples.html', context)
