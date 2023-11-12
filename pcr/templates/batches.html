@@ -8,7 +8,7 @@
 
 <link rel="stylesheet" href="{% static 'css/batches.css' %}">
 
-<div class="container h-100">
+<div class="container-fluid">
 
   {% for message in messages %}
   <div class="row">
@@ -32,32 +32,48 @@
       </div>
     </div>
 
-    <div class="row font-weight-bold">
-      <div class="col border border-dark">Date Created</div>
-      <div class="col border border-dark">Name</div>
-      <div class="col border border-dark">Assay Code</div>
-      <div class="col border border-dark">Number of Assays</div>
-      <div class="col border border-dark">Number of Samples</div>
-      <div class="col border border-dark">Total Tests</div>
-      <div class="col border border-dark">Extraction Protocol</div>
-      <div class="col border border-dark">Lab ID</div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Date Created</th>
+            <th scope="col">Name</th>
+            <th scope="col">Assay Code</th>
+            <th scope="col">Number of Assays</th>
+            <th scope="col">Number of Samples</th>
+            <th scope="col">Total Tests</th>
+            <th scope="col">Extraction Protocol</th>
+            <th scope="col">Lab ID</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for batch in batches %}
+            <tr class="batch-row" data-href="{% url 'batch_samples' request.user.username batch.pk %}">
+              <td>{{batch.date_created}}</td>
+              <td>{{batch.name}}</td>
+              <td>{{batch.code}}</td>
+              <td>{{batch.number_of_assays}}</td>
+              <td>{{batch.number_of_samples}}</td>
+              <td>{{batch.total_tests}}</td>
+              <td>{{batch.extraction_protocol}}</td>
+              <td>{{batch.lab_id}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
     </div>
 
-    {% for batch in batches %}
-    <a href="{% url 'batch_samples' request.user.username batch.pk%}">
-      <div class="row row-table">
-        <div class="col border border-dark">{{batch.date_created}}</div>
-        <div class="col border border-dark">{{batch.name}}</div>
-        <div class="col border border-dark">{{batch.code}}</div>
-        <div class="col border border-dark">{{batch.number_of_assays}}</div>
-        <div class="col border border-dark">{{batch.number_of_samples}}</div>
-        <div class="col border border-dark">{{batch.total_tests}}</div>
-        <div class="col border border-dark">{{batch.extraction_protocol}}</div>
-        <div class="col border border-dark">{{batch.lab_id}}</div>
-      </div>
-    </a>
-    {% endfor %}
-    
+        
 </div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".batch-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
 
 {% endblock %}

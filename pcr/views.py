@@ -104,7 +104,6 @@ def batchSamples(request, username, pk):
   if request.method == 'POST':
     formset = SampleFormSet(request.POST, instance=batch)
     if formset.is_valid():
-      print(formset.data)
       formset.save()
       return redirect('batches')
     else:
@@ -115,7 +114,37 @@ def batchSamples(request, username, pk):
 
   return render(request, 'batch_samples.html', context)
 
- 
+
+@login_required(login_url='login')
+def editSampleAssay(request, username, pk):
+
+  context = {}
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no sample to edit.")
+    return redirect('batches')
+  
+  try:
+    sample = Sample.objects.get(user=user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no sample to edit.")
+    return redirect('batches')
+  
+  form = SampleAssayForm(instance=sample)
+  pk = sample.batch.pk
+
+  if request.method == 'POST':
+    form = SampleAssayForm(request.POST, instance=sample)
+    if form.is_valid():
+      form.save()
+      return redirect('batch_samples', request.user.username, pk)
+    else:
+      print(form.errors)
+
+  context = {'form': form, 'sample': sample}
+
+  return render(request, 'sample_assay.html', context)
 
 
 

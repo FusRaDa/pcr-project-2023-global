@@ -1,4 +1,5 @@
 from django.forms import ModelForm
+from django import forms
 from django.contrib.auth.models import User
 from .models import *
 
@@ -97,6 +98,13 @@ class SampleForm(ModelForm):
   class Meta:
     model = Sample
     exclude = ['user', 'assays', 'lab_id_num', 'batch']
+
+
+class SampleAssayForm(ModelForm):
+
+  class Meta:
+    model = Sample
+    exclude = ['user', 'sample_id', 'lab_id_num', 'batch']
 # SAMPLE #
 
 
