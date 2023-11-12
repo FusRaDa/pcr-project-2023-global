@@ -89,6 +89,11 @@ class BatchForm(ModelForm):
 
 class SampleForm(ModelForm):
 
+  def __init__(self, *args, **kwargs):
+    super(SampleForm, self).__init__(*args, **kwargs)
+    for visible in self.visible_fields():
+        visible.field.widget.attrs['class'] = 'form-control'
+
   class Meta:
     model = Sample
     exclude = ['user', 'assays', 'lab_id_num', 'batch']

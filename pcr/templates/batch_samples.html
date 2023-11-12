@@ -19,7 +19,9 @@
   </div>
 
   <div class="row justify-content-center mb-2">
-    <input class="btn btn-danger" type="Submit" value="Delete Batch">
+    <a href="{% url 'batches' %}">
+      <button type="button" class="btn btn-primary">Edit Batch</button>
+    </a>
   </div>
 
   <div class="row font-weight-bold">
@@ -49,11 +51,10 @@
   </div>
 
   <div class="row justify-content-center mb-2">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#populate-modal">
       Paste Data
     </button>
   </div>
-
 
   <div class="row font-weight-bold">
     <div class="col border border-dark">Lab ID Number</div>
@@ -95,15 +96,15 @@
     {% endfor %}
 
     <div class="row justify-content-center"> 
-      <input type="Submit" name="Update Samples">
+      <input class="btn btn-primary mt-2" type="Submit" value="Update Sample ID's">
     </div>
   </form>
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="populate-modal" tabindex="-1" role="dialog" aria-labelledby="populate-modalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Excel/Google Spreadsheets</h5>
+          <h5 class="modal-title" id="populate-modalLabel">Data from Excel/Google Spreadsheets...</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -114,14 +115,15 @@
 
             <div class="col">
               <label>Paste row here:</label>
-              <textarea placeholder="Paste here..."></textarea>
+              <textarea id="textarea-data" placeholder="Paste here..."></textarea>
             </div>
 
             <div class="col">
               <ol>
-                <li>Copy &amp; paste row</li>
+                <li>Copy &amp; paste column</li>
                 <li>Remove any blank spaces</li>
-                <li>Populate rows</li>
+                <li>Make sure list size is less than or equal to number of samples in batch</li>
+                <li>Populate sample ID's</li>
                 <li>Rows will be filled in the order shown</li>
               </ol>
             </div>
@@ -130,7 +132,7 @@
 
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-primary">Populate</button>
+          <button type="button" class="btn btn-primary" id="populate-button">Populate</button>
         </div>
       </div>
     </div>
@@ -146,6 +148,36 @@
     this.style.height = 0;
     this.style.height = (this.scrollHeight) + "px";
   });
+</script>
+
+<script>
+  const button = document.getElementById("populate-button");
+
+  function populate() {
+    inputNum = $('.form-control')
+    var array = $('#textarea-data').val().split('\n');
+
+    if (array.length <= inputNum.length) {
+
+      for (let i=0; i < array.length; i++) {
+        inputNum[i].value = array[i]
+      }
+      
+      $('#populate-modal').modal('toggle');
+    } else {
+      alert("The list size is greater than the samples in the batch. Please modify list such as removing duplicates or blank spaces.")
+    }
+  }
+
+  const deleteButton = document.getElementById("delete-button")
+
+  function delete() {
+
+  }
+
+  button.addEventListener("click", populate);
+
+  
 </script>
 
 {% endblock %}
