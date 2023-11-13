@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from django.contrib import messages
 
 from .models import *
@@ -13,7 +14,7 @@ from .functions import create_samples
 @login_required(login_url='login')
 def viewBatches(request):
 
-  batches = Batch.objects.filter(user=request.user).order_by('date_created')
+  batches = Batch.objects.filter(user=request.user).order_by('-date_created')
 
   context = {'batches': batches}
   return render(request, 'batches.html', context)
@@ -22,15 +23,15 @@ def viewBatches(request):
 @login_required(login_url='login')
 def createBatches(request):
 
-  user = request.user
-  form = BatchForm(user=user)
+  form = BatchForm(user=request.user)
 
   if request.method == "POST":
-    form = BatchForm(request.POST)
+    form = BatchForm(request.POST, user=request.user)
 
     if form.is_valid():
+
       batch = form.save(commit=False)
-      batch.user = user
+      batch.user = request.user
       batch = form.save()
 
       number_of_samples = form.cleaned_data['number_of_samples']
@@ -39,7 +40,7 @@ def createBatches(request):
       create_samples(
         number_of_samples=number_of_samples, 
         lab_id=lab_id, 
-        user=user,
+        user=request.user,
       )
 
       return redirect('batch_samples', username=request.user.username, pk=batch.id)
@@ -135,7 +136,7 @@ def editSampleAssay(request, username, pk):
   pk = sample.batch.pk
 
   if request.method == 'POST':
-    form = SampleAssayForm(request.POST, instance=sample)
+    form = SampleAssayForm(request.POST, user=request.user, instance=sample)
     if form.is_valid():
       form.save()
       return redirect('batch_samples', request.user.username, pk)

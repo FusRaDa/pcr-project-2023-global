@@ -1,5 +1,7 @@
 from django.forms import ModelForm
 from django import forms
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from .models import *
 
@@ -84,11 +86,26 @@ class AssayCodeForm(ModelForm):
 # SAMPLE #
 class BatchForm(ModelForm):
 
-  code = forms.ModelMultipleChoiceField(
+  code = forms.ModelChoiceField(
     queryset=None,
-    widget=forms.CheckboxSelectMultiple,
+    widget=forms.RadioSelect,
     required=True)
   
+  extraction_protocol = forms.ModelChoiceField(
+    queryset=None,
+    widget=forms.RadioSelect,
+    required=True)
+  
+  def clean(self):
+    cleaned_data = super().clean()
+    lab_id = cleaned_data.get('lab_id')
+
+    if Batch.objects.filter(lab_id=lab_id).exists():
+      raise ValidationError(
+        message='Batch with the same Lab ID already exists. Please change Lab ID.', 
+        code='invalid'
+        )
+
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -110,6 +127,7 @@ class SampleForm(ModelForm):
   class Meta:
     model = Sample
     fields = ['sample_id']
+    exclude = ['batch']
 
 
 class SampleAssayForm(ModelForm):

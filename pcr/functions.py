@@ -14,7 +14,6 @@ def create_samples(number_of_samples, lab_id, user):
     sample = Sample.objects.create(
       user = user,
       lab_id_num = lab_id + "-" + str(i),
-      assay_name = batch.code.name,
       batch = batch,
     )
 
@@ -25,7 +24,6 @@ def create_samples(number_of_samples, lab_id, user):
     user = user,
     lab_id_num = lab_id + "-" + str(number_of_samples + 1),
     sample_id = "NegCtrl-Water",
-    assay_name = batch.code.name,
     batch = batch,
   )
 
