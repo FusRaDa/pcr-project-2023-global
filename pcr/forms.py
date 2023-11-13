@@ -83,6 +83,18 @@ class AssayCodeForm(ModelForm):
 
 # SAMPLE #
 class BatchForm(ModelForm):
+
+  code = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=True)
+  
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['code'].queryset = AssayCode.objects.filter(user=self.user)
+    self.fields['extraction_protocol'].queryset = ExtractionProtocol.objects.filter(user=self.user)
+
   class Meta:
     model = Batch
     exclude = ['user', 'date_performed']
@@ -93,18 +105,28 @@ class SampleForm(ModelForm):
   def __init__(self, *args, **kwargs):
     super(SampleForm, self).__init__(*args, **kwargs)
     for visible in self.visible_fields():
-        visible.field.widget.attrs['class'] = 'form-control'
+      visible.field.widget.attrs['class'] = 'form-control'
 
   class Meta:
     model = Sample
-    exclude = ['user', 'assays', 'lab_id_num', 'batch']
+    fields = ['sample_id']
 
 
 class SampleAssayForm(ModelForm):
 
+  assays = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=True)
+  
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['assays'].queryset = Assay.objects.filter(user=self.user)
+
   class Meta:
     model = Sample
-    exclude = ['user', 'sample_id', 'lab_id_num', 'batch']
+    fields = ['assays']
 # SAMPLE #
 
 

@@ -23,7 +23,7 @@ def viewBatches(request):
 def createBatches(request):
 
   user = request.user
-  form = BatchForm()
+  form = BatchForm(user=user)
 
   if request.method == "POST":
     form = BatchForm(request.POST)
@@ -131,7 +131,7 @@ def editSampleAssay(request, username, pk):
     messages.error(request, "There is no sample to edit.")
     return redirect('batches')
   
-  form = SampleAssayForm(instance=sample)
+  form = SampleAssayForm(user=request.user, instance=sample)
   pk = sample.batch.pk
 
   if request.method == 'POST':
