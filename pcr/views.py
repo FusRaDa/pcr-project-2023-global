@@ -11,6 +11,8 @@ from .functions import create_samples
 
 
 # Create your views here.
+
+# **START OF SAMPLE FUNCTIONALITY** #
 @login_required(login_url='login')
 def viewBatches(request):
 
@@ -146,7 +148,17 @@ def editSampleAssay(request, username, pk):
   context = {'form': form, 'sample': sample}
 
   return render(request, 'sample_assay.html', context)
+# **END OF SAMPLE FUNCTIONALITY** #
 
+
+# **START OF ASSAY FUNCTIONALITY** #
+def protocols(request):
+  
+  context = {}
+  return render(request, 'protocols.html', context)
+
+
+# **END OF ASSAY FUNCTIONALITY** #
 
 
 

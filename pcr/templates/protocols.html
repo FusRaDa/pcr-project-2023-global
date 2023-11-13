@@ -1,0 +1,43 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Protocols - PCRPrep {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/protocols.css' %}">
+
+<div class="container">
+
+  <div class="row">
+    <div class="col justify-content-center">
+      <h2 class="text-center">View/Edit Assays Codes &amp; Extraction Protocols</h2>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+
+    <div class="col justify-content-center">
+      <div class="card">
+        <img class="card-img-top" src="{% static 'images/assay_code.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col justify-content-center">
+      <div class="card">
+        <img class="card-img-top" src="{% static 'images/extraction_protocol.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+      </div>
+    </div>
+
+  <div>
+
+</div>
+
+{% endblock %}
