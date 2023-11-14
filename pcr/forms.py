@@ -103,7 +103,7 @@ class BatchForm(ModelForm):
     cleaned_data = super().clean()
     lab_id = cleaned_data.get('lab_id')
 
-    if Batch.objects.filter(lab_id=lab_id).exists():
+    if Batch.objects.filter(user=self.user, lab_id=lab_id).exists():
       raise ValidationError(
         message='Batch with the same Lab ID already exists. Please change Lab ID.',
         )

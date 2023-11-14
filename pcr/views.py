@@ -7,7 +7,7 @@ from django.contrib import messages
 
 from .models import *
 from .forms import *
-from .functions import create_samples, limit_batch_count
+from .functions import create_samples
 # Create your views here.
 
 
@@ -150,13 +150,19 @@ def editSampleAssay(request, username, pk):
 # **END OF SAMPLE FUNCTIONALITY** #
 
 
-# **START OF ASSAY FUNCTIONALITY** #
-def protocols(request):
-  
+# **START OF EXTRACTION FUNCTIONALITY** #
+def extraction_protocols(request):
+
   context = {}
-  return render(request, 'protocols.html', context)
+  return render(request, 'extraction_protocols.html', context)
+# **START OF EXTRACTION FUNCTIONALITY** #
 
 
+# **START OF ASSAY FUNCTIONALITY** #
+def assay_codes(request):
+
+  context = {}
+  return render(request, 'assay_codes.html', context)
 # **END OF ASSAY FUNCTIONALITY** #
 
 

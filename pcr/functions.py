@@ -2,11 +2,9 @@ from django.core.exceptions import ValidationError
 from .models import *
 
 
-BATCH_LIMIT = 5
-
 def create_samples(number_of_samples, lab_id, user):
 
-  batch = Batch.objects.get(lab_id=lab_id)
+  batch = Batch.objects.get(user=user, lab_id=lab_id)
 
   assays = batch.code.assays.all()
   
@@ -32,14 +30,6 @@ def create_samples(number_of_samples, lab_id, user):
 
   control.assays.add(*assays)
 
-
-def limit_batch_count(user):
-  num = Batch.objects.filter(user=user).count() + 1
-  if num > BATCH_LIMIT:
-    print('limit reached')
-    raise ValidationError(
-      message="You have reached the number of batches you can create."
-    )
 
 
   
