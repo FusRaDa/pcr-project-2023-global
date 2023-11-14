@@ -1,6 +1,7 @@
 from django.utils.timezone import now
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
@@ -349,7 +350,7 @@ class Batch(models.Model):
   def total_tests(self):
     num = self.code.assays.count()
     return self.number_of_samples * num
-
+ 
   def __str__(self):
     return f'{self.name}-{self.lab_id}'
 

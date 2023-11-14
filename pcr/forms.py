@@ -5,7 +5,13 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from .models import *
 
-# INVENTORY #
+
+# **CONSTANTS** #
+BATCH_LIMIT = 5
+# **CONSTANTS** #
+
+
+# **INVENTORY** #
 class LocationForm(ModelForm):
   class Meta:
     model = Location
@@ -102,9 +108,15 @@ class BatchForm(ModelForm):
 
     if Batch.objects.filter(lab_id=lab_id).exists():
       raise ValidationError(
-        message='Batch with the same Lab ID already exists. Please change Lab ID.', 
-        code='invalid'
+        message='Batch with the same Lab ID already exists. Please change Lab ID.',
         )
+    
+    num = Batch.objects.filter(user=self.user).count() + 1
+    if num > BATCH_LIMIT:
+      print('limit reached')
+      raise ValidationError(
+        message="You have reached the number of batches you can create.",
+      )
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')

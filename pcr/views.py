@@ -7,10 +7,9 @@ from django.contrib import messages
 
 from .models import *
 from .forms import *
-from .functions import create_samples
-
-
+from .functions import create_samples, limit_batch_count
 # Create your views here.
+
 
 # **START OF SAMPLE FUNCTIONALITY** #
 @login_required(login_url='login')
