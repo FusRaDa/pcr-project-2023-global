@@ -6,8 +6,35 @@
 
 {% block content %}
 
-<div class="container-fluid">
-  Extraction Protocols
+<link rel="stylesheet" href="{% static 'css/extraction_protocols.css' %}">
+
+<div class="container">
+
+  <div class="row">
+    {% for ext in extraction_protocols %}
+    <div class="col mt-2">
+     
+       <div class="card">
+        <div class="card-header">
+          {{ext.name}}
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Type: {{ext.type}}</li>
+          <li class="list-group-item">Tubes - Preview</li>
+          <li class="list-group-item">Reagents - Preview</li>
+        </ul>
+        <div class="card-body">
+          <a href="#" class="card-link">Edit Protocol</a>
+          <a href={{ext.doc_url}} target="_blank" class="card-link">View Docs</a>
+        </div>
+      </div>
+
+    </div>
+
+    {% endfor %}
+  </div>
+
+
  </div>
 
 

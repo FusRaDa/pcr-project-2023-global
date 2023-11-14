@@ -153,7 +153,9 @@ def editSampleAssay(request, username, pk):
 # **START OF EXTRACTION FUNCTIONALITY** #
 def extraction_protocols(request):
 
-  context = {}
+  extraction_protocols = ExtractionProtocol.objects.filter(user=request.user)
+
+  context = {'extraction_protocols': extraction_protocols}
   return render(request, 'extraction_protocols.html', context)
 # **START OF EXTRACTION FUNCTIONALITY** #
 
@@ -161,7 +163,9 @@ def extraction_protocols(request):
 # **START OF ASSAY FUNCTIONALITY** #
 def assay_codes(request):
 
-  context = {}
+  assay_codes = AssayCode.objects.filter(user=request.user)
+
+  context = {'assay_codes': assay_codes}
   return render(request, 'assay_codes.html', context)
 # **END OF ASSAY FUNCTIONALITY** #
 
