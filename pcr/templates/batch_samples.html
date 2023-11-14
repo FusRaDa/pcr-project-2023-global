@@ -105,7 +105,7 @@
             <a href="{% url 'sample_assay' request.user.username samples.pk %}">
               <i class="fa-solid fa-vial-circle-check"></i>
             </a>
-            {% for assay in samples.assays.all%}
+            {% for assay in samples.assays.all %}
               {% if samples.assays.all|length > 1 %}
               <span>
                 {{assay}} |
