@@ -28,11 +28,11 @@
           <li class="list-group-item">Assays
 
             <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="collapse" data-target="#{{code.pk}}-collapse">
-              &#129095;
+              ⮟
             </button>
 
             <div class="collapse" id="{{code.pk}}-collapse">
-              <div class="card"> 
+              <div class="card-body"> 
                 <ul class="list-group">
                   {% for assay in code.assays.all %}
                   <li class="list-group-item">{{assay}}</li>
@@ -40,7 +40,7 @@
                 </ul>
               </div>
             </div>
-
+   
           </li>
         </ul>
         <div class="card-body">
@@ -49,10 +49,18 @@
       </div>
 
     </div>
+
     {% endfor %}
   </div>
 
-
+  <script>
+    $('.btn').click(function(){
+      $(this).text(function(i,old){
+          return old=='⮝' ?  '⮟' : '⮝';
+      });
+    });
+  </script>
+ 
 </div>
 
 {% endblock %}
