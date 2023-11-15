@@ -144,7 +144,7 @@ def editSampleAssay(request, username, pk):
     else:
       print(form.errors)
 
-  context = {'form': form, 'sample': sample}
+  context = {'form': form}
 
   return render(request, 'sample_assay.html', context)
 # **END OF SAMPLE FUNCTIONALITY** #
@@ -157,6 +157,35 @@ def extraction_protocols(request):
 
   context = {'extraction_protocols': extraction_protocols}
   return render(request, 'extraction_protocols.html', context)
+
+
+def edit_extraction_protocol(request, username, pk):
+
+  context = {}
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no extraction protocol to edit.")
+    return redirect('extraction_protocols')
+  
+  try:
+    protocol = ExtractionProtocol.objects.get(user=user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no extraction protocol to edit.")
+    return redirect('extraction_protocols')
+  
+  form = ExtractionProtocolForm(user=request.user, instance=protocol)
+
+  if request.method == 'POST':
+    form = ExtractionProtocolForm(request.POST, user=request.user, instance=protocol)
+    if form.is_valid():
+      form.save()
+      return redirect('extraction_protocols')
+    else:
+      print(form.errors)
+  
+  context = {'form': form}
+  return render(request, 'edit_extraction_protocol.html', context)
 # **START OF EXTRACTION FUNCTIONALITY** #
 
 
@@ -167,6 +196,35 @@ def assay_codes(request):
 
   context = {'assay_codes': assay_codes}
   return render(request, 'assay_codes.html', context)
+
+
+def edit_assay_code(request, username, pk):
+
+  context = {}
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no assay code to edit.")
+    return redirect('assay_codes')
+  
+  try:
+    code = AssayCode.objects.get(user=user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no assay code to edit.")
+    return redirect('assay_codes')
+  
+  form = AssayCodeForm(user=request.user, instance=code)
+
+  if request.method == 'POST':
+    form = AssayCodeForm(request.POST, user=request.user, instance=code)
+    if form.is_valid():
+      form.save()
+      return redirect('assay_codes')
+    else:
+      print(form.errors)
+
+  context = {'form': form}
+  return render(request, 'edit_assay_code.html', context)
 # **END OF ASSAY FUNCTIONALITY** #
 
 
