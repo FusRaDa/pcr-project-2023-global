@@ -101,24 +101,25 @@
           <td>{{samples.lab_id_num}}</td>
           <td>{{formset.sample_id}}</td>
 
-          <td class="col-8">
+          <td class="col-8" id="{{samples.pk}}-list">
             <a href="{% url 'sample_assay' request.user.username samples.pk %}">
               <i class="fa-solid fa-vial-circle-check"></i>
             </a>
             {% for assay in samples.assays.all %}
               {% if samples.assays.all|length > 1 %}
-              <span>
-                {{assay}} |
-              </span>
+                <span>
+                  {{assay}} |
+                </span>
               {% else %}
-              <span>
-                {{assay}}
-              </span>
+                <span>
+                  {{assay}}
+                </span>
               {% endif %}
             {% endfor %}
           </td>
 
         </tr>
+
         {% endfor %}
 
       </tbody>
@@ -128,11 +129,10 @@
   </div>
 
   <div class="row justify-content-center"> 
-    <input class="btn btn-primary mt-2" type="Submit" value="Update Sample ID's">
+    <input class="btn btn-primary" type="Submit" value="Update Sample ID's">
   </div>
 
   </form>
-
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

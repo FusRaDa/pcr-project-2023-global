@@ -62,7 +62,7 @@
           </li>
         </ul>
         <div class="card-body">
-          <a href="#" class="card-link">Edit Protocol</a>
+          <a href="{% url 'edit_extraction_protocol' request.user.username ext.pk %}" class="card-link">Edit Protocol</a>
           <a href={{ext.doc_url}} target="_blank" class="card-link">View Docs</a>
         </div>
       </div>

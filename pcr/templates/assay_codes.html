@@ -44,7 +44,7 @@
           </li>
         </ul>
         <div class="card-body">
-          <a href="#" class="card-link">Edit Code</a>
+          <a href="{% url 'edit_assay_code' request.user.username code.pk %}" class="card-link">Edit Code</a>
         </div>
       </div>
 
