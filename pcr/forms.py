@@ -49,12 +49,14 @@ class ExtractionProtocolForm(ModelForm):
 
 
 class TubeExtractionForm(ModelForm):
+
   class Meta:
     model = TubeExtraction
     exclude = ['tube', 'protocol']
 
 
 class ReageExtractionForm(ModelForm):
+
   class Meta:
     model = ReagentExtraction
     exclude = ['reagent', 'protocol']

@@ -6,42 +6,66 @@
 
 {% block content %}
 
-<form action="" method="POST">
-  Tubes
-  {{tubeformset.management_form}}
-  {% csrf_token %}
-  {% for form in tubeformset %}
+<link rel="stylesheet" href="{% static 'css/batch_samples.css' %}">
 
-  {% for hidden in tubeformset.hidden_fields %}
-    {{ hidden }}
-  {% endfor %}
+<div class="container-fluid">
 
-  {{form.id}}
-  {{form.as_p}}
-
-  {% endfor %}
-
-  Reagents
-  {{reagentformset.management_form}}
-  {% for form in reagentformset %}
-
-  {% for hidden in reagentformset.hidden_fields %}
-    {{ hidden }}
-  {% endfor %}
-
-  {{form.id}}
-  {{form.as_p}}
-
-  {% endfor %}
-
-  <div class="row justify-content-center"> 
-    <input class="btn btn-primary" type="Submit" value="Update Quantity">
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
   </div>
+  {% endfor %}
+
+  <form action="" method="POST">
+
+    {{ tubeformset.management_form }}
+    {% csrf_token %}
+    {% for tubes, tubeformset in tubes_data %}
+
+      {% for hidden in tubeformset.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
+
+      {{tubeformset.id}}
+
+      {{tubes}}
+      {{tubeformset.amount_per_sample}}
+      {{tubeformset.order}}
+
+    {% endfor %}
+
+    <div class="row justify-content-center"> 
+      <input class="btn btn-primary" type="Submit" value="Update Tubes" name="tube-form">
+    </div>
+
+  </form>
 
 
-</form>
+  <form action="" method="POST">
+    {{ reagentformset.management_form }}
+    {% csrf_token %}
+    {% for reagents, reagentformset in reagents_data %}
 
+      {% for hidden in reagentformset.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
 
+      {{reagentformset.id}}
 
+      {{reagents}}
+      {{reagentformset.amount_per_sample}}
+      {{reagentformset.order}}
+
+    {% endfor %}
+
+    <div class="row justify-content-center"> 
+      <input class="btn btn-primary" type="Submit" value="Update Reagents" name="reagent-form">
+    </div>
+
+  </form>
+
+</div>
 
 {% endblock %}

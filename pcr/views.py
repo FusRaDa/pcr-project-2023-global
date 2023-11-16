@@ -221,24 +221,33 @@ def extraction_protocol_through(request, username, pk):
     messages.error(request, "There is no extraction protocol to edit.")
     return redirect('extraction_protocols')
   
-  tubeformset = TubeExtractionFormSet(queryset=tubes, initial=tubes)
-  reagentformset = ReagentExtractionFormSet(queryset=reagents, initial=reagents)
+  tubeformset = TubeExtractionFormSet(queryset=tubes)
+  reagentformset = ReagentExtractionFormSet(queryset=reagents)
 
-  if request.method == 'POST':
+  tubes_data = zip(tubes, tubeformset)
+  reagents_data = zip(reagents, reagentformset)
+
+  if 'tube-form' in request.POST:
     tubeformset = TubeExtractionFormSet(request.POST)
-    reagentformset = ReagentExtractionFormSet(request.POST)
-    if tubeformset.is_valid() and reagentformset.is_valid():
-      print(tubeformset.data)
+    if tubeformset.is_valid():
       tubeformset.save()
-      reagentformset.save()
-      return redirect('extraction_protocols')
+      messages.success(request, "Tube quantity and order have been modified/saved!")
+      return redirect(request.path_info)
     else:
       print(tubeformset.errors)
       print(tubeformset.non_form_errors())
+
+  if 'reagent-form' in request.POST:
+    reagentformset = ReagentExtractionFormSet(request.POST)
+    if reagentformset.is_valid():
+      reagentformset.save()
+      messages.success(request, "Reagent quantity and order have been modified/saved!")
+      return redirect(request.path_info)
+    else:
       print(reagentformset.errors)
       print(reagentformset.non_form_errors())
- 
-  context = {'tubeformset': tubeformset, 'reagentformset': reagentformset, 'protocol': protocol}
+
+  context = {'tubeformset': tubeformset, 'reagentformset': reagentformset, 'protocol': protocol, 'tubes_data': tubes_data, 'reagents_data': reagents_data}
 
   return render(request, 'extraction_protocol_through.html', context)
 # **START OF EXTRACTION FUNCTIONALITY** #

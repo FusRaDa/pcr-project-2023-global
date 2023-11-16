@@ -192,7 +192,7 @@ class TubeExtraction(models.Model):
   amount_per_sample = models.IntegerField(blank=True, null=True,validators=[MinValueValidator(0)], default=0)
 
   def __str__(self):
-    return f'{self.tube}-{self.order}'
+    return f'{self.tube}'
   
 
 class ReagentExtraction(models.Model):
@@ -203,7 +203,7 @@ class ReagentExtraction(models.Model):
   amount_per_sample = models.DecimalField(decimal_places=2, blank=True, null=True, validators=[MinValueValidator(0)], max_digits=12) # in microliters
 
   def __str__(self):
-    return f'{self.reagent}-{self.order}'
+    return f'{self.reagent}'
 # **END OF EXTRACTION FUNCTIONALITY** # 
   
 
