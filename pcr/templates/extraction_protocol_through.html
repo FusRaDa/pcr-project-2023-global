@@ -18,54 +18,88 @@
   </div>
   {% endfor %}
 
-  <form action="" method="POST">
+  <div class="row justify-content-center">
+    <h3>{{protocol.name}}</h3>
+  </div>
 
-    {{ tubeformset.management_form }}
-    {% csrf_token %}
-    {% for tubes, tubeformset in tubes_data %}
+  <div class="row justify-content-center">
+    <h6>Extracting -> {{protocol.type}}</h6>
+  </div>
 
-      {% for hidden in tubeformset.hidden_fields %}
-        {{ hidden }}
-      {% endfor %}
 
-      {{tubeformset.id}}
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      
+      <thead>
+        <tr>
+          <th scope="col">Tubes</th>
+          <th scope="col">Amount Per Sample</th>
+          <th scope="col">Display Order</th>
+        </tr>
+      </thead>
+      <tbody>
 
-      {{tubes}}
-      {{tubeformset.amount_per_sample}}
-      {{tubeformset.order}}
+      <form action="" method="POST">
+        {{ tubeformset.management_form }}
+        {% csrf_token %}
+        {% for tubes, tubeformset in tubes_data %}
 
-    {% endfor %}
+        {{tubeformset.id}}
 
-    <div class="row justify-content-center"> 
-      <input class="btn btn-primary" type="Submit" value="Update Tubes" name="tube-form">
-    </div>
+        <tr>
+          <td>{{tubes}}</td>
+          <td>{{tubeformset.amount_per_sample}}</td>
+          <td>{{tubeformset.order}}</td>
+        </tr>
 
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+  <div class="row justify-content-center"> 
+    <input class="btn btn-primary" type="Submit" value="Update Tubes" name="tube-form">
+  </div>
   </form>
 
 
-  <form action="" method="POST">
-    {{ reagentformset.management_form }}
-    {% csrf_token %}
-    {% for reagents, reagentformset in reagents_data %}
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      
+      <thead>
+        <tr>
+          <th scope="col">Reagents</th>
+          <th scope="col">Volume Per Sample (&#181;l)</th>
+          <th scope="col">Display Order</th>
+        </tr>
+      </thead>
+      <tbody>
 
-      {% for hidden in reagentformset.hidden_fields %}
-        {{ hidden }}
-      {% endfor %}
+      <form action="" method="POST">
+        {{ reagentformset.management_form }}
+        {% csrf_token %}
+        {% for reagents, reagentformset in reagents_data %}
 
-      {{reagentformset.id}}
+        {{reagentformset.id}}
 
-      {{reagents}}
-      {{reagentformset.amount_per_sample}}
-      {{reagentformset.order}}
+        <tr>
+          <td>{{reagents}}</td>
+          <td>{{reagentformset.amount_per_sample}}</td>
+          <td>{{reagentformset.order}}</td>
+        </tr>
 
-    {% endfor %}
+        {% endfor %}
+      </tbody>
 
-    <div class="row justify-content-center"> 
-      <input class="btn btn-primary" type="Submit" value="Update Reagents" name="reagent-form">
-    </div>
+    </table>
+  </div>
 
+  <div class="row justify-content-center"> 
+    <input class="btn btn-primary" type="Submit" value="Update Tubes" name="reagent-form">
+  </div>
   </form>
-
+ 
 </div>
 
 {% endblock %}

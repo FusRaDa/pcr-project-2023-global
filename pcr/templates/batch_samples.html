@@ -1,7 +1,7 @@
 {% extends "base.html" %} 
 
 {% load static %}
-                                                                                                                                                                                                                              
+                                                                                                                                                                                                                  
 {% block title %} Batch Samples {% endblock %} 
 
 {% block content %}
@@ -42,7 +42,7 @@
       </thead>
 
       <tbody>
-        <tr class="batch-row" data-href="{% url 'batch_samples' request.user.username batch.pk %}">
+        <tr class="batch-row">
           <td>{{batch.date_created}}</td>
           <td>{{batch.name}}</td>
           <td>{{batch.code}}</td>

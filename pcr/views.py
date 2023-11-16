@@ -215,8 +215,8 @@ def extraction_protocol_through(request, username, pk):
   
   try:
     protocol = ExtractionProtocol.objects.get(user=user, pk=pk)
-    tubes = TubeExtraction.objects.prefetch_related('tube', 'protocol').filter(protocol=protocol).order_by('order')
-    reagents = ReagentExtraction.objects.prefetch_related('reagent', 'protocol').filter(protocol=protocol).order_by('order')
+    tubes = TubeExtraction.objects.prefetch_related('tube', 'protocol').filter(protocol=protocol).order_by('-order')
+    reagents = ReagentExtraction.objects.prefetch_related('reagent', 'protocol').filter(protocol=protocol).order_by('-order')
   except ObjectDoesNotExist:
     messages.error(request, "There is no extraction protocol to edit.")
     return redirect('extraction_protocols')
@@ -247,7 +247,7 @@ def extraction_protocol_through(request, username, pk):
       print(reagentformset.errors)
       print(reagentformset.non_form_errors())
 
-  context = {'tubeformset': tubeformset, 'reagentformset': reagentformset, 'protocol': protocol, 'tubes_data': tubes_data, 'reagents_data': reagents_data}
+  context = {'tubeformset': tubeformset, 'reagentformset': reagentformset, 'tubes_data': tubes_data, 'reagents_data': reagents_data, 'protocol': protocol}
 
   return render(request, 'extraction_protocol_through.html', context)
 # **START OF EXTRACTION FUNCTIONALITY** #
