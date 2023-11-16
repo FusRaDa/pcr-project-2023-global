@@ -37,12 +37,22 @@ class ReagentForm(ModelForm):
 # EXTRACTION #
 class ExtractionProtocolForm(ModelForm):
 
+  tubes = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=True)
+  
+  reagents = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=True)
+
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
-    self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user)
     self.fields['tubes'].queryset = Tube.objects.filter(user=self.user)
-
+    self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user)
+    
   class Meta:
     model = ExtractionProtocol
     exclude = ['user']
