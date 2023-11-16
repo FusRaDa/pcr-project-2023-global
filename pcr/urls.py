@@ -10,6 +10,7 @@ urlpatterns = [
 
   path("extraction-protocols/", views.extraction_protocols, name="extraction_protocols"),
   path("extraction-protocol/<str:username>/<int:pk>/", views.edit_extraction_protocol, name="edit_extraction_protocol"),
+  path("extraction-protocol-through/<str:username>/<int:pk>/", views.extraction_protocol_through, name="extraction_protocol_through"),
 
   path("assay-codes/", views.assay_codes, name="assay_codes"),
   path("assay-code/<str:username>/<int:pk>/", views.edit_assay_code, name="edit_assay_code"),

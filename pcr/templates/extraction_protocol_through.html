@@ -1,0 +1,47 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Assay Codes {% endblock %} 
+
+{% block content %}
+
+<form action="" method="POST">
+  Tubes
+  {{tubeformset.management_form}}
+  {% csrf_token %}
+  {% for form in tubeformset %}
+
+  {% for hidden in tubeformset.hidden_fields %}
+    {{ hidden }}
+  {% endfor %}
+
+  {{form.id}}
+  {{form.as_p}}
+
+  {% endfor %}
+
+  Reagents
+  {{reagentformset.management_form}}
+  {% for form in reagentformset %}
+
+  {% for hidden in reagentformset.hidden_fields %}
+    {{ hidden }}
+  {% endfor %}
+
+  {{form.id}}
+  {{form.as_p}}
+
+  {% endfor %}
+
+  <div class="row justify-content-center"> 
+    <input class="btn btn-primary" type="Submit" value="Update Quantity">
+  </div>
+
+
+</form>
+
+
+
+
+{% endblock %}

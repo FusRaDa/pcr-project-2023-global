@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.forms import inlineformset_factory, formset_factory
+from django.forms import inlineformset_factory, modelformset_factory
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.contrib import messages
@@ -180,12 +180,67 @@ def edit_extraction_protocol(request, username, pk):
     form = ExtractionProtocolForm(request.POST, user=request.user, instance=protocol)
     if form.is_valid():
       form.save()
-      return redirect('extraction_protocols')
+      return redirect('extraction_protocol_through', request.user.username, protocol.pk)
     else:
       print(form.errors)
   
   context = {'form': form}
   return render(request, 'edit_extraction_protocol.html', context)
+
+
+def extraction_protocol_through(request, username, pk):
+
+  context = {}
+
+  TubeExtractionFormSet = modelformset_factory(
+    TubeExtraction,
+    form =TubeExtractionForm,
+    extra=0,
+    )
+  
+  ReagentExtractionFormSet = modelformset_factory(
+    ReagentExtraction,
+    form = ReageExtractionForm,
+    extra=0,
+    )
+
+  tubeformset = None
+  reagentformset = None
+
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no extraction protocol to edit.")
+    return redirect('extraction_protocols')
+  
+  try:
+    protocol = ExtractionProtocol.objects.get(user=user, pk=pk)
+    tubes = TubeExtraction.objects.prefetch_related('tube', 'protocol').filter(protocol=protocol).order_by('order')
+    reagents = ReagentExtraction.objects.prefetch_related('reagent', 'protocol').filter(protocol=protocol).order_by('order')
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no extraction protocol to edit.")
+    return redirect('extraction_protocols')
+  
+  tubeformset = TubeExtractionFormSet(queryset=tubes, initial=tubes)
+  reagentformset = ReagentExtractionFormSet(queryset=reagents, initial=reagents)
+
+  if request.method == 'POST':
+    tubeformset = TubeExtractionFormSet(request.POST)
+    reagentformset = ReagentExtractionFormSet(request.POST)
+    if tubeformset.is_valid() and reagentformset.is_valid():
+      print(tubeformset.data)
+      tubeformset.save()
+      reagentformset.save()
+      return redirect('extraction_protocols')
+    else:
+      print(tubeformset.errors)
+      print(tubeformset.non_form_errors())
+      print(reagentformset.errors)
+      print(reagentformset.non_form_errors())
+ 
+  context = {'tubeformset': tubeformset, 'reagentformset': reagentformset, 'protocol': protocol}
+
+  return render(request, 'extraction_protocol_through.html', context)
 # **START OF EXTRACTION FUNCTIONALITY** #
 
 
