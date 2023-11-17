@@ -11,19 +11,13 @@
 <div class="container-fluid">
 
   <div class="row justify-content-center">
-    <h2>Batch</h2>
+    <h3>Batch Samples</h3>
   </div>
 
   <div class="row justify-content-center">
     <h6 class="text-center">
       **Once created, batches cannot be changed and can only be deleted with its samples.**
     </h6>
-  </div>
-
-  <div class="row justify-content-center mb-2">
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal">
-      Delete Batch
-    </button>
   </div>
 
   <div class="table-responsive">
@@ -134,6 +128,12 @@
 
   </form>
 
+  <div class="row justify-content-center mt-2">
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal">
+      Delete Batch
+    </button>
+  </div>
+
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -144,22 +144,27 @@
           </button>
         </div>
         <div class="modal-body">
-
+          
           <div class="row justify-content-center">
             <h5 class="text-center">Deleting this batch will also delete all its samples. Are you sure?</h5>
+          </div>
+
+          <div class="row justify-content-center">
+            <label>Enter Lab ID: {{batch.lab_id}}</label>
+          </div>
+
+          <div class="row justify-content-center">
+            <input type="text" id="confirm-del">
           </div>
 
         </div>
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a href="{% url 'delete_batch' request.user.username batch.pk %}">
-            <button type="button" class="btn btn-danger" id="delete-button">Confirm</button>
-          </a>
+          <button type="button" class="btn btn-danger" id="delete-button">Confirm</button>
         </div>
       </div>
     </div>
   </div>
-
 
   <div class="modal fade" id="populate-modal" tabindex="-1" role="dialog" aria-labelledby="populate-modalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -213,6 +218,8 @@
 
 <script>
   const button = document.getElementById("populate-button");
+  const delButton = document.getElementById("delete-button");
+  const confirmInput = document.getElementById("confirm-del")
 
   function populate() {
     inputNum = $('.form-control')
@@ -230,7 +237,17 @@
     }
   }
 
+  function del() {
+    batchId = '{{batch.lab_id}}'
+    if (confirmInput.value === batchId) {
+      window.location.href = "{% url 'delete_batch' request.user.username batch.pk %}"
+    } else {
+      alert("Invalid Lab ID entered, please try again.")
+    }
+  }
+
   button.addEventListener("click", populate);
+  delButton.addEventListener("click", del);
 
 </script>
 

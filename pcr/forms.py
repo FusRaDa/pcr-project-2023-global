@@ -108,7 +108,7 @@ class AssayCodeForm(ModelForm):
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
-    self.fields['assays'].queryset = Assay.objects.filter(user=self.user)
+    self.fields['assays'].queryset = Assay.objects.filter(user=self.user).order_by('type')
 
   class Meta:
     model = AssayCode

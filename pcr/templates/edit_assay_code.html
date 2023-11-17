@@ -7,8 +7,17 @@
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'css/edit_assay_code.css' %}">
+<link rel="stylesheet" href="{% static 'css/global.css' %}">
 
 <div class="container-fluid">
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
 
   <div class="row justify-content-center">
     <h3 class="text-center">Edit Existing Assay Code</h3>
@@ -40,7 +49,7 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
             Assays
-            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#tubes-collapse" aria-expanded="false" aria-controls="collapseExample">
+            <button class="btn btn-primary btn-sm float-right btn-arrow" type="button" data-toggle="collapse" data-target="#tubes-collapse" aria-expanded="false" aria-controls="collapseExample">
               ⮟
             </button>
           </li>
@@ -62,12 +71,67 @@
 
   </form>
 
+  <div class="justify-content-center">
+    <div class="col d-flex justify-content-center">
+      <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#delete-modal">
+        Delete Code
+      </button>
+    </div>
+  </div>
+
+  <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting Assay Code...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="row justify-content-center">
+            <h5 class="text-center">Are you sure you want to delete this code? If this code is being used by any batches, you will not be able to delete.</h5>
+          </div>
+
+          <div class="row justify-content-center">
+            <label>Enter Code Name: {{code.name}}</label>
+          </div>
+
+          <div class="row justify-content-center">
+            <input type="text" id="confirm-del">
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="delete-button">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    $('.btn').click(function(){
+    $('.btn-arrow').click(function(){
       $(this).text(function(i,old){
           return old=='⮝' ?  '⮟' : '⮝';
       });
     });
+
+  const delButton = document.getElementById("delete-button");
+  const confirmInput = document.getElementById("confirm-del")
+
+  function del() {
+    value = '{{code.name}}'
+    if (confirmInput.value === value) {
+      window.location.href = "{% url 'delete_assay_code' request.user.username code.pk %}"
+    } else {
+      alert("Invalid code name entered, please try again.")
+    }
+  }
+
+  delButton.addEventListener("click", del);
+
   </script>
 
 </div>

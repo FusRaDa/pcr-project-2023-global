@@ -16,6 +16,16 @@
     </div>
   </div>
 
+  <div class="justify-content-center">
+    <div class="col d-flex justify-content-center">
+      <a href="{% url 'create_extraction_protocol' %}">
+        <button type="button" class="btn btn-primary">
+          Create New Protocol
+        </button>
+      </a>
+    </div>
+  </div>
+
   <div class="row">
     {% for ext in extraction_protocols %}
     <div class="col mt-2">
@@ -28,7 +38,7 @@
           <li class="list-group-item">Type: {{ext.type}}</li>
           <li class="list-group-item">Tubes
 
-            <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="collapse" data-target="#{{ext.pk}}-tube-collapse">
+            <button type="button" class="btn btn-primary btn-sm float-right btn-arrow" data-toggle="collapse" data-target="#{{ext.pk}}-tube-collapse">
               ⮟
             </button>
 
@@ -45,7 +55,7 @@
           </li>
           <li class="list-group-item">Reagents
 
-            <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="collapse" data-target="#{{ext.pk}}-reagent-collapse">
+            <button type="button" class="btn btn-primary btn-sm float-right btn-arrow" data-toggle="collapse" data-target="#{{ext.pk}}-reagent-collapse">
               ⮟
             </button>
 
@@ -72,7 +82,7 @@
   </div>
 
   <script>
-    $('.btn').click(function(){
+    $('.btn-arrow').click(function(){
       $(this).text(function(i,old){
           return old=='⮝' ?  '⮟' : '⮝';
       });

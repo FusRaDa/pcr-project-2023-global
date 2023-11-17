@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory, modelformset_factory
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import IntegrityError
 from django.contrib import messages
+from django.db.models import RestrictedError
 
 from .models import *
 from .forms import *
@@ -113,7 +113,6 @@ def batchSamples(request, username, pk):
       print(formset.non_form_errors())
    
   context = {'batch': batch, 'data': data, 'formset': formset}
-
   return render(request, 'batch_samples.html', context)
 
 
@@ -144,7 +143,6 @@ def editSampleAssay(request, username, pk):
       print(form.errors)
 
   context = {'form': form}
-
   return render(request, 'sample_assay.html', context)
 # **END OF SAMPLE FUNCTIONALITY** #
 
@@ -203,7 +201,7 @@ def edit_extraction_protocol(request, username, pk):
     else:
       print(form.errors)
   
-  context = {'form': form}
+  context = {'form': form, 'protocol': protocol}
   return render(request, 'edit_extraction_protocol.html', context)
 
 
@@ -267,7 +265,6 @@ def extraction_protocol_through(request, username, pk):
       print(reagentformset.non_form_errors())
 
   context = {'tubeformset': tubeformset, 'reagentformset': reagentformset, 'tubes_data': tubes_data, 'reagents_data': reagents_data, 'protocol': protocol}
-
   return render(request, 'extraction_protocol_through.html', context)
 
 
@@ -281,7 +278,11 @@ def delete_extraction_protocol(request, username, pk):
   
   try:
     protocol = ExtractionProtocol.objects.get(user=user, pk=pk)
-    protocol.delete()
+    try:
+      protocol.delete()
+    except RestrictedError:
+      messages.error(request, "You cannot delete this protocol as it is being used by your batches!")
+      return redirect('edit_extraction_protocol', username, pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no extraction protocol to delete.")
     return redirect('extraction_protocols')
@@ -316,7 +317,7 @@ def create_assay_code(request):
       messages.error(request, error)
 
   context = {'form': form}
-  return render(request, 'create_extraction_protocol.html', context)
+  return render(request, 'create_assay_code.html', context)
 
 
 @login_required(login_url='login')
@@ -349,7 +350,7 @@ def edit_assay_code(request, username, pk):
     else:
       print(form.errors)
 
-  context = {'form': form, 'assay_types': assay_types}
+  context = {'form': form, 'assay_types': assay_types, 'code': code}
   return render(request, 'edit_assay_code.html', context)
 
 
@@ -363,7 +364,11 @@ def delete_assay_code(request, username, pk):
   
   try:
     code = AssayCode.objects.get(user=user, pk=pk)
-    code.delete()
+    try:
+      code.delete()
+    except RestrictedError:
+      messages.error(request, "You cannot delete this code as it is being used by your batches!")
+      return redirect('edit_assay_code', username, pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no assay code to delete.")
     return redirect('assay_codes')

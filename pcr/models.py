@@ -169,7 +169,7 @@ class ExtractionProtocol(models.Model):
   tubes = models.ManyToManyField(Tube, through='TubeExtraction')
   reagents = models.ManyToManyField(Reagent, through='ReagentExtraction')
 
-  doc_url = models.URLField() # store url to document there from company
+  doc_url = models.URLField(blank=True) # store url to document there from company
 
   class Meta:
     constraints = [
@@ -272,7 +272,7 @@ class Assay(models.Model):
     ]
 
   def __str__(self):
-    return f'{self.name} - {self.type}'
+    return self.name
 
 
 class ReagentAssay(models.Model):
