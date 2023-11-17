@@ -374,6 +374,44 @@ def delete_assay_code(request, username, pk):
     return redirect('assay_codes')
 
   return redirect('assay_codes')
+
+
+@login_required(login_url='login')
+def assays(request):
+
+  assays = Assay.objects.filter(user=request.user).order_by('name')
+
+  context = {'assays': assays}
+  return render(request, 'assays.html', context)
+
+
+@login_required(login_url='login')
+def edit_assay(request, username, pk):
+  context = {}
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no assay to edit.")
+    return redirect('assay_codes')
+  
+  try:
+    assay = Assay.objects.get(user=user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no assay to edit.")
+    return redirect('assay_codes')
+  
+  form = AssayForm(user=request.user, instance=assay)
+
+  if request.method == 'POST':
+    form = AssayForm(request.POST, user=request.user, instance=assay)
+    if form.is_valid():
+      form.save()
+      return redirect('assays')
+    else:
+      print(form.errors)
+  
+  context = {'assay': assay}
+  return render(request, 'assays.html', context)
 # **END OF ASSAY FUNCTIONALITY** #
 
 

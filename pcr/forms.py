@@ -87,6 +87,29 @@ class ControlForm(ModelForm):
 
 
 class AssayForm(ModelForm):
+
+  flourescence = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=True)
+  
+  controls = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=True)
+  
+  reagents = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=True)
+
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['flourescence'].queryset = Flourescence.objects.filter(user=self.user)
+    self.fields['controls'].queryset = Flourescence.objects.filter(user=self.user)
+    self.fields['reagents'].queryset = Flourescence.objects.filter(user=self.user)
+
   class Meta:
     model = Assay
     exclude = ['user']
