@@ -194,13 +194,13 @@ def extraction_protocol_through(request, username, pk):
 
   TubeExtractionFormSet = modelformset_factory(
     TubeExtraction,
-    form =TubeExtractionForm,
+    form=TubeExtractionForm,
     extra=0,
     )
   
   ReagentExtractionFormSet = modelformset_factory(
     ReagentExtraction,
-    form = ReageExtractionForm,
+    form=ReagentExtractionForm,
     extra=0,
     )
 
@@ -273,6 +273,11 @@ def edit_assay_code(request, username, pk):
   
   try:
     code = AssayCode.objects.get(user=user, pk=pk)
+    assays = code.assays.all()
+    assay_types = []
+    for a in assays:
+      assay_types.append(a.type)
+
   except ObjectDoesNotExist:
     messages.error(request, "There is no assay code to edit.")
     return redirect('assay_codes')
@@ -287,7 +292,7 @@ def edit_assay_code(request, username, pk):
     else:
       print(form.errors)
 
-  context = {'form': form}
+  context = {'form': form, 'assay_types': assay_types}
   return render(request, 'edit_assay_code.html', context)
 # **END OF ASSAY FUNCTIONALITY** #
 

@@ -10,16 +10,65 @@
 
 <div class="container-fluid">
 
+  <div class="row justify-content-center">
+    <h3 class="text-center">Edit Existing Assay Code</h3>
+  </div>
+
+  <div class="row justify-content-center">
+    {% if 'DNA' in assay_types and 'RNA' in assay_types %}
+      <h5 class="text-center">Assays for DNA &amp; RNA</h5>
+    {% elif 'DNA' in assay_types %}
+      <h5 class="text-center">Assays for DNA</h5>
+    {% else %}
+    <h5 class="text-center">Assays for RNA</h5>
+    {% endif %}
+  </div>
+
   <form method="POST" action="">
     {% csrf_token %}
-    {{form}}
+
+    <div class="row justify-content-center">
+      Assay Code Name
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.name}}
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Assays
+            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#tubes-collapse" aria-expanded="false" aria-controls="collapseExample">
+              ⮟
+            </button>
+          </li>
+  
+          <div class="collapse" id="tubes-collapse">
+            {% for assay in form.assays %}
+              <li class="list-group-item">
+                {{assay}}
+              </li>
+            {% endfor %}
+          </div>
+        </ul>
+      </div>
+    </div>
 
     <div class="row justify-content-center"> 
-      <input class="btn btn-primary mt-2" type="Submit" value="Update Assays">
+      <input class="btn btn-primary mt-2" type="Submit" value="Update Assay Code">
     </div>
 
   </form>
 
+  <script>
+    $('.btn').click(function(){
+      $(this).text(function(i,old){
+          return old=='⮝' ?  '⮟' : '⮝';
+      });
+    });
+  </script>
 
 </div>
 

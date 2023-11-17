@@ -65,7 +65,7 @@ class TubeExtractionForm(ModelForm):
     exclude = ['tube', 'protocol']
 
 
-class ReageExtractionForm(ModelForm):
+class ReagentExtractionForm(ModelForm):
 
   class Meta:
     model = ReagentExtraction
@@ -100,6 +100,11 @@ class ReagentAssayForm(ModelForm):
 
 class AssayCodeForm(ModelForm):
 
+  assays = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=True)
+
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -127,6 +132,8 @@ class BatchForm(ModelForm):
   def clean(self):
     cleaned_data = super().clean()
     lab_id = cleaned_data.get('lab_id')
+    extraction_protocol = cleaned_data.get('extraction_protocol')
+    code = cleaned_data.get('code')
 
     if Batch.objects.filter(user=self.user, lab_id=lab_id).exists():
       raise ValidationError(
@@ -135,10 +142,21 @@ class BatchForm(ModelForm):
     
     num = Batch.objects.filter(user=self.user).count() + 1
     if num > BATCH_LIMIT:
-      print('limit reached')
       raise ValidationError(
         message="You have reached the number of batches you can create.",
       )
+    
+    protocol_type = ExtractionProtocol.objects.get(name=extraction_protocol).type
+    assays = AssayCode.objects.get(name=code).assays.all()
+
+    if protocol_type != ExtractionProtocol.Types.TOTAL_NUCLEIC:
+      incompatible = []
+      for assay in assays:
+        if assay.type != protocol_type:
+          incompatible.append(assay)
+          raise ValidationError(
+            message=f'Extraction Protocol type: {protocol_type} is not compatible for assays: {incompatible} in code: {code}',
+          )
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')

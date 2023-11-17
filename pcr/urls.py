@@ -13,5 +13,5 @@ urlpatterns = [
   path("extraction-protocol-through/<str:username>/<int:pk>/", views.extraction_protocol_through, name="extraction_protocol_through"),
 
   path("assay-codes/", views.assay_codes, name="assay_codes"),
-  path("assay-code/<str:username>/<int:pk>/", views.edit_assay_code, name="edit_assay_code"),
+  path("assay-codes/<str:username>/<int:pk>/", views.edit_assay_code, name="edit_assay_code"),
 ]

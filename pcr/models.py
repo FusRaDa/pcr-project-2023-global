@@ -272,7 +272,7 @@ class Assay(models.Model):
     ]
 
   def __str__(self):
-    return self.name
+    return f'{self.name} - {self.type}'
 
 
 class ReagentAssay(models.Model):
