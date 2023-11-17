@@ -205,7 +205,7 @@ class ReagentExtraction(models.Model):
   def __str__(self):
     return f'{self.reagent}'
 # **END OF EXTRACTION FUNCTIONALITY** # 
-  
+
 
 # **START OF ASSAY FUNCTIONALITY** #
 class Flourescence(models.Model):
@@ -237,7 +237,7 @@ class Control(models.Model):
 
   def __str__(self):
     return self.name
-  
+
 
 class Assay(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)

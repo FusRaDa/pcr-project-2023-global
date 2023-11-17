@@ -1,0 +1,101 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Create Extraction Protocol {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/edit_extraction_protocol.css' %}">
+
+<div class="container-fluid">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">Create New Extraction Protocol</h3>
+  </div>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="row justify-content-center">
+      Protocol Name
+    </div>
+
+    <div class="row justify-content-center">
+      {{form.name}}
+    </div>
+
+    <div class="row justify-content-center">
+      Extraction Type
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        {{form.type}}
+    </div>
+
+    <div class="row justify-content-center">
+      Document URL
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        {{form.doc_url}}
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Tubes
+            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#tubes-collapse" aria-expanded="false" aria-controls="collapseExample">
+              ⮟
+            </button>
+          </li>
+
+          <div class="collapse" id="tubes-collapse">
+            {% for box in form.tubes%}
+            <li class="list-group-item">
+              {{box}}
+            </li>
+            {% endfor %}
+          </div>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Reagents
+            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#reagents-collapse" aria-expanded="false" aria-controls="collapseExample">
+              ⮟
+            </button>
+          </li>
+
+          <div class="collapse" id="reagents-collapse">
+            {% for box in form.reagents%}
+            <li class="list-group-item">
+              {{box}}
+            </li>
+            {% endfor %}
+          </div>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row justify-content-center"> 
+      <input class="btn btn-primary mt-2" type="Submit" value="Update &amp; Edit Quantity">
+    </div>
+
+  </form>
+
+  <script>
+    $('.btn').click(function(){
+      $(this).text(function(i,old){
+          return old=='⮝' ?  '⮟' : '⮝';
+      });
+    });
+  </script>
+
+</div>
+{% endblock %}

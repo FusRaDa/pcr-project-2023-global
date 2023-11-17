@@ -1,0 +1,65 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Create Assay Code {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/edit_assay_code.css' %}">
+
+<div class="container-fluid">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">Create New Assay Code</h3>
+  </div>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="row justify-content-center">
+      Assay Code Name
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.name}}
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Assays
+            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#tubes-collapse" aria-expanded="false" aria-controls="collapseExample">
+              ⮟
+            </button>
+          </li>
+  
+          <div class="collapse" id="tubes-collapse">
+            {% for assay in form.assays %}
+              <li class="list-group-item">
+                {{assay}}
+              </li>
+            {% endfor %}
+          </div>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row justify-content-center"> 
+      <input class="btn btn-primary mt-2" type="Submit" value="Update Assay Code">
+    </div>
+
+  </form>
+
+  <script>
+    $('.btn').click(function(){
+      $(this).text(function(i,old){
+          return old=='⮝' ?  '⮟' : '⮝';
+      });
+    });
+  </script>
+
+</div>
+
+{% endblock %}

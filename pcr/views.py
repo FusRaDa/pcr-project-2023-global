@@ -44,7 +44,7 @@ def createBatches(request):
         user=request.user,
       )
 
-      return redirect('batch_samples', username=request.user.username, pk=batch.id)
+      return redirect('batch_samples', username=request.user.username, pk=batch.pk)
     
   else:
     for error in list(form.errors.values()):
@@ -134,13 +134,12 @@ def editSampleAssay(request, username, pk):
     return redirect('batches')
   
   form = SampleAssayForm(user=request.user, instance=sample)
-  pk = sample.batch.pk
-
+  
   if request.method == 'POST':
     form = SampleAssayForm(request.POST, user=request.user, instance=sample)
     if form.is_valid():
       form.save()
-      return redirect('batch_samples', request.user.username, pk)
+      return redirect('batch_samples', request.user.username, sample.batch.pk)
     else:
       print(form.errors)
 
@@ -151,16 +150,36 @@ def editSampleAssay(request, username, pk):
 
 
 # **START OF EXTRACTION FUNCTIONALITY** #
+@login_required(login_url='login')
 def extraction_protocols(request):
-
   extraction_protocols = ExtractionProtocol.objects.filter(user=request.user)
 
   context = {'extraction_protocols': extraction_protocols}
   return render(request, 'extraction_protocols.html', context)
 
 
-def edit_extraction_protocol(request, username, pk):
+@login_required(login_url='login')
+def create_extraction_protocol(request):
+  context = {}
+  form = ExtractionProtocolForm(user=request.user)
 
+  if request.method == "POST":
+    form = ExtractionProtocolForm(request.POST, user=request.user)
+    if form.is_valid():
+      protocol = form.save(commit=False)
+      protocol.user = request.user
+      protocol = form.save()
+      return redirect('extraction_protocol_through', username=request.user.username, pk=protocol.pk)
+  else:
+    for error in list(form.errors.values()):
+      messages.error(request, error)
+
+  context = {'form': form}
+  return render(request, 'create_extraction_protocol.html', context)
+
+
+@login_required(login_url='login')
+def edit_extraction_protocol(request, username, pk):
   context = {}
   user = User.objects.get(username=username)
 
@@ -188,8 +207,8 @@ def edit_extraction_protocol(request, username, pk):
   return render(request, 'edit_extraction_protocol.html', context)
 
 
+@login_required(login_url='login')
 def extraction_protocol_through(request, username, pk):
-
   context = {}
 
   TubeExtractionFormSet = modelformset_factory(
@@ -250,20 +269,58 @@ def extraction_protocol_through(request, username, pk):
   context = {'tubeformset': tubeformset, 'reagentformset': reagentformset, 'tubes_data': tubes_data, 'reagents_data': reagents_data, 'protocol': protocol}
 
   return render(request, 'extraction_protocol_through.html', context)
+
+
+@login_required(login_url='login')
+def delete_extraction_protocol(request, username, pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no extraction protocol to delete.")
+    return redirect('extraction_protocols')
+  
+  try:
+    protocol = ExtractionProtocol.objects.get(user=user, pk=pk)
+    protocol.delete()
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no extraction protocol to delete.")
+    return redirect('extraction_protocols')
+
+  return redirect('extraction_protocols')
 # **START OF EXTRACTION FUNCTIONALITY** #
 
 
 # **START OF ASSAY FUNCTIONALITY** #
+@login_required(login_url='login')
 def assay_codes(request):
-
   assay_codes = AssayCode.objects.filter(user=request.user)
 
   context = {'assay_codes': assay_codes}
   return render(request, 'assay_codes.html', context)
 
 
-def edit_assay_code(request, username, pk):
+@login_required(login_url='login')
+def create_assay_code(request):
+  context = {}
+  form = AssayCodeForm(user=request.user)
 
+  if request.method == "POST":
+    form = AssayCodeForm(request.POST, user=request.user)
+    if form.is_valid():
+      assay_code = form.save(commit=False)
+      assay_code.user = request.user
+      assay_code = form.save()
+      return redirect('assay_codes')
+  else:
+    for error in list(form.errors.values()):
+      messages.error(request, error)
+
+  context = {'form': form}
+  return render(request, 'create_extraction_protocol.html', context)
+
+
+@login_required(login_url='login')
+def edit_assay_code(request, username, pk):
   context = {}
   user = User.objects.get(username=username)
 
@@ -294,6 +351,24 @@ def edit_assay_code(request, username, pk):
 
   context = {'form': form, 'assay_types': assay_types}
   return render(request, 'edit_assay_code.html', context)
+
+
+@login_required(login_url='login')
+def delete_assay_code(request, username, pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no assay code to delete.")
+    return redirect('assay_codes')
+  
+  try:
+    code = AssayCode.objects.get(user=user, pk=pk)
+    code.delete()
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no assay code to delete.")
+    return redirect('assay_codes')
+
+  return redirect('assay_codes')
 # **END OF ASSAY FUNCTIONALITY** #
 
 
