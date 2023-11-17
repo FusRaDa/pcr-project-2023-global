@@ -14,7 +14,6 @@ from .functions import create_samples
 # **START OF SAMPLE FUNCTIONALITY** #
 @login_required(login_url='login')
 def viewBatches(request):
-
   batches = Batch.objects.filter(user=request.user).order_by('-date_created')
 
   context = {'batches': batches}
@@ -23,7 +22,6 @@ def viewBatches(request):
 
 @login_required(login_url='login')
 def createBatches(request):
-
   form = BatchForm(user=request.user)
 
   if request.method == "POST":
@@ -47,8 +45,7 @@ def createBatches(request):
       return redirect('batch_samples', username=request.user.username, pk=batch.pk)
     
   else:
-    for error in list(form.errors.values()):
-      messages.error(request, error)
+    print(form.errors)
   
   context = {'form': form}
   return render(request, 'create_batch.html', context)
@@ -56,7 +53,6 @@ def createBatches(request):
 
 @login_required(login_url='login')
 def deleteBatch(request, username, pk):
-
   user = User.objects.get(username=username)
 
   if request.user != user:
@@ -75,7 +71,6 @@ def deleteBatch(request, username, pk):
 
 @login_required(login_url='login')
 def batchSamples(request, username, pk):
-
   context = {}
   SampleFormSet = inlineformset_factory(
     Batch, 
@@ -118,7 +113,6 @@ def batchSamples(request, username, pk):
 
 @login_required(login_url='login')
 def editSampleAssay(request, username, pk):
-
   context = {}
   user = User.objects.get(username=username)
 
@@ -313,8 +307,7 @@ def create_assay_code(request):
       assay_code = form.save()
       return redirect('assay_codes')
   else:
-    for error in list(form.errors.values()):
-      messages.error(request, error)
+    print(form.errors)
 
   context = {'form': form}
   return render(request, 'create_assay_code.html', context)
@@ -386,6 +379,25 @@ def assays(request):
 
 
 @login_required(login_url='login')
+def create_assay(request):
+  context = {}
+  form = AssayForm(user=request.user)
+
+  if request.method == "POST":
+    form = AssayForm(request.POST, user=request.user)
+    if form.is_valid():
+      assay = form.save(commit=False)
+      assay.user = request.user
+      assay = form.save()
+      return redirect('assays')
+  else:
+    print(form.errors)
+
+  context = {'form': form}
+  return render(request, 'create_assay_code.html', context)
+
+
+@login_required(login_url='login')
 def edit_assay(request, username, pk):
   context = {}
   user = User.objects.get(username=username)
@@ -410,8 +422,26 @@ def edit_assay(request, username, pk):
     else:
       print(form.errors)
   
-  context = {'assay': assay}
-  return render(request, 'assays.html', context)
+  context = {'assay': assay, 'form': form}
+  return render(request, 'edit_assay.html', context)
+
+
+@login_required(login_url='login')
+def delete_assay(request, username, pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no assay to delete.")
+    return redirect('assays')
+  
+  try:
+    assay = Assay.objects.get(user=user, pk=pk)
+    assay.delete()
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no assay to delete.")
+    return redirect('assays')
+
+  return redirect('assays')
 # **END OF ASSAY FUNCTIONALITY** #
 
 
