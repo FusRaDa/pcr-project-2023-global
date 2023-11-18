@@ -2,9 +2,113 @@
 
 {% load static %}
                                                                                                                                                                                                                               
-{% block title %} Extraction Protocols {% endblock %} 
+{% block title %} Assays {% endblock %} 
 
 {% block content %}
+
+<link rel="stylesheet" href="{% static 'css/extraction_protocols.css' %}">
+
+<div class="container">
+
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Assays</h3>
+    </div>
+  </div>
+
+  <div class="justify-content-center">
+    <div class="col d-flex justify-content-center">
+      <a href="#">
+        <button type="button" class="btn btn-primary">
+          Create New Assay
+        </button>
+      </a>
+    </div>
+  </div>
+
+  <div class="row">
+    {% for assay in assays %}
+    <div class="col mt-2">
+     
+       <div class="card">
+        <div class="card-header">
+          {{assay.name}}
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Type: {{assay.type}}</li>
+          <li class="list-group-item">Method: {{assay.method}}</li>
+          <li class="list-group-item">Reaction Volume (&#181;L): {{assay.reaction_volume}}</li>
+          <li class="list-group-item">Reaction Volume (&#181;L): {{assay.sample_volume}}</li>
+          <li class="list-group-item">Flourescence
+
+            <button type="button" class="btn btn-primary btn-sm float-right btn-arrow" data-toggle="collapse" data-target="#{{assay.pk}}-flor-collapse">
+              ⮟
+            </button>
+
+            <div class="collapse" id="{{assay.pk}}-flor-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for a in assay.fluorescence.all %}
+                  <li class="list-group-item">{{a}}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+
+          </li>
+          <li class="list-group-item">Controls
+
+            <button type="button" class="btn btn-primary btn-sm float-right btn-arrow" data-toggle="collapse" data-target="#{{assay.pk}}-control-collapse">
+              ⮟
+            </button>
+
+            <div class="collapse" id="{{assay.pk}}-control-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for a in assay.controls.all %}
+                  <li class="list-group-item">{{a}}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+
+          </li>
+          <li class="list-group-item">Reagents
+
+            <button type="button" class="btn btn-primary btn-sm float-right btn-arrow" data-toggle="collapse" data-target="#{{assay.pk}}-reagent-collapse">
+              ⮟
+            </button>
+
+            <div class="collapse" id="{{assay.pk}}-reagent-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for a in assay.reagents.all %}
+                  <li class="list-group-item">{{a}}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+
+          </li>
+        </ul>
+        <div class="card-body">
+          {% comment %} <a href="{% url 'edit_assay' request.user.username assay.pk %}" class="card-link">Edit Assay</a> {% endcomment %}
+        </div>
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    $('.btn-arrow').click(function(){
+      $(this).text(function(i,old){
+          return old=='⮝' ?  '⮟' : '⮝';
+      });
+    });
+  </script>
+
+</div>
 
 
 {% endblock %}

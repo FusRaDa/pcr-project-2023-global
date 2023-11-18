@@ -144,7 +144,7 @@ def editSampleAssay(request, username, pk):
 # **START OF EXTRACTION FUNCTIONALITY** #
 @login_required(login_url='login')
 def extraction_protocols(request):
-  extraction_protocols = ExtractionProtocol.objects.filter(user=request.user)
+  extraction_protocols = ExtractionProtocol.objects.filter(user=request.user).order_by('name')
 
   context = {'extraction_protocols': extraction_protocols}
   return render(request, 'extraction_protocols.html', context)
@@ -163,9 +163,8 @@ def create_extraction_protocol(request):
       protocol = form.save()
       return redirect('extraction_protocol_through', username=request.user.username, pk=protocol.pk)
   else:
-    for error in list(form.errors.values()):
-      messages.error(request, error)
-
+    print(form.errors)
+    
   context = {'form': form}
   return render(request, 'create_extraction_protocol.html', context)
 
@@ -288,7 +287,7 @@ def delete_extraction_protocol(request, username, pk):
 # **START OF ASSAY FUNCTIONALITY** #
 @login_required(login_url='login')
 def assay_codes(request):
-  assay_codes = AssayCode.objects.filter(user=request.user)
+  assay_codes = AssayCode.objects.filter(user=request.user).order_by('name')
 
   context = {'assay_codes': assay_codes}
   return render(request, 'assay_codes.html', context)
@@ -371,7 +370,6 @@ def delete_assay_code(request, username, pk):
 
 @login_required(login_url='login')
 def assays(request):
-
   assays = Assay.objects.filter(user=request.user).order_by('name')
 
   context = {'assays': assays}
@@ -394,7 +392,7 @@ def create_assay(request):
     print(form.errors)
 
   context = {'form': form}
-  return render(request, 'create_assay_code.html', context)
+  return render(request, 'create_assay.html', context)
 
 
 @login_required(login_url='login')
@@ -404,13 +402,13 @@ def edit_assay(request, username, pk):
 
   if request.user != user:
     messages.error(request, "There is no assay to edit.")
-    return redirect('assay_codes')
+    return redirect('assays')
   
   try:
     assay = Assay.objects.get(user=user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no assay to edit.")
-    return redirect('assay_codes')
+    return redirect('assays')
   
   form = AssayForm(user=request.user, instance=assay)
 
@@ -423,7 +421,7 @@ def edit_assay(request, username, pk):
       print(form.errors)
   
   context = {'assay': assay, 'form': form}
-  return render(request, 'edit_assay.html', context)
+  return render(request, 'assays.html', context)
 
 
 @login_required(login_url='login')

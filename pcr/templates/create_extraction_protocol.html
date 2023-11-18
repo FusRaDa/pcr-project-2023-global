@@ -10,6 +10,14 @@
 
 <div class="container-fluid">
 
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
   <div class="row justify-content-center">
     <h3 class="text-center">Create New Extraction Protocol</h3>
   </div>
@@ -84,8 +92,10 @@
     </div>
 
     <div class="row justify-content-center"> 
-      <input class="btn btn-primary mt-2" type="Submit" value="Update &amp; Edit Quantity">
+      <input class="btn btn-primary mt-2" type="Submit" value="Create &amp; Edit Quantity">
     </div>
+
+    {{form.errors}}
 
   </form>
 
