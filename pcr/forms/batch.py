@@ -71,6 +71,7 @@ class SampleForm(ModelForm):
   class Meta:
     model = Sample
     fields = ['sample_id']
+    exclude = ['batch']
 
 
 class SampleAssayForm(ModelForm):
@@ -82,9 +83,7 @@ class SampleAssayForm(ModelForm):
   
   def clean(self):
     assays = self.cleaned_data.get('assays')
-
     sample = Sample.objects.get(user=self.user, pk=self.instance.pk)
-
     batch_type = sample.batch.extraction_protocol.type
 
     if batch_type != ExtractionProtocol.Types.TOTAL_NUCLEIC:
@@ -96,7 +95,6 @@ class SampleAssayForm(ModelForm):
             message=f'Extraction Protocol: {batch_type} is not compatible for assays: {incompatible}',
           )
 
-  
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
