@@ -1,4 +1,4 @@
-from ..models.sample import Batch, Sample
+from ..models.batch import Batch, Sample
 
 
 def create_samples(number_of_samples, lab_id, user):

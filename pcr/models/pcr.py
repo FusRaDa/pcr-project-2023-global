@@ -4,7 +4,7 @@ from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
-from .sample import Sample
+from .batch import Sample
 from .inventory import Plate
 
 
