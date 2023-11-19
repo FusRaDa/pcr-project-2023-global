@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from ..models.assay import Assay
 from ..forms.assay import AssayForm, ReagentAssay, ReagentAssayForm
 
+
 @login_required(login_url='login')
 def assays(request):
   assays = Assay.objects.filter(user=request.user).order_by('name')

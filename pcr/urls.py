@@ -3,7 +3,7 @@ from .views.batch_views import viewBatches, createBatches, deleteBatch, batchSam
 from .views.assay_code_views import assay_codes, create_assay_code, edit_assay_code, delete_assay_code
 from .views.extraction_protocol_views import extraction_protocols, create_extraction_protocol, edit_extraction_protocol, extraction_protocol_through, delete_extraction_protocol
 from .views.assay_views import assays, create_assay, edit_assay, assay_through, delete_assay
-
+from .views.inventory_views import (locations, create_location, edit_location, delete_location)
 
 urlpatterns = [
   path("", viewBatches, name="batches"),
@@ -27,5 +27,12 @@ urlpatterns = [
   path("create-assay/", create_assay, name="create_assay"),
   path("assay/<str:username>/<int:pk>/", edit_assay, name="edit_assay"),
   path("quantify-assay/<str:username>/<int:pk>/", assay_through, name="assay_through"),
-  path("delete-assay/<str:username>/<int:pk>/", delete_assay, name="delete_assay")
+  path("delete-assay/<str:username>/<int:pk>/", delete_assay, name="delete_assay"),
+
+  path("locations/", locations, name="locations"),
+  path("create_location/", create_location, name="create_location"),
+  path("edit_location/<str:username>/<int:pk>/", edit_location, name="edit_location"),
+  path("delete_location/<str:username>/<int:pk>/", delete_location, name="delete_location"),
+
+  path(""),
 ]
