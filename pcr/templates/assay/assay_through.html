@@ -23,11 +23,11 @@
   </div>
 
   <div class="row justify-content-center">
-    <h6>Extracting -> {{assay.type}}</h6>
+    <h6>Type: {{assay.type}}</h6>
   </div>
 
   <div class="row justify-content-center mb-2">
-    <a href="{% url 'edit_assay' request.user.username protocol.pk %}">
+    <a href="{% url 'edit_assay' request.user.username assay.pk %}">
     <input class="btn btn-primary" type="Submit" value="Edit Protocol">
     </a>
   </div>
@@ -38,7 +38,8 @@
       <thead>
         <tr>
           <th scope="col">Reagents</th>
-          <th scope="col">Volume Per Sample (&#181;l)</th>
+          <th scope="col">Final Concentration</th>
+          <th scope="col">Final Concentration Units</th>
           <th scope="col">Display Order</th>
         </tr>
       </thead>
@@ -53,7 +54,8 @@
 
         <tr>
           <td>{{reagents}}</td>
-          <td>{{reagentformset.amount_per_sample}}</td>
+          <td>{{reagentformset.final_concentration}}</td>
+          <td>{{reagentformset.final_concentration_unit}}</td>
           <td>{{reagentformset.order}}</td>
         </tr>
 
@@ -64,7 +66,7 @@
   </div>
 
   <div class="row justify-content-center"> 
-    <input class="btn btn-primary" type="Submit" value="Update Tubes">
+    <input class="btn btn-primary" type="Submit" value="Update Reagents">
   </div>
   </form>
  

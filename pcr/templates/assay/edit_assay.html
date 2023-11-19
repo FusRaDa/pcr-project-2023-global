@@ -1,0 +1,187 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Edit Assay {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/edit_assay_code.css' %}">
+
+<div class="container-fluid">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">Edit Assay</h3>
+  </div>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="row justify-content-center">
+      Name
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.name}}
+    </div>
+
+    <div class="row justify-content-center">
+      Method
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.method}}
+    </div>
+
+    <div class="row justify-content-center">
+      Type
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.type}}
+    </div>
+
+    <div class="row justify-content-center">
+      Reaction Volume
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.reaction_volume}}
+    </div>
+
+    <div class="row justify-content-center">
+      Sample Volume
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.sample_volume}}
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="card" style="width: 18rem;">
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Flourescence
+            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#fluor-collapse" aria-expanded="false" aria-controls="collapseExample">
+              ⮟
+            </button>
+          </li>
+  
+          <div class="collapse" id="fluor-collapse">
+            {% for fluor in form.fluorescence %}
+              <li class="list-group-item">
+                {{fluor}}
+              </li>
+            {% endfor %}
+          </div>
+        </ul>
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Controls
+            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#controls-collapse" aria-expanded="false" aria-controls="collapseExample">
+              ⮟
+            </button>
+          </li>
+  
+          <div class="collapse" id="controls-collapse">
+            {% for control in form.controls %}
+              <li class="list-group-item">
+                {{control}}
+              </li>
+            {% endfor %}
+          </div>
+        </ul>
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Reagents
+            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#reagents-collapse" aria-expanded="false" aria-controls="collapseExample">
+              ⮟
+            </button>
+          </li>
+  
+          <div class="collapse" id="reagents-collapse">
+            {% for reagent in form.reagents %}
+              <li class="list-group-item">
+                {{reagent}}
+              </li>
+            {% endfor %}
+          </div>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="row justify-content-center"> 
+      <input class="btn btn-primary mt-2" type="Submit" value="Update &amp; Edit Quantity">
+    </div>
+
+  </form>
+
+  <div class="justify-content-center">
+    <div class="col d-flex justify-content-center">
+      <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#delete-modal">
+        Delete Assay
+      </button>
+    </div>
+  </div>
+
+  <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting Extraction Protocol...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="row justify-content-center">
+            <h5 class="text-center">Are you sure you want to delete this protocol? If this protocol is being used by any batches, you will not be able to delete.</h5>
+          </div>
+
+          <div class="row justify-content-center">
+            <label>Enter Protocol Name: "{{protocol.name}}"</label>
+          </div>
+
+          <div class="row justify-content-center">
+            <input type="text" id="confirm-del">
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="delete-button">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $('.btn').click(function(){
+      $(this).text(function(i,old){
+        return old=='⮝' ?  '⮟' : '⮝';
+      });
+    });
+
+    const delButton = document.getElementById("delete-button");
+    const confirmInput = document.getElementById("confirm-del")
+
+    function del() {
+      value = '{{protocol.name}}'
+      if (confirmInput.value === value) {
+        window.location.href = "{% url 'delete_assay' request.user.username assay.pk %}"
+      } else {
+        alert("Invalid code name entered, please try again.")
+      }
+    }
+
+    delButton.addEventListener("click", del);
+  </script>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Create Assay {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/edit_assay_code.css' %}">
+
+<div class="container-fluid">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">Create New Assay</h3>
+  </div>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="row justify-content-center">
+      Name
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.name}}
+    </div>
+
+    <div class="row justify-content-center">
+      Method
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.method}}
+    </div>
+
+    <div class="row justify-content-center">
+      Type
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.type}}
+    </div>
+
+    <div class="row justify-content-center">
+      Reaction Volume (&#181;l)
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.reaction_volume}}
+    </div>
+
+    <div class="row justify-content-center">
+      Sample Volume (&#181;l)
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.sample_volume}}
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="card" style="width: 18rem;">
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Flourescence
+            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#fluor-collapse" aria-expanded="false" aria-controls="collapseExample">
+              ⮟
+            </button>
+          </li>
+  
+          <div class="collapse" id="fluor-collapse">
+            {% for fluor in form.fluorescence %}
+              <li class="list-group-item">
+                {{fluor}}
+              </li>
+            {% endfor %}
+          </div>
+        </ul>
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Controls
+            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#controls-collapse" aria-expanded="false" aria-controls="collapseExample">
+              ⮟
+            </button>
+          </li>
+  
+          <div class="collapse" id="controls-collapse">
+            {% for control in form.controls %}
+              <li class="list-group-item">
+                {{control}}
+              </li>
+            {% endfor %}
+          </div>
+        </ul>
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Reagents
+            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#reagents-collapse" aria-expanded="false" aria-controls="collapseExample">
+              ⮟
+            </button>
+          </li>
+  
+          <div class="collapse" id="reagents-collapse">
+            {% for reagent in form.reagents %}
+              <li class="list-group-item">
+                {{reagent}}
+              </li>
+            {% endfor %}
+          </div>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="row justify-content-center"> 
+      <input class="btn btn-primary mt-2" type="Submit" value="Update &amp; Edit Quantity">
+    </div>
+
+  </form>
+
+  <script>
+    $('.btn').click(function(){
+      $(this).text(function(i,old){
+        return old=='⮝' ?  '⮟' : '⮝';
+      });
+    });
+  </script>
+
+</div>
+
+{% endblock %}

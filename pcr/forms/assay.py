@@ -3,7 +3,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from ..models.assay import Assay, AssayCode, ReagentAssay, Flourescence, Control
-
+from ..models.inventory import Reagent
 
 class FlourescenceForm(ModelForm):
   class Meta:
@@ -19,7 +19,7 @@ class ControlForm(ModelForm):
 
 class AssayForm(ModelForm):
 
-  flourescence = forms.ModelMultipleChoiceField(
+  fluorescence = forms.ModelMultipleChoiceField(
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
     required=True)
@@ -37,9 +37,9 @@ class AssayForm(ModelForm):
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
-    self.fields['flourescence'].queryset = Flourescence.objects.filter(user=self.user)
-    self.fields['controls'].queryset = Flourescence.objects.filter(user=self.user)
-    self.fields['reagents'].queryset = Flourescence.objects.filter(user=self.user)
+    self.fields['fluorescence'].queryset = Flourescence.objects.filter(user=self.user)
+    self.fields['controls'].queryset = Control.objects.filter(user=self.user)
+    self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user)
 
   class Meta:
     model = Assay

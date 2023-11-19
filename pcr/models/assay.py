@@ -93,7 +93,7 @@ class ReagentAssay(models.Model):
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # users can decide what order reagents will be que's/displayed: 1-lowest priority > highest priority, 0 will be last
 
   def __str__(self):
-    return f'{self.reagent}-{self.assay}'
+    return f'{self.reagent}'
 
 
 class AssayCode(models.Model):

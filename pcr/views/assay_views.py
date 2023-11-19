@@ -27,7 +27,7 @@ def create_assay(request):
       assay = form.save(commit=False)
       assay.user = request.user
       assay = form.save()
-      return redirect('assays')
+      return redirect('assay_through', request.user, assay.pk)
   else:
     print(form.errors)
 
@@ -56,7 +56,7 @@ def edit_assay(request, username, pk):
     form = AssayForm(request.POST, user=request.user, instance=assay)
     if form.is_valid():
       form.save()
-      return redirect('assays')
+      return redirect('assay_through', request.user.username, pk)
     else:
       print(form.errors)
   
