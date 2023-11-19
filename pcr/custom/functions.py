@@ -1,5 +1,4 @@
-from django.core.exceptions import ValidationError
-from .models import *
+from ..models.sample import Batch, Sample
 
 
 def create_samples(number_of_samples, lab_id, user):

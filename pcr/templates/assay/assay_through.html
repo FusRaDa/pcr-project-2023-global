@@ -1,0 +1,73 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Quantities - Assay {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/extraction_protocol_through.css' %}">
+
+<div class="container-fluid">
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="row justify-content-center">
+    <h3>{{assay.name}}</h3>
+  </div>
+
+  <div class="row justify-content-center">
+    <h6>Extracting -> {{assay.type}}</h6>
+  </div>
+
+  <div class="row justify-content-center mb-2">
+    <a href="{% url 'edit_assay' request.user.username protocol.pk %}">
+    <input class="btn btn-primary" type="Submit" value="Edit Protocol">
+    </a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      
+      <thead>
+        <tr>
+          <th scope="col">Reagents</th>
+          <th scope="col">Volume Per Sample (&#181;l)</th>
+          <th scope="col">Display Order</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      <form action="" method="POST">
+        {{ reagentformset.management_form }}
+        {% csrf_token %}
+        {% for reagents, reagentformset in reagents_data %}
+
+        {{reagentformset.id}}
+
+        <tr>
+          <td>{{reagents}}</td>
+          <td>{{reagentformset.amount_per_sample}}</td>
+          <td>{{reagentformset.order}}</td>
+        </tr>
+
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+  <div class="row justify-content-center"> 
+    <input class="btn btn-primary" type="Submit" value="Update Tubes">
+  </div>
+  </form>
+ 
+</div>
+
+{% endblock %}

@@ -73,7 +73,9 @@
         </ul>
         <div class="card-body">
           <a href="{% url 'edit_extraction_protocol' request.user.username ext.pk %}" class="card-link">Edit Protocol</a>
-          <a href={{ext.doc_url}} target="_blank" class="card-link">View Docs</a>
+          {% if ext.doc_url %}
+            <a href={{ext.doc_url}} target="_blank" class="card-link">View Docs</a>
+          {% endif %}
         </div>
       </div>
 
