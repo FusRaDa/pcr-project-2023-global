@@ -3,9 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.db.models import RestrictedError
+from django.contrib.auth.models import User
 
-from ..models import *
-from ..forms import *
+from ..models.assay import AssayCode
+from ..forms.assay import AssayCodeForm
+
 
 @login_required(login_url='login')
 def assay_codes(request):

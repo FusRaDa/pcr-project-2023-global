@@ -3,10 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.contrib.auth.models import User
 
-from ..models import *
-from ..forms import *
-from ..functions import create_samples
+from ..models.sample import Batch, Sample
+from ..forms.sample import BatchForm, SampleForm, SampleAssayForm
+from ..custom.functions import create_samples
 
 
 @login_required(login_url='login')

@@ -4,9 +4,10 @@ from django.forms import modelformset_factory
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import RestrictedError
 from django.contrib import messages
+from django.contrib.auth.models import User
 
-from ..models import *
-from ..forms import *
+from ..models.extraction import ExtractionProtocol, TubeExtraction, ReagentExtraction
+from ..forms.extraction import ExtractionProtocolForm, TubeExtractionForm, ReagentExtractionForm
 
 @login_required(login_url='login')
 def extraction_protocols(request):

@@ -1,8 +1,8 @@
 from django.urls import path
-from .views.batch_views import *
-from .views.assay_code_views import *
-from .views.extraction_protocol_views import *
-from .views.assay_views import *
+from .views.batch_views import viewBatches, createBatches, deleteBatch, batchSamples, editSampleAssay
+from .views.assay_code_views import assay_codes, create_assay_code, edit_assay_code, delete_assay_code
+from .views.extraction_protocol_views import extraction_protocols, create_extraction_protocol, edit_extraction_protocol, extraction_protocol_through, delete_extraction_protocol
+from .views.assay_views import assays, create_assay, edit_assay, assay_through, delete_assay
 
 
 urlpatterns = [

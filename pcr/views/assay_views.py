@@ -3,9 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.contrib.auth.models import User
 
-from ..models import *
-from ..forms import *
+from ..models.assay import Assay
+from ..forms.assay import AssayForm, ReagentAssay, ReagentAssayForm
 
 @login_required(login_url='login')
 def assays(request):
@@ -83,7 +84,7 @@ def assay_through(request, username, pk):
   
   try:
     assay = Assay.objects.get(user=user, pk=pk)
-    reagents = ReagentExtraction.objects.prefetch_related('reagent', 'assay').filter(assay=assay).order_by('-order')
+    reagents = ReagentAssay.objects.prefetch_related('reagent', 'assay').filter(assay=assay).order_by('-order')
   except ObjectDoesNotExist:
     messages.error(request, "There is no assay to edit.")
     return redirect('extraction_protocols')
