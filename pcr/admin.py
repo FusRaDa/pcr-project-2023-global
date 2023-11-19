@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import *
+
+from .models.inventory import Plate, Tube, Reagent, Location
+from .models.extraction import ExtractionProtocol, TubeExtraction, ReagentExtraction
+from .models.assay import Assay, AssayCode, ReagentAssay, Flourescence, Control
+from .models.sample import Batch, Sample
+from .models.pcr import ThermalCyclerProtocol, Process, ProcessPlate
 
 # Register your models here.
 

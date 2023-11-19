@@ -4,8 +4,12 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from django.contrib.auth.models import User
-from .models import *
 from .constants import *
+
+from .models.inventory import Plate, Tube, Reagent, Location
+from .models.extraction import ExtractionProtocol, TubeExtraction, ReagentExtraction
+from .models.assay import Assay, AssayCode, ReagentAssay, Flourescence, Control
+from .models.sample import Batch, Sample
 
 
 # **INVENTORY** #
