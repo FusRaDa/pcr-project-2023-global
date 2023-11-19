@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from ..custom.constants import BATCH_LIMIT
 from ..models.extraction import ExtractionProtocol
 from ..models.assay import Assay, AssayCode
-from ..models.batch import Batch, Sample
+from ..models.sample import Batch, Sample
 
 
 class BatchForm(ModelForm):
