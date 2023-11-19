@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from ..custom.constants import BATCH_LIMIT
 from ..models.extraction import ExtractionProtocol
 from ..models.assay import Assay, AssayCode
-from ..models.sample import Batch, Sample
+from ..models.batch import Batch, Sample
 
 
 class BatchForm(ModelForm):
@@ -71,7 +71,6 @@ class SampleForm(ModelForm):
   class Meta:
     model = Sample
     fields = ['sample_id']
-    exclude = ['batch']
 
 
 class SampleAssayForm(ModelForm):
@@ -97,6 +96,7 @@ class SampleAssayForm(ModelForm):
             message=f'Extraction Protocol: {batch_type} is not compatible for assays: {incompatible}',
           )
 
+  
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 

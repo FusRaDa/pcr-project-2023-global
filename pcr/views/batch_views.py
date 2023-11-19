@@ -5,8 +5,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.contrib.auth.models import User
 
-from ..models.sample import Batch, Sample
-from ..forms.sample import BatchForm, SampleForm, SampleAssayForm
+from ..models.batch import Batch, Sample
+from ..forms.batch import BatchForm, SampleForm, SampleAssayForm
 from ..custom.functions import create_samples
 
 
