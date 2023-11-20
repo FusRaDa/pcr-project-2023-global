@@ -12,6 +12,7 @@ from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm
 @login_required(login_url='login')
 def locations(request):
   locations = Location.objects.filter(user=request.user)
+
   context = {'locations': locations}
   return render(request, 'inventory/locations.html', context)
 

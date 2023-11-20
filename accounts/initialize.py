@@ -1,4 +1,7 @@
-from pcr.models import *
+from pcr.models.pcr import ThermalCyclerProtocol
+from pcr.models.inventory import Tube, Plate, Reagent, Location
+from pcr.models.extraction import ExtractionProtocol
+from pcr.models.assay import Assay, AssayCode, Control, Flourescence
 
 def create_presets(user):
 
@@ -14,6 +17,21 @@ def create_presets(user):
     extension_duration = 180,
     number_of_cycles = 30,
   )
+
+  location1 = Location.objects.create(
+    user = user,
+    name = "Location 1",
+  )
+
+  location2 = Location.objects.create(
+    user = user,
+    name = "Location 2",
+  )
+
+  location3 = Location.objects.create(
+    user = user,
+    name = "Location 3",
+  )
   
   # **INVENTORY SECTION** #
   Plate.objects.create(
@@ -21,6 +39,7 @@ def create_presets(user):
     name = "Generic 96-well plates",
     lot_number = "LOT_NUMBER_01",
     catalog_number = "CATALOG_NUMBER_01",
+    location = location1,
     size = Plate.Sizes.NINETY_SIX,
     amount = 50,
   )
@@ -30,6 +49,7 @@ def create_presets(user):
     name = "Generic 48-well plates",
     lot_number = "LOT_NUMBER_02",
     catalog_number = "CATALOG_NUMBER_02",
+    location = location1,
     size = Plate.Sizes.FOURTY_EIGHT,
     amount = 50,
   )
@@ -39,6 +59,7 @@ def create_presets(user):
     name = "Generic 384-well plates",
     lot_number = "LOT_NUMBER_03",
     catalog_number = "CATALOG_NUMBER_03",
+    location = location1,
     size = Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR,
     amount = 50,
   )
@@ -48,6 +69,7 @@ def create_presets(user):
     name = "Generic 1.7ml Tubes",
     lot_number = "LOT_NUMBER_01",
     catalog_number = "CATALOG_NUMBER_01",
+    location = location1,
     amount = 500,
   )
 
@@ -56,6 +78,7 @@ def create_presets(user):
     name = "Generic 2ml w/ spin column",
     lot_number = "LOT_NUMBER_02",
     catalog_number = "CATALOG_NUMBER_02",
+    location = location1,
     amount = 500,
   )
 
@@ -64,6 +87,7 @@ def create_presets(user):
     name = "Generic 2ml open column",
     lot_number = "LOT_NUMBER_03",
     catalog_number = "CATALOG_NUMBER_03",
+    location = location1,
     amount = 500,
   )
 
@@ -74,6 +98,7 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_07",
     catalog_number = "CATALOG_NUMBER_07",
+    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 500.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
@@ -85,6 +110,7 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_08",
     catalog_number = "CATALOG_NUMBER_08",
+    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 50.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
@@ -96,6 +122,7 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_09",
     catalog_number = "CATALOG_NUMBER_09",
+    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 1.00,
     unit_volume = Reagent.VolumeUnits.LITER,
@@ -107,6 +134,7 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_10",
     catalog_number = "CATALOG_NUMBER_10",
+    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
@@ -118,6 +146,7 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_11",
     catalog_number = "CATALOG_NUMBER_11",
+    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
@@ -129,6 +158,7 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_12",
     catalog_number = "CATALOG_NUMBER_12",
+    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 50.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
@@ -140,6 +170,7 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_13",
     catalog_number = "CATALOG_NUMBER_13",
+    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 50.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
@@ -152,6 +183,7 @@ def create_presets(user):
     brand = "BRAND", 
     lot_number = "LOT_NUMBER_01",
     catalog_number = "CATALOG_NUMBER_01",
+    location = location3,
     is_pcr_water = True,
     usage = Reagent.Usages.PCR,
     volume = 1.00,
@@ -164,6 +196,7 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_02",
     catalog_number = "CATALOG_NUMBER_02",
+    location = location3,
     usage = Reagent.Usages.PCR,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
@@ -177,6 +210,7 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_03",
     catalog_number = "CATALOG_NUMBER_03",
+    location = location3,
     usage = Reagent.Usages.PCR,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
@@ -190,6 +224,7 @@ def create_presets(user):
     brand = "BRAND", 
     lot_number = "LOT_NUMBER_04",
     catalog_number = "CATALOG_NUMBER_04",
+    location = location3,
     usage = Reagent.Usages.PCR,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
@@ -203,6 +238,7 @@ def create_presets(user):
     brand = "BRAND", 
     lot_number = "LOT_NUMBER_05",
     catalog_number = "CATALOG_NUMBER_05",
+    location = location3,
     usage = Reagent.Usages.PCR,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
@@ -216,6 +252,7 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_06",
     catalog_number = "CATALOG_NUMBER_06",
+    location = location3,
     usage = Reagent.Usages.PCR,
     volume = 1.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
