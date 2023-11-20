@@ -13,7 +13,7 @@ from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm
 def locations(request):
   locations = Location.objects.filter(user=request.user)
   context = {'locations': locations}
-  return render(request, 'locations.html', context)
+  return render(request, 'inventory/locations.html', context)
 
 
 @login_required(login_url='login')
@@ -32,7 +32,7 @@ def create_location(request):
     print(form.errors)
 
   context = {'form': form}
-  return render(request, 'create_location.html', context)
+  return render(request, 'inventory/create_location.html', context)
 
 
 @login_required(login_url='login')
@@ -61,7 +61,7 @@ def edit_location(request, username, pk):
     print(form.errors)
 
   context = {'form': form, 'location': location}
-  return render(request, 'edit_location.html', context)
+  return render(request, 'inventory/edit_location.html', context)
 
 
 @login_required(login_url='login')
@@ -137,7 +137,7 @@ def edit_plate(request, username, pk):
     print(form.errors)
 
   context = {'form': form, 'plate': plate}
-  return render(request, 'edit_plate.html', context)
+  return render(request, 'inventory/edit_plate.html', context)
 
 
 @login_required(login_url='login')
@@ -184,7 +184,7 @@ def create_tube(request):
     print(form.errors)
 
   context = {'form': form}
-  return render(request, 'create_tube.html', context)
+  return render(request, 'inventory/create_tube.html', context)
 
 
 @login_required(login_url='login')
@@ -213,7 +213,7 @@ def edit_tube(request, username, pk):
     print(form.errors)
 
   context = {'form': form, 'tube': tube}
-  return render(request, 'edit_plate.html', context)
+  return render(request, 'inventory/edit_plate.html', context)
 
 
 @login_required(login_url='login')
@@ -260,7 +260,7 @@ def create_reagent(request):
     print(form.errors)
 
   context = {'form': form}
-  return render(request, 'create_reagent.html', context)
+  return render(request, 'inventory/create_reagent.html', context)
 
 
 @login_required(login_url='login')
@@ -289,7 +289,7 @@ def edit_reagent(request, username, pk):
     print(form.errors)
 
   context = {'form': form, 'reagent': reagent}
-  return render(request, 'edit_reagent.html', context)
+  return render(request, 'inventory/edit_reagent.html', context)
 
 
 @login_required(login_url='login')

@@ -3,7 +3,11 @@ from .views.batch_views import viewBatches, createBatches, deleteBatch, batchSam
 from .views.assay_code_views import assay_codes, create_assay_code, edit_assay_code, delete_assay_code
 from .views.extraction_protocol_views import extraction_protocols, create_extraction_protocol, edit_extraction_protocol, extraction_protocol_through, delete_extraction_protocol
 from .views.assay_views import assays, create_assay, edit_assay, assay_through, delete_assay
-from .views.inventory_views import (locations, create_location, edit_location, delete_location)
+from .views.inventory_views import (
+  locations, create_location, edit_location, delete_location, 
+  plates, create_plate, edit_plate, delete_plate, 
+  tubes, create_tube, edit_tube, delete_tube, 
+  reagents, create_reagent, edit_reagent, delete_reagent)
 
 urlpatterns = [
   path("", viewBatches, name="batches"),
@@ -34,5 +38,18 @@ urlpatterns = [
   path("edit_location/<str:username>/<int:pk>/", edit_location, name="edit_location"),
   path("delete_location/<str:username>/<int:pk>/", delete_location, name="delete_location"),
 
-  path(""),
+  path("plates/", plates, name="plates"),
+  path("create_plate/", create_plate, name="create_plate"),
+  path("edit_plate/<str:username>/<int:pk>/", edit_plate, name="edit_plate"),
+  path("delete_plate/<str:username>/<int:pk>/", delete_plate, name="delete_plate"),
+
+  path("tubes/", tubes, name="tubes"),
+  path("create_tube/", create_tube, name="create_tube"),
+  path("edit_tube/<str:username>/<int:pk>/", edit_tube, name="edit_tube"),
+  path("delete_tube/<str:username>/<int:pk>/", delete_tube, name="delete_tube"),
+
+  path("reagents/", reagents, name="reagents"),
+  path("create_reagent/", create_reagent, name="create_reagent"),
+  path("edit_reagent/<str:username>/<int:pk>/", edit_reagent, name="edit_reagent"),
+  path("delete_reagent/<str:username>/<int:pk>/", delete_reagent, name="delete_reagent"),
 ]
