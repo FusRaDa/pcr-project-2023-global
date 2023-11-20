@@ -1,0 +1,79 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Batches - PCRPrep {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/tubes.css' %}">
+
+<div class="container-fluid">
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
+    <div class="row">
+      <div class="col d-flex justify-content-center"> 
+        <h3 class="text-center">Tubes</h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col d-flex justify-content-center"> 
+        <a href="{% url 'create_tube'%}">
+          <button type="button" class="btn btn-primary mb-2">Add New Tubes</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Date Added</th>
+            <th scope="col">Last Updated</th>
+            <th scope="col">Name</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Catalog #</th>
+            <th scope="col">Lot #</th>
+            <th scope="col">Amount Stored</th>
+            <th scope="col">Location</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for tube in tubes %}
+            <tr class="tube-row" data-href="{% url 'edit_tube' request.user.username tube.pk %}">
+              <td>{{tube.date_created}}</td>
+              <td>{{tube.last_updated}}</td>
+              <td>{{tube.name}}</td>
+              <td>{{tube.brand}}</td>
+              <td>{{tube.catalog_number}}</td>
+              <td>{{tube.lot_number}}</td>
+              <td>{{tube.amount}}</td>
+              <td>{{tube.location}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+
+        
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".tube-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
+
+{% endblock %}

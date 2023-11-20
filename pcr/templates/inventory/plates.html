@@ -1,0 +1,79 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Batches - PCRPrep {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/batches.css' %}">
+
+<div class="container-fluid">
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
+    <div class="row">
+      <div class="col d-flex justify-content-center"> 
+        <h3 class="text-center">Extractions</h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col d-flex justify-content-center"> 
+        <a href="{% url 'create_batch'%}">
+          <button type="button" class="btn btn-primary mb-2">Add New Plates</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Date Created</th>
+            <th scope="col">Name</th>
+            <th scope="col">Assay Code</th>
+            <th scope="col">Number of Assays</th>
+            <th scope="col">Number of Samples</th>
+            <th scope="col">Total Tests</th>
+            <th scope="col">Extraction Protocol</th>
+            <th scope="col">Lab ID</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for batch in batches %}
+            <tr class="batch-row" data-href="{% url 'batch_samples' request.user.username batch.pk %}">
+              <td>{{batch.date_created}}</td>
+              <td>{{batch.name}}</td>
+              <td>{{batch.code}}</td>
+              <td>{{batch.number_of_assays}}</td>
+              <td>{{batch.number_of_samples}}</td>
+              <td>{{batch.total_tests}}</td>
+              <td>{{batch.extraction_protocol}}</td>
+              <td>{{batch.lab_id}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+
+        
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".batch-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
+
+{% endblock %}

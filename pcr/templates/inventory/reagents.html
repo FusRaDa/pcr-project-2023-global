@@ -1,0 +1,82 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Batches - PCRPrep {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/reagents.css' %}">
+
+<div class="container-fluid">
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
+    <div class="row">
+      <div class="col d-flex justify-content-center"> 
+        <h3 class="text-center">Reagents</h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col d-flex justify-content-center"> 
+        <a href="{% url 'create_reagent'%}">
+          <button type="button" class="btn btn-primary mb-2">Add New Reagents</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Date Added</th>
+            <th scope="col">Last Updated</th>
+            <th scope="col">Name</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Catalog #</th>
+            <th scope="col">Lot #</th>
+            <th scope="col">Volume</th>
+            <th scope="col">Volume Unit</th>
+            <th scope="col">Concentration</th>
+            <th scope="col">Unit Concentration</th>
+            <th scope="col">Location</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for batch in batches %}
+            <tr class="batch-row" data-href="{% url 'batch_samples' request.user.username batch.pk %}">
+              <td>{{batch.date_created}}</td>
+              <td>{{batch.name}}</td>
+              <td>{{batch.code}}</td>
+              <td>{{batch.number_of_assays}}</td>
+              <td>{{batch.number_of_samples}}</td>
+              <td>{{batch.total_tests}}</td>
+              <td>{{batch.extraction_protocol}}</td>
+              <td>{{batch.lab_id}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+
+        
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".batch-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
+
+{% endblock %}
