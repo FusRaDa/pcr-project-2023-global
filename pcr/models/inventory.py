@@ -95,7 +95,6 @@ class Reagent(models.Model):
   class Usages(models.TextChoices):
     EXTRACTION = 'EXTRACTION', _('EXTRACTION')
     PCR = 'PCR', _('PCR')
-    GENERAL = 'GENERAL', _('GENERAL')
 
   class VolumeUnits(models.TextChoices):
     LITER = 'LITER', _('L')
@@ -119,7 +118,7 @@ class Reagent(models.Model):
 
   is_pcr_water = models.BooleanField(default=False) # if True, is used to fill well
 
-  usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.GENERAL, max_length=25)
+  usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.PCR, max_length=25)
 
   volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
