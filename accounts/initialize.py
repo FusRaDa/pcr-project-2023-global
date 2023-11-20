@@ -34,62 +34,68 @@ def create_presets(user):
   )
   
   # **INVENTORY SECTION** #
-  Plate.objects.create(
+  plate1 = Plate.objects.create(
     user = user,
     name = "Generic 96-well plates",
     lot_number = "LOT_NUMBER_01",
     catalog_number = "CATALOG_NUMBER_01",
-    location = location1,
     size = Plate.Sizes.NINETY_SIX,
     amount = 50,
   )
 
-  Plate.objects.create(
+  plate1.location.add(location1)
+
+  plate2 = Plate.objects.create(
     user = user,
     name = "Generic 48-well plates",
     lot_number = "LOT_NUMBER_02",
     catalog_number = "CATALOG_NUMBER_02",
-    location = location1,
     size = Plate.Sizes.FOURTY_EIGHT,
     amount = 50,
   )
 
-  Plate.objects.create(
+  plate2.location.add(location1)
+
+  plate3 = Plate.objects.create(
     user = user,
     name = "Generic 384-well plates",
     lot_number = "LOT_NUMBER_03",
     catalog_number = "CATALOG_NUMBER_03",
-    location = location1,
     size = Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR,
     amount = 50,
   )
+
+  plate3.location.add(location1)
 
   tubes1 = Tube.objects.create(
     user = user,
     name = "Generic 1.7ml Tubes",
     lot_number = "LOT_NUMBER_01",
     catalog_number = "CATALOG_NUMBER_01",
-    location = location1,
     amount = 500,
   )
+
+  tubes1.location.add(location1)
 
   tubes2 = Tube.objects.create(
     user = user,
     name = "Generic 2ml w/ spin column",
     lot_number = "LOT_NUMBER_02",
     catalog_number = "CATALOG_NUMBER_02",
-    location = location1,
     amount = 500,
   )
+
+  tubes2.location.add(location1)
 
   tubes3 = Tube.objects.create(
     user = user,
     name = "Generic 2ml open column",
     lot_number = "LOT_NUMBER_03",
     catalog_number = "CATALOG_NUMBER_03",
-    location = location1,
     amount = 500,
   )
+
+  tubes3.location.add(location1)
 
   # Reagents for Extraction (dna tissue and dna fecal)
   proteinase_k = Reagent.objects.create(
@@ -98,11 +104,12 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_07",
     catalog_number = "CATALOG_NUMBER_07",
-    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 500.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
   )
+
+  proteinase_k.location.add(location2)
 
   al_buffer = Reagent.objects.create(
     user = user, 
@@ -110,11 +117,12 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_08",
     catalog_number = "CATALOG_NUMBER_08",
-    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 50.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
   )
+
+  al_buffer.location.add(location2)
 
   ethanol = Reagent.objects.create(
     user = user, 
@@ -122,11 +130,12 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_09",
     catalog_number = "CATALOG_NUMBER_09",
-    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 1.00,
     unit_volume = Reagent.VolumeUnits.LITER,
   )
+
+  ethanol.location.add(location2)
 
   aw1_buffer = Reagent.objects.create(
     user = user, 
@@ -134,11 +143,12 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_10",
     catalog_number = "CATALOG_NUMBER_10",
-    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
   )
+
+  aw1_buffer.location.add(location2)
 
   aw2_buffer = Reagent.objects.create(
     user = user, 
@@ -146,11 +156,12 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_11",
     catalog_number = "CATALOG_NUMBER_11",
-    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
   )
+
+  aw2_buffer.location.add(location2)
 
   ae_buffer = Reagent.objects.create(
     user = user, 
@@ -158,11 +169,12 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_12",
     catalog_number = "CATALOG_NUMBER_12",
-    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 50.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
   )
+
+  ae_buffer.location.add(location2)
 
   atl_buffer = Reagent.objects.create(
     user = user, 
@@ -170,11 +182,12 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_13",
     catalog_number = "CATALOG_NUMBER_13",
-    location = location2,
     usage = Reagent.Usages.EXTRACTION,
     volume = 50.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
   )
+
+  atl_buffer.location.add(location2)
 
   # Reagents for PCR (c.bovis and helico)
   water = Reagent.objects.create(
@@ -183,12 +196,13 @@ def create_presets(user):
     brand = "BRAND", 
     lot_number = "LOT_NUMBER_01",
     catalog_number = "CATALOG_NUMBER_01",
-    location = location3,
     is_pcr_water = True,
     usage = Reagent.Usages.PCR,
     volume = 1.00,
     unit_volume = Reagent.VolumeUnits.LITER,
   )
+
+  water.location.add(location3)
 
   cbov_frprimer = Reagent.objects.create(
     user = user,
@@ -196,13 +210,14 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_02",
     catalog_number = "CATALOG_NUMBER_02",
-    location = location3,
     usage = Reagent.Usages.PCR,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
     stock_concentration = 20,
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
   )
+
+  cbov_frprimer.location.add(location3)
 
   cbov_pprimer = Reagent.objects.create(
     user = user,
@@ -210,7 +225,6 @@ def create_presets(user):
     brand = "BRAND",
     lot_number = "LOT_NUMBER_03",
     catalog_number = "CATALOG_NUMBER_03",
-    location = location3,
     usage = Reagent.Usages.PCR,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
@@ -218,19 +232,22 @@ def create_presets(user):
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
   )
 
+  cbov_pprimer.location.add(location3)
+
   helico_frprimer = Reagent.objects.create(
     user = user,
     name = "Helico generic F+R-primer",
     brand = "BRAND", 
     lot_number = "LOT_NUMBER_04",
     catalog_number = "CATALOG_NUMBER_04",
-    location = location3,
     usage = Reagent.Usages.PCR,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
     stock_concentration = 10,
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
   )
+
+  helico_frprimer.location.add(location3)
 
   helico_pprimer = Reagent.objects.create(
     user = user,
@@ -238,7 +255,6 @@ def create_presets(user):
     brand = "BRAND", 
     lot_number = "LOT_NUMBER_05",
     catalog_number = "CATALOG_NUMBER_05",
-    location = location3,
     usage = Reagent.Usages.PCR,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
@@ -246,19 +262,22 @@ def create_presets(user):
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
   )
 
+  helico_pprimer.location.add(location3)
+
   i_taq = Reagent.objects.create(
     user = user,
     name = "iTaq Universal Probes Supermix",
     brand = "BRAND",
     lot_number = "LOT_NUMBER_06",
     catalog_number = "CATALOG_NUMBER_06",
-    location = location3,
     usage = Reagent.Usages.PCR,
     volume = 1.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
     stock_concentration = 2,
     unit_concentration = Reagent.ConcentrationUnits.X,
   )
+
+  i_taq.location.add(location3)
   # **INVENTORY SECTION** #
 
 

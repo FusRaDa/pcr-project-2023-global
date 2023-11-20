@@ -35,7 +35,7 @@
           {{location.name}}
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">{{assay.type}}</li>
+          {% if location.plate_set.all %}
           <li class="list-group-item"> Plates
             <button type="button" class="btn btn-primary btn-sm float-right btn-arrow" data-toggle="collapse" data-target="#{{location.pk}}-plates-collapse">
               ⮟
@@ -44,14 +44,16 @@
             <div class="collapse" id="{{location.pk}}-plates-collapse">
               <div class="card-body"> 
                 <ul class="list-group">
-                  {% for a in location.plate.all %}
-                  <li class="list-group-item">{{a}}</li>
+                  {% for plate in location.plate_set.all %}
+                  <li class="list-group-item">{{plate}}</li>
                   {% endfor %}
                 </ul>
               </div>
             </div>
 
           </li>
+          {% endif %}
+          {% if location.tube_set.all %}
           <li class="list-group-item"> Tubes
             <button type="button" class="btn btn-primary btn-sm float-right btn-arrow" data-toggle="collapse" data-target="#{{location.pk}}-tubes-collapse">
               ⮟
@@ -60,14 +62,16 @@
             <div class="collapse" id="{{location.pk}}-tubes-collapse">
               <div class="card-body"> 
                 <ul class="list-group">
-                  {% for a in assay.fluorescence.all %}
-                  <li class="list-group-item">{{a}}</li>
+                  {% for tube in location.tube_set.all %}
+                  <li class="list-group-item">{{tube}}</li>
                   {% endfor %}
                 </ul>
               </div>
             </div>
 
           </li>
+          {% endif %}
+          {% if location.reagent_set.all %}
           <li class="list-group-item"> Reagents
             <button type="button" class="btn btn-primary btn-sm float-right btn-arrow" data-toggle="collapse" data-target="#{{location.pk}}-reagents-collapse">
               ⮟
@@ -76,17 +80,18 @@
             <div class="collapse" id="{{location.pk}}-reagents-collapse">
               <div class="card-body"> 
                 <ul class="list-group">
-                  {% for a in assay.fluorescence.all %}
-                  <li class="list-group-item">{{a}}</li>
+                  {% for reagent in location.reagent_set.all %}
+                  <li class="list-group-item">{{reagent}}</li>
                   {% endfor %}
                 </ul>
               </div>
             </div>
 
           </li>
+          {% endif %}
         </ul>
         <div class="card-body">
-          <a href="{% url 'edit_assay' request.user.username assay.pk %}" class="card-link">Edit Assay</a>
+          <a href="{% url 'edit_location' request.user.username location.pk %}" class="card-link">Edit Assay</a>
         </div>
       </div>
 
