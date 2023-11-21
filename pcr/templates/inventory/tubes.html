@@ -57,7 +57,21 @@
               <td>{{tube.catalog_number}}</td>
               <td>{{tube.lot_number}}</td>
               <td>{{tube.amount}}</td>
-              <td>{{tube.location}}</td>
+
+              <td>
+                {% for location in tube.location.all %}
+                  {% if tube.location.all|length > 1 %}
+                  <span>
+                    {{location}} |
+                  </span>
+                  {% else %}
+                  <span>
+                    {{location}}
+                  </span>
+                  {% endif %}
+                {% endfor %}
+              </td>
+
             </tr>
           {% endfor %}
         </tbody>

@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %} Batches - PCRPrep {% endblock %} 
+{% block title %} Reagents {% endblock %} 
 
 {% block content %}
 
@@ -46,21 +46,38 @@
             <th scope="col">Volume Unit</th>
             <th scope="col">Concentration</th>
             <th scope="col">Unit Concentration</th>
-            <th scope="col">Location</th>
+            <th scope="col">Location(s)</th>
           </tr>
         </thead>
 
         <tbody>
-          {% for batch in batches %}
-            <tr class="batch-row" data-href="{% url 'batch_samples' request.user.username batch.pk %}">
-              <td>{{batch.date_created}}</td>
-              <td>{{batch.name}}</td>
-              <td>{{batch.code}}</td>
-              <td>{{batch.number_of_assays}}</td>
-              <td>{{batch.number_of_samples}}</td>
-              <td>{{batch.total_tests}}</td>
-              <td>{{batch.extraction_protocol}}</td>
-              <td>{{batch.lab_id}}</td>
+          {% for reagent in reagents %}
+            <tr class="reagent-row" data-href="{% url 'edit_reagent' request.user.username reagent.pk %}">
+              <td>{{reagent.date_created}}</td>
+              <td>{{reagent.last_updated}}</td>
+              <td>{{reagent.name}}</td>
+              <td>{{reagent.brand}}</td>
+              <td>{{reagent.catalog_number}}</td>
+              <td>{{reagent.lot_number}}</td>
+              <td>{{reagent.volume}}</td>
+              <td>{{reagent.unit_volume}}</td>
+              <td>{{reagent.stock_concentration}}</td>
+              <td>{{reagent.unit_concentration}}</td>
+
+              <td>
+                {% for location in reagent.location.all %}
+                  {% if reagent.location.all|length > 1 %}
+                  <span>
+                    {{location}} |
+                  </span>
+                  {% else %}
+                  <span>
+                    {{location}}
+                  </span>
+                  {% endif %}
+                {% endfor %}
+              </td>
+
             </tr>
           {% endfor %}
         </tbody>
@@ -68,12 +85,11 @@
       </table>
     </div>
 
-        
 </div>
 
 <script>
   jQuery(document).ready(function($) {
-    $(".batch-row").click(function() {
+    $(".reagent-row").click(function() {
         window.location = $(this).data("href");
     });
   });
