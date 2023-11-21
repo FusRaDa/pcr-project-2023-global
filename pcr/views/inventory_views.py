@@ -239,10 +239,11 @@ def delete_tube(request, username, pk):
 # **REAGENTS VIEWS** #
 @login_required(login_url='login')
 def reagents(request):
-  reagents = Reagent.objects.filter(user=request.user)
+  pcr_reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR)
+  ext_reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.EXTRACTION)
 
-  context = {'reagents': reagents}
-  return render(request, 'reagents.html', context)
+  context = {'pcr_reagents': pcr_reagents, 'ext_reagents': ext_reagents}
+  return render(request, 'inventory/reagents.html', context)
 
 
 @login_required(login_url='login')
