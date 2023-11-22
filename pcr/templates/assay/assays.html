@@ -41,11 +41,11 @@
           <li class="list-group-item">Sample Volume (&#181;L): {{assay.sample_volume}}</li>
           <li class="list-group-item">Flourescence
 
-            <button type="button" class="btn btn-primary btn-sm float-right btn-arrow" data-toggle="collapse" data-target="#{{assay.pk}}-fluor-collapse">
+            <button class="btn btn-primary btn-sm float-right btn-arrow float-end" type="button" data-bs-toggle="collapse" data-bs-target="#fluor-collapse-{{assay.pk}}" aria-expanded="false" aria-controls="fluor-collapse-{{assay.pk}}">
               ⮟
             </button>
 
-            <div class="collapse" id="{{assay.pk}}-fluor-collapse">
+            <div class="collapse" id="fluor-collapse-{{assay.pk}}">
               <div class="card-body"> 
                 <ul class="list-group">
                   {% for a in assay.fluorescence.all %}
@@ -56,13 +56,14 @@
             </div>
 
           </li>
+
           <li class="list-group-item">Controls
 
-            <button type="button" class="btn btn-primary btn-sm float-right btn-arrow" data-toggle="collapse" data-target="#{{assay.pk}}-control-collapse">
+            <button type="button" class="btn btn-primary btn-sm float-right btn-arrow float-end" data-bs-toggle="collapse" data-bs-target="#control-collapse-{{assay.pk}}" arai-expanded="false" aria-controls="control-collapse-{{assay.pk}}">
               ⮟
             </button>
 
-            <div class="collapse" id="{{assay.pk}}-control-collapse">
+            <div class="collapse" id="control-collapse-{{assay.pk}}">
               <div class="card-body"> 
                 <ul class="list-group">
                   {% for a in assay.controls.all %}
@@ -75,11 +76,11 @@
           </li>
           <li class="list-group-item">Reagents
 
-            <button type="button" class="btn btn-primary btn-sm float-right btn-arrow" data-toggle="collapse" data-target="#{{assay.pk}}-reagent-collapse">
+            <button type="button" class="btn btn-primary btn-sm float-right btn-arrow float-end" data-bs-toggle="collapse" data-bs-target="#reagent-collapse-{{assay.pk}}" aria-expanded="false" aria-controls="reagent-collapse-{{assay.pk}}">
               ⮟
             </button>
 
-            <div class="collapse" id="{{assay.pk}}-reagent-collapse">
+            <div class="collapse" id="reagent-collapse-{{assay.pk}}">
               <div class="card-body"> 
                 <ul class="list-group">
                   {% for a in assay.reagents.all %}

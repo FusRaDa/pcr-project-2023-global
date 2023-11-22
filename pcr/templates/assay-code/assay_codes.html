@@ -37,11 +37,11 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Assays
 
-            <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="collapse" data-target="#{{code.pk}}-collapse">
+            <button type="button" class="btn btn-primary btn-sm float-end" data-bs-toggle="collapse" data-bs-target="#collapse-{{code.pk}}" aria-expanded="false" aria-controls="collapse-{{code.pk}}">
               ⮟
             </button>
 
-            <div class="collapse" id="{{code.pk}}-collapse">
+            <div class="collapse" id="collapse-{{code.pk}}">
               <div class="card-body"> 
                 <ul class="list-group">
                   {% for assay in code.assays.all %}
