@@ -54,13 +54,13 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
             Tubes
-            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#tubes-collapse" aria-expanded="false" aria-controls="collapseExample">
+            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#tubes-collapse" aria-expanded="false" aria-controls="tubes-collapse">
               ⮟
             </button>
           </li>
 
           <div class="collapse" id="tubes-collapse">
-            {% for box in form.tubes%}
+            {% for box in form.tubes %}
             <li class="list-group-item">
               {{box}}
             </li>
@@ -75,13 +75,13 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
             Reagents
-            <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#reagents-collapse" aria-expanded="false" aria-controls="collapseExample">
+            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
               ⮟
             </button>
           </li>
 
           <div class="collapse" id="reagents-collapse">
-            {% for box in form.reagents%}
+            {% for box in form.reagents %}
             <li class="list-group-item">
               {{box}}
             </li>

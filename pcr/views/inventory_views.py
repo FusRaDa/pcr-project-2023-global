@@ -90,7 +90,7 @@ def plates(request):
   plates = Plate.objects.filter(user=request.user)
 
   context = {'plates': plates}
-  return render(request, 'plates.html', context)
+  return render(request, 'inventory/plates.html', context)
 
 
 @login_required(login_url='login')
@@ -109,7 +109,7 @@ def create_plate(request):
     print(form.errors)
 
   context = {'form': form}
-  return render(request, 'create_plate.html', context)
+  return render(request, 'inventory/create_plate.html', context)
 
 
 @login_required(login_url='login')
@@ -166,7 +166,7 @@ def tubes(request):
   tubes = Tube.objects.filter(user=request.user)
 
   context = {'tubes': tubes}
-  return render(request, 'tubes.html', context)
+  return render(request, 'inventory/tubes.html', context)
 
 
 @login_required(login_url='login')

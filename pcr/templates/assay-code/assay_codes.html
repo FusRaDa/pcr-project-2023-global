@@ -37,7 +37,7 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Assays
 
-            <button type="button" class="btn btn-primary btn-sm float-end" data-bs-toggle="collapse" data-bs-target="#collapse-{{code.pk}}" aria-expanded="false" aria-controls="collapse-{{code.pk}}">
+            <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#collapse-{{code.pk}}" aria-expanded="false" aria-controls="collapse-{{code.pk}}">
               ⮟
             </button>
 
@@ -64,7 +64,7 @@
   </div>
 
   <script>
-    $('.btn').click(function(){
+    $('.btn-arrow').click(function(){
       $(this).text(function(i,old){
           return old=='⮝' ?  '⮟' : '⮝';
       });

@@ -29,8 +29,8 @@ def create_extraction_protocol(request):
       protocol.user = request.user
       protocol = form.save()
       return redirect('extraction_protocol_through', username=request.user.username, pk=protocol.pk)
-  else:
-    print(form.errors)
+    else:
+      print(form.errors)
     
   context = {'form': form}
   return render(request, 'extraction-protocol/create_extraction_protocol.html', context)
