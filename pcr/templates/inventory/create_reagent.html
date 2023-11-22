@@ -1,0 +1,116 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Add Reagent {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/create_reagent.css' %}">
+
+<div class="container-fluid">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">Add New Reagent</h3>
+  </div>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="row justify-content-center">
+      Usage
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.usage}}
+    </div>
+
+    <div class="row justify-content-center">
+      Name
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.name}}
+    </div>
+
+    <div class="row justify-content-center">
+      Brand
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.brand}}
+    </div>
+
+    <div class="row justify-content-center">
+      Lot Number
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.lot_number}}
+    </div>
+
+    <div class="row justify-content-center">
+      Catalog Number
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.catalog_number}}
+    </div>
+
+    <div class="row justify-content-center">
+      PCR Water
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.is_pcr_water}}
+    </div>
+
+    <div class="row justify-content-center">
+      Volume
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.volume}}
+    </div>
+
+    <div class="row justify-content-center">
+      Volume Unit
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.unit_volume}}
+    </div>
+
+    <div class="row justify-content-center">
+      Stock Concentration
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.stock_concentration}}
+    </div>
+
+    <div class="row justify-content-center">
+      Concentration Unit
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.unit_concentration}}
+    </div>
+
+    <div class="row justify-content-center">
+      Storage Location
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.location}}
+    </div>
+
+    <div class="row justify-content-center"> 
+      <input class="btn btn-primary mt-2" type="Submit" value="Add New Reagent">
+    </div>
+
+  </form>
+
+</div>
+
+{% endblock %}

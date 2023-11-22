@@ -1,0 +1,76 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Add Tube {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/create_tube.css' %}">
+
+<div class="container-fluid">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">Add New Tube</h3>
+  </div>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="row justify-content-center">
+      Name
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.name}}
+    </div>
+
+    <div class="row justify-content-center">
+      Brand
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.brand}}
+    </div>
+
+    <div class="row justify-content-center">
+      Lot Number
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.lot_number}}
+    </div>
+
+    <div class="row justify-content-center">
+      Catalog Number
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.catalog_number}}
+    </div>
+
+    <div class="row justify-content-center">
+      Amount Stored
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.amount}}
+    </div>
+
+    <div class="row justify-content-center">
+      Storage Location
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.location}}
+    </div>
+
+    <div class="row justify-content-center"> 
+      <input class="btn btn-primary mt-2" type="Submit" value="Add New Plate">
+    </div>
+
+  </form>
+
+</div>
+
+{% endblock %}
