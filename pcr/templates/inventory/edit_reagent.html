@@ -1,0 +1,164 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Edit Reagent {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/create_reagent.css' %}">
+
+<div class="container-fluid">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">Updating: {{reagent.name}}</h3>
+  </div>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="row justify-content-center">
+      Usage
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.usage}}
+    </div>
+
+    <div class="row justify-content-center">
+      Name
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.name}}
+    </div>
+
+    <div class="row justify-content-center">
+      Brand
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.brand}}
+    </div>
+
+    <div class="row justify-content-center">
+      Lot Number
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.lot_number}}
+    </div>
+
+    <div class="row justify-content-center">
+      Catalog Number
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.catalog_number}}
+    </div>
+
+    <div class="row justify-content-center">
+      PCR Water
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.is_pcr_water}}
+    </div>
+
+    <div class="row justify-content-center">
+      Volume
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.volume}}
+    </div>
+
+    <div class="row justify-content-center">
+      Volume Unit
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.unit_volume}}
+    </div>
+
+    <div class="row justify-content-center">
+      Stock Concentration
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.stock_concentration}}
+    </div>
+
+    <div class="row justify-content-center">
+      Concentration Unit
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.unit_concentration}}
+    </div>
+
+    <div class="row justify-content-center">
+      Storage Location
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      {{form.location}}
+    </div>
+
+    <div class="row justify-content-center"> 
+      <input class="btn btn-primary mt-2" type="Submit" value="Update Reagent">
+    </div>
+
+  </form>
+
+  <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting reagent...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="row justify-content-center">
+            <h5 class="text-center">Deleting this may affect...</h5>
+          </div>
+
+          <div class="row justify-content-center">
+            <label>Enter Reagent Name: {{reagent.name}}</label>
+          </div>
+
+          <div class="row justify-content-center">
+            <input type="text" id="confirm-del">
+          </div>
+
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="delete-button">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const delButton = document.getElementById("delete-button");
+  
+    function del() {
+      batchId = '{{batch.lab_id}}'
+      if (confirmInput.value === batchId) {
+        window.location.href = "{% url 'delete_reagent' request.user.username batch.pk %}"
+      } else {
+        alert("Invalid reagent name entered, please try again.")
+      }
+    }
+  
+    delButton.addEventListener("click", del);
+  
+  </script>
+
+</div>
+
+{% endblock %}
