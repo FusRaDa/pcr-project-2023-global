@@ -26,31 +26,22 @@
   <form method="POST" action="">
     {% csrf_token %}
 
-    <div class="row justify-content-center">
-      Protocol Name
-    </div>
-
-    <div class="row justify-content-center">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Name</label>
       {{form.name}}
     </div>
 
-    <div class="row justify-content-center">
-      Extraction Type
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Type</label>
+      {{form.type}}
     </div>
 
-    <div class="row justify-content-center mb-2">
-        {{form.type}}
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Document URL</label>
+      {{form.doc_url}}
     </div>
 
-    <div class="row justify-content-center">
-      Document URL
-    </div>
-
-    <div class="row justify-content-center mb-2">
-        {{form.doc_url}}
-    </div>
-
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-2">
       <div class="card" style="width: 18rem;">
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -61,19 +52,17 @@
           </li>
 
           <div class="collapse" id="tubes-collapse">
-            {% for box in form.tubes%}
-            <li class="list-group-item">
-              {{box}}
-            </li>
-            {% endfor %}
+            <div class="card-body"> 
+              <ul class="list-group">
+                {% for box in form.tubes%}
+                <li class="list-group-item">
+                  {{box}}
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
-        </ul>
-      </div>
-    </div>
-
-    <div class="row justify-content-center">
-      <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
+       
           <li class="list-group-item">
             Reagents
             <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
@@ -82,17 +71,21 @@
           </li>
 
           <div class="collapse" id="reagents-collapse">
-            {% for box in form.reagents%}
-            <li class="list-group-item">
-              {{box}}
-            </li>
-            {% endfor %}
+            <div class="card-body"> 
+              <ul class="list-group">
+                {% for box in form.reagents%}
+                <li class="list-group-item">
+                  {{box}}
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
         </ul>
       </div>
     </div>
 
-    <div class="row justify-content-center"> 
+    <div class="text-center mt-2"> 
       <input class="btn btn-primary mt-2" type="Submit" value="Update &amp; Edit Quantity">
     </div>
 
@@ -100,7 +93,7 @@
 
   <div class="justify-content-center">
     <div class="col d-flex justify-content-center">
-      <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#delete-modal">
+      <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
         Delete Protocol
       </button>
     </div>
@@ -111,9 +104,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Deleting Extraction Protocol...</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           
@@ -121,11 +112,11 @@
             <h5 class="text-center">Are you sure you want to delete this protocol? If this protocol is being used by any batches, you will not be able to delete.</h5>
           </div>
 
-          <div class="row justify-content-center">
-            <label>Enter Protocol Name: "{{protocol.name}}"</label>
+          <div class="text-center mx-auto">
+            <label class="form-label">Enter Protocol Name: "{{protocol.name}}"</label>
           </div>
 
-          <div class="row justify-content-center">
+          <div class="text-center mx-auto">
             <input type="text" id="confirm-del">
           </div>
 

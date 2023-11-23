@@ -25,31 +25,22 @@
   <form method="POST" action="">
     {% csrf_token %}
 
-    <div class="row justify-content-center">
-      Protocol Name
-    </div>
-
-    <div class="row justify-content-center">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Name</label>
       {{form.name}}
     </div>
 
-    <div class="row justify-content-center">
-      Extraction Type
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Type</label>
+      {{form.type}}
     </div>
 
-    <div class="row justify-content-center mb-2">
-        {{form.type}}
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Document URL</label>
+      {{form.doc_url}}
     </div>
 
-    <div class="row justify-content-center">
-      Document URL
-    </div>
-
-    <div class="row justify-content-center mb-2">
-        {{form.doc_url}}
-    </div>
-
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-2">
       <div class="card" style="width: 18rem;">
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -60,19 +51,17 @@
           </li>
 
           <div class="collapse" id="tubes-collapse">
-            {% for box in form.tubes %}
-            <li class="list-group-item">
-              {{box}}
-            </li>
-            {% endfor %}
+            <div class="card-body"> 
+              <ul class="list-group">
+                {% for box in form.tubes %}
+                <li class="list-group-item">
+                  {{box}}
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
-        </ul>
-      </div>
-    </div>
-
-    <div class="row justify-content-center">
-      <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
+  
           <li class="list-group-item">
             Reagents
             <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
@@ -81,17 +70,21 @@
           </li>
 
           <div class="collapse" id="reagents-collapse">
-            {% for box in form.reagents %}
-            <li class="list-group-item">
-              {{box}}
-            </li>
-            {% endfor %}
+            <div class="card-body"> 
+              <ul class="list-group">
+                {% for box in form.reagents %}
+                <li class="list-group-item">
+                  {{box}}
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
         </ul>
       </div>
     </div>
 
-    <div class="row justify-content-center"> 
+    <div class="text-center mt-2"> 
       <input class="btn btn-primary mt-2" type="Submit" value="Create &amp; Edit Quantity">
     </div>
 

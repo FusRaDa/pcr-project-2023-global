@@ -23,6 +23,9 @@ class ExtractionProtocolForm(ModelForm):
     super().__init__(*args, **kwargs) 
     self.fields['tubes'].queryset = Tube.objects.filter(user=self.user)
     self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user, usage=Reagent.Usages.EXTRACTION)
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['type'].widget.attrs['class'] = 'form-select'
+    self.fields['doc_url'].widget.attrs['class'] = 'form-control'
     
   class Meta:
     model = ExtractionProtocol
