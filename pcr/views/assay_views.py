@@ -29,8 +29,8 @@ def create_assay(request):
       assay.user = request.user
       assay = form.save()
       return redirect('assay_through', request.user, assay.pk)
-  else:
-    print(form.errors)
+    else:
+      print(form.errors)
 
   context = {'form': form}
   return render(request, 'assay/create_assay.html', context)

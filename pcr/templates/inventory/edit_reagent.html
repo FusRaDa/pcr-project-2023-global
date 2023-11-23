@@ -78,11 +78,15 @@
           </li>
 
           <div class="collapse" id="reagents-collapse">
-            {% for loc in form.location %}
-              <li class="list-group-item">
-                {{loc}}
-              </li>
-            {% endfor %}
+            <div class="card-body"> 
+              <ul class="list-group">
+                {% for loc in form.location %}
+                  <li class="list-group-item">
+                    {{loc}}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
         </ul>
       </div>

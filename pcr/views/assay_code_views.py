@@ -29,8 +29,8 @@ def create_assay_code(request):
       assay_code.user = request.user
       assay_code = form.save()
       return redirect('assay_codes')
-  else:
-    print(form.errors)
+    else:
+      print(form.errors)
 
   context = {'form': form}
   return render(request, 'assay-code/create_assay_code.html', context)

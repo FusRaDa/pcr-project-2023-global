@@ -62,8 +62,8 @@ class AssayCodeForm(ModelForm):
   assays = forms.ModelMultipleChoiceField(
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
-    required=True)
-
+    required=True,)
+  
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 

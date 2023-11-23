@@ -36,11 +36,15 @@
           </li>
   
           <div class="collapse" id="tubes-collapse">
-            {% for assay in form.assays %}
-              <li class="list-group-item">
-                {{assay}}
-              </li>
-            {% endfor %}
+            <div class="card-body"> 
+              <ul class="list-group">
+                {% for assay in form.assays%}
+                  <li class="list-group-item">
+                    {{assay}}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
         </ul>
       </div>
