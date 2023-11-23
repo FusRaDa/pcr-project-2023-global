@@ -204,10 +204,10 @@ def edit_tube(request, username, pk):
     messages.error(request, "There is no locaton to edit.")
     return redirect('locations')
   
-  form = PlateForm(instance=tube)
+  form = TubeForm(instance=tube, user=request.user)
 
   if request.method == "POST":
-    form = PlateForm(request.POST)
+    form = TubeForm(request.POST, user=request.user, instance=tube)
     if form.is_valid():
       form.save()
       return redirect('locations')
@@ -215,7 +215,7 @@ def edit_tube(request, username, pk):
       print(form.errors)
 
   context = {'form': form, 'tube': tube}
-  return render(request, 'inventory/edit_plate.html', context)
+  return render(request, 'inventory/edit_tube.html', context)
 
 
 @login_required(login_url='login')

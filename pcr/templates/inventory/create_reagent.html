@@ -17,95 +17,78 @@
   <form method="POST" action="">
     {% csrf_token %}
 
-    <div class="row justify-content-center">
-      Usage
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Usage</label>
       {{form.usage}}
     </div>
 
-    <div class="row justify-content-center">
-      Name
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Name</label>
       {{form.name}}
     </div>
 
-    <div class="row justify-content-center">
-      Brand
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Brand</label>
       {{form.brand}}
     </div>
 
-    <div class="row justify-content-center">
-      Lot Number
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Lot Number</label>
       {{form.lot_number}}
     </div>
 
-    <div class="row justify-content-center">
-      Catalog Number
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Catalog Number</label>
       {{form.catalog_number}}
     </div>
 
-    <div class="row justify-content-center">
-      PCR Water
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">PCR Water?</label>
       {{form.is_pcr_water}}
     </div>
 
-    <div class="row justify-content-center">
-      Volume
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Volume</label>
       {{form.volume}}
     </div>
 
-    <div class="row justify-content-center">
-      Volume Unit
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Volume Unit</label>
       {{form.unit_volume}}
     </div>
 
-    <div class="row justify-content-center">
-      Stock Concentration
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Stock Concentration</label>
       {{form.stock_concentration}}
     </div>
 
-    <div class="row justify-content-center">
-      Concentration Unit
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Concentration Unit</label>
       {{form.unit_concentration}}
     </div>
+    
+    <div class="row justify-content-center mt-2">
+      <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Locations
+            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+              ⮟
+            </button>
+          </li>
 
-    <div class="row justify-content-center">
-      Storage Location
+          <div class="collapse" id="reagents-collapse">
+            {% for loc in form.location %}
+              <li class="list-group-item">
+                {{loc}}
+              </li>
+            {% endfor %}
+          </div>
+        </ul>
+      </div>
     </div>
 
-    <div class="row justify-content-center mb-2">
-      {{form.location}}
-    </div>
-
-    <div class="row justify-content-center"> 
+    <div class="text-center mt-2"> 
       <input class="btn btn-primary mt-2" type="Submit" value="Add New Reagent">
     </div>
 

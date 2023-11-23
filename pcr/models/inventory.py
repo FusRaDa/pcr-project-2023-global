@@ -122,8 +122,8 @@ class Reagent(models.Model):
   volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
 
-  stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, validators=[MinValueValidator(0)], max_digits=12)
-  unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=ConcentrationUnits.MILLIMOLES, max_length=25)
+  stock_concentration = models.DecimalField(decimal_places=2, default=0, validators=[MinValueValidator(0)], max_digits=12)
+  unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=False, default=ConcentrationUnits.MILLIMOLES, max_length=25)
 
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)

@@ -17,68 +17,72 @@
   <form method="POST" action="">
     {% csrf_token %}
 
-    <div class="row justify-content-center">
-      Name
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Name</label>
       {{form.name}}
     </div>
 
-    <div class="row justify-content-center">
-      Brand
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Brand</label>
       {{form.brand}}
     </div>
 
-    <div class="row justify-content-center">
-      Lot Number
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Lot Number</label>
       {{form.lot_number}}
     </div>
 
-    <div class="row justify-content-center">
-      Catalog Number
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Catalog Number</label>
       {{form.catalog_number}}
     </div>
 
-    <div class="row justify-content-center">
-      Amount Stored
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Amount Stored</label>
       {{form.amount}}
     </div>
 
-    <div class="row justify-content-center">
-      Storage Location
+    <div class="row justify-content-center mt-2">
+      <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Locations
+            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+              ⮟
+            </button>
+          </li>
+
+          <div class="collapse" id="reagents-collapse">
+            {% for loc in form.location %}
+              <li class="list-group-item">
+                {{loc}}
+              </li>
+            {% endfor %}
+          </div>
+        </ul>
+      </div>
     </div>
 
-    <div class="row justify-content-center mb-2">
-      {{form.location}}
-    </div>
-
-    <div class="row justify-content-center"> 
-      <input class="btn btn-primary mt-2" type="Submit" value="Update Plate">
+    <div class="text-center mt-2"> 
+      <input class="btn btn-primary mt-2" type="Submit" value="Update Tube">
     </div>
 
   </form>
+
+  <div class="justify-content-center">
+    <div class="col d-flex justify-content-center">
+      <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
+        Delete Tube
+      </button>
+    </div>
+  </div>
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Deleting tube...</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           
@@ -86,11 +90,11 @@
             <h5 class="text-center">Deleting this may affect...</h5>
           </div>
 
-          <div class="row justify-content-center">
-            <label>Enter Tube Name: {{tube.name}}</label>
+          <div class="text-center mx-auto">
+            <label class="form-label">Enter Tube Name: "{{tube.name}}"</label>
           </div>
 
-          <div class="row justify-content-center">
+          <div class="text-center mx-auto">
             <input type="text" id="confirm-del">
           </div>
 
@@ -104,12 +108,13 @@
   </div>
 
   <script>
+    const confirmInput = document.getElementById("confirm-del")
     const delButton = document.getElementById("delete-button");
   
     function del() {
-      batchId = '{{batch.lab_id}}'
-      if (confirmInput.value === batchId) {
-        window.location.href = "{% url 'delete_tube' request.user.username batch.pk %}"
+      tubeName = '{{tube.name}}'
+      if (confirmInput.value === tubeName) {
+        window.location.href = "{% url 'delete_tube' request.user.username tube.pk %}"
       } else {
         alert("Invalid tube name entered, please try again.")
       }
