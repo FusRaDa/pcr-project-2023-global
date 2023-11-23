@@ -33,13 +33,12 @@ class Plate(models.Model):
 
   location = models.ManyToManyField(Location)
 
-  class Sizes(models.TextChoices):
+  class Sizes(models.IntegerChoices):
     EIGHT = 8, _('8')
     TWENTY_FOUR = 24, _('24')
     FOURTY_EIGHT = 48, _('48')
     NINETY_SIX = 96, _('96')
     THREE_HUNDRED_EIGHTY_FOUR = 384, _('384')
-    CUSTOM = models.IntegerField(validators=[MinValueValidator(1)])
 
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)

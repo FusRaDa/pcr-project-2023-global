@@ -23,14 +23,14 @@ def create_location(request):
   form = LocationForm()
 
   if request.method == "POST":
-    form = LocationForm(request.POST, user=request.user)
+    form = LocationForm(request.POST)
     if form.is_valid():
       location = form.save(commit=False)
       location.user = request.user
       location = form.save()
       return redirect('locations')
-  else:
-    print(form.errors)
+    else:
+      print(form.errors)
 
   context = {'form': form}
   return render(request, 'inventory/create_location.html', context)
@@ -54,12 +54,12 @@ def edit_location(request, username, pk):
   form = LocationForm(instance=location)
 
   if request.method == "POST":
-    form = LocationForm(request.POST)
+    form = LocationForm(request.POST, instance=location)
     if form.is_valid():
       form.save()
       return redirect('locations')
-  else:
-    print(form.errors)
+    else:
+      print(form.errors)
 
   context = {'form': form, 'location': location}
   return render(request, 'inventory/edit_location.html', context)
@@ -96,7 +96,7 @@ def plates(request):
 @login_required(login_url='login')
 def create_plate(request):
   context = {}
-  form = PlateForm()
+  form = PlateForm(user=request.user)
 
   if request.method == "POST":
     form = PlateForm(request.POST, user=request.user)
@@ -105,8 +105,9 @@ def create_plate(request):
       location.user = request.user
       location = form.save()
       return redirect('plates')
-  else:
-    print(form.errors)
+    else:
+      print(form.errors)
+      print(form.non_field_errors)
 
   context = {'form': form}
   return render(request, 'inventory/create_plate.html', context)
@@ -118,24 +119,24 @@ def edit_plate(request, username, pk):
   user = User.objects.get(username=username)
 
   if request.user != user:
-    messages.error(request, "There is no location to edit.")
+    messages.error(request, "There is no plate to edit.")
     return redirect('locations')
   
   try:
     plate = Plate.objects.get(user=user, pk=pk)
   except ObjectDoesNotExist:
-    messages.error(request, "There is no locaton to edit.")
-    return redirect('locations')
+    messages.error(request, "There is no plate to edit.")
+    return redirect('plates')
   
-  form = PlateForm(instance=plate)
+  form = PlateForm(user=request.user, instance=plate)
 
   if request.method == "POST":
-    form = PlateForm(request.POST)
+    form = PlateForm(request.POST, user=request.user, instance=plate)
     if form.is_valid():
       form.save()
-      return redirect('locations')
-  else:
-    print(form.errors)
+      return redirect('plates')
+    else:
+      print(form.errors)
 
   context = {'form': form, 'plate': plate}
   return render(request, 'inventory/edit_plate.html', context)
@@ -172,7 +173,7 @@ def tubes(request):
 @login_required(login_url='login')
 def create_tube(request):
   context = {}
-  form = TubeForm()
+  form = TubeForm(user=request.user)
 
   if request.method == "POST":
     form = TubeForm(request.POST, user=request.user)
@@ -181,8 +182,8 @@ def create_tube(request):
       tube.user = request.user
       tube = form.save()
       return redirect('tubes')
-  else:
-    print(form.errors)
+    else:
+      print(form.errors)
 
   context = {'form': form}
   return render(request, 'inventory/create_tube.html', context)
@@ -210,8 +211,8 @@ def edit_tube(request, username, pk):
     if form.is_valid():
       form.save()
       return redirect('locations')
-  else:
-    print(form.errors)
+    else:
+      print(form.errors)
 
   context = {'form': form, 'tube': tube}
   return render(request, 'inventory/edit_plate.html', context)
@@ -249,7 +250,7 @@ def reagents(request):
 @login_required(login_url='login')
 def create_reagent(request):
   context = {}
-  form = ReagentForm()
+  form = ReagentForm(user=request.user)
 
   if request.method == "POST":
     form = ReagentForm(request.POST, user=request.user)
@@ -258,8 +259,8 @@ def create_reagent(request):
       reagent.user = request.user
       reagent = form.save()
       return redirect('reagents')
-  else:
-    print(form.errors)
+    else:
+      print(form.errors)
 
   context = {'form': form}
   return render(request, 'inventory/create_reagent.html', context)
@@ -280,15 +281,15 @@ def edit_reagent(request, username, pk):
     messages.error(request, "There is no reagent to edit.")
     return redirect('reagents')
   
-  form = ReagentForm(instance=reagent)
+  form = ReagentForm(instance=reagent, user=request.user)
 
   if request.method == "POST":
-    form = ReagentForm(request.POST)
+    form = ReagentForm(request.POST, user=request.user, instance=reagent)
     if form.is_valid():
       form.save()
       return redirect('reagents')
-  else:
-    print(form.errors)
+    else:
+      print(form.errors)
 
   context = {'form': form, 'reagent': reagent}
   return render(request, 'inventory/edit_reagent.html', context)

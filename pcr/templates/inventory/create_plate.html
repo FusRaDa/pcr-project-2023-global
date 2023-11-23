@@ -17,64 +17,59 @@
   <form method="POST" action="">
     {% csrf_token %}
 
-    <div class="row justify-content-center">
-      Name
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Name</label>
       {{form.name}}
     </div>
 
-    <div class="row justify-content-center">
-      Brand
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Brand</label>
       {{form.brand}}
     </div>
 
-    <div class="row justify-content-center">
-      Lot Number
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Lot Number</label>
       {{form.lot_number}}
     </div>
 
-    <div class="row justify-content-center">
-      Catalog Number
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Catalog Number</label>
       {{form.catalog_number}}
     </div>
 
-    <div class="row justify-content-center">
-      Size
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Size</label>
       {{form.size}}
     </div>
 
-    <div class="row justify-content-center">
-      Amount Stored
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Amount Stored</label>
       {{form.amount}}
     </div>
 
-    <div class="row justify-content-center">
-      Storage Location
+    <div class="row justify-content-center mt-2">
+      <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Locations
+            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+              ⮟
+            </button>
+          </li>
+
+          <div class="collapse" id="reagents-collapse">
+            {% for loc in form.location %}
+              <li class="list-group-item">
+                {{loc}}
+              </li>
+            {% endfor %}
+          </div>
+        </ul>
+      </div>
     </div>
 
-    <div class="row justify-content-center mb-2">
-      {{form.location}}
-    </div>
-
-    <div class="row justify-content-center"> 
-      <input class="btn btn-primary mt-2" type="Submit" value="Add New Plate">
+    <div class="text-center mt-2">
+      <button type="submit" class="btn btn-primary">Add New Plate</button>
     </div>
 
   </form>

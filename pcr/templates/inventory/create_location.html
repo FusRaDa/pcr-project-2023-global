@@ -17,20 +17,17 @@
   <form method="POST" action="">
     {% csrf_token %}
 
-    <div class="row justify-content-center">
-      Name
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Name</label>
       {{form.name}}
     </div>
 
-    <div class="row justify-content-center"> 
-      <input class="btn btn-primary mt-2" type="Submit" value="Add New Location">
+    <div class="text-center mt-2">
+      <button type="submit" class="btn btn-primary">Add New Location</button>
     </div>
 
   </form>
-
+ 
 </div>
 
 {% endblock %}

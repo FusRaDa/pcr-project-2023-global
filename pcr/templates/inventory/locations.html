@@ -10,8 +10,6 @@
 
 <div class="container">
 
-  <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
-
   <div class="row">
     <div class="col d-flex justify-content-center"> 
       <h3 class="text-center">Locations</h3>
@@ -93,7 +91,7 @@
           {% endif %}
         </ul>
         <div class="card-body">
-          <a href="{% url 'edit_location' request.user.username location.pk %}" class="card-link">Edit Assay</a>
+          <a href="{% url 'edit_location' request.user.username location.pk %}" class="card-link">Edit Location</a>
         </div>
       </div>
 
