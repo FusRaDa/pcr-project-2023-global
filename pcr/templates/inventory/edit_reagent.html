@@ -94,6 +94,14 @@
 
   </form>
 
+  <div class="justify-content-center">
+    <div class="col d-flex justify-content-center">
+      <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
+        Delete Location
+      </button>
+    </div>
+  </div>
+
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -107,11 +115,11 @@
             <h5 class="text-center">Deleting this may affect...</h5>
           </div>
 
-          <div class="row justify-content-center">
-            <label>Enter Reagent Name: {{reagent.name}}</label>
+          <div class="text-center mx-auto">
+            <label class="form-label">Enter Reagent Name: "{{reagent.name}}"</label>
           </div>
 
-          <div class="row justify-content-center">
+          <div class="text-center mx-auto">
             <input type="text" id="confirm-del">
           </div>
 

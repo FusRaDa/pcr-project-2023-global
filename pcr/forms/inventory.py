@@ -32,7 +32,7 @@ class PlateForm(ModelForm):
     self.fields['brand'].widget.attrs['class'] = 'form-control'
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
-    self.fields['size'].widget.attrs['class'] = 'form-control'
+    self.fields['size'].widget.attrs['class'] = 'form-select'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
 
   class Meta:
@@ -79,9 +79,9 @@ class ReagentForm(ModelForm):
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['usage'].widget.attrs['class'] = 'form-control'
     self.fields['volume'].widget.attrs['class'] = 'form-control'
-    self.fields['unit_volume'].widget.attrs['class'] = 'form-control'
+    self.fields['unit_volume'].widget.attrs['class'] = 'form-select'
     self.fields['stock_concentration'].widget.attrs['class'] = 'form-control'
-    self.fields['unit_concentration'].widget.attrs['class'] = 'form-control'
+    self.fields['unit_concentration'].widget.attrs['class'] = 'form-select'
   
   class Meta:
     model = Reagent

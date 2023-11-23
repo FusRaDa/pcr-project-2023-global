@@ -22,7 +22,7 @@ class ExtractionProtocolForm(ModelForm):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['tubes'].queryset = Tube.objects.filter(user=self.user)
-    self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user)
+    self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user, usage=Reagent.Usages.EXTRACTION)
     
   class Meta:
     model = ExtractionProtocol

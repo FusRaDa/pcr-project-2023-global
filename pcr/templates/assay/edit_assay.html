@@ -17,53 +17,38 @@
   <form method="POST" action="">
     {% csrf_token %}
 
-    <div class="row justify-content-center">
-      Name
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Name</label>
       {{form.name}}
     </div>
 
-    <div class="row justify-content-center">
-      Method
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Method</label>
       {{form.method}}
     </div>
 
-    <div class="row justify-content-center">
-      Type
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Type</label>
       {{form.type}}
     </div>
 
-    <div class="row justify-content-center">
-      Reaction Volume
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Reaction Volume (&#181;l)</label>
       {{form.reaction_volume}}
     </div>
 
-    <div class="row justify-content-center">
-      Sample Volume
-    </div>
-
-    <div class="row justify-content-center mb-2">
+    <div class="text-center w-25 mx-auto">
+      <label class="form-label">Sample Volume (&#181;l)</label>
       {{form.sample_volume}}
     </div>
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-2">
       <div class="card" style="width: 18rem;">
 
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
             Flourescence
-            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#fluor-collapse" aria-expanded="false" aria-controls="fluor-collapse">
+            <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#fluor-collapse" aria-expanded="false" aria-controls="fluor-collapse">
               ⮟
             </button>
           </li>
@@ -80,7 +65,7 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
             Controls
-            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#controls-collapse" aria-expanded="false" aria-controls="controls-collapse">
+            <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#controls-collapse" aria-expanded="false" aria-controls="controls-collapse">
               ⮟
             </button>
           </li>
@@ -97,7 +82,7 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
             Reagents
-            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+            <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
               ⮟
             </button>
           </li>
@@ -114,7 +99,7 @@
       </div>
     </div>
 
-    <div class="row justify-content-center"> 
+    <div class="text-center mt-2"> 
       <input class="btn btn-primary mt-2" type="Submit" value="Update &amp; Edit Quantity">
     </div>
 
@@ -122,7 +107,7 @@
 
   <div class="justify-content-center">
     <div class="col d-flex justify-content-center">
-      <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#delete-modal">
+      <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
         Delete Assay
       </button>
     </div>
@@ -133,9 +118,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Deleting Extraction Protocol...</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           
@@ -143,11 +126,11 @@
             <h5 class="text-center">Are you sure you want to delete this assay? Assay codes referring to this assay will no longer have this assay.</h5>
           </div>
 
-          <div class="row justify-content-center">
-            <label>Enter Assay Name: "{{assay.name}}"</label>
+          <div class="text-center mx-auto">
+            <label class="form-label">Enter Assay Name: "{{assay.name}}"</label>
           </div>
 
-          <div class="row justify-content-center">
+          <div class="text-center mx-auto">
             <input type="text" id="confirm-del">
           </div>
 
@@ -161,7 +144,7 @@
   </div>
 
   <script>
-    $('.btn').click(function(){
+    $('.btn-arrow').click(function(){
       $(this).text(function(i,old){
         return old=='⮝' ?  '⮟' : '⮝';
       });

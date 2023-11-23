@@ -39,8 +39,13 @@ class AssayForm(ModelForm):
     super().__init__(*args, **kwargs) 
     self.fields['fluorescence'].queryset = Flourescence.objects.filter(user=self.user)
     self.fields['controls'].queryset = Control.objects.filter(user=self.user)
-    self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user)
-
+    self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user, usage=Reagent.Usages.PCR)
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['method'].widget.attrs['class'] = 'form-select'
+    self.fields['type'].widget.attrs['class'] = 'form-select'
+    self.fields['sample_volume'].widget.attrs['class'] = 'form-control'
+    self.fields['reaction_volume'].widget.attrs['class'] = 'form-control'
+    
   class Meta:
     model = Assay
     exclude = ['user']
