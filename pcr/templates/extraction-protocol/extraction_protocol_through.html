@@ -32,6 +32,7 @@
     </a>
   </div>
 
+  <form action="" method="POST">
   <div class="table-responsive">
     <table class="table table-bordered">
       
@@ -42,37 +43,22 @@
           <th scope="col">Display Order</th>
         </tr>
       </thead>
+
+      {{ tubeformset.management_form }}
+      {{ reagentformset.management_form }}
+      {% csrf_token %}
+
       <tbody>
-
-      <form action="" method="POST">
-        {{ tubeformset.management_form }}
-        {% csrf_token %}
         {% for tubes, tubeformset in tubes_data %}
-
         {{tubeformset.id}}
-
         <tr>
           <td>{{tubes}}</td>
           <td>{{tubeformset.amount_per_sample}}</td>
           <td>{{tubeformset.order}}</td>
         </tr>
-
         {% endfor %}
       </tbody>
 
-    </table>
-  </div>
-
-    <div class="text-center mt-2 mb-2"> 
-      <input class="btn btn-primary" type="Submit" value="Update Tubes" name="tube-form">
-    </div>
-
-  </form>
-
-
-  <div class="table-responsive">
-    <table class="table table-bordered">
-      
       <thead>
         <tr>
           <th scope="col">Reagents</th>
@@ -82,13 +68,8 @@
       </thead>
       <tbody>
 
-      <form action="" method="POST">
-        {{ reagentformset.management_form }}
-        {% csrf_token %}
         {% for reagents, reagentformset in reagents_data %}
-
         {{reagentformset.id}}
-
         <tr>
           <td>{{reagents}}</td>
           <td>{{reagentformset.amount_per_sample}}</td>
@@ -102,8 +83,9 @@
   </div>
 
   <div class="text-center"> 
-    <input class="btn btn-primary" type="Submit" value="Update Reagents" name="reagent-form">
+    <input class="btn btn-primary" type="Submit" value="Update Quantities">
   </div>
+
   </form>
  
 </div>
