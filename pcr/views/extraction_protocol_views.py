@@ -107,7 +107,7 @@ def extraction_protocol_through(request, username, pk):
   if request.method == 'POST':
     reagentformset = ReagentExtractionFormSet(request.POST, prefix='reagent')
     tubeformset = TubeExtractionFormSet(request.POST, prefix='tube')
-    if reagentformset.is_valid() or tubeformset.is_valid():
+    if reagentformset.is_valid() and tubeformset.is_valid():
       tubeformset.save()
       reagentformset.save()
       return redirect('extraction_protocols')

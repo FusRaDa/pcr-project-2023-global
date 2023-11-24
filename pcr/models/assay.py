@@ -3,7 +3,7 @@ from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
-from .inventory import Reagent
+from .inventory import Reagent, Location
 
 
 class Flourescence(models.Model):
@@ -32,6 +32,8 @@ class Control(models.Model):
   name = models.CharField(blank=False, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
   amount = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
+
+  location = models.ManyToManyField(Location)
 
   def __str__(self):
     return self.name

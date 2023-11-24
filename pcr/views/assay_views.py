@@ -5,8 +5,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.contrib.auth.models import User
 
-from ..models.assay import Assay
-from ..forms.assay import AssayForm, ReagentAssay, ReagentAssayForm
+from ..models.assay import Assay, Flourescence, Control
+from ..forms.assay import AssayForm, ReagentAssay, ReagentAssayForm, FlourescenceForm, ControlForm
 
 
 @login_required(login_url='login')
@@ -124,3 +124,151 @@ def delete_assay(request, username, pk):
     return redirect('assays')
 
   return redirect('assays')
+  
+
+@login_required(login_url='login')
+def flourescence(request):
+  flourescence = Flourescence.objects.filter(user=request.user).order_by('name')
+
+  context = {'flourescence': flourescence}
+  return render(request, 'flourescence.html', context)
+
+
+@login_required(login_url='login')
+def create_flourescence(request):
+  context = {}
+  form = FlourescenceForm(user=request.user)
+
+  if request.method == "POST":
+    form = FlourescenceForm(request.POST, user=request.user)
+    if form.is_valid():
+      flourescence = form.save(commit=False)
+      flourescence.user = request.user
+      flourescence = form.save()
+      return redirect('tubes')
+    else:
+      print(form.errors)
+
+  context = {'form': form}
+  return render(request, 'assay/create_flourescence.html', context)
+
+
+@login_required(login_url='login')
+def edit_flourescence(request, username, pk):
+  context = {}
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no flourescence to edit.")
+    return redirect('flourescence')
+  
+  try:
+    flourescence = Flourescence.objects.get(user=user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no flourescence to edit.")
+    return redirect('flourescence')
+  
+  form = FlourescenceForm(instance=flourescence)
+
+  if request.method == "POST":
+    form = FlourescenceForm(request.POST, instance=flourescence)
+    if form.is_valid():
+      form.save()
+      return redirect('flourescence')
+    else:
+      print(form.errors)
+
+  context = {'form': form, 'flourescence': flourescence}
+  return render(request, 'assay/edit_flourescence.html', context)
+
+
+@login_required(login_url='login')
+def delete_flourescence(request, username, pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no flourescence to delete.")
+    return redirect('flourescence')
+  
+  try:
+    flourescence = Flourescence.objects.get(user=user, pk=pk)
+    flourescence.delete()
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no flourescence to delete.")
+    return redirect('flourescence')
+
+  return redirect('flourescence')
+
+
+@login_required(login_url='login')
+def controls(request):
+  controls = Control.objects.filter(user=request.user).order_by('name')
+
+  context = {'controls': controls}
+  return render(request, 'assay/controls.html', context)
+
+
+@login_required(login_url='login')
+def create_control(request):
+  context = {}
+  form = ControlForm(user=request.user)
+
+  if request.method == "POST":
+    form = ControlForm(request.POST, user=request.user)
+    if form.is_valid():
+      control = form.save(commit=False)
+      control.user = request.user
+      control = form.save()
+      return redirect('controls')
+    else:
+      print(form.errors)
+
+  context = {'form': form}
+  return render(request, 'assay/create_control.html', context)
+
+
+@login_required(login_url='login')
+def edit_control(request, username, pk):
+  context = {}
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no control to edit.")
+    return redirect('controls')
+  
+  try:
+    control = Control.objects.get(user=user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no control to edit.")
+    return redirect('controls')
+  
+  form = ControlForm(instance=control, user=request.user)
+
+  if request.method == "POST":
+    form = ControlForm(request.POST, user=request.user, instance=control)
+    if form.is_valid():
+      form.save()
+      return redirect('controls')
+    else:
+      print(form.errors)
+
+  context = {'form': form, 'control': control}
+  return render(request, 'assay/edit_control.html', context)
+
+
+@login_required(login_url='login')
+def delete_control(request, username, pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no control to delete.")
+    return redirect('controls')
+  
+  try:
+    control = Control.objects.get(user=user, pk=pk)
+    control.delete()
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no control to delete.")
+    return redirect('controls')
+
+  return redirect('plates')
