@@ -2,16 +2,16 @@
 
 {% load static %}
                                                                                                                                                                                                                               
-{% block title %} Edit Tube {% endblock %} 
+{% block title %} Edit Location {% endblock %} 
 
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'css/create_control.css' %}">
+<link rel="stylesheet" href="{% static 'css/edit_fluorescence.css' %}">
 
 <div class="container-fluid">
 
   <div class="row justify-content-center">
-    <h3 class="text-center">Updating: {{control.name}}</h3>
+    <h3 class="text-center">Updating: {{fluorescence.name}}</h3>
   </div>
 
   <form method="POST" action="">
@@ -22,43 +22,8 @@
       {{form.name}}
     </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Brand</label>
-      {{form.lot_number}}
-    </div>
-
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Amount Stored</label>
-      {{form.amount}}
-    </div>
-
-    <div class="row justify-content-center mt-2">
-      <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            Locations
-            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
-              ⮟
-            </button>
-          </li>
-
-          <div class="collapse" id="reagents-collapse">
-            <div class="card-body"> 
-              <ul class="list-group">
-                {% for loc in form.location %}
-                  <li class="list-group-item">
-                    {{loc}}
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </ul>
-      </div>
-    </div>
-
-    <div class="text-center mt-2"> 
-      <input class="btn btn-primary mt-2" type="Submit" value="Update Tube">
+    <div class="text-center mt-2">
+      <button type="submit" class="btn btn-primary">Update Fluorescence</button>
     </div>
 
   </form>
@@ -66,7 +31,7 @@
   <div class="justify-content-center">
     <div class="col d-flex justify-content-center">
       <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Tube
+        Delete Fluorescence
       </button>
     </div>
   </div>
@@ -75,7 +40,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Deleting tube...</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting fluorescence...</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -85,13 +50,13 @@
           </div>
 
           <div class="text-center mx-auto">
-            <label class="form-label">Enter Tube Name: "{{tube.name}}"</label>
+            <label class="form-label">Enter Fluorescence Name: "{{fluorescence.name}}"</label>
           </div>
 
           <div class="text-center mx-auto">
             <input type="text" id="confirm-del">
           </div>
-
+      
         </div>
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -106,11 +71,11 @@
     const delButton = document.getElementById("delete-button");
   
     function del() {
-      tubeName = '{{tube.name}}'
-      if (confirmInput.value === tubeName) {
-        window.location.href = "{% url 'delete_tube' request.user.username tube.pk %}"
+      value = '{{fluorescence.name}}'
+      if (confirmInput.value === value) {
+        window.location.href = "{% url 'delete_fluorescence' request.user.username fluorescence.pk %}"
       } else {
-        alert("Invalid tube name entered, please try again.")
+        alert("Invalid fluorescence name entered, please try again.")
       }
     }
   

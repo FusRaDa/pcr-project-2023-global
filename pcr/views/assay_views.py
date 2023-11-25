@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.contrib.auth.models import User
 
-from ..models.assay import Assay, Flourescence, Control
+from ..models.assay import Assay, Fluorescence, Control
 from ..forms.assay import AssayForm, ReagentAssay, ReagentAssayForm, FlourescenceForm, ControlForm
 
 
@@ -127,15 +127,15 @@ def delete_assay(request, username, pk):
   
 
 @login_required(login_url='login')
-def flourescence(request):
-  flourescence = Flourescence.objects.filter(user=request.user).order_by('name')
+def fluorescence(request):
+  fluorescence = Fluorescence.objects.filter(user=request.user).order_by('name')
 
-  context = {'flourescence': flourescence}
-  return render(request, 'assay/flourescence.html', context)
+  context = {'fluorescence': fluorescence}
+  return render(request, 'assay/fluorescence.html', context)
 
 
 @login_required(login_url='login')
-def create_flourescence(request):
+def create_fluorescence(request):
   context = {}
   form = FlourescenceForm(user=request.user)
 
@@ -145,16 +145,16 @@ def create_flourescence(request):
       flourescence = form.save(commit=False)
       flourescence.user = request.user
       flourescence = form.save()
-      return redirect('tubes')
+      return redirect('fluorescence')
     else:
       print(form.errors)
 
   context = {'form': form}
-  return render(request, 'assay/create_flourescence.html', context)
+  return render(request, 'assay/create_fluorescence.html', context)
 
 
 @login_required(login_url='login')
-def edit_flourescence(request, username, pk):
+def edit_fluorescence(request, username, pk):
   context = {}
   user = User.objects.get(username=username)
 
@@ -163,41 +163,41 @@ def edit_flourescence(request, username, pk):
     return redirect('flourescence')
   
   try:
-    flourescence = Flourescence.objects.get(user=user, pk=pk)
+    fluorescence = Fluorescence.objects.get(user=user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no flourescence to edit.")
-    return redirect('flourescence')
+    return redirect('fluorescence')
   
-  form = FlourescenceForm(instance=flourescence)
+  form = FlourescenceForm(instance=fluorescence)
 
   if request.method == "POST":
-    form = FlourescenceForm(request.POST, instance=flourescence)
+    form = FlourescenceForm(request.POST, instance=fluorescence)
     if form.is_valid():
       form.save()
-      return redirect('flourescence')
+      return redirect('fluorescence')
     else:
       print(form.errors)
 
-  context = {'form': form, 'flourescence': flourescence}
-  return render(request, 'assay/edit_flourescence.html', context)
+  context = {'form': form, 'fluorescence': fluorescence}
+  return render(request, 'assay/edit_fluorescence.html', context)
 
 
 @login_required(login_url='login')
-def delete_flourescence(request, username, pk):
+def delete_fluorescence(request, username, pk):
   user = User.objects.get(username=username)
 
   if request.user != user:
-    messages.error(request, "There is no flourescence to delete.")
+    messages.error(request, "There is no fluorescence to delete.")
     return redirect('flourescence')
   
   try:
-    flourescence = Flourescence.objects.get(user=user, pk=pk)
-    flourescence.delete()
+    fluorescence = Fluorescence.objects.get(user=user, pk=pk)
+    fluorescence.delete()
   except ObjectDoesNotExist:
-    messages.error(request, "There is no flourescence to delete.")
-    return redirect('flourescence')
+    messages.error(request, "There is no fluorescence to delete.")
+    return redirect('fluorescence')
 
-  return redirect('flourescence')
+  return redirect('fluorescence')
 
 
 @login_required(login_url='login')

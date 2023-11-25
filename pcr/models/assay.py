@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from .inventory import Reagent, Location
 
 
-class Flourescence(models.Model):
+class Fluorescence(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   # Many-to-many with Assay
@@ -33,6 +33,8 @@ class Control(models.Model):
   lot_number = models.CharField(blank=False, max_length=25)
   amount = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
 
+  exp_date = models.DateField(blank=True)
+
   location = models.ManyToManyField(Location)
 
   def __str__(self):
@@ -58,7 +60,7 @@ class Assay(models.Model):
   sample_volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
   reaction_volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
   
-  fluorescence = models.ManyToManyField(Flourescence)
+  fluorescence = models.ManyToManyField(Fluorescence)
   controls = models.ManyToManyField(Control)
   reagents = models.ManyToManyField(Reagent, through='ReagentAssay')
 

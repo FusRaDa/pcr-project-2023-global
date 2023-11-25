@@ -1,7 +1,7 @@
 from pcr.models.pcr import ThermalCyclerProtocol
 from pcr.models.inventory import Tube, Plate, Reagent, Location
 from pcr.models.extraction import ExtractionProtocol
-from pcr.models.assay import Assay, AssayCode, Control, Flourescence
+from pcr.models.assay import Assay, AssayCode, Control, Fluorescence
 
 def create_presets(user):
 
@@ -305,12 +305,12 @@ def create_presets(user):
   
   # **EXTRACTION SECTION** #
   # Flourescence for cbovis and helico
-  tex = Flourescence.objects.create(
+  tex = Fluorescence.objects.create(
     user = user,
     name = "TEX",
   )
 
-  fam = Flourescence.objects.create(
+  fam = Fluorescence.objects.create(
     user = user,
     name = "FAM",
   )

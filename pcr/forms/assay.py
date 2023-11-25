@@ -2,12 +2,18 @@ from django.forms import ModelForm
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from ..models.assay import Assay, AssayCode, ReagentAssay, Flourescence, Control
+from ..models.assay import Assay, AssayCode, ReagentAssay, Fluorescence, Control
 from ..models.inventory import Reagent, Location
 
+
 class FlourescenceForm(ModelForm):
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs) 
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+
   class Meta:
-    model = Flourescence
+    model = Fluorescence
     exclude = ['user']
 
 
@@ -22,6 +28,11 @@ class ControlForm(ModelForm):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['lot_number'].widget.attrs['class'] = 'form-control'
+    self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['location'].widget.attrs['class'] = 'form-select'
+    
 
   class Meta:
     model = Control
@@ -48,7 +59,7 @@ class AssayForm(ModelForm):
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
-    self.fields['fluorescence'].queryset = Flourescence.objects.filter(user=self.user)
+    self.fields['fluorescence'].queryset = Fluorescence.objects.filter(user=self.user)
     self.fields['controls'].queryset = Control.objects.filter(user=self.user)
     self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user, usage=Reagent.Usages.PCR)
     self.fields['name'].widget.attrs['class'] = 'form-control'

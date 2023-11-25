@@ -42,9 +42,10 @@ class Plate(models.Model):
 
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-
+  
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
+  exp_date = models.DateField(blank=True)
 
   class Meta:
     constraints = [
@@ -73,6 +74,7 @@ class Tube(models.Model):
  
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
+  exp_date = models.DateField(blank=True)
 
   class Meta:
     constraints = [
@@ -127,6 +129,7 @@ class Reagent(models.Model):
 
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
+  exp_date = models.DateField(blank=True)
 
   class Meta:
     constraints = [

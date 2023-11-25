@@ -1,68 +1,62 @@
 from django.urls import path
-from .views.batch_views import viewBatches, createBatches, deleteBatch, batchSamples, editSampleAssay
-from .views.assay_code_views import assay_codes, create_assay_code, edit_assay_code, delete_assay_code
-from .views.extraction_protocol_views import extraction_protocols, create_extraction_protocol, edit_extraction_protocol, extraction_protocol_through, delete_extraction_protocol
-from .views.assay_views import (
-  assays, create_assay, edit_assay, assay_through, delete_assay, 
-  flourescence, create_flourescence, edit_flourescence, delete_flourescence, 
-  controls, create_control, edit_control, delete_control)
-from .views.inventory_views import (
-  locations, create_location, edit_location, delete_location, 
-  plates, create_plate, edit_plate, delete_plate, 
-  tubes, create_tube, edit_tube, delete_tube, 
-  reagents, create_reagent, edit_reagent, delete_reagent)
+from .views import batch_views
+from .views import assay_code_views
+from .views import extraction_protocol_views 
+from .views import assay_views
+from .views import inventory_views
+  
 
 urlpatterns = [
-  path("", viewBatches, name="batches"),
-  path("create-batch/", createBatches, name="create_batch"),
-  path("delete-batch/<str:username>/<int:pk>/", deleteBatch, name="delete_batch"),
-  path("batch-samples/<str:username>/<int:pk>/", batchSamples, name="batch_samples"),
-  path("sample-assay/<str:username>/<int:pk>/", editSampleAssay, name="sample_assay"),
+  path("", batch_views.viewBatches, name="batches"),
+  path("create-batch/", batch_views.createBatches, name="create_batch"),
+  path("delete-batch/<str:username>/<int:pk>/", batch_views.deleteBatch, name="delete_batch"),
+  path("batch-samples/<str:username>/<int:pk>/", batch_views.batchSamples, name="batch_samples"),
+  path("sample-assay/<str:username>/<int:pk>/", batch_views.editSampleAssay, name="sample_assay"),
 
-  path("extraction-protocols/", extraction_protocols, name="extraction_protocols"),
-  path("create-extraction-protocol/", create_extraction_protocol, name="create_extraction_protocol"),
-  path("extraction-protocol/<str:username>/<int:pk>/", edit_extraction_protocol, name="edit_extraction_protocol"),
-  path("quantify-extraction-protocol/<str:username>/<int:pk>/", extraction_protocol_through, name="extraction_protocol_through"),
-  path("delete-extraction-protocol/<str:username>/<int:pk>/", delete_extraction_protocol, name="delete_extraction_protocol"),
+  path("extraction-protocols/", extraction_protocol_views.extraction_protocols, name="extraction_protocols"),
+  path("create-extraction-protocol/", extraction_protocol_views.create_extraction_protocol, name="create_extraction_protocol"),
+  path("extraction-protocol/<str:username>/<int:pk>/", extraction_protocol_views.edit_extraction_protocol, name="edit_extraction_protocol"),
+  path("quantify-extraction-protocol/<str:username>/<int:pk>/", extraction_protocol_views.extraction_protocol_through, name="extraction_protocol_through"),
+  path("delete-extraction-protocol/<str:username>/<int:pk>/", extraction_protocol_views.delete_extraction_protocol, name="delete_extraction_protocol"),
     
-  path("assay-codes/", assay_codes, name="assay_codes"),
-  path("create-assay-code/", create_assay_code, name="create_assay_code"),
-  path("assay-code/<str:username>/<int:pk>/", edit_assay_code, name="edit_assay_code"),
-  path("delete-assay-code/<str:username>/<int:pk>/", delete_assay_code, name="delete_assay_code"),
+  path("assay-codes/", assay_code_views.assay_codes, name="assay_codes"),
+  path("create-assay-code/", assay_code_views.create_assay_code, name="create_assay_code"),
+  path("assay-code/<str:username>/<int:pk>/", assay_code_views.edit_assay_code, name="edit_assay_code"),
+  path("delete-assay-code/<str:username>/<int:pk>/", assay_code_views.delete_assay_code, name="delete_assay_code"),
 
-  path("assays/", assays, name="assays"),
-  path("create-assay/", create_assay, name="create_assay"),
-  path("assay/<str:username>/<int:pk>/", edit_assay, name="edit_assay"),
-  path("quantify-assay/<str:username>/<int:pk>/", assay_through, name="assay_through"),
-  path("delete-assay/<str:username>/<int:pk>/", delete_assay, name="delete_assay"),
+  path("assays/", assay_views.assays, name="assays"),
+  path("create-assay/", assay_views.create_assay, name="create_assay"),
+  path("assay/<str:username>/<int:pk>/", assay_views.edit_assay, name="edit_assay"),
+  path("quantify-assay/<str:username>/<int:pk>/", assay_views.assay_through, name="assay_through"),
+  path("delete-assay/<str:username>/<int:pk>/", assay_views.delete_assay, name="delete_assay"),
 
-  path("flourescence/", flourescence, name="flourescence"),
-  path("create_flourescence/", create_flourescence, name="create_flourescence"),
-  path("edit_flourescence/<str:username>/<int:pk>/", edit_flourescence, name="edit_flourescence"),
-  path("delete_flourescence/<str:username>/<int:pk>/", delete_flourescence, name="delete_flourescence"),
+  path("fluorescence/", assay_views.fluorescence, name="fluorescence"),
+  path("create_fluorescence/", assay_views.create_fluorescence, name="create_fluorescence"),
+  path("edit_fluorescence/<str:username>/<int:pk>/", assay_views.edit_fluorescence, name="edit_fluorescence"),
+  path("delete_fluorescence/<str:username>/<int:pk>/", assay_views.delete_fluorescence, name="delete_fluorescence"),
 
-  path("controls/", controls, name="controls"),
-  path("create_control/", create_control, name="create_control"),
-  path("edit_control/<str:username>/<int:pk>/", edit_control, name="edit_control"),
-  path("delete_control/<str:username>/<int:pk>/", delete_control, name="delete_control"),
+  path("controls/", assay_views.controls, name="controls"),
+  path("create_control/", assay_views.create_control, name="create_control"),
+  path("edit_control/<str:username>/<int:pk>/", assay_views.edit_control, name="edit_control"),
+  path("delete_control/<str:username>/<int:pk>/", assay_views.delete_control, name="delete_control"),
 
-  path("locations/", locations, name="locations"),
-  path("create_location/", create_location, name="create_location"),
-  path("edit_location/<str:username>/<int:pk>/", edit_location, name="edit_location"),
-  path("delete_location/<str:username>/<int:pk>/", delete_location, name="delete_location"),
+  path("locations/", inventory_views.locations, name="locations"),
+  path("create_location/", inventory_views.create_location, name="create_location"),
+  path("edit_location/<str:username>/<int:pk>/", inventory_views.edit_location, name="edit_location"),
+  path("delete_location/<str:username>/<int:pk>/", inventory_views.delete_location, name="delete_location"),
 
-  path("plates/", plates, name="plates"),
-  path("create_plate/", create_plate, name="create_plate"),
-  path("edit_plate/<str:username>/<int:pk>/", edit_plate, name="edit_plate"),
-  path("delete_plate/<str:username>/<int:pk>/", delete_plate, name="delete_plate"),
+  path("plates/", inventory_views.plates, name="plates"),
+  path("create_plate/", inventory_views.create_plate, name="create_plate"),
+  path("edit_plate/<str:username>/<int:pk>/", inventory_views.edit_plate, name="edit_plate"),
+  path("delete_plate/<str:username>/<int:pk>/", inventory_views.delete_plate, name="delete_plate"),
 
-  path("tubes/", tubes, name="tubes"),
-  path("create_tube/", create_tube, name="create_tube"),
-  path("edit_tube/<str:username>/<int:pk>/", edit_tube, name="edit_tube"),
-  path("delete_tube/<str:username>/<int:pk>/", delete_tube, name="delete_tube"),
+  path("tubes/", inventory_views.tubes, name="tubes"),
+  path("create_tube/", inventory_views.create_tube, name="create_tube"),
+  path("edit_tube/<str:username>/<int:pk>/", inventory_views.edit_tube, name="edit_tube"),
+  path("delete_tube/<str:username>/<int:pk>/", inventory_views.delete_tube, name="delete_tube"),
 
-  path("reagents/", reagents, name="reagents"),
-  path("create_reagent/", create_reagent, name="create_reagent"),
-  path("edit_reagent/<str:username>/<int:pk>/", edit_reagent, name="edit_reagent"),
-  path("delete_reagent/<str:username>/<int:pk>/", delete_reagent, name="delete_reagent"),
+  path("reagents/", inventory_views.reagents, name="reagents"),
+  path("create_reagent/", inventory_views.create_reagent, name="create_reagent"),
+  path("edit_reagent/<str:username>/<int:pk>/", inventory_views.edit_reagent, name="edit_reagent"),
+  path("delete_reagent/<str:username>/<int:pk>/", inventory_views.delete_reagent, name="delete_reagent"),
 ]

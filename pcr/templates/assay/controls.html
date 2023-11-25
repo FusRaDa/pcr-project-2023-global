@@ -1,0 +1,92 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Controls {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/controls.css' %}">
+
+<div class="container-fluid">
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
+    <div class="row">
+      <div class="col d-flex justify-content-center"> 
+        <h3 class="text-center">Tubes</h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col d-flex justify-content-center"> 
+        <a href="{% url 'create_control'%}">
+          <button type="button" class="btn btn-primary mb-2">Add New Control</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Date Added</th>
+            <th scope="col">Last Updated</th>
+            <th scope="col">Name</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Catalog #</th>
+            <th scope="col">Lot #</th>
+            <th scope="col">Amount Stored</th>
+            <th scope="col">Location</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for control in controls %}
+            <tr class="tube-row" data-href="{% url 'edit_tube' request.user.username tube.pk %}">
+              <td>{{control.date_created}}</td>
+              <td>{{control.last_updated}}</td>
+              <td>{{control.name}}</td>
+              <td>{{control.brand}}</td>
+              <td>{{control.catalog_number}}</td>
+              <td>{{control.lot_number}}</td>
+              <td>{{control.amount}}</td>
+
+              <td>
+                {% for location in tube.location.all %}
+                  {% if tube.location.all|length > 1 %}
+                  <span>
+                    {{location}} |
+                  </span>
+                  {% else %}
+                  <span>
+                    {{location}}
+                  </span>
+                  {% endif %}
+                {% endfor %}
+              </td>
+
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".tube-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                         
+{% block title %} Locations {% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/locations.css' %}">
+
+<div class="container">
+
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Fluorescence</h3>
+    </div>
+  </div>
+
+  <div class="justify-content-center">
+    <div class="col d-flex justify-content-center">
+      <a href="{% url 'create_location' %}">
+        <button type="button" class="btn btn-primary">
+          Create New Fluorescence
+        </button>
+      </a>
+    </div>
+  </div>
+
+  <div class="row">
+    {% for fluor in fluorescence %}
+    <div class="col mt-2">
+     
+       <div class="card">
+        <div class="card-header">
+          {{fluor.name}}
+        </div>
+        
+        <ul class="list-group list-group-flush">
+          {% if fluor.assay_set.all %}
+          <li class="list-group-item"> Assays
+            <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#fluor-collapse-{{fluor.pk}}" aria-expanded="false" aria-controls="fluor-collapse-{{fluor.pk}}">
+              ⮟
+            </button>
+
+            <div class="collapse" id="fluor-collapse-{{fluor.pk}}">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for fl in fluor.assay_set.all %}
+                  <li class="list-group-item">{{fl}}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+
+          </li>
+          {% endif %}
+        </ul>
+        <div class="card-body">
+          <a href="{% url 'edit_fluorescence' request.user.username fluor.pk %}" class="card-link">Edit Fluorescence</a>
+        </div>
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    $('.btn-arrow').click(function(){
+      $(this).text(function(i,old){
+        return old=='⮝' ?  '⮟' : '⮝';
+      });
+    });
+  </script>
+
+</div>
+
+
+{% endblock %}
