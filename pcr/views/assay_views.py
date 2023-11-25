@@ -131,7 +131,7 @@ def flourescence(request):
   flourescence = Flourescence.objects.filter(user=request.user).order_by('name')
 
   context = {'flourescence': flourescence}
-  return render(request, 'flourescence.html', context)
+  return render(request, 'assay/flourescence.html', context)
 
 
 @login_required(login_url='login')
@@ -271,4 +271,4 @@ def delete_control(request, username, pk):
     messages.error(request, "There is no control to delete.")
     return redirect('controls')
 
-  return redirect('plates')
+  return redirect('controls')

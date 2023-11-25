@@ -2,7 +2,10 @@ from django.urls import path
 from .views.batch_views import viewBatches, createBatches, deleteBatch, batchSamples, editSampleAssay
 from .views.assay_code_views import assay_codes, create_assay_code, edit_assay_code, delete_assay_code
 from .views.extraction_protocol_views import extraction_protocols, create_extraction_protocol, edit_extraction_protocol, extraction_protocol_through, delete_extraction_protocol
-from .views.assay_views import assays, create_assay, edit_assay, assay_through, delete_assay
+from .views.assay_views import (
+  assays, create_assay, edit_assay, assay_through, delete_assay, 
+  flourescence, create_flourescence, edit_flourescence, delete_flourescence, 
+  controls, create_control, edit_control, delete_control)
 from .views.inventory_views import (
   locations, create_location, edit_location, delete_location, 
   plates, create_plate, edit_plate, delete_plate, 
@@ -32,6 +35,16 @@ urlpatterns = [
   path("assay/<str:username>/<int:pk>/", edit_assay, name="edit_assay"),
   path("quantify-assay/<str:username>/<int:pk>/", assay_through, name="assay_through"),
   path("delete-assay/<str:username>/<int:pk>/", delete_assay, name="delete_assay"),
+
+  path("flourescence/", flourescence, name="flourescence"),
+  path("create_flourescence/", create_flourescence, name="create_flourescence"),
+  path("edit_flourescence/<str:username>/<int:pk>/", edit_flourescence, name="edit_flourescence"),
+  path("delete_flourescence/<str:username>/<int:pk>/", delete_flourescence, name="delete_flourescence"),
+
+  path("controls/", controls, name="controls"),
+  path("create_control/", create_control, name="create_control"),
+  path("edit_control/<str:username>/<int:pk>/", edit_control, name="edit_control"),
+  path("delete_control/<str:username>/<int:pk>/", delete_control, name="delete_control"),
 
   path("locations/", locations, name="locations"),
   path("create_location/", create_location, name="create_location"),
