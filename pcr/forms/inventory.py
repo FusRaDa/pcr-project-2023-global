@@ -1,5 +1,6 @@
 from django.forms import ModelForm
 from django import forms
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from ..models.inventory import Plate, Tube, Reagent, Location
@@ -15,6 +16,21 @@ class LocationForm(ModelForm):
   class Meta:
     model = Location
     exclude = ['user']
+
+
+class DeleteLocationForm(ModelForm):
+
+  def clean(self):
+    cleaned_data = super().clean()
+    name = cleaned_data.get('name')
+    if name != self.instance.name:
+      raise ValidationError(
+        message="Invalid location name entered, please try again."
+      )
+
+  class Meta:
+    model = Location
+    fields = ['name']
 
 
 class PlateForm(ModelForm):

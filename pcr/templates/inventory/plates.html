@@ -18,70 +18,71 @@
   </div>
   {% endfor %}
 
-    <div class="row">
-      <div class="col d-flex justify-content-center"> 
-        <h3 class="text-center">Plates</h3>
-      </div>
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Plates</h3>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col d-flex justify-content-center"> 
-        <a href="{% url 'create_plate'%}">
-          <button type="button" class="btn btn-primary mb-2">Add New Plates</button>
-        </a>
-      </div>
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <a href="{% url 'create_plate' %}">
+        <button type="button" class="btn btn-primary mb-2">Add New Plates</button>
+      </a>
     </div>
+  </div>
 
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Date Added</th>
-            <th scope="col">Last Updated</th>
-            <th scope="col">Name</th>
-            <th scope="col">Brand</th>
-            <th scope="col">Catalog #</th>
-            <th scope="col">Lot #</th>
-            <th scope="col">Size</th>
-            <th scope="col">Amount Stored</th>
-            <th scope="col">Location</th>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Exp. Date</th>
+          <th scope="col">Date Added</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Catalog #</th>
+          <th scope="col">Lot #</th>
+          <th scope="col">Size</th>
+          <th scope="col">Amount Stored</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for plate in plates %}
+          <tr class="plate-row" data-href="{% url 'edit_plate' request.user.username plate.pk %}">
+            <td>{{plate.exp_date}}</td>
+            <td>{{plate.date_created}}</td>
+            <td>{{plate.last_updated}}</td>
+            <td>{{plate.name}}</td>
+            <td>{{plate.brand}}</td>
+            <td>{{plate.catalog_number}}</td>
+            <td>{{plate.lot_number}}</td>
+            <td>{{plate.size}}</td>
+            <td>{{plate.amount}}</td>
+            
+            <td>
+              {% for location in plate.location.all %}
+                {% if plate.location.all|length > 1 %}
+                <span>
+                  {{location}} |
+                </span>
+                {% else %}
+                <span>
+                  {{location}}
+                </span>
+                {% endif %}
+              {% endfor %}
+            </td>
+
           </tr>
-        </thead>
+        {% endfor %}
+      </tbody>
 
-        <tbody>
-          {% for plate in plates %}
-            <tr class="plate-row" data-href="{% url 'edit_plate' request.user.username plate.pk %}">
-              <td>{{plate.date_created}}</td>
-              <td>{{plate.last_updated}}</td>
-              <td>{{plate.name}}</td>
-              <td>{{plate.brand}}</td>
-              <td>{{plate.catalog_number}}</td>
-              <td>{{plate.lot_number}}</td>
-              <td>{{plate.size}}</td>
-              <td>{{plate.amount}}</td>
-              
-              <td>
-                {% for location in plate.location.all %}
-                  {% if plate.location.all|length > 1 %}
-                  <span>
-                    {{location}} |
-                  </span>
-                  {% else %}
-                  <span>
-                    {{location}}
-                  </span>
-                  {% endif %}
-                {% endfor %}
-              </td>
+    </table>
+  </div>
 
-            </tr>
-          {% endfor %}
-        </tbody>
-
-      </table>
-    </div>
-
-        
 </div>
 
 <script>

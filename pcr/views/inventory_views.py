@@ -52,8 +52,8 @@ def edit_location(request, username, pk):
     return redirect('locations')
   
   form = LocationForm(instance=location)
-
-  if request.method == "POST":
+ 
+  if request.method == 'POST':
     form = LocationForm(request.POST, instance=location)
     if form.is_valid():
       form.save()

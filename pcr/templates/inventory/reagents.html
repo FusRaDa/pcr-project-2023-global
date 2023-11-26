@@ -18,144 +18,144 @@
   </div>
   {% endfor %}
 
-    <div class="row">
-      <div class="col d-flex justify-content-center"> 
-        <h3 class="text-center">Reagents</h3>
-      </div>
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Reagents</h3>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col d-flex justify-content-center"> 
-        <a href="{% url 'create_reagent'%}">
-          <button type="button" class="btn btn-primary mb-2">Add New Reagents</button>
-        </a>
-      </div>
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <a href="{% url 'create_reagent'%}">
+        <button type="button" class="btn btn-primary mb-2">Add New Reagents</button>
+      </a>
     </div>
+  </div>
 
-    <ul class="nav nav-pills mb-3 d-flex justify-content-center" id="pills-tab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#extraction" type="button" role="tab" aria-controls="extraction" aria-selected="true">Extraction</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pcr" type="button" role="tab" aria-controls="pcr" aria-selected="false">PCR</button>
-      </li>
-    </ul>
+  <ul class="nav nav-pills mb-3 d-flex justify-content-center" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#extraction" type="button" role="tab" aria-controls="extraction" aria-selected="true">Extraction</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pcr" type="button" role="tab" aria-controls="pcr" aria-selected="false">PCR</button>
+    </li>
+  </ul>
 
-    <div class="tab-content" id="myTabContent">
+  <div class="tab-content" id="myTabContent">
 
-      <div class="tab-pane fade show active" id="extraction" role="tabpanel" aria-labelledby="extraction-tab">
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th scope="col">Date Added</th>
-                <th scope="col">Last Updated</th>
-                <th scope="col">Name</th>
-                <th scope="col">Brand</th>
-                <th scope="col">Catalog #</th>
-                <th scope="col">Lot #</th>
-                <th scope="col">Volume</th>
-                <th scope="col">Volume Unit</th>
-                <th scope="col">Concentration</th>
-                <th scope="col">Unit Concentration</th>
-                <th scope="col">Location(s)</th>
+    <div class="tab-pane fade show active" id="extraction" role="tabpanel" aria-labelledby="extraction-tab">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Date Added</th>
+              <th scope="col">Last Updated</th>
+              <th scope="col">Name</th>
+              <th scope="col">Brand</th>
+              <th scope="col">Catalog #</th>
+              <th scope="col">Lot #</th>
+              <th scope="col">Volume</th>
+              <th scope="col">Volume Unit</th>
+              <th scope="col">Concentration</th>
+              <th scope="col">Unit Concentration</th>
+              <th scope="col">Location(s)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for reagent in ext_reagents %}
+              <tr class="reagent-row" data-href="{% url 'edit_reagent' request.user.username reagent.pk %}">
+                <td>{{reagent.date_created}}</td>
+                <td>{{reagent.last_updated}}</td>
+                <td>{{reagent.name}}</td>
+                <td>{{reagent.brand}}</td>
+                <td>{{reagent.catalog_number}}</td>
+                <td>{{reagent.lot_number}}</td>
+                <td>{{reagent.volume}}</td>
+                <td>{{reagent.unit_volume}}</td>
+                <td>{{reagent.stock_concentration}}</td>
+                <td>{{reagent.unit_concentration}}</td>
+
+                <td>
+                  {% for location in reagent.location.all %}
+                    {% if reagent.location.all|length > 1 %}
+                    <span>
+                      {{location}} |
+                    </span>
+                    {% else %}
+                    <span>
+                      {{location}}
+                    </span>
+                    {% endif %}
+                  {% endfor %}
+                </td>
+
               </tr>
-            </thead>
-  
-            <tbody>
-              {% for reagent in ext_reagents %}
-                <tr class="reagent-row" data-href="{% url 'edit_reagent' request.user.username reagent.pk %}">
-                  <td>{{reagent.date_created}}</td>
-                  <td>{{reagent.last_updated}}</td>
-                  <td>{{reagent.name}}</td>
-                  <td>{{reagent.brand}}</td>
-                  <td>{{reagent.catalog_number}}</td>
-                  <td>{{reagent.lot_number}}</td>
-                  <td>{{reagent.volume}}</td>
-                  <td>{{reagent.unit_volume}}</td>
-                  <td>{{reagent.stock_concentration}}</td>
-                  <td>{{reagent.unit_concentration}}</td>
-  
-                  <td>
-                    {% for location in reagent.location.all %}
-                      {% if reagent.location.all|length > 1 %}
-                      <span>
-                        {{location}} |
-                      </span>
-                      {% else %}
-                      <span>
-                        {{location}}
-                      </span>
-                      {% endif %}
-                    {% endfor %}
-                  </td>
-  
-                </tr>
-              {% endfor %}
-            </tbody>
-  
-          </table>
-        </div>
-      </div>
-      
-      <div class="tab-pane fade" id="pcr" role="tabpanel" aria-labelledby="pcr-tab">
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th scope="col">Date Added</th>
-                <th scope="col">Last Updated</th>
-                <th scope="col">Name</th>
-                <th scope="col">Brand</th>
-                <th scope="col">Catalog #</th>
-                <th scope="col">Lot #</th>
-                <th scope="col">Volume</th>
-                <th scope="col">Volume Unit</th>
-                <th scope="col">Concentration</th>
-                <th scope="col">Unit Concentration</th>
-                <th scope="col">Location(s)</th>
-              </tr>
-            </thead>
-  
-            <tbody>
-              {% for reagent in pcr_reagents %}
-                <tr class="reagent-row" data-href="{% url 'edit_reagent' request.user.username reagent.pk %}">
-                  <td>{{reagent.date_created}}</td>
-                  <td>{{reagent.last_updated}}</td>
-                  <td>{{reagent.name}}</td>
-                  <td>{{reagent.brand}}</td>
-                  <td>{{reagent.catalog_number}}</td>
-                  <td>{{reagent.lot_number}}</td>
-                  <td>{{reagent.volume}}</td>
-                  <td>{{reagent.unit_volume}}</td>
-                  <td>{{reagent.stock_concentration}}</td>
-                  <td>{{reagent.unit_concentration}}</td>
-  
-                  <td>
-                    {% for location in reagent.location.all %}
-                      {% if reagent.location.all|length > 1 %}
-                      <span>
-                        {{location}} |
-                      </span>
-                      {% else %}
-                      <span>
-                        {{location}}
-                      </span>
-                      {% endif %}
-                    {% endfor %}
-                  </td>
-  
-                </tr>
-              {% endfor %}
-            </tbody>
-  
-          </table>
-        </div>
-      </div>
+            {% endfor %}
+          </tbody>
 
+        </table>
+      </div>
     </div>
-
     
+    <div class="tab-pane fade" id="pcr" role="tabpanel" aria-labelledby="pcr-tab">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Exp. Date</th>
+              <th scope="col">Date Added</th>
+              <th scope="col">Last Updated</th>
+              <th scope="col">Name</th>
+              <th scope="col">Brand</th>
+              <th scope="col">Catalog #</th>
+              <th scope="col">Lot #</th>
+              <th scope="col">Volume</th>
+              <th scope="col">Volume Unit</th>
+              <th scope="col">Concentration</th>
+              <th scope="col">Unit Concentration</th>
+              <th scope="col">Location(s)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for reagent in pcr_reagents %}
+              <tr class="reagent-row" data-href="{% url 'edit_reagent' request.user.username reagent.pk %}">
+                <td>{{reagent.exp_date}}</td>
+                <td>{{reagent.date_created}}</td>
+                <td>{{reagent.last_updated}}</td>
+                <td>{{reagent.name}}</td>
+                <td>{{reagent.brand}}</td>
+                <td>{{reagent.catalog_number}}</td>
+                <td>{{reagent.lot_number}}</td>
+                <td>{{reagent.volume}}</td>
+                <td>{{reagent.unit_volume}}</td>
+                <td>{{reagent.stock_concentration}}</td>
+                <td>{{reagent.unit_concentration}}</td>
+
+                <td>
+                  {% for location in reagent.location.all %}
+                    {% if reagent.location.all|length > 1 %}
+                    <span>
+                      {{location}} |
+                    </span>
+                    {% else %}
+                    <span>
+                      {{location}}
+                    </span>
+                    {% endif %}
+                  {% endfor %}
+                </td>
+
+              </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+
+  </div>
 
 </div>
 
