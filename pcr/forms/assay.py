@@ -33,7 +33,6 @@ class ControlForm(ModelForm):
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['location'].widget.attrs['class'] = 'form-select'
     
-
   class Meta:
     model = Control
     exclude = ['user']

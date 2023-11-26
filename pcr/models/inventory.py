@@ -45,7 +45,7 @@ class Plate(models.Model):
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
-  exp_date = models.DateField(blank=True)
+  exp_date = models.DateField(blank=True, null=True, default=None)
 
   class Meta:
     constraints = [
@@ -74,7 +74,7 @@ class Tube(models.Model):
  
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
-  exp_date = models.DateField(blank=True)
+  exp_date = models.DateField(blank=True, null=True, default=None)
 
   class Meta:
     constraints = [
@@ -129,7 +129,7 @@ class Reagent(models.Model):
 
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
-  exp_date = models.DateField(blank=True)
+  exp_date = models.DateField(blank=True, null=True, default=None)
 
   class Meta:
     constraints = [

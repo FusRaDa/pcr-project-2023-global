@@ -36,11 +36,8 @@
       <table class="table table-bordered table-hover">
         <thead>
           <tr>
-            <th scope="col">Date Added</th>
-            <th scope="col">Last Updated</th>
+            <th scope="col">Exp. Date</th>
             <th scope="col">Name</th>
-            <th scope="col">Brand</th>
-            <th scope="col">Catalog #</th>
             <th scope="col">Lot #</th>
             <th scope="col">Amount Stored</th>
             <th scope="col">Location</th>
@@ -49,12 +46,9 @@
 
         <tbody>
           {% for control in controls %}
-            <tr class="tube-row" data-href="{% url 'edit_tube' request.user.username tube.pk %}">
-              <td>{{control.date_created}}</td>
-              <td>{{control.last_updated}}</td>
+            <tr class="tube-row" data-href="{% url 'edit_control' request.user.username control.pk %}">
+              <td>{{control.exp_date}}</td>
               <td>{{control.name}}</td>
-              <td>{{control.brand}}</td>
-              <td>{{control.catalog_number}}</td>
               <td>{{control.lot_number}}</td>
               <td>{{control.amount}}</td>
 

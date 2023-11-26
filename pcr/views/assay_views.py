@@ -124,7 +124,7 @@ def delete_assay(request, username, pk):
     return redirect('assays')
 
   return redirect('assays')
-  
+
 
 @login_required(login_url='login')
 def fluorescence(request):
