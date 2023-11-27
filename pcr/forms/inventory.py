@@ -18,20 +18,22 @@ class LocationForm(ModelForm):
     exclude = ['user']
 
 
-class DeleteLocationForm(ModelForm):
+class DeleteLocationForm(forms.Form):
 
+  confirm = forms.CharField()
+
+  def __init__(self, *args, **kwargs):
+    self.value = kwargs.pop('value')
+    super().__init__(*args, **kwargs) 
+    self.fields['confirm'].widget.attrs['class'] = 'form-control'
+    
   def clean(self):
     cleaned_data = super().clean()
-    name = cleaned_data.get('name')
-    if name != self.instance.name:
+    confirm = cleaned_data.get('confirm')
+    if confirm != self.value:
       raise ValidationError(
         message="Invalid location name entered, please try again."
       )
-
-  class Meta:
-    model = Location
-    fields = ['name']
-
 
 class PlateForm(ModelForm):
 
@@ -56,6 +58,24 @@ class PlateForm(ModelForm):
     exclude = ['user', 'last_updated']
 
 
+class DeletePlateForm(forms.Form):
+
+  confirm = forms.CharField()
+
+  def __init__(self, *args, **kwargs):
+    self.value = kwargs.pop('value')
+    super().__init__(*args, **kwargs) 
+    self.fields['confirm'].widget.attrs['class'] = 'form-control'
+    
+  def clean(self):
+    cleaned_data = super().clean()
+    confirm = cleaned_data.get('confirm')
+    if confirm != self.value:
+      raise ValidationError(
+        message="Invalid plate name entered, please try again."
+      )
+
+
 class TubeForm(ModelForm):
 
   location = forms.ModelMultipleChoiceField(
@@ -76,6 +96,24 @@ class TubeForm(ModelForm):
   class Meta:
     model = Tube
     exclude = ['user', 'last_updated']
+
+
+class DeleteTubeForm(forms.Form):
+
+  confirm = forms.CharField()
+
+  def __init__(self, *args, **kwargs):
+    self.value = kwargs.pop('value')
+    super().__init__(*args, **kwargs) 
+    self.fields['confirm'].widget.attrs['class'] = 'form-control'
+    
+  def clean(self):
+    cleaned_data = super().clean()
+    confirm = cleaned_data.get('confirm')
+    if confirm != self.value:
+      raise ValidationError(
+        message="Invalid tube name entered, please try again."
+      )
 
 
 class ReagentForm(ModelForm):
@@ -102,3 +140,21 @@ class ReagentForm(ModelForm):
   class Meta:
     model = Reagent
     exclude = ['user', 'last_updated']
+
+
+class DeleteReagentForm(forms.Form):
+
+  confirm = forms.CharField()
+
+  def __init__(self, *args, **kwargs):
+    self.value = kwargs.pop('value')
+    super().__init__(*args, **kwargs) 
+    self.fields['confirm'].widget.attrs['class'] = 'form-control'
+    
+  def clean(self):
+    cleaned_data = super().clean()
+    confirm = cleaned_data.get('confirm')
+    if confirm != self.value:
+      raise ValidationError(
+        message="Invalid reagent name entered, please try again."
+      )

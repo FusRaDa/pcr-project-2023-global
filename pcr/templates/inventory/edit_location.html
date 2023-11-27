@@ -2,7 +2,7 @@
 
 {% load static %}
                                                                                                                                                                                                                               
-{% block title %} Edit Location {% endblock %} 
+{% block title %} Update Location {% endblock %} 
 
 {% block content %}
 
@@ -28,15 +28,15 @@
 
   </form>
 
-  <div class="justify-content-center">
-    <div class="col d-flex justify-content-center">
-      <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Location
-      </button>
-    </div>
+  <div class="col d-flex justify-content-center">
+    <a href="{% url 'delete_location' request.user.username location.pk%}">
+    <button type="button" class="btn btn-danger mt-2">
+      Delete Location
+    </button>
+    </a>
   </div>
 
-  <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
+  {% comment %} <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -64,9 +64,9 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> {% endcomment %}
 
-  <script>
+  {% comment %} <script>
     const confirmInput = document.getElementById("confirm-del")
     const delButton = document.getElementById("delete-button");
   
@@ -81,7 +81,7 @@
   
     delButton.addEventListener("click", del);
   
-  </script>
+  </script> {% endcomment %}
 
 </div>
 

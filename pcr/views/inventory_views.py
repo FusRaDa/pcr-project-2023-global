@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 from ..models.inventory import Location, Reagent, Tube, Plate
-from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm
+from ..forms.inventory import LocationForm, DeleteLocationForm, ReagentForm, TubeForm, PlateForm
 
 
 # **LOCATIONS VIEWS** #
@@ -67,6 +67,7 @@ def edit_location(request, username, pk):
 
 @login_required(login_url='login')
 def delete_location(request, username, pk):
+  context = {}
   user = User.objects.get(username=username)
 
   if request.user != user:
@@ -75,12 +76,22 @@ def delete_location(request, username, pk):
   
   try:
     location = Location.objects.get(user=user, pk=pk)
-    location.delete()
   except ObjectDoesNotExist:
     messages.error(request, "There is no location to delete.")
     return redirect('locations')
+  
+  form = DeleteLocationForm(value=location.name)
+  
+  if request.method == "POST":
+    form = DeleteLocationForm(request.POST, value=location.name)
+    if form.is_valid():
+      location.delete()
+      return redirect('locations')
+    else:
+      print(form.errors)
 
-  return redirect('locations')
+  context = {'form': form, 'location': location}
+  return render(request, 'inventory/delete_location.html', context)
 # **LOCATIONS VIEWS** #
 
 

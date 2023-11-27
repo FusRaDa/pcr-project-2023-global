@@ -61,6 +61,24 @@ class BatchForm(ModelForm):
     exclude = ['user', 'date_performed']
 
 
+class DeleteBatchForm(forms.Form):
+
+  confirm = forms.CharField()
+
+  def __init__(self, *args, **kwargs):
+    self.value = kwargs.pop('value')
+    super().__init__(*args, **kwargs) 
+    self.fields['confirm'].widget.attrs['class'] = 'form-control'
+    
+  def clean(self):
+    cleaned_data = super().clean()
+    confirm = cleaned_data.get('confirm')
+    if confirm != self.value:
+      raise ValidationError(
+        message="Invalid batch name entered, please try again."
+      )
+
+
 class SampleForm(ModelForm):
 
   def __init__(self, *args, **kwargs):

@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 from ..models.assay import Assay, Fluorescence, Control
-from ..forms.assay import AssayForm, ReagentAssay, ReagentAssayForm, FlourescenceForm, ControlForm
+from ..forms.assay import AssayForm, ReagentAssay, ReagentAssayForm, FluorescenceForm, ControlForm
 
 
 @login_required(login_url='login')
@@ -137,10 +137,10 @@ def fluorescence(request):
 @login_required(login_url='login')
 def create_fluorescence(request):
   context = {}
-  form = FlourescenceForm(user=request.user)
+  form = FluorescenceForm(user=request.user)
 
   if request.method == "POST":
-    form = FlourescenceForm(request.POST, user=request.user)
+    form = FluorescenceForm(request.POST, user=request.user)
     if form.is_valid():
       flourescence = form.save(commit=False)
       flourescence.user = request.user
@@ -168,10 +168,10 @@ def edit_fluorescence(request, username, pk):
     messages.error(request, "There is no flourescence to edit.")
     return redirect('fluorescence')
   
-  form = FlourescenceForm(instance=fluorescence)
+  form = FluorescenceForm(instance=fluorescence)
 
   if request.method == "POST":
-    form = FlourescenceForm(request.POST, instance=fluorescence)
+    form = FluorescenceForm(request.POST, instance=fluorescence)
     if form.is_valid():
       form.save()
       return redirect('fluorescence')

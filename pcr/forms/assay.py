@@ -1,12 +1,13 @@
 from django.forms import ModelForm
 from django import forms
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from ..models.assay import Assay, AssayCode, ReagentAssay, Fluorescence, Control
 from ..models.inventory import Reagent, Location
 
 
-class FlourescenceForm(ModelForm):
+class FluorescenceForm(ModelForm):
 
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs) 
@@ -15,6 +16,24 @@ class FlourescenceForm(ModelForm):
   class Meta:
     model = Fluorescence
     exclude = ['user']
+
+
+class DeleteFluorescenceForm(forms.Form):
+
+  confirm = forms.CharField()
+
+  def __init__(self, *args, **kwargs):
+    self.value = kwargs.pop('value')
+    super().__init__(*args, **kwargs) 
+    self.fields['confirm'].widget.attrs['class'] = 'form-control'
+    
+  def clean(self):
+    cleaned_data = super().clean()
+    confirm = cleaned_data.get('confirm')
+    if confirm != self.value:
+      raise ValidationError(
+        message="Invalid fluorescence name entered, please try again."
+      )
 
 
 class ControlForm(ModelForm):
@@ -36,6 +55,24 @@ class ControlForm(ModelForm):
   class Meta:
     model = Control
     exclude = ['user']
+
+
+class DeleteControlForm(forms.Form):
+
+  confirm = forms.CharField()
+
+  def __init__(self, *args, **kwargs):
+    self.value = kwargs.pop('value')
+    super().__init__(*args, **kwargs) 
+    self.fields['confirm'].widget.attrs['class'] = 'form-control'
+    
+  def clean(self):
+    cleaned_data = super().clean()
+    confirm = cleaned_data.get('confirm')
+    if confirm != self.value:
+      raise ValidationError(
+        message="Invalid control name entered, please try again."
+      )
 
 
 class AssayForm(ModelForm):
@@ -72,6 +109,24 @@ class AssayForm(ModelForm):
     exclude = ['user']
 
 
+class DeleteAssayForm(forms.Form):
+
+  confirm = forms.CharField()
+
+  def __init__(self, *args, **kwargs):
+    self.value = kwargs.pop('value')
+    super().__init__(*args, **kwargs) 
+    self.fields['confirm'].widget.attrs['class'] = 'form-control'
+    
+  def clean(self):
+    cleaned_data = super().clean()
+    confirm = cleaned_data.get('confirm')
+    if confirm != self.value:
+      raise ValidationError(
+        message="Invalid assay name entered, please try again."
+      )
+
+
 class ReagentAssayForm(ModelForm):
   class Meta:
     model = ReagentAssay
@@ -94,3 +149,21 @@ class AssayCodeForm(ModelForm):
   class Meta:
     model = AssayCode
     exclude = ['user']
+
+
+class DeleteAssayCodeForm(forms.Form):
+
+  confirm = forms.CharField()
+
+  def __init__(self, *args, **kwargs):
+    self.value = kwargs.pop('value')
+    super().__init__(*args, **kwargs) 
+    self.fields['confirm'].widget.attrs['class'] = 'form-control'
+    
+  def clean(self):
+    cleaned_data = super().clean()
+    confirm = cleaned_data.get('confirm')
+    if confirm != self.value:
+      raise ValidationError(
+        message="Invalid assay protocol name entered, please try again."
+      )
