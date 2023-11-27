@@ -52,8 +52,9 @@ def edit_location(request, username, pk):
     return redirect('locations')
   
   form = LocationForm(instance=location)
+  del_form = DeleteLocationForm(value=location.name)
  
-  if request.method == 'POST':
+  if 'update' in request.POST:
     form = LocationForm(request.POST, instance=location)
     if form.is_valid():
       form.save()
@@ -61,37 +62,18 @@ def edit_location(request, username, pk):
     else:
       print(form.errors)
 
-  context = {'form': form, 'location': location}
-  return render(request, 'inventory/edit_location.html', context)
-
-
-@login_required(login_url='login')
-def delete_location(request, username, pk):
-  context = {}
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no location to delete.")
-    return redirect('locations')
-  
-  try:
-    location = Location.objects.get(user=user, pk=pk)
-  except ObjectDoesNotExist:
-    messages.error(request, "There is no location to delete.")
-    return redirect('locations')
-  
-  form = DeleteLocationForm(value=location.name)
-  
-  if request.method == "POST":
-    form = DeleteLocationForm(request.POST, value=location.name)
-    if form.is_valid():
+  if 'delete' in request.POST:
+    del_form = DeleteLocationForm(request.POST, value=location.name)
+    if del_form.is_valid():
       location.delete()
       return redirect('locations')
     else:
-      print(form.errors)
+      messages.error(request, "Invalid location name entered, please try again.")
+      print(del_form.errors)
+      return redirect(request.path_info)
 
-  context = {'form': form, 'location': location}
-  return render(request, 'inventory/delete_location.html', context)
+  context = {'form': form, 'location': location, 'del_form': del_form}
+  return render(request, 'inventory/edit_location.html', context)
 # **LOCATIONS VIEWS** #
 
 
@@ -141,34 +123,27 @@ def edit_plate(request, username, pk):
   
   form = PlateForm(user=request.user, instance=plate)
 
-  if request.method == "POST":
+  if 'update' in request.POST:
     form = PlateForm(request.POST, user=request.user, instance=plate)
     if form.is_valid():
       form.save()
       return redirect('plates')
     else:
       print(form.errors)
+      return redirect(request.path_info)
 
-  context = {'form': form, 'plate': plate}
+  if 'delete' in request.POST:
+    del_form = DeleteLocationForm(request.POST, value=plate.name)
+    if del_form.is_valid():
+      plate.delete()
+      return redirect('plates')
+    else:
+      messages.error(request, "Invalid plate name entered, please try again.")
+      print(del_form.errors)
+      return redirect(request.path_info)
+
+  context = {'form': form, 'plate': plate, 'del_form': del_form}
   return render(request, 'inventory/edit_plate.html', context)
-
-
-@login_required(login_url='login')
-def delete_plate(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no plate to delete.")
-    return redirect('plates')
-  
-  try:
-    plate = Plate.objects.get(user=user, pk=pk)
-    plate.delete()
-  except ObjectDoesNotExist:
-    messages.error(request, "There is no plate to delete.")
-    return redirect('plates')
-
-  return redirect('plates')
 # **PLATES VIEWS** #
 
 
@@ -206,45 +181,37 @@ def edit_tube(request, username, pk):
   user = User.objects.get(username=username)
 
   if request.user != user:
-    messages.error(request, "There is no location to edit.")
-    return redirect('locations')
+    messages.error(request, "There is no tube to edit.")
+    return redirect('tubes')
   
   try:
     tube = Tube.objects.get(user=user, pk=pk)
   except ObjectDoesNotExist:
-    messages.error(request, "There is no locaton to edit.")
+    messages.error(request, "There is no tube to edit.")
     return redirect('locations')
   
   form = TubeForm(instance=tube, user=request.user)
 
-  if request.method == "POST":
+  if 'update' in request.POST:
     form = TubeForm(request.POST, user=request.user, instance=tube)
     if form.is_valid():
       form.save()
-      return redirect('locations')
+      return redirect('tubes')
     else:
       print(form.errors)
 
-  context = {'form': form, 'tube': tube}
+  if 'delete' in request.POST:
+    del_form = DeleteLocationForm(request.POST, value=tube.name)
+    if del_form.is_valid():
+      tube.delete()
+      return redirect('tubes')
+    else:
+      messages.error(request, "Invalid tube name entered, please try again.")
+      print(del_form.errors)
+      return redirect(request.path_info)
+
+  context = {'form': form, 'tube': tube, 'del_form': del_form}
   return render(request, 'inventory/edit_tube.html', context)
-
-
-@login_required(login_url='login')
-def delete_tube(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no plate to delete.")
-    return redirect('plates')
-  
-  try:
-    tube = Tube.objects.get(user=user, pk=pk)
-    tube.delete()
-  except ObjectDoesNotExist:
-    messages.error(request, "There is no plate to delete.")
-    return redirect('plates')
-
-  return redirect('plates')
 # **TUBES VIEWS** #
 
 
@@ -294,7 +261,7 @@ def edit_reagent(request, username, pk):
   
   form = ReagentForm(instance=reagent, user=request.user)
 
-  if request.method == "POST":
+  if 'update' in request.POST:
     form = ReagentForm(request.POST, user=request.user, instance=reagent)
     if form.is_valid():
       form.save()
@@ -302,24 +269,16 @@ def edit_reagent(request, username, pk):
     else:
       print(form.errors)
 
-  context = {'form': form, 'reagent': reagent}
+  if 'delete' in request.POST:
+    del_form = DeleteLocationForm(request.POST, value=reagent.name)
+    if del_form.is_valid():
+      reagent.delete()
+      return redirect('reagents')
+    else:
+      messages.error(request, "Invalid reagent name entered, please try again.")
+      print(del_form.errors)
+      return redirect(request.path_info)
+
+  context = {'form': form, 'reagent': reagent, 'del_form': del_form}
   return render(request, 'inventory/edit_reagent.html', context)
-
-
-@login_required(login_url='login')
-def delete_reagent(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no reagent to delete.")
-    return redirect('reagents')
-  
-  try:
-    reagent = Reagent.objects.get(user=user, pk=pk)
-    reagent.delete()
-  except ObjectDoesNotExist:
-    messages.error(request, "There is no reagent to delete.")
-    return redirect('reagents')
-
-  return redirect('reagents')
 # **REAGENTS VIEWS** #

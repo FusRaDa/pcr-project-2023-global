@@ -6,9 +6,18 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{% static 'css/global.css' %}">
 <link rel="stylesheet" href="{% static 'css/edit_location.css' %}">
 
-<div class="container-fluid">
+<div class="container">
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
 
   <div class="row justify-content-center">
     <h3 class="text-center">Updating: {{location.name}}</h3>
@@ -29,14 +38,12 @@
   </form>
 
   <div class="col d-flex justify-content-center">
-    <a href="{% url 'delete_location' request.user.username location.pk%}">
-    <button type="button" class="btn btn-danger mt-2">
+    <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
       Delete Location
     </button>
-    </a>
   </div>
 
-  {% comment %} <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
+  <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -44,45 +51,37 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+
+          <div class="container-sm">
+
+            <div class="row justify-content-center">
+              <h5 class="text-center">Are you sure?</h5>
+            </div>
+            
+            <div class="row justify-content-center">
+              <form method="POST" action="">
+                {% csrf_token %}
           
-          <div class="row justify-content-center">
-            <h5 class="text-center">Deleting this may affect...</h5>
+                <div class="text-center mx-auto">
+                  <label class="form-label">Enter: "{{location.name}}" &amp; Confirm</label>
+                  {{del_form.confirm}}
+                </div>
+          
+                {{del_form.errors}}
+          
+                <div class="text-center mt-2">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary" name="delete">Confirm</button>
+                </div>
+              </form>
+            </div>
+
           </div>
 
-          <div class="text-center mx-auto">
-            <label class="form-label">Enter Location Name: "{{location.name}}"</label>
-          </div>
-
-          <div class="text-center mx-auto">
-            <input type="text" id="confirm-del">
-          </div>
-      
-        </div>
-        <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" id="delete-button" name="delete">Confirm</button>
         </div>
       </div>
     </div>
-  </div> {% endcomment %}
-
-  {% comment %} <script>
-    const confirmInput = document.getElementById("confirm-del")
-    const delButton = document.getElementById("delete-button");
-  
-    function del() {
-      locName = '{{location.name}}'
-      if (confirmInput.value === locName) {
-        window.location.href = "{% url 'delete_location' request.user.username location.pk %}"
-      } else {
-        alert("Invalid location name entered, please try again.")
-      }
-    }
-  
-    delButton.addEventListener("click", del);
-  
-  </script> {% endcomment %}
+  </div>
 
 </div>
-
 {% endblock %}

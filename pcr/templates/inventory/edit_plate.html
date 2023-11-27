@@ -78,7 +78,7 @@
     </div>
 
     <div class="text-center mt-2">
-      <button type="submit" class="btn btn-primary">Update Plate</button>
+      <button type="submit" class="btn btn-primary" name="update">Update Plate</button>
     </div>
 
   </form>
@@ -100,44 +100,36 @@
         </div>
         <div class="modal-body">
           
-          <div class="row justify-content-center">
-            <h5 class="text-center">Deleting this may affect...</h5>
+          <div class="container-sm">
+
+            <div class="row justify-content-center">
+              <h5 class="text-center">Are you sure?</h5>
+            </div>
+            
+            <div class="row justify-content-center">
+              <form method="POST" action="">
+                {% csrf_token %}
+          
+                <div class="text-center mx-auto">
+                  <label class="form-label">Enter: "{{plate.name}}" &amp; Confirm</label>
+                  {{del_form.confirm}}
+                </div>
+          
+                {{del_form.errors}}
+          
+                <div class="text-center mt-2">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary" name="delete">Confirm</button>
+                </div>
+              </form>
+            </div>
+
           </div>
 
-          <div class="text-center mx-auto">
-            <label class="form-label">Enter Plate Name: "{{plate.name}}"</label>
-          </div>
-
-          <div class="text-center mx-auto">
-            <input type="text" id="confirm-del">
-          </div>
-
-        </div>
-        <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" id="delete-button">Confirm</button>
         </div>
       </div>
     </div>
   </div>
 
-  <script>
-    const confirmInput = document.getElementById("confirm-del")
-    const delButton = document.getElementById("delete-button");
-  
-    function del() {
-      plateName = '{{plate.name}}'
-      if (confirmInput.value === plateName) {
-        window.location.href = "{% url 'delete_plate' request.user.username plate.pk %}"
-      } else {
-        alert("Invalid plate name entered, please try again.")
-      }
-    }
-  
-    delButton.addEventListener("click", del);
-  
-  </script>
-
 </div>
-
 {% endblock %}

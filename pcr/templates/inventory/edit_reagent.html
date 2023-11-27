@@ -98,7 +98,7 @@
     </div>
 
     <div class="text-center mt-2"> 
-      <input class="btn btn-primary mt-2" type="Submit" value="Update Reagent">
+      <button class="btn btn-primary" type="Submit" name="update">Update Reagent</button>
     </div>
 
   </form>
@@ -121,22 +121,25 @@
         <div class="modal-body">
           
           <div class="row justify-content-center">
-            <h5 class="text-center">Deleting this may affect...</h5>
-          </div>
-
-          <div class="text-center mx-auto">
-            <label class="form-label">Enter Reagent Name: "{{reagent.name}}"</label>
-          </div>
-
-          <div class="text-center mx-auto">
-            <input type="text" id="confirm-del">
+            <form method="POST" action="">
+              {% csrf_token %}
+        
+              <div class="text-center mx-auto">
+                <label class="form-label">Enter: "{{reagent.name}}" &amp; Confirm</label>
+                {{del_form.confirm}}
+              </div>
+        
+              {{del_form.errors}}
+        
+              <div class="text-center mt-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" name="delete">Confirm</button>
+              </div>
+            </form>
           </div>
 
         </div>
-        <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" id="delete-button">Confirm</button>
-        </div>
+       
       </div>
     </div>
   </div>

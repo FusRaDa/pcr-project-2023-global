@@ -43,20 +43,16 @@ urlpatterns = [
   path("locations/", inventory_views.locations, name="locations"),
   path("create_location/", inventory_views.create_location, name="create_location"),
   path("edit_location/<str:username>/<int:pk>/", inventory_views.edit_location, name="edit_location"),
-  path("delete_location/<str:username>/<int:pk>/", inventory_views.delete_location, name="delete_location"),
 
   path("plates/", inventory_views.plates, name="plates"),
   path("create_plate/", inventory_views.create_plate, name="create_plate"),
   path("edit_plate/<str:username>/<int:pk>/", inventory_views.edit_plate, name="edit_plate"),
-  path("delete_plate/<str:username>/<int:pk>/", inventory_views.delete_plate, name="delete_plate"),
 
   path("tubes/", inventory_views.tubes, name="tubes"),
   path("create_tube/", inventory_views.create_tube, name="create_tube"),
   path("edit_tube/<str:username>/<int:pk>/", inventory_views.edit_tube, name="edit_tube"),
-  path("delete_tube/<str:username>/<int:pk>/", inventory_views.delete_tube, name="delete_tube"),
 
   path("reagents/", inventory_views.reagents, name="reagents"),
   path("create_reagent/", inventory_views.create_reagent, name="create_reagent"),
   path("edit_reagent/<str:username>/<int:pk>/", inventory_views.edit_reagent, name="edit_reagent"),
-  path("delete_reagent/<str:username>/<int:pk>/", inventory_views.delete_reagent, name="delete_reagent"),
 ]
