@@ -5,7 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 from ..models.inventory import Location, Reagent, Tube, Plate
-from ..forms.inventory import LocationForm, DeleteLocationForm, ReagentForm, TubeForm, PlateForm
+from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm
+from ..forms.general import DeletionForm
 
 
 # **LOCATIONS VIEWS** #
@@ -52,7 +53,7 @@ def edit_location(request, username, pk):
     return redirect('locations')
   
   form = LocationForm(instance=location)
-  del_form = DeleteLocationForm(value=location.name)
+  del_form = DeletionForm(value=location.name)
  
   if 'update' in request.POST:
     form = LocationForm(request.POST, instance=location)
@@ -63,7 +64,7 @@ def edit_location(request, username, pk):
       print(form.errors)
 
   if 'delete' in request.POST:
-    del_form = DeleteLocationForm(request.POST, value=location.name)
+    del_form = DeletionForm(request.POST, value=location.name)
     if del_form.is_valid():
       location.delete()
       return redirect('locations')
@@ -122,6 +123,7 @@ def edit_plate(request, username, pk):
     return redirect('plates')
   
   form = PlateForm(user=request.user, instance=plate)
+  del_form = DeletionForm(value=plate.name)
 
   if 'update' in request.POST:
     form = PlateForm(request.POST, user=request.user, instance=plate)
@@ -133,7 +135,7 @@ def edit_plate(request, username, pk):
       return redirect(request.path_info)
 
   if 'delete' in request.POST:
-    del_form = DeleteLocationForm(request.POST, value=plate.name)
+    del_form = DeletionForm(request.POST, value=plate.name)
     if del_form.is_valid():
       plate.delete()
       return redirect('plates')
@@ -191,6 +193,7 @@ def edit_tube(request, username, pk):
     return redirect('locations')
   
   form = TubeForm(instance=tube, user=request.user)
+  del_form = DeletionForm(value=tube.name)
 
   if 'update' in request.POST:
     form = TubeForm(request.POST, user=request.user, instance=tube)
@@ -201,7 +204,7 @@ def edit_tube(request, username, pk):
       print(form.errors)
 
   if 'delete' in request.POST:
-    del_form = DeleteLocationForm(request.POST, value=tube.name)
+    del_form = DeletionForm(request.POST, value=tube.name)
     if del_form.is_valid():
       tube.delete()
       return redirect('tubes')
@@ -260,6 +263,7 @@ def edit_reagent(request, username, pk):
     return redirect('reagents')
   
   form = ReagentForm(instance=reagent, user=request.user)
+  del_form = DeletionForm(value=reagent.name)
 
   if 'update' in request.POST:
     form = ReagentForm(request.POST, user=request.user, instance=reagent)
@@ -268,9 +272,9 @@ def edit_reagent(request, username, pk):
       return redirect('reagents')
     else:
       print(form.errors)
-
+ 
   if 'delete' in request.POST:
-    del_form = DeleteLocationForm(request.POST, value=reagent.name)
+    del_form = DeletionForm(request.POST, value=reagent.name)
     if del_form.is_valid():
       reagent.delete()
       return redirect('reagents')

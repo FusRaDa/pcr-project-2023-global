@@ -52,7 +52,7 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
             Locations
-            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+            <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
               ⮟
             </button>
           </li>
@@ -110,8 +110,6 @@
                   {{del_form.confirm}}
                 </div>
           
-                {{del_form.errors}}
-          
                 <div class="text-center mt-2">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                   <button type="submit" class="btn btn-primary" name="delete">Confirm</button>
@@ -127,20 +125,11 @@
   </div>
 
   <script>
-    const confirmInput = document.getElementById("confirm-del")
-    const delButton = document.getElementById("delete-button");
-  
-    function del() {
-      tubeName = '{{tube.name}}'
-      if (confirmInput.value === tubeName) {
-        window.location.href = "{% url 'delete_tube' request.user.username tube.pk %}"
-      } else {
-        alert("Invalid tube name entered, please try again.")
-      }
-    }
-  
-    delButton.addEventListener("click", del);
-  
+    $('.btn-arrow').click(function(){
+      $(this).text(function(i,old){
+          return old=='⮝' ?  '⮟' : '⮝';
+      });
+    });
   </script>
 
 </div>

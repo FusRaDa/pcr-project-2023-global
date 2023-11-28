@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 
 from ..models.extraction import ExtractionProtocol, TubeExtraction, ReagentExtraction
 from ..forms.extraction import ExtractionProtocolForm, TubeExtractionForm, ReagentExtractionForm
+from ..forms.general import DeletionForm
 
 @login_required(login_url='login')
 def extraction_protocols(request):
@@ -52,16 +53,27 @@ def edit_extraction_protocol(request, username, pk):
     return redirect('extraction_protocols')
   
   form = ExtractionProtocolForm(user=request.user, instance=protocol)
+  del_form = DeletionForm(value=protocol.name)
 
-  if request.method == 'POST':
+  if 'update' in request.POST:
     form = ExtractionProtocolForm(request.POST, user=request.user, instance=protocol)
     if form.is_valid():
       form.save()
       return redirect('extraction_protocol_through', request.user.username, protocol.pk)
     else:
       print(form.errors)
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=protocol.name)
+    if del_form.is_valid():
+      protocol.delete()
+      return redirect('extraction_protocols')
+    else:
+      messages.error(request, "Invalid protocol name entered, please try again.")
+      print(del_form.errors)
+      return redirect(request.path_info)
   
-  context = {'form': form, 'protocol': protocol}
+  context = {'form': form, 'protocol': protocol, 'del_form': del_form}
   return render(request, 'extraction-protocol/edit_extraction_protocol.html', context)
 
 
@@ -119,25 +131,3 @@ def extraction_protocol_through(request, username, pk):
 
   context = {'tubeformset': tubeformset, 'reagentformset': reagentformset, 'tubes_data': tubes_data, 'reagents_data': reagents_data, 'protocol': protocol}
   return render(request, 'extraction-protocol/extraction_protocol_through.html', context)
-
-
-@login_required(login_url='login')
-def delete_extraction_protocol(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no extraction protocol to delete.")
-    return redirect('extraction_protocols')
-  
-  try:
-    protocol = ExtractionProtocol.objects.get(user=user, pk=pk)
-    try:
-      protocol.delete()
-    except RestrictedError:
-      messages.error(request, "You cannot delete this protocol as it is being used by your batches!")
-      return redirect('edit_extraction_protocol', username, pk)
-  except ObjectDoesNotExist:
-    messages.error(request, "There is no extraction protocol to delete.")
-    return redirect('extraction_protocols')
-
-  return redirect('extraction_protocols')
