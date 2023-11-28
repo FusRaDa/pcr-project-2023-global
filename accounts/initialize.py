@@ -196,7 +196,6 @@ def create_presets(user):
     brand = "BRAND", 
     lot_number = "LOT_NUMBER_01",
     catalog_number = "CATALOG_NUMBER_01",
-    is_pcr_water = True,
     usage = Reagent.Usages.PCR,
     volume = 1.00,
     unit_volume = Reagent.VolumeUnits.LITER,

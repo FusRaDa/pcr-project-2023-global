@@ -14,19 +14,26 @@
     <h3 class="text-center">Add New Location</h3>
   </div>
 
-  <form method="POST" action="">
-    {% csrf_token %}
+  <div class="row justify-content-center">
+    <div class="col-sm-3">
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Name</label>
-      {{form.name}}
+      <form method="POST" action="">
+        {% csrf_token %}
+
+        <div class="text-center mx-auto">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
+
+        <div class="text-center mt-2">
+          <a class="btn btn-secondary" href="{% url 'locations' %}">Cancel</a>
+          <button type="submit" class="btn btn-primary">Add New Location</button>
+        </div>
+
+      </form>
+
     </div>
-
-    <div class="text-center mt-2">
-      <button type="submit" class="btn btn-primary">Add New Location</button>
-    </div>
-
-  </form>
+  </div>
  
 </div>
 

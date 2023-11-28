@@ -16,13 +16,10 @@
   </div>
 
   {% for message in messages %}
-  <div class="row justify-content-center">
-    <h5 class="messages">{{ message }}</h5>
-  </div>
+    <h6 class="messages text-center">{{ message }}</h6>
   {% endfor %}
 
   <div class="row justify-content-center">
-
     <div class="col-sm-3">
 
       <form method="POST" action="">
@@ -33,17 +30,13 @@
           {{form.name}}
         </div>
         <div class="text-center mb-2">
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete Location</button>
+          <a class="btn btn-secondary" href="{% url 'locations' %}">Cancel</a>
           <button type="submit" class="btn btn-primary" name="update">Update Location</button>
         </div>
       </form>
 
     </div>
-
-
   </div>
-
-
 
   <div class="row justify-content-center">
 
@@ -122,23 +115,20 @@
       {% endif %}
 
       {% if location.reagent_set.all %}
-      <h5 class="text-center">Tubes</h5>
+      <h5 class="text-center">Reagents</h5>
       <div class="table-responsive">
         <table class="table table-bordered table-hover">
 
           <thead>
             <tr>
               <th scope="col">Exp. Date</th>
-              <th scope="col">Date Added</th>
               <th scope="col">Last Updated</th>
               <th scope="col">Name</th>
               <th scope="col">Brand</th>
               <th scope="col">Catalog #</th>
               <th scope="col">Lot #</th>
               <th scope="col">Volume</th>
-              <th scope="col">Volume Unit</th>
               <th scope="col">Concentration</th>
-              <th scope="col">Unit Concentration</th>
             </tr>
           </thead>
 
@@ -146,16 +136,17 @@
             {% for reagent in location.reagent_set.all %}
             <tr class="batch-row" data-href="{% url 'edit_reagent' request.user.username reagent.pk %}">
               <td>{{reagent.exp_date}}</td>
-              <td>{{reagent.date_created}}</td>
               <td>{{reagent.last_updated}}</td>
               <td>{{reagent.name}}</td>
               <td>{{reagent.brand}}</td>
               <td>{{reagent.catalog_number}}</td>
               <td>{{reagent.lot_number}}</td>
-              <td>{{reagent.volume}}</td>
-              <td>{{reagent.unit_volume}}</td>
-              <td>{{reagent.stock_concentration}}</td>
-              <td>{{reagent.unit_concentration}}</td>
+              <td>{{reagent.volume}} {{reagent.unit_volume}}</td>
+              <td>
+                {% if reagent.stock_concentration %}
+                {{reagent.stock_concentration}} {{reagent.unit_concentration}}
+                {% endif %}
+              </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -164,16 +155,17 @@
       </div>
       {% endif %}
 
-
-
     </div>
-
 
   </div>
 
+  <div class="row">
+    <div class="col text-center">
+      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete Location</button>
+    </div>
+  </div>
 
-
-
+  
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

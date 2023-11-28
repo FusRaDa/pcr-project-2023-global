@@ -7,7 +7,11 @@ from ..models.inventory import Plate, Tube, Reagent, Location
 
 
 class LocationForm(ModelForm):
-  
+
+  name = forms.CharField(
+    widget=forms.TextInput(attrs={'placeholder': 'Storage area such as a freezer or cabinet...'})
+  )
+
   def __init__(self, *args, **kwargs):
     super(LocationForm, self).__init__(*args, **kwargs)
     for visible in self.visible_fields():
@@ -16,7 +20,7 @@ class LocationForm(ModelForm):
   class Meta:
     model = Location
     exclude = ['user']
-
+    
 
 class PlateForm(ModelForm):
 
@@ -86,6 +90,21 @@ class ReagentForm(ModelForm):
       widget=forms.DateInput(attrs={'type': 'date'}),
       label='Date Start',
       required=False)
+  
+  def clean(self):
+    cleaned_data = super().clean()
+    stock = cleaned_data.get('stock_concentration')
+    unit = cleaned_data.get('unit_concentration')
+
+    if stock != None and unit == None:
+      raise ValidationError(
+        message="Don't forget to assign a concentration unit to your stock concentration."
+      )
+    
+    if stock == None and unit != None:
+      raise ValidationError(
+        message="Leave unit concentration blank if a stock concentration is not needed."
+      )
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')

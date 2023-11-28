@@ -98,17 +98,16 @@ class Reagent(models.Model):
     PCR = 'PCR', _('PCR')
 
   class VolumeUnits(models.TextChoices):
-    LITER = 'LITER', _('L')
-    MILLILITER = 'MILLILITER', _('mL')
-    MICROLITER = 'MICROLITER', _('\u00B5L')
+    LITER = 'L', _('L')
+    MILLILITER = 'mL', _('mL')
+    MICROLITER = '\u00B5L', _('\u00B5L')
 
   class ConcentrationUnits(models.TextChoices):
-    NOT_APPLICABLE = 'NOT_APPLICABLE', _('NOT_APPLICABLE')
-    MOLES = 'MOLES', _('M')
-    MILLIMOLES = 'MILLIMOLES', _('mM')
-    MICROMOLES = 'MICROMOLES', _('\u00B5M')
-    NANOMOLES = 'NANOMOLES', _('nM')
-    UNITS = 'UNITS', _('U/\u00B5L')
+    MOLES = 'M', _('M')
+    MILLIMOLES = 'mM', _('mM')
+    MICROMOLES = '\u00B5M', _('\u00B5M')
+    NANOMOLES = 'nM', _('nM')
+    UNITS = 'U/\u00B5L', _('U/\u00B5L')
     X = 'X', _('X')
 
   name = models.CharField(blank=False, max_length=25)
@@ -122,8 +121,8 @@ class Reagent(models.Model):
   volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
 
-  stock_concentration = models.DecimalField(decimal_places=2, default=0, validators=[MinValueValidator(0)], max_digits=12)
-  unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=False, default=ConcentrationUnits.MILLIMOLES, max_length=25)
+  stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
+  unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)
 
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
