@@ -65,24 +65,7 @@
       </div>
     </div>
   </div>
-
-  <script>
-    const confirmInput = document.getElementById("confirm-del")
-    const delButton = document.getElementById("delete-button");
   
-    function del() {
-      value = '{{fluorescence.name}}'
-      if (confirmInput.value === value) {
-        window.location.href = "{% url 'delete_fluorescence' request.user.username fluorescence.pk %}"
-      } else {
-        alert("Invalid fluorescence name entered, please try again.")
-      }
-    }
-  
-    delButton.addEventListener("click", del);
-  
-  </script>
-
 </div>
 
 {% endblock %}

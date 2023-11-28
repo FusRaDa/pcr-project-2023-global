@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import F
 from django.contrib import messages
 from django.contrib.auth.models import User
 
@@ -81,7 +82,7 @@ def edit_location(request, username, pk):
 # **PLATES VIEWS** #
 @login_required(login_url='login')
 def plates(request):
-  plates = Plate.objects.filter(user=request.user)
+  plates = Plate.objects.filter(user=request.user).order_by(F('exp_date').desc(nulls_last=True))
 
   context = {'plates': plates}
   return render(request, 'inventory/plates.html', context)
@@ -152,7 +153,7 @@ def edit_plate(request, username, pk):
 # **TUBES VIEWS** #
 @login_required(login_url='login')
 def tubes(request):
-  tubes = Tube.objects.filter(user=request.user)
+  tubes = Tube.objects.filter(user=request.user).order_by(F('exp_date').desc(nulls_last=True))
 
   context = {'tubes': tubes}
   return render(request, 'inventory/tubes.html', context)
@@ -221,8 +222,8 @@ def edit_tube(request, username, pk):
 # **REAGENTS VIEWS** #
 @login_required(login_url='login')
 def reagents(request):
-  pcr_reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR)
-  ext_reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.EXTRACTION)
+  pcr_reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR).order_by(F('exp_date').desc(nulls_last=True))
+  ext_reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.EXTRACTION).order_by(F('exp_date').desc(nulls_last=True))
 
   context = {'pcr_reagents': pcr_reagents, 'ext_reagents': ext_reagents}
   return render(request, 'inventory/reagents.html', context)

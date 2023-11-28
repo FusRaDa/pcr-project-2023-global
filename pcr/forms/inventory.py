@@ -25,6 +25,11 @@ class PlateForm(ModelForm):
     widget=forms.CheckboxSelectMultiple,
     required=True)
   
+  exp_date = forms.DateField(
+      widget=forms.DateInput(attrs={'type': 'date'}),
+      label='Date Start',
+      required=False)
+  
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -35,6 +40,7 @@ class PlateForm(ModelForm):
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['size'].widget.attrs['class'] = 'form-select'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
   class Meta:
     model = Plate
@@ -47,6 +53,11 @@ class TubeForm(ModelForm):
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
     required=True)
+  
+  exp_date = forms.DateField(
+      widget=forms.DateInput(attrs={'type': 'date'}),
+      label='Date Start',
+      required=False)
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -57,6 +68,7 @@ class TubeForm(ModelForm):
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
   class Meta:
     model = Tube
@@ -69,6 +81,11 @@ class ReagentForm(ModelForm):
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
     required=True)
+  
+  exp_date = forms.DateField(
+      widget=forms.DateInput(attrs={'type': 'date'}),
+      label='Date Start',
+      required=False)
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -83,6 +100,7 @@ class ReagentForm(ModelForm):
     self.fields['unit_volume'].widget.attrs['class'] = 'form-select'
     self.fields['stock_concentration'].widget.attrs['class'] = 'form-control'
     self.fields['unit_concentration'].widget.attrs['class'] = 'form-select'
+    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
   
   class Meta:
     model = Reagent

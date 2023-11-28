@@ -10,6 +10,14 @@
 
 <div class="container-fluid">
 
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
   <div class="row justify-content-center">
     <h3 class="text-center">Updating: {{reagent.name}}</h3>
   </div>
@@ -69,7 +77,7 @@
 
     <div class="text-center w-25 mx-auto">
       <label class="form-label">Expiration Date</label>
-      {{form.ext_date}}
+      {{form.exp_date}}
     </div>
     
     <div class="row justify-content-center mt-2">

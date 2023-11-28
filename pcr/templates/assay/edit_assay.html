@@ -157,20 +157,6 @@
         return old=='⮝' ?  '⮟' : '⮝';
       });
     });
-
-    const delButton = document.getElementById("delete-button");
-    const confirmInput = document.getElementById("confirm-del")
-
-    function del() {
-      value = '{{assay.name}}'
-      if (confirmInput.value === value) {
-        window.location.href = "{% url 'delete_assay' request.user.username assay.pk %}"
-      } else {
-        alert("Invalid code name entered, please try again.")
-      }
-    }
-
-    delButton.addEventListener("click", del);
   </script>
 
 </div>
