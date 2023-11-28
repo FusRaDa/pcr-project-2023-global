@@ -9,39 +9,171 @@
 <link rel="stylesheet" href="{% static 'css/global.css' %}">
 <link rel="stylesheet" href="{% static 'css/edit_location.css' %}">
 
-<div class="container">
+<div class="container-fluid">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">{{location.name}}</h3>
+  </div>
 
   {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
-    </div>
+  <div class="row justify-content-center">
+    <h5 class="messages">{{ message }}</h5>
   </div>
   {% endfor %}
 
   <div class="row justify-content-center">
-    <h3 class="text-center">Updating: {{location.name}}</h3>
-  </div>
 
-  <form method="POST" action="">
-    {% csrf_token %}
+    <div class="col-sm-3">
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Name</label>
-      {{form.name}}
+      <form method="POST" action="">
+        {% csrf_token %}
+
+        <div class="text-center mx-auto mb-2">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
+        <div class="text-center mb-2">
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete Location</button>
+          <button type="submit" class="btn btn-primary" name="update">Update Location</button>
+        </div>
+      </form>
+
     </div>
 
-    <div class="text-center mt-2">
-      <button type="submit" class="btn btn-primary" name="update">Update Location</button>
+
+  </div>
+
+
+
+  <div class="row justify-content-center">
+
+    <div class="col-sm-10">
+
+      {% if location.plate_set.all %}
+      <h5 class="text-center">Plates</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+
+          <thead>
+            <tr>
+              <th scope="col">Exp. Date</th>
+              <th scope="col">Last Updated</th>
+              <th scope="col">Name</th>
+              <th scope="col">Brand</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Size</th>
+              <th scope="col">Lot Number</th>
+              <th scope="col">Cat. Number</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for plate in location.plate_set.all %}
+            <tr class="batch-row" data-href="{% url 'edit_plate' request.user.username plate.pk %}">
+              <td>{{plate.exp_date}}</td>
+              <td>{{plate.last_updated}}</td>
+              <td>{{plate.name}}</td>
+              <td>{{plate.brand}}</td>
+              <td>{{plate.amount}}</td>
+              <td>{{plate.size}}</td>
+              <td>{{plate.lot_number}}</td>
+              <td>{{plate.catalog_number}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+      {% endif %}
+
+      {% if location.tube_set.all %}
+      <h5 class="text-center">Tubes</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+
+          <thead>
+            <tr>
+              <th scope="col">Exp. Date</th>
+              <th scope="col">Last Updated</th>
+              <th scope="col">Name</th>
+              <th scope="col">Brand</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Lot Number</th>
+              <th scope="col">Cat. Number</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for tube in location.tube_set.all %}
+            <tr class="batch-row" data-href="{% url 'edit_tube' request.user.username tube.pk %}">
+              <td>{{tube.exp_date}}</td>
+              <td>{{tube.last_updated}}</td>
+              <td>{{tube.name}}</td>
+              <td>{{tube.brand}}</td>
+              <td>{{tube.amount}}</td>
+              <td>{{tube.lot_number}}</td>
+              <td>{{tube.catalog_number}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+      {% endif %}
+
+      {% if location.reagent_set.all %}
+      <h5 class="text-center">Tubes</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+
+          <thead>
+            <tr>
+              <th scope="col">Exp. Date</th>
+              <th scope="col">Date Added</th>
+              <th scope="col">Last Updated</th>
+              <th scope="col">Name</th>
+              <th scope="col">Brand</th>
+              <th scope="col">Catalog #</th>
+              <th scope="col">Lot #</th>
+              <th scope="col">Volume</th>
+              <th scope="col">Volume Unit</th>
+              <th scope="col">Concentration</th>
+              <th scope="col">Unit Concentration</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for reagent in location.reagent_set.all %}
+            <tr class="batch-row" data-href="{% url 'edit_reagent' request.user.username reagent.pk %}">
+              <td>{{reagent.exp_date}}</td>
+              <td>{{reagent.date_created}}</td>
+              <td>{{reagent.last_updated}}</td>
+              <td>{{reagent.name}}</td>
+              <td>{{reagent.brand}}</td>
+              <td>{{reagent.catalog_number}}</td>
+              <td>{{reagent.lot_number}}</td>
+              <td>{{reagent.volume}}</td>
+              <td>{{reagent.unit_volume}}</td>
+              <td>{{reagent.stock_concentration}}</td>
+              <td>{{reagent.unit_concentration}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+      {% endif %}
+
+
+
     </div>
 
-  </form>
 
-  <div class="col d-flex justify-content-center">
-    <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
-      Delete Location
-    </button>
   </div>
+
+
+
+
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -82,4 +214,12 @@
   </div>
 
 </div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".batch-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
 {% endblock %}

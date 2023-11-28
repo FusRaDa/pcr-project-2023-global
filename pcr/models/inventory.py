@@ -117,8 +117,6 @@ class Reagent(models.Model):
   catalog_number = models.CharField(blank=False, max_length=25)
   location = models.ManyToManyField(Location)
 
-  is_pcr_water = models.BooleanField(default=False) # if True, is used to fill well
-
   usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.PCR, max_length=25)
 
   volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
