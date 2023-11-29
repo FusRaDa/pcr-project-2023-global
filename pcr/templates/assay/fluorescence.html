@@ -2,7 +2,7 @@
 
 {% load static %}
                                                                                                                                                                                                          
-{% block title %} Locations {% endblock %} 
+{% block title %} Fluorescence {% endblock %} 
 
 {% block content %}
 
@@ -23,6 +23,44 @@
           Create New Fluorescence
         </button>
       </a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col justify-content-center">
+      <div class="table-responsive">
+
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Assays</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for fluor in fluorescence %}
+              <tr class="batch-row" data-href="{% url 'edit_assay' request.user.username assay.pk %}">
+                <td>{{fluor.name}}</td>
+                <td>
+                  {% for assay in fluor.assay_set.all %}
+                    {% if fluor.assay_set.all|length > 1 %}
+                    <span>
+                      {{assay}} |
+                    </span>
+                    {% else %}
+                    <span>
+                      {{assay}}
+                    </span>
+                    {% endif %}
+                  {% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+      </div>
     </div>
   </div>
 

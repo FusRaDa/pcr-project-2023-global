@@ -238,8 +238,9 @@ def edit_control(request, username, pk):
     return redirect('controls')
   
   form = ControlForm(instance=control, user=request.user)
+  del_form = DeletionForm(value=control.name)
 
-  if request.method == "POST":
+  if 'update' in request.POST:
     form = ControlForm(request.POST, user=request.user, instance=control)
     if form.is_valid():
       form.save()
@@ -247,7 +248,16 @@ def edit_control(request, username, pk):
     else:
       print(form.errors)
 
-  context = {'form': form, 'control': control}
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=control.name)
+    if del_form.is_valid():
+      control.delete()
+      return redirect('controls')
+    else:
+      messages.error(request, "Invalid control name entered, please try again.")
+      print(del_form.errors)
+
+  context = {'form': form, 'control': control, 'del_form': del_form}
   return render(request, 'assay/edit_control.html', context)
 
 
