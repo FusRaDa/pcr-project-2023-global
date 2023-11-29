@@ -8,114 +8,128 @@
 
 <link rel="stylesheet" href="{% static 'css/create_assay.css' %}">
 
-<div class="container-fluid">
+<div class="container">
 
   <div class="row justify-content-center">
     <h3 class="text-center">Create New Assay</h3>
   </div>
 
   <form method="POST" action="">
-    {% csrf_token %}
+  {% csrf_token %}
+    <div class="row">
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Name</label>
-      {{form.name}}
-    </div>
+      <div class="col-sm-3">
+        <div class="text-center">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Method</label>
-      {{form.method}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Method</label>
+          {{form.method}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Type</label>
-      {{form.type}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Type</label>
+          {{form.type}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Reaction Volume (&#181;l)</label>
-      {{form.reaction_volume}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Reaction Volume (&#181;l)</label>
+          {{form.reaction_volume}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Sample Volume (&#181;l)</label>
-      {{form.sample_volume}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Sample Volume (&#181;l)</label>
+          {{form.sample_volume}}
+        </div>
+      </div>
 
-    <div class="row justify-content-center mt-2">
-      <div class="card" style="width: 18rem;">
-
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            Flourescence
-            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#fluor-collapse" aria-expanded="false" aria-controls="fluor-collapse">
-              ⮟
-            </button>
-          </li>
-  
-          <div class="collapse" id="fluor-collapse">
-            <div class="card-body"> 
-              <ul class="list-group">
-                {% for fluor in form.fluorescence %}
-                  <li class="list-group-item">
-                    {{fluor}}
-                  </li>
-                {% endfor %}
-              </ul>
+      <div class="col-sm-3">
+        <div class="card mx-auto mt-2" style="width: 18rem;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Flourescence
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#fluor-collapse" aria-expanded="true" aria-controls="fluor-collapse">
+                ⮟
+              </button>
+            </li>
+            <div class="collapse show" id="fluor-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for fluor in form.fluorescence %}
+                    <li class="list-group-item">
+                      {{fluor}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
             </div>
-          </div>
-       
-          <li class="list-group-item">
-            Controls
-            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#controls-collapse" aria-expanded="false" aria-controls="controls-collapse">
-              ⮟
-            </button>
-          </li>
-  
-          <div class="collapse" id="controls-collapse">
-            <div class="card-body"> 
-              <ul class="list-group">
-                {% for control in form.controls %}
-                  <li class="list-group-item">
-                    {{control}}
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-       
-          <li class="list-group-item">
-            Reagents
-            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
-              ⮟
-            </button>
-          </li>
-  
-          <div class="collapse" id="reagents-collapse">
-            <div class="card-body"> 
-              <ul class="list-group">
-                {% for reagent in form.reagents %}
-                  <li class="list-group-item">
-                    {{reagent}}
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </ul>
+          </ul>
+        </div>
+      </div>
 
+      <div class="col-sm-3">
+        <div class="card mx-auto mt-2" style="width: 18rem;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Controls
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#control-collapse" aria-expanded="false" aria-controls="control-collapse">
+                ⮟
+              </button>
+            </li>
+            <div class="collapse show" id="control-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for control in form.controls %}
+                    <li class="list-group-item">
+                      {{control}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="card mx-auto mt-2" style="width: 18rem;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Reagents
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagent-collapse" aria-expanded="false" aria-controls="reagent-collapse">
+                ⮟
+              </button>
+            </li>
+            <div class="collapse show" id="reagent-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for reagent in form.reagents %}
+                    <li class="list-group-item">
+                      {{reagent}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="text-center mt-2"> 
+        <a class="btn btn-secondary" href="{% url 'assays' %}">Cancel</a>
+        <button class="btn btn-primary" type="submit">Update &amp; Edit Quantity</button>
       </div>
     </div>
-
-    <div class="text-center mt-2"> 
-      <a class="btn btn-secondary" href="{% url 'assays' %}">Cancel</a>
-      <button class="btn btn-primary" type="submit">Update &amp; Edit Quantity</button>
-    </div>
-
+  
   </form>
 
   <script>
-    $('.btn').click(function(){
+    $('.btn-arrow').click(function(){
       $(this).text(function(i,old){
         return old=='⮝' ?  '⮟' : '⮝';
       });

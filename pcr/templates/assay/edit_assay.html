@@ -8,7 +8,7 @@
 
 <link rel="stylesheet" href="{% static 'css/edit_assay_code.css' %}">
 
-<div class="container-fluid">
+<div class="container">
 
   <div class="row justify-content-center">
     <h3 class="text-center">Updating Assay: {{assay.name}}</h3>
@@ -18,48 +18,47 @@
   <h6 class="messages text-center">{{ message }}</h6>
   {% endfor %}
 
-  <div class="row justify-content-center mb-2">
-    <div class="col-sm-3">
-      <form method="POST" action="">
-        {% csrf_token %}
-
-        <div class="text-center">
-          <label class="form-label">Name</label>
-          {{form.name}}
+  <form method="POST" action="">
+    {% csrf_token %}
+      <div class="row">
+  
+        <div class="col-sm-3">
+          <div class="text-center">
+            <label class="form-label">Name</label>
+            {{form.name}}
+          </div>
+  
+          <div class="text-center">
+            <label class="form-label">Method</label>
+            {{form.method}}
+          </div>
+  
+          <div class="text-center">
+            <label class="form-label">Type</label>
+            {{form.type}}
+          </div>
+  
+          <div class="text-center">
+            <label class="form-label">Reaction Volume (&#181;l)</label>
+            {{form.reaction_volume}}
+          </div>
+  
+          <div class="text-center">
+            <label class="form-label">Sample Volume (&#181;l)</label>
+            {{form.sample_volume}}
+          </div>
         </div>
-
-        <div class="text-center">
-          <label class="form-label">Method</label>
-          {{form.method}}
-        </div>
-
-        <div class="text-center">
-          <label class="form-label">Type</label>
-          {{form.type}}
-        </div>
-
-        <div class="text-center">
-          <label class="form-label">Reaction Volume (&#181;l)</label>
-          {{form.reaction_volume}}
-        </div>
-
-        <div class="text-center">
-          <label class="form-label">Sample Volume (&#181;l)</label>
-          {{form.sample_volume}}
-        </div>
-
-        <div class="row justify-content-center mt-2">
-          <div class="card" style="width: 18rem;">
-
+  
+        <div class="col-sm-3">
+          <div class="card mx-auto mt-2" style="width: 18rem;">
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
                 Flourescence
-                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#fluor-collapse" aria-expanded="false" aria-controls="fluor-collapse">
+                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#fluor-collapse" aria-expanded="true" aria-controls="fluor-collapse">
                   ⮟
                 </button>
               </li>
-      
-              <div class="collapse" id="fluor-collapse">
+              <div class="collapse show" id="fluor-collapse">
                 <div class="card-body"> 
                   <ul class="list-group">
                     {% for fluor in form.fluorescence %}
@@ -70,15 +69,20 @@
                   </ul>
                 </div>
               </div>
-            
+            </ul>
+          </div>
+        </div>
+  
+        <div class="col-sm-3">
+          <div class="card mx-auto mt-2" style="width: 18rem;">
+            <ul class="list-group list-group-flush">
               <li class="list-group-item">
                 Controls
-                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#controls-collapse" aria-expanded="false" aria-controls="controls-collapse">
+                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#control-collapse" aria-expanded="false" aria-controls="control-collapse">
                   ⮟
                 </button>
               </li>
-      
-              <div class="collapse" id="controls-collapse">
+              <div class="collapse show" id="control-collapse">
                 <div class="card-body"> 
                   <ul class="list-group">
                     {% for control in form.controls %}
@@ -89,15 +93,20 @@
                   </ul>
                 </div>
               </div>
-      
+            </ul>
+          </div>
+        </div>
+  
+        <div class="col-sm-3">
+          <div class="card mx-auto mt-2" style="width: 18rem;">
+            <ul class="list-group list-group-flush">
               <li class="list-group-item">
                 Reagents
-                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagent-collapse" aria-expanded="false" aria-controls="reagent-collapse">
                   ⮟
                 </button>
               </li>
-      
-              <div class="collapse" id="reagents-collapse">
+              <div class="collapse show" id="reagent-collapse">
                 <div class="card-body"> 
                   <ul class="list-group">
                     {% for reagent in form.reagents %}
@@ -109,18 +118,19 @@
                 </div>
               </div>
             </ul>
-
           </div>
         </div>
-
-        <div class="text-center mt-2">
+  
+      </div>
+  
+      <div class="row justify-content-center">
+        <div class="text-center mt-2"> 
           <a class="btn btn-secondary" href="{% url 'assays' %}">Cancel</a>
-          <button class="btn btn-primary" type="Submit" name='update'>Update &amp; Edit Quantity</button>
+          <button class="btn btn-primary" type="submit" name="update">Update &amp; Edit Quantity</button>
         </div>
-
-      </form>
-    </div>
-  </div>
+      </div>
+    
+  </form>
 
   <div class="justify-content-center">
     <div class="col d-flex justify-content-center">

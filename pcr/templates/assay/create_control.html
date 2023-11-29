@@ -16,58 +16,80 @@
 
   <form method="POST" action="">
     {% csrf_token %}
+    <div class="row justify-content-center">
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Name</label>
-      {{form.name}}
-    </div>
+      <div class="col-sm-3">
+        <div class="text-center">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Lot Number</label>
-      {{form.lot_number}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Is this a negative control? (e.g. water)</label>
+          {{form.is_negative_ctrl}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Amount Stored</label>
-      {{form.amount}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Lot Number</label>
+          {{form.lot_number}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Expiration Date</label>
-      {{form.exp_date}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Amount Stored</label>
+          {{form.amount}}
+        </div>
 
-    <div class="row justify-content-center mt-2">
-      <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            Location
-            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#assay-collapse" aria-expanded="false" aria-controls="assay-collapse">
-              ⮟
-            </button>
-          </li>
-
-          <div class="collapse" id="assay-collapse">
-            <div class="card-body"> 
-              <ul class="list-group">
-                {% for loc in form.location %}
-                  <li class="list-group-item">
-                    {{loc}}
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </ul>
+        <div class="text-center">
+          <label class="form-label">Expiration Date</label>
+          {{form.exp_date}}
+        </div>
       </div>
-    </div>
 
-    <div class="text-center mt-2"> 
-      <input class="btn btn-primary mt-2" type="Submit" value="Create New Tube">
-    </div>
+      <div class="col-sm-3">
+        <div class="row justify-content-center mt-2">
+          <div class="card" style="width: 18rem;">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                Locations
+                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+                  ⮟
+                </button>
+              </li>
 
+              <div class="collapse show" id="reagents-collapse">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for loc in form.location %}
+                      <li class="list-group-item">
+                        {{loc}}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="text-center mt-2"> 
+          <a class="btn btn-secondary" href="{% url 'controls' %}">Cancel</a>
+          <button class="btn btn-primary" type="Submit" name="update">Update Tube</button>
+        </div>
+      </div>
+  
+    </div>
   </form>
 
 </div>
+
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮝' ?  '⮟' : '⮝';
+    });
+  });
+</script>
 
 {% endblock %}

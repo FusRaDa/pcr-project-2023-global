@@ -222,8 +222,8 @@ def edit_tube(request, username, pk):
 # **REAGENTS VIEWS** #
 @login_required(login_url='login')
 def reagents(request):
-  pcr_reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR).order_by(F('exp_date').desc(nulls_last=True))
-  ext_reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.EXTRACTION).order_by(F('exp_date').desc(nulls_last=True))
+  pcr_reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR).order_by(F('exp_date').asc(nulls_last=True))
+  ext_reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.EXTRACTION).order_by(F('exp_date').asc(nulls_last=True))
 
   context = {'pcr_reagents': pcr_reagents, 'ext_reagents': ext_reagents}
   return render(request, 'inventory/reagents.html', context)

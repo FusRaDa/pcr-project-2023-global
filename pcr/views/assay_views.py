@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import F
 from django.contrib import messages
 from django.contrib.auth.models import User
 
@@ -73,7 +74,6 @@ def edit_assay(request, username, pk):
     else:
       messages.error(request, "Invalid assay name entered, please try again.")
       print(del_form.errors)
-      return redirect(request.path_info)
   
   context = {'assay': assay, 'form': form, 'del_form': del_form}
   return render(request, 'assay/edit_assay.html', context)
@@ -112,7 +112,6 @@ def assay_through(request, username, pk):
     reagentformset = ReagentAssayFormSet(request.POST)
     if reagentformset.is_valid():
       reagentformset.save()
-      messages.success(request, "Reagent quantity and order have been modified/saved!")
       return redirect('assays')
     else:
       print(reagentformset.errors)
@@ -198,7 +197,7 @@ def delete_fluorescence(request, username, pk):
 
 @login_required(login_url='login')
 def controls(request):
-  controls = Control.objects.filter(user=request.user).order_by('name')
+  controls = Control.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
 
   context = {'controls': controls}
   return render(request, 'assay/controls.html', context)

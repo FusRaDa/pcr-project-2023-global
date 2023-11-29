@@ -33,9 +33,20 @@ class Control(models.Model):
   lot_number = models.CharField(blank=False, max_length=25)
   amount = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
 
+  is_negative_ctrl = models.BooleanField(default=False)
+
   exp_date = models.DateField(blank=True, null=True, default=None)
 
   location = models.ManyToManyField(Location)
+
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(
+        fields=['user', 'lot_number'], 
+        name='control_unique',
+        violation_error_message = "Control with this lot number already exists."
+      )
+    ]
 
   def __str__(self):
     return self.name
