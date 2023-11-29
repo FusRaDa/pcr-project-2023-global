@@ -95,6 +95,8 @@ class ReagentForm(ModelForm):
     cleaned_data = super().clean()
     stock = cleaned_data.get('stock_concentration')
     unit = cleaned_data.get('unit_concentration')
+    pcr_reagent = cleaned_data.get('pcr_reagent')
+    usage = cleaned_data.get('usage')
 
     if stock != None and unit == None:
       raise ValidationError(
@@ -105,7 +107,22 @@ class ReagentForm(ModelForm):
       raise ValidationError(
         message="Leave unit concentration blank if a stock concentration is not needed."
       )
-
+    
+    if pcr_reagent != None and usage == Reagent.Usages.EXTRACTION:
+      raise ValidationError(
+        message="Leave PCR reagent type empty if reagent usage is for extraction."
+      )
+    
+    if pcr_reagent == None and usage == Reagent.Usages.PCR:
+      raise ValidationError(
+        message="Select PCR reagent type if reagent usage is for PCR."
+      )
+    
+    if pcr_reagent == Reagent.PCRReagent.WATER and (stock != None or unit != None):
+      raise ValidationError(
+        message="Water for PCR does not require concentration."
+      )
+  
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -114,7 +131,8 @@ class ReagentForm(ModelForm):
     self.fields['brand'].widget.attrs['class'] = 'form-control'
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
-    self.fields['usage'].widget.attrs['class'] = 'form-control'
+    self.fields['usage'].widget.attrs['class'] = 'form-select'
+    self.fields['pcr_reagent'].widget.attrs['class'] = 'form-select'
     self.fields['volume'].widget.attrs['class'] = 'form-control'
     self.fields['unit_volume'].widget.attrs['class'] = 'form-select'
     self.fields['stock_concentration'].widget.attrs['class'] = 'form-control'

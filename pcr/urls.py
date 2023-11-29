@@ -27,7 +27,6 @@ urlpatterns = [
   path("create-assay/", assay_views.create_assay, name="create_assay"),
   path("assay/<str:username>/<int:pk>/", assay_views.edit_assay, name="edit_assay"),
   path("quantify-assay/<str:username>/<int:pk>/", assay_views.assay_through, name="assay_through"),
-  path("delete-assay/<str:username>/<int:pk>/", assay_views.delete_assay, name="delete_assay"),
 
   path("fluorescence/", assay_views.fluorescence, name="fluorescence"),
   path("create_fluorescence/", assay_views.create_fluorescence, name="create_fluorescence"),

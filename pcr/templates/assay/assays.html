@@ -27,84 +27,181 @@
   </div>
 
   <div class="row">
-    {% for assay in assays %}
-    <div class="col mt-2">
-     
-       <div class="card">
-        <div class="card-header">
-          {{assay.name}}
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Type: {{assay.type}}</li>
-          <li class="list-group-item">Method: {{assay.method}}</li>
-          <li class="list-group-item">Reaction Volume (&#181;L): {{assay.reaction_volume}}</li>
-          <li class="list-group-item">Sample Volume (&#181;L): {{assay.sample_volume}}</li>
-          <li class="list-group-item">Flourescence
+    <div class="col">
 
-            <button class="btn btn-primary btn-sm float-right btn-arrow float-end" type="button" data-bs-toggle="collapse" data-bs-target="#fluor-collapse-{{assay.pk}}" aria-expanded="false" aria-controls="fluor-collapse-{{assay.pk}}">
-              ⮟
-            </button>
+    {% if pcr_dna %}
+    <h6>PCR Assays - DNA</h6>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Sample Volume</th>
+            <th scope="col">Reaction Volume</th>
+            <th scope="col">Fluorescence</th>
+          </tr>
+        </thead>
 
-            <div class="collapse" id="fluor-collapse-{{assay.pk}}">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for a in assay.fluorescence.all %}
-                  <li class="list-group-item">{{a}}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
+        <tbody>
+          {% for assay in pcr_dna %}
+            <tr class="batch-row" data-href="{% url 'edit_assay' request.user.username assay.pk %}">
+              <td>{{assay.name}}</td>
+              <td>{{assay.sample_volume}}</td>
+              <td>{{assay.reaction_volume}}</td>
+              <td>
+                {% for fluor in assay.fluorescence.all %}
+                  {% if assay.location.all|length > 1 %}
+                  <span>
+                    {{fluor}} |
+                  </span>
+                  {% else %}
+                  <span>
+                    {{fluor}}
+                  </span>
+                  {% endif %}
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
 
-          </li>
+      </table>
+    </div>
+    {% endif %}
 
-          <li class="list-group-item">Controls
+    {% if pcr_rna %}
+    <h6>PCR Assays - RNA</h6>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Sample Volume</th>
+            <th scope="col">Reaction Volume</th>
+            <th scope="col">Fluorescence</th>
+          </tr>
+        </thead>
 
-            <button type="button" class="btn btn-primary btn-sm float-right btn-arrow float-end" data-bs-toggle="collapse" data-bs-target="#control-collapse-{{assay.pk}}" arai-expanded="false" aria-controls="control-collapse-{{assay.pk}}">
-              ⮟
-            </button>
+        <tbody>
+          {% for assay in pcr_rna %}
+            <tr class="batch-row" data-href="{% url 'edit_assay' request.user.username assay.pk %}">
+              <td>{{assay.name}}</td>
+              <td>{{assay.sample_volume}}</td>
+              <td>{{assay.reaction_volume}}</td>
+              <td>
+                {% for fluor in assay.fluorescence.all %}
+                  {% if assay.location.all|length > 1 %}
+                  <span>
+                    {{fluor}} |
+                  </span>
+                  {% else %}
+                  <span>
+                    {{fluor}}
+                  </span>
+                  {% endif %}
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
 
-            <div class="collapse" id="control-collapse-{{assay.pk}}">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for a in assay.controls.all %}
-                  <li class="list-group-item">{{a}}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
+      </table>
+    </div>
+    {% endif %}
 
-          </li>
-          <li class="list-group-item">Reagents
+    {% if qpcr_dna %}
+    <h6>qPCR Assays - DNA</h6>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Sample Volume</th>
+            <th scope="col">Reaction Volume</th>
+            <th scope="col">Fluorescence</th>
+          </tr>
+        </thead>
 
-            <button type="button" class="btn btn-primary btn-sm float-right btn-arrow float-end" data-bs-toggle="collapse" data-bs-target="#reagent-collapse-{{assay.pk}}" aria-expanded="false" aria-controls="reagent-collapse-{{assay.pk}}">
-              ⮟
-            </button>
+        <tbody>
+          {% for assay in qpcr_dna %}
+            <tr class="batch-row" data-href="{% url 'edit_assay' request.user.username assay.pk %}">
+              <td>{{assay.name}}</td>
+              <td>{{assay.sample_volume}}</td>
+              <td>{{assay.reaction_volume}}</td>
+              <td>
+                {% for fluor in assay.fluorescence.all %}
+                  {% if assay.location.all|length > 1 %}
+                  <span>
+                    {{fluor}} |
+                  </span>
+                  {% else %}
+                  <span>
+                    {{fluor}}
+                  </span>
+                  {% endif %}
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
 
-            <div class="collapse" id="reagent-collapse-{{assay.pk}}">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for a in assay.reagents.all %}
-                  <li class="list-group-item">{{a}}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
+      </table>
+    </div>
+    {% endif %}
 
-          </li>
-        </ul>
-        <div class="card-body">
-          <a href="{% url 'edit_assay' request.user.username assay.pk %}" class="card-link">Edit Assay</a>
-        </div>
-      </div>
+    {% if qpcr_rna %}
+    <h6>qPCR Assays - RNA</h6>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Sample Volume</th>
+            <th scope="col">Reaction Volume</th>
+            <th scope="col">Fluorescence</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for assay in qpcr_rna %}
+            <tr class="batch-row" data-href="{% url 'edit_assay' request.user.username assay.pk %}">
+              <td>{{assay.name}}</td>
+              <td>{{assay.sample_volume}}</td>
+              <td>{{assay.reaction_volume}}</td>
+              <td>
+                {% for fluor in assay.fluorescence.all %}
+                  {% if assay.location.all|length > 1 %}
+                  <span>
+                    {{fluor}} |
+                  </span>
+                  {% else %}
+                  <span>
+                    {{fluor}}
+                  </span>
+                  {% endif %}
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+    {% endif %}
 
     </div>
-    {% endfor %}
   </div>
 
   <script>
     $('.btn-arrow').click(function(){
       $(this).text(function(i,old){
         return old=='⮝' ?  '⮟' : '⮝';
+      });
+    });
+
+    jQuery(document).ready(function($) {
+      $(".batch-row").click(function() {
+          window.location = $(this).data("href");
       });
     });
   </script>

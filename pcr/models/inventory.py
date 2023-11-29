@@ -110,6 +110,15 @@ class Reagent(models.Model):
     UNITS = 'U/\u00B5L', _('U/\u00B5L')
     X = 'X', _('X')
 
+  class PCRReagent(models.TextChoices):
+    GENERAL = 'GENERAL', _('GENERAL')
+    POLYMERASE = 'POLYMERASE', _('POLYMERASE')
+    WATER = 'WATER', _('WATER')
+
+  class IsPolymerase(models.TextChoices):
+    TRUE = 'TRUE', _('TRUE')
+    FALSE = 'FALSE', _('FALSE')
+
   name = models.CharField(blank=False, max_length=25)
   brand = models.CharField(blank=True, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
@@ -117,7 +126,8 @@ class Reagent(models.Model):
   location = models.ManyToManyField(Location)
 
   usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.PCR, max_length=25)
-
+  pcr_reagent = models.CharField(choices=PCRReagent.choices, blank=True, null=True, default=None, max_length=25) # determine calculations for type of pcr reagent
+ 
   volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
 

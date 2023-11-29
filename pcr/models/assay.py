@@ -44,7 +44,7 @@ class Control(models.Model):
 class Assay(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  class Method(models.TextChoices):
+  class Methods(models.TextChoices):
     qPCR = 'qPCR', _('qPCR')
     PCR = 'PCR', _('PCR')
 
@@ -54,7 +54,7 @@ class Assay(models.Model):
     RNA = 'RNA', _('RNA') # RT-PCR
 
   name = models.CharField(blank=False, max_length=25)
-  method = models.CharField(choices=Method.choices, blank=False, default=Method.qPCR, max_length=25)
+  method = models.CharField(choices=Methods.choices, blank=False, default=Methods.qPCR, max_length=25)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25)
 
   sample_volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters

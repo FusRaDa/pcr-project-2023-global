@@ -7,13 +7,16 @@ from django.contrib.auth.models import User
 
 from ..models.assay import Assay, Fluorescence, Control
 from ..forms.assay import AssayForm, ReagentAssay, ReagentAssayForm, FluorescenceForm, ControlForm
-
+from ..forms.general import DeletionForm
 
 @login_required(login_url='login')
 def assays(request):
-  assays = Assay.objects.filter(user=request.user).order_by('name')
+  pcr_dna = Assay.objects.filter(user=request.user, method=Assay.Methods.PCR, type=Assay.Types.DNA).order_by('name')
+  pcr_rna = Assay.objects.filter(user=request.user, method=Assay.Methods.PCR, type=Assay.Types.RNA).order_by('name')
+  qpcr_dna = Assay.objects.filter(user=request.user, method=Assay.Methods.qPCR, type=Assay.Types.DNA).order_by('name')
+  qpcr_rna = Assay.objects.filter(user=request.user, method=Assay.Methods.qPCR, type=Assay.Types.RNA).order_by('name')
 
-  context = {'assays': assays}
+  context = {'pcr_dna': pcr_dna, 'pcr_rna': pcr_rna, 'qpcr_dna': qpcr_dna, 'qpcr_rna': qpcr_rna}
   return render(request, 'assay/assays.html', context)
 
 
@@ -52,16 +55,27 @@ def edit_assay(request, username, pk):
     return redirect('assays')
   
   form = AssayForm(user=request.user, instance=assay)
+  del_form = DeletionForm(value=assay.name)
 
-  if request.method == 'POST':
+  if 'update' in request.POST:
     form = AssayForm(request.POST, user=request.user, instance=assay)
     if form.is_valid():
       form.save()
       return redirect('assay_through', request.user.username, pk)
     else:
       print(form.errors)
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=assay.name)
+    if del_form.is_valid():
+      assay.delete()
+      return redirect('assays')
+    else:
+      messages.error(request, "Invalid assay name entered, please try again.")
+      print(del_form.errors)
+      return redirect(request.path_info)
   
-  context = {'assay': assay, 'form': form}
+  context = {'assay': assay, 'form': form, 'del_form': del_form}
   return render(request, 'assay/edit_assay.html', context)
 
 
@@ -99,31 +113,13 @@ def assay_through(request, username, pk):
     if reagentformset.is_valid():
       reagentformset.save()
       messages.success(request, "Reagent quantity and order have been modified/saved!")
-      return redirect(request.path_info)
+      return redirect('assays')
     else:
       print(reagentformset.errors)
       print(reagentformset.non_form_errors())
 
   context = {'reagentformset': reagentformset, 'reagents_data': reagents_data, 'assay': assay}
   return render(request, 'assay/assay_through.html', context)
-
-
-@login_required(login_url='login')
-def delete_assay(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no assay to delete.")
-    return redirect('assays')
-  
-  try:
-    assay = Assay.objects.get(user=user, pk=pk)
-    assay.delete()
-  except ObjectDoesNotExist:
-    messages.error(request, "There is no assay to delete.")
-    return redirect('assays')
-
-  return redirect('assays')
 
 
 @login_required(login_url='login')
