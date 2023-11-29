@@ -5,22 +5,18 @@
 {% block title %} Edit Plate {% endblock %} 
 
 {% block content %}
-
+<link rel="stylesheet" href="{% static 'css/global.css' %}">
 <link rel="stylesheet" href="{% static 'css/edit_plate.css' %}">
 
 <div class="container-fluid">
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
-    </div>
-  </div>
-  {% endfor %}
-
   <div class="row justify-content-center">
     <h3 class="text-center">Updating: {{plate.name}}</h3>
   </div>
+
+  {% for message in messages %}
+  <h6 class="messages text-center">{{ message }}</h6>
+  {% endfor %}
 
   <div class="row justify-content-center mb-2">
     <div class="col-sm-3">

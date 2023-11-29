@@ -5,106 +5,186 @@
 {% block title %} Edit Reagent {% endblock %} 
 
 {% block content %}
-
+<link rel="stylesheet" href="{% static 'css/global.css' %}">
 <link rel="stylesheet" href="{% static 'css/create_reagent.css' %}">
 
 <div class="container-fluid">
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
-    </div>
+  <div class="row justify-content-center">
+    <h3 class="text-center">{{reagent.name}}</h3>
   </div>
+
+  {% for message in messages %}
+  <h6 class="messages text-center">{{ message }}</h6>
   {% endfor %}
 
-  <div class="row justify-content-center">
-    <h3 class="text-center">Updating: {{reagent.name}}</h3>
+  <div class="row justify-content-center mb-2">
+    <div class="col-sm-3">
+
+      <form method="POST" action="">
+        {% csrf_token %}
+
+        <div class="text-center">
+          <label class="form-label">Usage</label>
+          {{form.usage}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Brand</label>
+          {{form.brand}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Lot Number</label>
+          {{form.lot_number}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Catalog Number</label>
+          {{form.catalog_number}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Volume</label>
+          {{form.volume}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Volume Unit</label>
+          {{form.unit_volume}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Stock Concentration</label>
+          {{form.stock_concentration}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Concentration Unit</label>
+          {{form.unit_concentration}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Expiration Date</label>
+          {{form.exp_date}}
+        </div>
+        
+        <div class="row justify-content-center mt-2">
+          <div class="card" style="width: 18rem;">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                Locations
+                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+                  ⮟
+                </button>
+              </li>
+
+              <div class="collapse" id="reagents-collapse">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for loc in form.location %}
+                      <li class="list-group-item">
+                        {{loc}}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </ul>
+          </div>
+        </div>
+
+        <div class="text-center mt-2"> 
+          <a class="btn btn-secondary" href="{% url 'reagents' %}">Cancel</a>
+          <button class="btn btn-primary" type="submit" name="update">Update Reagent</button>
+        </div>
+
+      </form>
+
+    </div>
   </div>
 
-  <form method="POST" action="">
-    {% csrf_token %}
+  <div class="row justify-content-center">
+    <div class="col-sm-6">
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Usage</label>
-      {{form.usage}}
-    </div>
+      {% if reagent.extractionprotocol_set.all %}
+      <h5 class="text-center">Protocols</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Name</label>
-      {{form.name}}
-    </div>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+            </tr>
+          </thead>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Brand</label>
-      {{form.brand}}
-    </div>
+          <tbody>
+            {% for protocol in reagent.extractionprotocol_set.all %}
+            <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' request.user.username protocol.pk %}">
+              <td>{{protocol.name}}</td>
+              <td>{{protocol.type}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Lot Number</label>
-      {{form.lot_number}}
-    </div>
-
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Catalog Number</label>
-      {{form.catalog_number}}
-    </div>
-
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Volume</label>
-      {{form.volume}}
-    </div>
-
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Volume Unit</label>
-      {{form.unit_volume}}
-    </div>
-
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Stock Concentration</label>
-      {{form.stock_concentration}}
-    </div>
-
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Concentration Unit</label>
-      {{form.unit_concentration}}
-    </div>
-
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Expiration Date</label>
-      {{form.exp_date}}
-    </div>
-    
-    <div class="row justify-content-center mt-2">
-      <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            Locations
-            <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
-              ⮟
-            </button>
-          </li>
-
-          <div class="collapse" id="reagents-collapse">
-            <div class="card-body"> 
-              <ul class="list-group">
-                {% for loc in form.location %}
-                  <li class="list-group-item">
-                    {{loc}}
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </ul>
+        </table>
       </div>
-    </div>
+      {% endif %}
 
-    <div class="text-center mt-2"> 
-      <button class="btn btn-primary" type="submit" name="update">Update Reagent</button>
-    </div>
+      {% if reagent.assay_set.all %}
+      <h5 class="text-center">Assays</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
 
-  </form>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Method</th>
+              <th scope="col">Reaction Volume (&#181;L)</th>
+              <th scope="col">Sample Volume (&#181;L)</th>
+              <th scope="col">Flourescence</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for assay in reagent.assay_set.all %}
+            <tr class="reagent-row" data-href="{% url 'edit_assay' request.user.username assay.pk %}">
+              <td>{{assay.name}}</td>
+              <td>{{assay.type}}</td>
+              <td>{{assay.method}}</td>
+              <td>{{assay.reaction_volume}}</td>
+              <td>{{assay.sample_volume}}</td>
+       
+              <td>
+                {% for fluor in assay.fluorescence.all %}
+                  {% if assay.location.all|length > 1 %}
+                  <span>
+                    {{fluor}} |
+                  </span>
+                  {% else %}
+                  <span>
+                    {{fluor}}
+                  </span>
+                  {% endif %}
+                {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
 
   <div class="justify-content-center">
     <div class="col d-flex justify-content-center">
@@ -130,19 +210,21 @@
             </div>
             
             <div class="row justify-content-center">
-              <form method="POST" action="">
-                {% csrf_token %}
-          
-                <div class="text-center mx-auto">
-                  <label class="form-label">Enter: "{{reagent.name}}" &amp; Confirm</label>
-                  {{del_form.confirm}}
-                </div>
-          
-                <div class="text-center mt-2">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-primary" name="delete">Confirm</button>
-                </div>
-              </form>
+              <div class="col-sm-6">
+                <form method="POST" action="">
+                  {% csrf_token %}
+            
+                  <div class="text-center mx-auto">
+                    <label class="form-label">Enter: "{{reagent.name}}" &amp; Confirm</label>
+                    {{del_form.confirm}}
+                  </div>
+            
+                  <div class="text-center mt-2">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" name="delete">Confirm</button>
+                  </div>
+                </form>
+              </div>
             </div>
 
           </div>
@@ -157,6 +239,12 @@
     $('.btn-arrow').click(function(){
       $(this).text(function(i,old){
           return old=='⮝' ?  '⮟' : '⮝';
+      });
+    });
+
+    jQuery(document).ready(function($) {
+      $(".reagent-row").click(function() {
+          window.location = $(this).data("href");
       });
     });
   </script>

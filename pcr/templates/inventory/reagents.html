@@ -49,16 +49,13 @@
           <thead>
             <tr>
               <th scope="col">Exp. Date</th>
-              <th scope="col">Date Added</th>
               <th scope="col">Last Updated</th>
               <th scope="col">Name</th>
               <th scope="col">Brand</th>
               <th scope="col">Catalog #</th>
               <th scope="col">Lot #</th>
               <th scope="col">Volume</th>
-              <th scope="col">Volume Unit</th>
               <th scope="col">Concentration</th>
-              <th scope="col">Unit Concentration</th>
               <th scope="col">Location(s)</th>
             </tr>
           </thead>
@@ -67,16 +64,17 @@
             {% for reagent in ext_reagents %}
               <tr class="reagent-row" data-href="{% url 'edit_reagent' request.user.username reagent.pk %}">
                 <td>{{reagent.exp_date}}</td>
-                <td>{{reagent.date_created}}</td>
                 <td>{{reagent.last_updated}}</td>
                 <td>{{reagent.name}}</td>
                 <td>{{reagent.brand}}</td>
                 <td>{{reagent.catalog_number}}</td>
                 <td>{{reagent.lot_number}}</td>
-                <td>{{reagent.volume}}</td>
-                <td>{{reagent.unit_volume}}</td>
-                <td>{{reagent.stock_concentration}}</td>
-                <td>{{reagent.unit_concentration}}</td>
+                <td>{{reagent.volume}} {{reagent.unit_volume}}</td>
+                <td>
+                  {% if reagent.stock_concentration %}
+                  {{reagent.stock_concentration}} {{reagent.unit_concentration}}
+                  {% endif %}
+                </td>
 
                 <td>
                   {% for location in reagent.location.all %}
@@ -106,16 +104,13 @@
           <thead>
             <tr>
               <th scope="col">Exp. Date</th>
-              <th scope="col">Date Added</th>
               <th scope="col">Last Updated</th>
               <th scope="col">Name</th>
               <th scope="col">Brand</th>
               <th scope="col">Catalog #</th>
               <th scope="col">Lot #</th>
               <th scope="col">Volume</th>
-              <th scope="col">Volume Unit</th>
               <th scope="col">Concentration</th>
-              <th scope="col">Unit Concentration</th>
               <th scope="col">Location(s)</th>
             </tr>
           </thead>
@@ -124,16 +119,17 @@
             {% for reagent in pcr_reagents %}
               <tr class="reagent-row" data-href="{% url 'edit_reagent' request.user.username reagent.pk %}">
                 <td>{{reagent.exp_date}}</td>
-                <td>{{reagent.date_created}}</td>
                 <td>{{reagent.last_updated}}</td>
                 <td>{{reagent.name}}</td>
                 <td>{{reagent.brand}}</td>
                 <td>{{reagent.catalog_number}}</td>
                 <td>{{reagent.lot_number}}</td>
-                <td>{{reagent.volume}}</td>
-                <td>{{reagent.unit_volume}}</td>
-                <td>{{reagent.stock_concentration}}</td>
-                <td>{{reagent.unit_concentration}}</td>
+                <td>{{reagent.volume}} {{reagent.unit_volume}}</td>
+                <td>
+                  {% if reagent.stock_concentration %}
+                  {{reagent.stock_concentration}} {{reagent.unit_concentration}}
+                  {% endif %}
+                </td>
 
                 <td>
                   {% for location in reagent.location.all %}
