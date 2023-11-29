@@ -40,7 +40,7 @@
 
   <div class="row justify-content-center">
 
-    <div class="col-sm-10">
+    <div class="col">
 
       {% if location.plate_set.all %}
       <h5 class="text-center">Plates</h5>
@@ -164,8 +164,6 @@
       <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete Location</button>
     </div>
   </div>
-
-  
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

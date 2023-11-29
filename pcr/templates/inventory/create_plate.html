@@ -14,75 +14,89 @@
     <h3 class="text-center">Add New Plate</h3>
   </div>
 
-  <form method="POST" action="">
-    {% csrf_token %}
+  <div class="row justify-content-center mb-2">
+    <div class="col-sm-3">
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Name</label>
-      {{form.name}}
-    </div>
+      <form method="POST" action="">
+        {% csrf_token %}
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Brand</label>
-      {{form.brand}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Lot Number</label>
-      {{form.lot_number}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Brand</label>
+          {{form.brand}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Catalog Number</label>
-      {{form.catalog_number}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Lot Number</label>
+          {{form.lot_number}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Size</label>
-      {{form.size}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Catalog Number</label>
+          {{form.catalog_number}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Amount Stored</label>
-      {{form.amount}}
-    </div>
-    
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Expiration Date</label>
-      {{form.exp_date}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Size</label>
+          {{form.size}}
+        </div>
 
-    <div class="row justify-content-center mt-2">
-      <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            Locations
-            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
-              ⮟
-            </button>
-          </li>
+        <div class="text-center">
+          <label class="form-label">Amount Stored</label>
+          {{form.amount}}
+        </div>
+        
+        <div class="text-center">
+          <label class="form-label">Expiration Date</label>
+          {{form.exp_date}}
+        </div>
 
-          <div class="collapse" id="reagents-collapse">
-            <div class="card-body"> 
-              <ul class="list-group">
-                {% for loc in form.location %}
-                  <li class="list-group-item">
-                    {{loc}}
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
+        <div class="row justify-content-center mt-2">
+          <div class="card" style="width: 18rem;">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                Locations
+                <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+                  ⮟
+                </button>
+              </li>
+
+              <div class="collapse" id="reagents-collapse">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for loc in form.location %}
+                      <li class="list-group-item">
+                        {{loc}}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </ul>
           </div>
-        </ul>
-      </div>
-    </div>
+        </div>
 
-    <div class="text-center mt-2">
-      <button type="submit" class="btn btn-primary">Add New Plate</button>
-    </div>
+        <div class="text-center mt-2">
+          <a class="btn btn-secondary" href="{% url 'plates' %}">Cancel</a>
+          <button type="submit" class="btn btn-primary">Add New Plate</button>
+        </div>
 
-  </form>
+      </form>
+    </div>
+  </div>
 
 </div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".batch-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
 
 {% endblock %}
