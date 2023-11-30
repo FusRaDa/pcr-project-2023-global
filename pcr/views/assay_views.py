@@ -132,10 +132,10 @@ def fluorescence(request):
 @login_required(login_url='login')
 def create_fluorescence(request):
   context = {}
-  form = FluorescenceForm(user=request.user)
+  form = FluorescenceForm()
 
   if request.method == "POST":
-    form = FluorescenceForm(request.POST, user=request.user)
+    form = FluorescenceForm(request.POST)
     if form.is_valid():
       flourescence = form.save(commit=False)
       flourescence.user = request.user
@@ -164,8 +164,9 @@ def edit_fluorescence(request, username, pk):
     return redirect('fluorescence')
   
   form = FluorescenceForm(instance=fluorescence)
+  del_form = DeletionForm(value=fluorescence.name)
 
-  if request.method == "POST":
+  if 'update' in request.POST:
     form = FluorescenceForm(request.POST, instance=fluorescence)
     if form.is_valid():
       form.save()
@@ -173,26 +174,17 @@ def edit_fluorescence(request, username, pk):
     else:
       print(form.errors)
 
-  context = {'form': form, 'fluorescence': fluorescence}
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=fluorescence.name)
+    if del_form.is_valid():
+      fluorescence.delete()
+      return redirect('fluorescence')
+    else:
+      messages.error(request, "Invalid control name entered, please try again.")
+      print(del_form.errors)
+
+  context = {'form': form, 'fluorescence': fluorescence, 'del_form': del_form}
   return render(request, 'assay/edit_fluorescence.html', context)
-
-
-@login_required(login_url='login')
-def delete_fluorescence(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no fluorescence to delete.")
-    return redirect('flourescence')
-  
-  try:
-    fluorescence = Fluorescence.objects.get(user=user, pk=pk)
-    fluorescence.delete()
-  except ObjectDoesNotExist:
-    messages.error(request, "There is no fluorescence to delete.")
-    return redirect('fluorescence')
-
-  return redirect('fluorescence')
 
 
 @login_required(login_url='login')
@@ -216,6 +208,7 @@ def create_control(request):
       control = form.save()
       return redirect('controls')
     else:
+      messages.error(request, form.errors)
       print(form.errors)
 
   context = {'form': form}
@@ -259,21 +252,3 @@ def edit_control(request, username, pk):
 
   context = {'form': form, 'control': control, 'del_form': del_form}
   return render(request, 'assay/edit_control.html', context)
-
-
-@login_required(login_url='login')
-def delete_control(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no control to delete.")
-    return redirect('controls')
-  
-  try:
-    control = Control.objects.get(user=user, pk=pk)
-    control.delete()
-  except ObjectDoesNotExist:
-    messages.error(request, "There is no control to delete.")
-    return redirect('controls')
-
-  return redirect('controls')

@@ -29,28 +29,26 @@ urlpatterns = [
   path("quantify-assay/<str:username>/<int:pk>/", assay_views.assay_through, name="assay_through"),
 
   path("fluorescence/", assay_views.fluorescence, name="fluorescence"),
-  path("create_fluorescence/", assay_views.create_fluorescence, name="create_fluorescence"),
-  path("edit_fluorescence/<str:username>/<int:pk>/", assay_views.edit_fluorescence, name="edit_fluorescence"),
-  path("delete_fluorescence/<str:username>/<int:pk>/", assay_views.delete_fluorescence, name="delete_fluorescence"),
+  path("create-fluorescence/", assay_views.create_fluorescence, name="create_fluorescence"),
+  path("edit-fluorescence/<str:username>/<int:pk>/", assay_views.edit_fluorescence, name="edit_fluorescence"),
 
   path("controls/", assay_views.controls, name="controls"),
-  path("create_control/", assay_views.create_control, name="create_control"),
-  path("edit_control/<str:username>/<int:pk>/", assay_views.edit_control, name="edit_control"),
-  path("delete_control/<str:username>/<int:pk>/", assay_views.delete_control, name="delete_control"),
+  path("create-control/", assay_views.create_control, name="create_control"),
+  path("edit-control/<str:username>/<int:pk>/", assay_views.edit_control, name="edit_control"),
 
   path("locations/", inventory_views.locations, name="locations"),
-  path("create_location/", inventory_views.create_location, name="create_location"),
-  path("edit_location/<str:username>/<int:pk>/", inventory_views.edit_location, name="edit_location"),
+  path("create-location/", inventory_views.create_location, name="create_location"),
+  path("edit-location/<str:username>/<int:pk>/", inventory_views.edit_location, name="edit_location"),
 
   path("plates/", inventory_views.plates, name="plates"),
-  path("create_plate/", inventory_views.create_plate, name="create_plate"),
-  path("edit_plate/<str:username>/<int:pk>/", inventory_views.edit_plate, name="edit_plate"),
+  path("create-plate/", inventory_views.create_plate, name="create_plate"),
+  path("edit-plate/<str:username>/<int:pk>/", inventory_views.edit_plate, name="edit_plate"),
 
   path("tubes/", inventory_views.tubes, name="tubes"),
-  path("create_tube/", inventory_views.create_tube, name="create_tube"),
-  path("edit_tube/<str:username>/<int:pk>/", inventory_views.edit_tube, name="edit_tube"),
+  path("create-tube/", inventory_views.create_tube, name="create_tube"),
+  path("edit-tube/<str:username>/<int:pk>/", inventory_views.edit_tube, name="edit_tube"),
 
   path("reagents/", inventory_views.reagents, name="reagents"),
-  path("create_reagent/", inventory_views.create_reagent, name="create_reagent"),
-  path("edit_reagent/<str:username>/<int:pk>/", inventory_views.edit_reagent, name="edit_reagent"),
+  path("create-reagent/", inventory_views.create_reagent, name="create_reagent"),
+  path("edit-reagent/<str:username>/<int:pk>/", inventory_views.edit_reagent, name="edit_reagent"),
 ]

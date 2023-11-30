@@ -60,6 +60,16 @@ class AssayForm(ModelForm):
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
     required=True)
+  
+  def clean(self):
+    cleaned_data = super().clean()
+    reaction_volume = cleaned_data.get('reaction_volume')
+    sample_volume = cleaned_data.get('sample_volume')
+
+    if reaction_volume < sample_volume:
+      raise ValidationError(
+        message="Reaction volume must be greater or equal to the sample volume."
+      )
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
