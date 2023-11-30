@@ -18,12 +18,13 @@
   <h6 class="messages text-center">{{ message }}</h6>
   {% endfor %}
 
-  <div class="row justify-content-center mb-2">
-    <div class="col-sm-3">
+  
 
-      <form method="POST" action="">
-        {% csrf_token %}
-
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div class="row justify-content-center mb-2">
+      
+      <div class="col-sm-3">
         <div class="text-center">
           <label class="form-label">Name</label>
           {{form.name}}
@@ -78,41 +79,43 @@
           <label class="form-label">Expiration Date</label>
           {{form.exp_date}}
         </div>
-        
-        <div class="row justify-content-center mt-2">
-          <div class="card" style="width: 18rem;">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                Locations
-                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
-                  ⮟
-                </button>
-              </li>
+      </div>
+      
+      <div class="col-sm-3">
+        <div class="card" style="width: 18rem;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Locations
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+                ⮟
+              </button>
+            </li>
 
-              <div class="collapse" id="reagents-collapse">
-                <div class="card-body"> 
-                  <ul class="list-group">
-                    {% for loc in form.location %}
-                      <li class="list-group-item">
-                        {{loc}}
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
+            <div class="collapse show" id="reagents-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for loc in form.location %}
+                    <li class="list-group-item">
+                      {{loc}}
+                    </li>
+                  {% endfor %}
+                </ul>
               </div>
-            </ul>
-          </div>
+            </div>
+          </ul>
         </div>
-
-        <div class="text-center mt-2"> 
-          <a class="btn btn-secondary" href="{% url 'reagents' %}">Cancel</a>
-          <button class="btn btn-primary" type="submit" name="update">Update Reagent</button>
-        </div>
-
-      </form>
+      </div>
 
     </div>
-  </div>
+
+    <div class="row justify-content-center mb-2">
+      <div class="text-center mt-2"> 
+        <a class="btn btn-secondary" href="{% url 'reagents' %}">Cancel</a>
+        <button class="btn btn-primary" type="submit" name="update">Update Reagent</button>
+      </div>
+    </div>
+
+  </form>
 
   <div class="row justify-content-center">
     <div class="col-sm-6">
@@ -124,8 +127,8 @@
 
           <thead>
             <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Type</th>
+              <th scope="col" class="col-sm-3">Name</th>
+              <th scope="col" class="col-sm-3">Type</th>
             </tr>
           </thead>
 

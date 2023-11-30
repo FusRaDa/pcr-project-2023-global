@@ -41,29 +41,27 @@
       </div>
 
       <div class="col-sm-3">
-        <div class="row justify-content-center mt-2">
-          <div class="card" style="width: 18rem;">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                Locations
-                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
-                  ⮟
-                </button>
-              </li>
+        <div class="card" style="width: 18rem;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Locations
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+                ⮟
+              </button>
+            </li>
 
-              <div class="collapse show" id="reagents-collapse">
-                <div class="card-body"> 
-                  <ul class="list-group">
-                    {% for loc in form.location %}
-                      <li class="list-group-item">
-                        {{loc}}
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
+            <div class="collapse show" id="reagents-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for loc in form.location %}
+                    <li class="list-group-item">
+                      {{loc}}
+                    </li>
+                  {% endfor %}
+                </ul>
               </div>
-            </ul>
-          </div>
+            </div>
+          </ul>
         </div>
       </div>
 
