@@ -112,10 +112,10 @@ class Reagent(models.Model):
 
   class PCRReagent(models.TextChoices):
     GENERAL = 'GENERAL', _('GENERAL')
-    POLYMERASE = 'POLYMERASE', _('POLYMERASE')
+    POLYMERASE = 'POLYMERASE', _('POLYMERASE') #used as units/micro-liter
     WATER = 'WATER', _('WATER')
 
-  name = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=50)
   brand = models.CharField(blank=True, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
   catalog_number = models.CharField(blank=False, max_length=25)

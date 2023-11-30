@@ -98,6 +98,11 @@ class ReagentForm(ModelForm):
     pcr_reagent = cleaned_data.get('pcr_reagent')
     usage = cleaned_data.get('usage')
 
+    if usage == Reagent.Usages.EXTRACTION and (stock != None or unit != None):
+      raise ValidationError(
+        message="If reagent is for extraction, stock concentration is not needed."
+      )
+
     if stock != None and unit == None:
       raise ValidationError(
         message="Don't forget to assign a concentration unit to your stock concentration."
@@ -121,6 +126,11 @@ class ReagentForm(ModelForm):
     if pcr_reagent == Reagent.PCRReagent.WATER and (stock != None or unit != None):
       raise ValidationError(
         message="Water for PCR does not require concentration."
+      )
+    
+    if pcr_reagent == Reagent.PCRReagent.POLYMERASE and unit != Reagent.ConcentrationUnits.UNITS:
+      raise ValidationError(
+        message="Polymerase must have a concentration unit of U/\u00B5L."
       )
   
   def __init__(self, *args, **kwargs):

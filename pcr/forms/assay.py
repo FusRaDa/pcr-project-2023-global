@@ -90,6 +90,26 @@ class AssayForm(ModelForm):
 
 class ReagentAssayForm(ModelForm):
 
+  def clean(self):
+    cleaned_data = super().clean()
+    final_concentration = cleaned_data.get('final_concentration')
+    final_concentration_unit = cleaned_data.get('final_concentration_unit')
+
+    if self.instance.reagent.pcr_reagent != Reagent.PCRReagent.WATER.name and (final_concentration == None or final_concentration_unit == None):
+      raise ValidationError(
+        message="Reagents that are not water must have a final concentration."
+      )
+    
+    if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name and (final_concentration != None or final_concentration_unit != None):
+      raise ValidationError (
+        message="Water reagent's final concentration and unit must be left empty."
+      )
+    
+    if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.POLYMERASE.name and final_concentration_unit != Reagent.ConcentrationUnits.UNITS.name:
+      raise ValidationError(
+        message="Polymerase must have the concentration unit of U/\u00B5L."
+      )
+    
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
@@ -97,7 +117,6 @@ class ReagentAssayForm(ModelForm):
       self.fields['final_concentration'].widget.attrs['disabled'] = 'True'
       self.fields['final_concentration_unit'].widget.attrs['disabled'] = 'True'
     
-
   class Meta:
     model = ReagentAssay
     exclude = ['reagent', 'assay']

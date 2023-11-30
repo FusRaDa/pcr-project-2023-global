@@ -1,3 +1,6 @@
+import datetime 
+from django.utils.timezone import now
+
 from pcr.models.pcr import ThermalCyclerProtocol
 from pcr.models.inventory import Tube, Plate, Reagent, Location
 from pcr.models.extraction import ExtractionProtocol
@@ -197,6 +200,7 @@ def create_presets(user):
     lot_number = "LOT_NUMBER_01",
     catalog_number = "CATALOG_NUMBER_01",
     usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.WATER,
     volume = 1.00,
     unit_volume = Reagent.VolumeUnits.LITER,
   )
@@ -210,6 +214,7 @@ def create_presets(user):
     lot_number = "LOT_NUMBER_02",
     catalog_number = "CATALOG_NUMBER_02",
     usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.GENERAL,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
     stock_concentration = 20,
@@ -225,6 +230,7 @@ def create_presets(user):
     lot_number = "LOT_NUMBER_03",
     catalog_number = "CATALOG_NUMBER_03",
     usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.GENERAL,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
     stock_concentration = 20,
@@ -240,6 +246,7 @@ def create_presets(user):
     lot_number = "LOT_NUMBER_04",
     catalog_number = "CATALOG_NUMBER_04",
     usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.GENERAL,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
     stock_concentration = 10,
@@ -255,6 +262,7 @@ def create_presets(user):
     lot_number = "LOT_NUMBER_05",
     catalog_number = "CATALOG_NUMBER_05",
     usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.GENERAL,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
     stock_concentration = 10,
@@ -270,10 +278,11 @@ def create_presets(user):
     lot_number = "LOT_NUMBER_06",
     catalog_number = "CATALOG_NUMBER_06",
     usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.POLYMERASE,
     volume = 1.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
-    stock_concentration = 2,
-    unit_concentration = Reagent.ConcentrationUnits.X,
+    stock_concentration = 5,
+    unit_concentration = Reagent.ConcentrationUnits.UNITS,
   )
 
   i_taq.location.add(location3)
@@ -318,35 +327,36 @@ def create_presets(user):
   bact3 = Control.objects.create(
     user = user,
     name = "Bact-PC 1000c",
-    lot_number = "LOT_NUMBER",
+    lot_number = "LOT_NUMBER_01",
     amount = 100.00,
   )
 
   bact2 = Control.objects.create(
     user = user,
     name = "Bact-PC 100c",
-    lot_number = "LOT_NUMBER",
+    lot_number = "LOT_NUMBER_02",
     amount = 100.00,
   )
 
   bact1 = Control.objects.create(
     user = user,
     name = "Bact-PC 10c",
-    lot_number = "LOT_NUMBER",
+    lot_number = "LOT_NUMBER_03",
     amount = 100.00,
   )
 
   bact0 = Control.objects.create(
     user = user,
     name = "Bact-PC 1c",
-    lot_number = "LOT_NUMBER",
+    lot_number = "LOT_NUMBER_04",
     amount = 100.00,
   )
 
   negctrl = Control.objects.create(
     user = user,
     name = "NegCtrl Water",
-    lot_number = "LOT_NUMBER",
+    lot_number = "LOT_NUMBER_05",
+    is_negative_ctrl = True,
     amount = 100.00,
   )
 
@@ -354,6 +364,7 @@ def create_presets(user):
   cbovis_assay = Assay.objects.create(
      user = user,
      name = "C.Bovis",
+     method = Assay.Methods.PCR,
      type = Assay.Types.DNA,
      sample_volume = 5.00,
      reaction_volume = 20.00,
@@ -362,6 +373,7 @@ def create_presets(user):
   helico_assay = Assay.objects.create(
     user = user,
     name = "Helico",
+    method = Assay.Methods.qPCR,
     type = Assay.Types.DNA,
     sample_volume = 8.00,
     reaction_volume = 20.00,
