@@ -115,10 +115,6 @@ class Reagent(models.Model):
     POLYMERASE = 'POLYMERASE', _('POLYMERASE')
     WATER = 'WATER', _('WATER')
 
-  class IsPolymerase(models.TextChoices):
-    TRUE = 'TRUE', _('TRUE')
-    FALSE = 'FALSE', _('FALSE')
-
   name = models.CharField(blank=False, max_length=25)
   brand = models.CharField(blank=True, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)

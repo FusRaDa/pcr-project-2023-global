@@ -91,7 +91,6 @@ class Assay(models.Model):
 class ReagentAssay(models.Model):
 
   class ConcentrationUnits(models.TextChoices):
-    NOT_APPLICABLE = 'NOT_APPLICABLE', _('NOT_APPLICABLE')
     MOLES = 'MOLES', _('M')
     MILLIMOLES = 'MILLIMOLES', _('mM')
     MICROMOLES = 'MICROMOLES', _('\u00B5M')
@@ -102,8 +101,8 @@ class ReagentAssay(models.Model):
   reagent = models.ForeignKey(Reagent, on_delete=models.CASCADE)
   assay = models.ForeignKey(Assay, on_delete=models.CASCADE)
 
-  final_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, validators=[MinValueValidator(0)], max_digits=12) # in microliters
-  final_concentration_unit = models.CharField(choices=ConcentrationUnits.choices, default=ConcentrationUnits.MICROMOLES, max_length=25)
+  final_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12) # in microliters
+  final_concentration_unit = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)
 
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # users can decide what order reagents will be que's/displayed: 1-lowest priority > highest priority, 0 will be last
 

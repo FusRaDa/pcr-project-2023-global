@@ -89,6 +89,15 @@ class AssayForm(ModelForm):
 
 
 class ReagentAssayForm(ModelForm):
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+
+    if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER:
+      self.fields['final_concentration'].widget.attrs['disabled'] = 'True'
+      self.fields['final_concentration_unit'].widget.attrs['disabled'] = 'True'
+    
+
   class Meta:
     model = ReagentAssay
     exclude = ['reagent', 'assay']
