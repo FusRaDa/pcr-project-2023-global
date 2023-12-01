@@ -1,7 +1,7 @@
 {% extends "base.html" %} 
 
 {% load static %}
-                                                                                                                                                                                                                              
+                                                                                                                                                                                                                         
 {% block title %} Create Assay Code {% endblock %} 
 
 {% block content %}
@@ -37,12 +37,11 @@
             <div class="collapse" id="tubes-collapse">
               <div class="card-body"> 
                 <ul class="list-group">
-                  {% for assay in form.assays%}
+                  {% for assay in form.assays.field.queryset %}
                     <li class="list-group-item">
-                      {{assay}}
+                      {{assay.type}}
                     </li>
                   {% endfor %}
-                </ul>
               </div>
             </div>
           </ul>

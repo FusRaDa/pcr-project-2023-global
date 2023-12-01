@@ -132,12 +132,6 @@ class AssayCodeForm(ModelForm):
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
-
-    pcr_dna = Assay.objects.filter(user=self.user, method=Assay.Methods.PCR, type=Assay.Types.DNA).order_by('name')
-    pcr_rna = Assay.objects.filter(user=self.user, method=Assay.Methods.PCR, type=Assay.Types.RNA).order_by('name')
-    qpcr_dna = Assay.objects.filter(user=self.user, method=Assay.Methods.qPCR, type=Assay.Types.DNA).order_by('name')
-    qpcr_rna = Assay.objects.filter(user=self.user, method=Assay.Methods.qPCR, type=Assay.Types.RNA).order_by('name')
-
     self.fields['assays'].queryset = Assay.objects.filter(user=self.user).order_by('name')
     self.fields['name'].widget.attrs['class'] = 'form-control'
 
