@@ -124,16 +124,35 @@ class ReagentAssayForm(ModelForm):
 
 class AssayCodeForm(ModelForm):
 
-  assays = forms.ModelMultipleChoiceField(
+  pcr_dna = forms.ModelMultipleChoiceField(
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
-    required=True,)
+    required=False,)
+  
+  pcr_rna = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=False,)
+  
+  qpcr_dna = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=False,)
+  
+  qpcr_rna = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=False,)
   
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
-    self.fields['assays'].queryset = Assay.objects.filter(user=self.user).order_by('name')
+    self.fields['pcr_dna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.DNA, method=Assay.Methods.PCR).order_by('name')
+    self.fields['pcr_rna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.RNA, method=Assay.Methods.PCR).order_by('name')
+    self.fields['qpcr_dna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.DNA, method=Assay.Methods.qPCR).order_by('name')
+    self.fields['qpcr_rna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.RNA, method=Assay.Methods.qPCR).order_by('name')
     self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['assays'].required = False
 
   class Meta:
     model = AssayCode
