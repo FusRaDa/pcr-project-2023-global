@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="{% static 'css/global.css' %}">
 <link rel="stylesheet" href="{% static 'css/create_reagent.css' %}">
 
-<div class="container-fluid">
+<div class="container">
 
   <div class="row justify-content-center">
     <h3 class="text-center">{{reagent.name}}</h3>
@@ -17,8 +17,6 @@
   {% for message in messages %}
   <h6 class="messages text-center">{{ message }}</h6>
   {% endfor %}
-
-  
 
   <form method="POST" action="">
     {% csrf_token %}
