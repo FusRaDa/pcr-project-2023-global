@@ -146,11 +146,20 @@ class AssayCodeForm(ModelForm):
   
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
-    super().__init__(*args, **kwargs) 
+    super().__init__(*args, **kwargs)
     self.fields['pcr_dna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.DNA, method=Assay.Methods.PCR).order_by('name')
     self.fields['pcr_rna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.RNA, method=Assay.Methods.PCR).order_by('name')
     self.fields['qpcr_dna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.DNA, method=Assay.Methods.qPCR).order_by('name')
     self.fields['qpcr_rna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.RNA, method=Assay.Methods.qPCR).order_by('name')
+
+    try:
+      self.fields['pcr_dna'].initial = self.instance.assays.all()
+      self.fields['pcr_rna'].initial = self.instance.assays.all()
+      self.fields['qpcr_dna'].initial = self.instance.assays.all()
+      self.fields['qpcr_rna'].initial = self.instance.assays.all()
+    except ValueError:
+      pass
+
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['assays'].required = False
 

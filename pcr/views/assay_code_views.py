@@ -70,7 +70,19 @@ def edit_assay_code(request, username, pk):
   if 'update' in request.POST:
     form = AssayCodeForm(request.POST, user=request.user, instance=code)
     if form.is_valid():
-      form.save()
+      assay_code = form.save()
+
+      pcr_dna = form.cleaned_data['pcr_dna']
+      pcr_rna = form.cleaned_data['pcr_rna']
+      qpcr_dna = form.cleaned_data['qpcr_dna']
+      qpcr_rna = form.cleaned_data['qpcr_rna']
+
+      assays = pcr_dna | pcr_rna | qpcr_dna | qpcr_rna
+
+      assay_code.assays.clear()
+      for assay in assays:
+        assay_code.assays.add(assay)
+
       return redirect('assay_codes')
     else:
       print(form.errors)
@@ -84,7 +96,7 @@ def edit_assay_code(request, username, pk):
       messages.error(request, "Invalid assay code name entered, please try again.")
       print(del_form.errors)
 
-  context = {'form': form, 'del_form': del_form,'code': code}
+  context = {'form': form, 'del_form': del_form, 'code': code}
   return render(request, 'assay-code/edit_assay_code.html', context)
 
 
