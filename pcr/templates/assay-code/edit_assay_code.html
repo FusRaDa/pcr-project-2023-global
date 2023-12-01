@@ -11,14 +11,6 @@
 
 <div class="container-fluid">
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
-    </div>
-  </div>
-  {% endfor %}
-
   <div class="row justify-content-center">
     <h3 class="text-center">Edit Existing Assay Code</h3>
   </div>
@@ -35,41 +27,52 @@
 
   <form method="POST" action="">
     {% csrf_token %}
+    <div class="row justify-content-center">
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Name</label>
-      {{form.name}}
-    </div>
-
-    <div class="row justify-content-center mt-2">
-      <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            Assays
-            <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#tubes-collapse" aria-expanded="false" aria-controls="tubes-collapse">
-              ⮟
-            </button>
-          </li>
-  
-          <div class="collapse" id="tubes-collapse">
-            <div class="card-body"> 
-              <ul class="list-group">
-              {% for assay in form.assays %}
-                <li class="list-group-item">
-                  {{assay}}
-                </li>
-              {% endfor %}
-              </ul>
+      <div class="col-sm-3">
+        <div class="text-center">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
+        
+        <div class="card mx-auto mt-2" style="width: 18rem;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Assays
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#tubes-collapse" aria-expanded="false" aria-controls="tubes-collapse">
+                ⮝
+              </button>
+            </li>
+    
+            <div class="collapse show" id="tubes-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                {% for assay in form.assays %}
+                  <li class="list-group-item">
+                    {{assay}}
+                  </li>
+                {% endfor %}
+                </ul>
+              </div>
             </div>
-          </div>
-        </ul>
+          </ul>
+        </div>
+
       </div>
+
     </div>
 
-    {{form.errors}}
+    <div class="row justify-content-center">
+      {% for message in messages %}
+      <h6 class="messages text-center">{{ message }}</h6>
+      {% endfor %}
+    </div>
 
-    <div class="text-center mt-2"> 
-      <input class="btn btn-primary mt-2" type="Submit" value="Update Assay Code">
+    <div class="row justify-content-center">
+      <div class="text-center mt-2">
+        <a class="btn btn-secondary" href="{% url 'assay_codes' %}">Cancel</a>
+        <button class="btn btn-primary" type="submit" name="update">Update Assay Code</button>
+      </div>
     </div>
 
   </form>
@@ -117,23 +120,23 @@
   <script>
     $('.btn-arrow').click(function(){
       $(this).text(function(i,old){
-          return old=='⮝' ?  '⮟' : '⮝';
+        return old=='⮟' ?  '⮝' : '⮟';
       });
     });
 
-  const delButton = document.getElementById("delete-button");
-  const confirmInput = document.getElementById("confirm-del")
+    const delButton = document.getElementById("delete-button");
+    const confirmInput = document.getElementById("confirm-del")
 
-  function del() {
-    value = '{{code.name}}'
-    if (confirmInput.value === value) {
-      window.location.href = "{% url 'delete_assay_code' request.user.username code.pk %}"
-    } else {
-      alert("Invalid code name entered, please try again.")
+    function del() {
+      value = '{{code.name}}'
+      if (confirmInput.value === value) {
+        window.location.href = "{% url 'delete_assay_code' request.user.username code.pk %}"
+      } else {
+        alert("Invalid code name entered, please try again.")
+      }
     }
-  }
 
-  delButton.addEventListener("click", del);
+    delButton.addEventListener("click", del);
 
   </script>
 

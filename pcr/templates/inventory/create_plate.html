@@ -14,8 +14,6 @@
     <h3 class="text-center">Add New Plate</h3>
   </div>
 
-  
-
   <form method="POST" action="">
     {% csrf_token %}
     <div class="row justify-content-center mb-2">
@@ -62,8 +60,8 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               Locations
-              <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
-                ⮟
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+                ⮝
               </button>
             </li>
 
@@ -95,9 +93,9 @@
 </div>
 
 <script>
-  jQuery(document).ready(function($) {
-    $(".batch-row").click(function() {
-        window.location = $(this).data("href");
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮟' ?  '⮝' : '⮟';
     });
   });
 </script>

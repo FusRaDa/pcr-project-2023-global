@@ -25,48 +25,55 @@
       </a>
     </div>
   </div>
- 
+
   <div class="row">
-    {% for code in assay_codes %}
-    <div class="col mt-2">
-     
-      <div class="card">
-        <div class="card-header">
-          {{code.name}}
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Assays
+    <div class="col justify-content-center">
+      <div class="table-responsive">
 
-            <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#collapse-{{code.pk}}" aria-expanded="false" aria-controls="collapse-{{code.pk}}">
-              ⮟
-            </button>
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col" class="col-sm-1">Panel Name</th>
+              <th scope="col" class="col-sm-11">Corresponding Assays</th>
+            </tr>
+          </thead>
 
-            <div class="collapse" id="collapse-{{code.pk}}">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for assay in code.assays.all %}
-                  <li class="list-group-item">{{assay}}</li>
+          <tbody>
+            {% for assay in assay_codes %}
+              <tr class="batch-row" data-href="{% url 'edit_assay_code' request.user.username assay.pk %}">
+                <td>{{assay.name}}</td>
+                <td>
+                  {% for a in assay.assays.all %}
+                    {% if assay.assays.all|length > 1 %}
+                    <span>
+                      {{assay}} |
+                    </span>
+                    {% else %}
+                    <span>
+                      {{assay}}
+                    </span>
+                    {% endif %}
                   {% endfor %}
-                </ul>
-              </div>
-            </div>
-   
-          </li>
-        </ul>
-        <div class="card-body">
-          <a href="{% url 'edit_assay_code' request.user.username code.pk %}" class="card-link">Edit Code</a>
-        </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
       </div>
-
     </div>
-
-    {% endfor %}
   </div>
-
+ 
   <script>
     $('.btn-arrow').click(function(){
       $(this).text(function(i,old){
           return old=='⮝' ?  '⮟' : '⮝';
+      });
+    });
+
+    jQuery(document).ready(function($) {
+      $(".batch-row").click(function() {
+          window.location = $(this).data("href");
       });
     });
   </script>

@@ -51,7 +51,7 @@
             <li class="list-group-item">
               Locations
               <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
-                ⮟
+                ⮝
               </button>
             </li>
 
@@ -70,9 +70,11 @@
         </div>
       </div>
 
-      {% for message in messages %}
-      <h6 class="messages text-center">{{ message }}</h6>
-      {% endfor %}
+      <div class="row justify-content-center">
+        {% for message in messages %}
+        <h6 class="messages text-center">{{ message }}</h6>
+        {% endfor %}
+      </div>
 
       <div class="row justify-content-center">
         <div class="text-center mt-2"> 
@@ -89,7 +91,7 @@
 <script>
   $('.btn-arrow').click(function(){
     $(this).text(function(i,old){
-      return old=='⮝' ?  '⮟' : '⮝';
+      return old=='⮟' ?  '⮝' : '⮟';
     });
   });
 </script>
