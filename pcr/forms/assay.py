@@ -144,6 +144,18 @@ class AssayCodeForm(ModelForm):
     widget=forms.CheckboxSelectMultiple,
     required=False,)
   
+  def clean(self):
+    cleaned_data = super().clean()
+    pcr_dna = cleaned_data.get('pcr_dna')
+    pcr_rna = cleaned_data.get('pcr_rna')
+    qpcr_dna = cleaned_data.get('qpcr_dna')
+    qpcr_rna = cleaned_data.get('qpcr_rna')
+
+    if not pcr_dna and not pcr_rna and not qpcr_dna and not qpcr_rna:
+      raise ValidationError(
+        message="Please select at least one assay for this panel."
+      )
+    
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs)
@@ -151,6 +163,7 @@ class AssayCodeForm(ModelForm):
     self.fields['pcr_rna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.RNA, method=Assay.Methods.PCR).order_by('name')
     self.fields['qpcr_dna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.DNA, method=Assay.Methods.qPCR).order_by('name')
     self.fields['qpcr_rna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.RNA, method=Assay.Methods.qPCR).order_by('name')
+    self.fields['name'].widget.attrs['class'] = 'form-control'
 
     try:
       self.fields['pcr_dna'].initial = self.instance.assays.all()
@@ -160,9 +173,8 @@ class AssayCodeForm(ModelForm):
     except ValueError:
       pass
 
-    self.fields['name'].widget.attrs['class'] = 'form-control'
-    self.fields['assays'].required = False
+    
 
   class Meta:
     model = AssayCode
-    exclude = ['user']
+    exclude = ['user', 'assays']
