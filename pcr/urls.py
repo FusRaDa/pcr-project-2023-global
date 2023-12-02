@@ -21,7 +21,6 @@ urlpatterns = [
   path("assay-codes/", assay_code_views.assay_codes, name="assay_codes"),
   path("create-assay-code/", assay_code_views.create_assay_code, name="create_assay_code"),
   path("assay-code/<str:username>/<int:pk>/", assay_code_views.edit_assay_code, name="edit_assay_code"),
-  path("delete-assay-code/<str:username>/<int:pk>/", assay_code_views.delete_assay_code, name="delete_assay_code"),
 
   path("assays/", assay_views.assays, name="assays"),
   path("create-assay/", assay_views.create_assay, name="create_assay"),

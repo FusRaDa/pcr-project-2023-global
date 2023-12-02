@@ -98,25 +98,3 @@ def edit_assay_code(request, username, pk):
 
   context = {'form': form, 'del_form': del_form, 'code': code}
   return render(request, 'assay-code/edit_assay_code.html', context)
-
-
-@login_required(login_url='login')
-def delete_assay_code(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no assay code to delete.")
-    return redirect('assay_codes')
-  
-  try:
-    code = AssayCode.objects.get(user=user, pk=pk)
-    try:
-      code.delete()
-    except RestrictedError:
-      messages.error(request, "You cannot delete this code as it is being used by your batches!")
-      return redirect('edit_assay_code', username, pk)
-  except ObjectDoesNotExist:
-    messages.error(request, "There is no assay code to delete.")
-    return redirect('assay_codes')
-
-  return redirect('assay_codes')

@@ -5,10 +5,10 @@
 {% block title %} Create Extraction Protocol {% endblock %} 
 
 {% block content %}
-
+<link rel="stylesheet" href="{% static 'css/global.css' %}">
 <link rel="stylesheet" href="{% static 'css/edit_extraction_protocol.css' %}">
 
-<div class="container-fluid">
+<div class="container">
 
   {% for message in messages %}
   <div class="row">
@@ -24,72 +24,83 @@
 
   <form method="POST" action="">
     {% csrf_token %}
+    <div class="row justify-content-center">
+      
+      <div class="col-sm-3">
+        <div class="text-center">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Name</label>
-      {{form.name}}
-    </div>
+        <div class="text-center">
+          <label class="form-label">Type</label>
+          {{form.type}}
+        </div>
 
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Type</label>
-      {{form.type}}
-    </div>
-
-    <div class="text-center w-25 mx-auto">
-      <label class="form-label">Document URL</label>
-      {{form.doc_url}}
-    </div>
-
-    <div class="row justify-content-center mt-2">
-      <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            Tubes
-            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#tubes-collapse" aria-expanded="false" aria-controls="tubes-collapse">
-              ⮟
-            </button>
-          </li>
-
-          <div class="collapse" id="tubes-collapse">
-            <div class="card-body"> 
-              <ul class="list-group">
-                {% for box in form.tubes %}
-                <li class="list-group-item">
-                  {{box}}
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-  
-          <li class="list-group-item">
-            Reagents
-            <button class="btn btn-primary btn-sm float-end" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
-              ⮟
-            </button>
-          </li>
-
-          <div class="collapse" id="reagents-collapse">
-            <div class="card-body"> 
-              <ul class="list-group">
-                {% for box in form.reagents %}
-                <li class="list-group-item">
-                  {{box}}
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </ul>
+        <div class="text-center">
+          <label class="form-label">Document URL</label>
+          {{form.doc_url}}
+        </div>
       </div>
+
+      <div class="col-sm-3">
+        <div class="card" style="width: 18rem;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Tubes
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#tubes-collapse" aria-expanded="false" aria-controls="tubes-collapse">
+                ⮟
+              </button>
+            </li>
+
+            <div class="collapse" id="tubes-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for box in form.tubes %}
+                  <li class="list-group-item">
+                    {{box}}
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="card" style="width: 18rem;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Tubes
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#tubes-collapse" aria-expanded="false" aria-controls="tubes-collapse">
+                ⮟
+              </button>
+            </li>
+
+            <div class="collapse" id="tubes-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for box in form.reagents %}
+                  <li class="list-group-item">
+                    {{box}}
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="text-center mt-2"> 
+          <a class="btn btn-secondary" href="{% url 'extraction_protocols' %}">Cancel</a>
+          <button class="btn btn-primary" type="submit">Create &amp; Edit Quantity</button>
+        </div>
+      </div>
+
     </div>
-
-    <div class="text-center mt-2"> 
-      <input class="btn btn-primary mt-2" type="Submit" value="Create &amp; Edit Quantity">
-    </div>
-
-    {{form.errors}}
-
   </form>
 
   <script>
