@@ -5,11 +5,10 @@
 {% block title %} Edit Assay Code {% endblock %} 
 
 {% block content %}
-
-<link rel="stylesheet" href="{% static 'css/edit_assay_code.css' %}">
 <link rel="stylesheet" href="{% static 'css/global.css' %}">
+<link rel="stylesheet" href="{% static 'css/edit_assay_code.css' %}">
 
-<div class="container-fluid">
+<div class="container">
 
   <div class="row justify-content-center">
     <h3 class="text-center">Updating: {{code.name}}</h3>
@@ -29,20 +28,20 @@
 
     <div class="row justify-content-center">
       <div class="col-sm-4">
-      <ul class="nav nav-pills mb-3 d-flex justify-content-center" id="pills-tab" role="tablist">
-        <li class="nav-item fs-6 text" role="presentation">
-          <button class="nav-link active" id="pills-pcr-dna-tab" data-bs-toggle="pill" data-bs-target="#pcr-dna" type="button" role="tab" aria-controls="pcr-dna" aria-selected="true">PCR DNA</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link btn-sm" id="pills-pcr-rna-tab" data-bs-toggle="pill" data-bs-target="#pcr-rna" type="button" role="tab" aria-controls="pcr-rna" aria-selected="false">PCR DNA</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link btn-sm" id="pills-qpcr-dna-tab" data-bs-toggle="pill" data-bs-target="#qpcr-dna" type="button" role="tab" aria-controls="qpcr-dna" aria-selected="false">qPCR DNA</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link btn-sm" id="pills-qpcr-rna-tab" data-bs-toggle="pill" data-bs-target="#qpcr-rna" type="button" role="tab" aria-controls="qpcr-rna" aria-selected="false">qPCR RNA</button>
-        </li>
-      </ul>
+        <ul class="nav nav-pills mb-3 d-flex justify-content-center" id="pills-tab" role="tablist">
+          <li class="nav-item fs-6 text" role="presentation">
+            <button class="nav-link active" id="pills-pcr-dna-tab" data-bs-toggle="pill" data-bs-target="#pcr-dna" type="button" role="tab" aria-controls="pcr-dna" aria-selected="true">PCR DNA</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link btn-sm" id="pills-pcr-rna-tab" data-bs-toggle="pill" data-bs-target="#pcr-rna" type="button" role="tab" aria-controls="pcr-rna" aria-selected="false">PCR RNA</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link btn-sm" id="pills-qpcr-dna-tab" data-bs-toggle="pill" data-bs-target="#qpcr-dna" type="button" role="tab" aria-controls="qpcr-dna" aria-selected="false">qPCR DNA</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link btn-sm" id="pills-qpcr-rna-tab" data-bs-toggle="pill" data-bs-target="#qpcr-rna" type="button" role="tab" aria-controls="qpcr-rna" aria-selected="false">qPCR RNA</button>
+          </li>
+        </ul>
       </div>
     </div>
 

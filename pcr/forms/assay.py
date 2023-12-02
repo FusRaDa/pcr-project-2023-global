@@ -173,8 +173,6 @@ class AssayCodeForm(ModelForm):
     except ValueError:
       pass
 
-    
-
   class Meta:
     model = AssayCode
     exclude = ['user', 'assays']
