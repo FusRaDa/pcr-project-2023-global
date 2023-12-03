@@ -65,10 +65,32 @@ class AssayForm(ModelForm):
     cleaned_data = super().clean()
     reaction_volume = cleaned_data.get('reaction_volume')
     sample_volume = cleaned_data.get('sample_volume')
+    controls = cleaned_data.get('controls')
+    reagents = cleaned_data.get('reagents')
 
     if reaction_volume < sample_volume:
       raise ValidationError(
         message="Reaction volume must be greater or equal to the sample volume."
+      )
+    
+    neg_ctrl_found = 0
+    for control in controls:
+      if control.is_negative_ctrl == True:
+        neg_ctrl_found += 1
+
+    if neg_ctrl_found != 1:
+      raise ValidationError(
+        message="Assay must contain one negative control."
+      )
+    
+    water_reagent_found = 0
+    for reagent in reagents:
+      if reagent.pcr_reagent == Reagent.PCRReagent.WATER:
+        water_reagent_found += 1
+    
+    if water_reagent_found != 1:
+      raise ValidationError(
+        message="Assay must contain one reagent as PCR water"
       )
 
   def __init__(self, *args, **kwargs):

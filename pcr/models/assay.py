@@ -65,7 +65,7 @@ class Assay(models.Model):
     RNA = 'RNA', _('RNA') # RT-PCR
 
   name = models.CharField(blank=False, max_length=25)
-  method = models.CharField(choices=Methods.choices, blank=False, default=Methods.qPCR, max_length=25)
+  method = models.CharField(choices=Methods.choices, blank=False, default=Methods.PCR, max_length=25)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25)
 
   sample_volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
@@ -78,9 +78,9 @@ class Assay(models.Model):
   class Meta:
     constraints = [
       models.UniqueConstraint(
-        fields=['user', 'name'], 
+        fields=['user', 'name', 'method'], 
         name='assay_unique',
-        violation_error_message = "An assay with this name already exists."
+        violation_error_message = "An assay with this name and method already exists."
       )
     ]
 

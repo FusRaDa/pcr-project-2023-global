@@ -33,24 +33,6 @@ class ExtractionProtocolForm(ModelForm):
     exclude = ['user']
 
 
-class DeleteExtractionProtocolForm(forms.Form):
-
-  confirm = forms.CharField()
-
-  def __init__(self, *args, **kwargs):
-    self.value = kwargs.pop('value')
-    super().__init__(*args, **kwargs) 
-    self.fields['confirm'].widget.attrs['class'] = 'form-control'
-    
-  def clean(self):
-    cleaned_data = super().clean()
-    confirm = cleaned_data.get('confirm')
-    if confirm != self.value:
-      raise ValidationError(
-        message="Invalid extraction protocol name entered, please try again."
-      )
-
-
 class TubeExtractionForm(ModelForm):
 
   class Meta:

@@ -16,7 +16,7 @@
 
   <form method="POST" action="">
     {% csrf_token %}
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-2">
 
       <div class="col-sm-3">
         <div class="text-center">
@@ -27,54 +27,138 @@
 
     </div>
 
-    <div class="row justify-content-center">
-      <div class="col-sm-4">
-        <ul class="nav nav-pills mb-3 d-flex justify-content-center" id="pills-tab" role="tablist">
+    <div class="row justify-content-center mb-2">
+      <div class="col-sm-3">
+        <ul class="nav nav-pills d-flex justify-content-center" id="pills-tab" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="pills-pcr-dna-tab" data-bs-toggle="pill" data-bs-target="#pcr-dna" type="button" role="tab" aria-controls="pcr-dna" aria-selected="true">PCR DNA</button>
+            <button class="nav-link active" id="pills-pcr-dna-tab" data-bs-toggle="pill" data-bs-target="#pcr-dna" type="button" role="tab" aria-controls="pcr-dna" aria-selected="true">DNA</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-pcr-rna-tab" data-bs-toggle="pill" data-bs-target="#pcr-rna" type="button" role="tab" aria-controls="pcr-rna" aria-selected="false">PCR RNA</button>
+            <button class="nav-link" id="pills-pcr-rna-tab" data-bs-toggle="pill" data-bs-target="#pcr-rna" type="button" role="tab" aria-controls="pcr-rna" aria-selected="false">RNA</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-qpcr-dna-tab" data-bs-toggle="pill" data-bs-target="#qpcr-dna" type="button" role="tab" aria-controls="qpcr-dna" aria-selected="false">qPCR DNA</button>
+            <button class="nav-link" id="pills-qpcr-dna-tab" data-bs-toggle="pill" data-bs-target="#qpcr-dna" type="button" role="tab" aria-controls="qpcr-dna" aria-selected="false">qDNA</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-qpcr-rna-tab" data-bs-toggle="pill" data-bs-target="#qpcr-rna" type="button" role="tab" aria-controls="qpcr-rna" aria-selected="false">qPCR RNA</button>
+            <button class="nav-link" id="pills-qpcr-rna-tab" data-bs-toggle="pill" data-bs-target="#qpcr-rna" type="button" role="tab" aria-controls="qpcr-rna" aria-selected="false">qRNA</button>
           </li>
         </ul>
       </div>
     </div>
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-2">
       <div class="tab-content" id="myTabContent">
 
         <div class="tab-pane fade show active" id="pcr-dna" role="tabpanel" aria-labelledby="pcr-dna-tab">
-          PCR DNA
-          {% for assay in form.pcr_dna %}
-            {{assay}}
-          {% endfor %}
+
+          <div class="row">
+            <h5 class="text-center">PCR DNA Assays</h5>
+          </div>
+
+          <div class="container-sm">
+            {% if form.pcr_dna|length > 0 %}
+            <div class="row row-cols-3 justify-content-center">
+              {% for assay in form.pcr_dna %}
+                <div class="col-sm-1 p-3">
+                  <span class="border border-primary p-2">
+                    {{assay}}
+                  </span>
+                </div>
+              {% endfor %}
+            </div>
+            {% else %}
+              <div>
+                <a href="{% url 'create_assay' %}">
+                  <h6 class="text-center">No assays type found here. Create one!</h6>
+                </a>
+              </div>
+            {% endif %}
+          </div>
+
         </div>
 
         <div class="tab-pane fade" id="pcr-rna" role="tabpanel" aria-labelledby="pcr-rna-tab">
-          PCR RNA
-          {% for assay in form.pcr_rna %}
-            {{assay}}        
-          {% endfor %}
+
+          <div class="row">
+            <h5 class="text-center">PCR RNA Assays</h5>
+          </div>
+
+          <div class="container-sm">
+            {% if form.pcr_rna|length > 0 %}
+            <div class="row row-cols-3 justify-content-center">
+              {% for assay in form.pcr_rna %}
+                <div class="col-sm-1 p-3">
+                  <span class="border border-primary p-2">
+                    {{assay}}
+                  </span>
+                </div>       
+              {% endfor %}
+            </div>
+            {% else %}
+              <div>
+                <a href="{% url 'create_assay' %}">
+                  <h6 class="text-center">No assays type found here. Create one!</h6>
+                </a>
+              </div>
+            {% endif %}
+          </div>
+
         </div>
 
         <div class="tab-pane fade" id="qpcr-dna" role="tabpanel" aria-labelledby="qpcr-dna-tab">
-          qPCR DNA
-          {% for assay in form.qpcr_dna %}
-            {{assay}}        
-          {% endfor %}
+
+          <div class="row">
+            <h5 class="text-center">qPCR DNA Assays</h5>
+          </div>
+
+          <div class="container-sm">
+            {% if form.qpcr_dna|length > 0 %}
+            <div class="row row-cols-3 justify-content-center">
+              {% for assay in form.qpcr_dna %}
+                <div class="col-sm-1 p-3">
+                  <span class="border border-primary p-2">
+                    {{assay}}
+                  </span>
+                </div>         
+              {% endfor %}
+            </div>
+            {% else %}
+              <div>
+                <a href="{% url 'create_assay' %}">
+                  <h6 class="text-center">No assays type found here. Create one!</h6>
+                </a>
+              </div>
+            {% endif %}
+          </div>
+
         </div>
 
         <div class="tab-pane fade" id="qpcr-rna" role="tabpanel" aria-labelledby="qpcr-rna-tab">
-          qPCR RNA
-          {% for assay in form.qpcr_rna %}
-            {{assay}}        
-          {% endfor %}
+
+          <div class="row">
+            <h5 class="text-center">qPCR RNA Assays</h5>
+          </div>
+
+          <div class="container-sm">
+            {% if form.qpcr_rna|length > 0 %}
+            <div class="row row-cols-3 justify-content-center">
+              {% for assay in form.qpcr_rna %}
+                <div class="col-sm-1 p-3">
+                  <span class="border border-primary p-2">
+                    {{assay}}
+                  </span>
+                </div>         
+              {% endfor %}
+            </div>
+            {% else %}
+              <div>
+                <a href="{% url 'create_assay' %}">
+                  <h6 class="text-center">No assays type found here. Create one!</h6>
+                </a>
+              </div>
+            {% endif %}
+          </div>
+
         </div>
 
       </div>
