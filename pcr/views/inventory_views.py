@@ -32,7 +32,8 @@ def create_location(request):
       location = form.save()
       return redirect('locations')
     else:
-      print(form.errors)
+      for error in list(form.errors.values()):
+        messages.error(request, error)
 
   context = {'form': form}
   return render(request, 'inventory/create_location.html', context)
@@ -62,7 +63,8 @@ def edit_location(request, username, pk):
       form.save()
       return redirect('locations')
     else:
-      print(form.errors)
+      for error in list(form.errors.values()):
+        messages.error(request, error)
 
   if 'delete' in request.POST:
     del_form = DeletionForm(request.POST, value=location.name)
@@ -101,8 +103,8 @@ def create_plate(request):
       location = form.save()
       return redirect('plates')
     else:
-      print(form.errors)
-      print(form.non_field_errors)
+      for error in list(form.errors.values()):
+        messages.error(request, error)
 
   context = {'form': form}
   return render(request, 'inventory/create_plate.html', context)
@@ -132,8 +134,8 @@ def edit_plate(request, username, pk):
       form.save()
       return redirect('plates')
     else:
-      print(form.errors)
-      return redirect(request.path_info)
+      for error in list(form.errors.values()):
+        messages.error(request, error)
 
   if 'delete' in request.POST:
     del_form = DeletionForm(request.POST, value=plate.name)
@@ -172,7 +174,8 @@ def create_tube(request):
       tube = form.save()
       return redirect('tubes')
     else:
-      print(form.errors)
+      for error in list(form.errors.values()):
+        messages.error(request, error)
 
   context = {'form': form}
   return render(request, 'inventory/create_tube.html', context)
@@ -202,7 +205,8 @@ def edit_tube(request, username, pk):
       form.save()
       return redirect('tubes')
     else:
-      print(form.errors)
+      for error in list(form.errors.values()):
+        messages.error(request, error)
 
   if 'delete' in request.POST:
     del_form = DeletionForm(request.POST, value=tube.name)

@@ -6,17 +6,12 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/global.css' %}">
-<link rel="stylesheet" href="{% static 'css/edit_plate.css' %}">
 
 <div class="container">
 
   <div class="row justify-content-center">
     <h3 class="text-center">Updating: {{ plate.name }}</h3>
   </div>
-
-  {% for message in messages %}
-  <h6 class="messages text-center">{{ message }}</h6>
-  {% endfor %}
 
   <form method="POST" action="">
     {% csrf_token %}
@@ -42,7 +37,9 @@
           <label class="form-label">Catalog Number</label>
           {{form.catalog_number}}
         </div>
+      </div>
 
+      <div class="col-sm-3">
         <div class="text-center">
           <label class="form-label">Size</label>
           {{form.size}}
@@ -60,7 +57,7 @@
       </div>
 
       <div class="col-sm-3">
-        <div class="card" style="width: 18rem;">
+        <div class="card mx-auto mt-2" style="width: 18rem;">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               Locations
@@ -84,6 +81,14 @@
         </div>
       </div>
     </div>
+
+    {% if messages%}
+    <div class="row text-center mt-4">
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+    </div>
+    {% endif %}
 
     <div class="row justify-content-center">
       <div class="text-center mt-2">

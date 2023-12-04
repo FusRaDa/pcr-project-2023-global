@@ -6,7 +6,6 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/global.css' %}">
-<link rel="stylesheet" href="{% static 'css/edit_location.css' %}">
 
 <div class="container">
 
@@ -14,28 +13,35 @@
     <h3 class="text-center">{{location.name}}</h3>
   </div>
 
-  {% for message in messages %}
-  <h6 class="messages text-center">{{ message }}</h6>
-  {% endfor %}
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div class="row justify-content-center">
 
-  <div class="row justify-content-center">
-    <div class="col-sm-3">
-
-      <form method="POST" action="">
-        {% csrf_token %}
-
+      <div class="col-sm-3">
         <div class="text-center mx-auto mb-2">
           <label class="form-label">Name</label>
           {{form.name}}
         </div>
-        <div class="text-center mb-2">
-          <a class="btn btn-secondary" href="{% url 'locations' %}">Cancel</a>
-          <button type="submit" class="btn btn-primary" name="update">Update Location</button>
-        </div>
-      </form>
+      </div>
 
     </div>
-  </div>
+
+    {% if messages%}
+    <div class="row text-center mt-4">
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center mb-2">
+      <div class="text-center m">
+        <a class="btn btn-secondary" href="{% url 'locations' %}">Cancel</a>
+        <button type="submit" class="btn btn-primary" name="update">Update Location</button>
+      </div>
+    </div>
+
+  </form>
 
   <div class="row justify-content-center">
 

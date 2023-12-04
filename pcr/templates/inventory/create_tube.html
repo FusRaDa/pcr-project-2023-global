@@ -5,8 +5,7 @@
 {% block title %} Add Tube {% endblock %} 
 
 {% block content %}
-
-<link rel="stylesheet" href="{% static 'css/create_tube.css' %}">
+<link rel="stylesheet" href="{% static 'css/global.css' %}">
 
 <div class="container">
 
@@ -33,7 +32,9 @@
           <label class="form-label">Lot Number</label>
           {{form.lot_number}}
         </div>
-
+      </div>
+      
+      <div class="col-sm-3">
         <div class="text-center">
           <label class="form-label">Catalog Number</label>
           {{form.catalog_number}}
@@ -51,7 +52,7 @@
       </div>
 
       <div class="col-sm-3">
-        <div class="card" style="width: 18rem;">
+        <div class="card mx-auto mt-2" style="width: 18rem;">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               Locations
@@ -76,6 +77,14 @@
       </div>
       
     </div>
+
+    {% if messages%}
+    <div class="row text-center mt-4">
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+    </div>
+    {% endif %}
 
     <div class="row justify-content-center">
       <div class="text-center mt-2"> 

@@ -8,12 +8,11 @@ from ..models.inventory import Plate, Tube, Reagent, Location
 
 class LocationForm(ModelForm):
 
-  name = forms.CharField(
-    widget=forms.TextInput(attrs={'placeholder': 'Storage area such as a freezer or cabinet...'})
-  )
-
   def __init__(self, *args, **kwargs):
     super(LocationForm, self).__init__(*args, **kwargs)
+    self.fields['name'].error_messages = {'max_length': "Location name is too long."}
+    self.fields['name'].widget.attrs['placeholder'] = "Name of freezer, bin, drawer, etc..."
+
     for visible in self.visible_fields():
       visible.field.widget.attrs['class'] = 'form-control'
 
@@ -38,7 +37,7 @@ class PlateForm(ModelForm):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
-    
+
     self.fields['location'].error_messages = {'required': "Select the storage location of this reagent."}
 
     self.fields['name'].widget.attrs['class'] = 'form-control'
@@ -79,6 +78,12 @@ class TubeForm(ModelForm):
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+    self.fields['name'].widget.attrs['placeholder'] = "General identification of tubes..."
+    self.fields['brand'].widget.attrs['placeholder'] = "Brand/manufacturer of tubes..."
+    self.fields['lot_number'].widget.attrs['placeholder'] = "Lot number of box..."
+    self.fields['catalog_number'].widget.attrs['placeholder'] = "Catalog number of item..."
+    
 
   class Meta:
     model = Tube
