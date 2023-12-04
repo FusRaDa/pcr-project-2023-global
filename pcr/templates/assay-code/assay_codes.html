@@ -16,6 +16,14 @@
     </div>
   </div>
 
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
   <div class="row justify-content-center">
     <div class="col d-flex justify-content-center">
       <a href="{% url 'create_assay_code' %}">

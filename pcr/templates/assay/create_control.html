@@ -5,9 +5,6 @@
 {% block title %} Add Control {% endblock %} 
 
 {% block content %}
-
-<link rel="stylesheet" href="{% static 'css/create_control.css' %}">
-
 <div class="container">
 
   <div class="row justify-content-center">
@@ -70,11 +67,13 @@
         </div>
       </div>
 
-      <div class="row justify-content-center">
-        {% for message in messages %}
-        <h6 class="messages text-center">{{ message }}</h6>
+      {% if form.errors %}
+      <div class="row text-center mt-2">
+        {% for key,value in form.errors.items %} 
+          {{ value|escape }}
         {% endfor %}
       </div>
+      {% endif %}
 
       <div class="row justify-content-center">
         <div class="text-center mt-2"> 

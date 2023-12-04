@@ -5,73 +5,70 @@
 {% block title %} Controls {% endblock %} 
 
 {% block content %}
+<div class="container">
 
-<link rel="stylesheet" href="{% static 'css/controls.css' %}">
-
-<div class="container-fluid">
-
-  {% for message in messages %}
   <div class="row">
     <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
+      <h3 class="text-center">Controls</h3>
     </div>
   </div>
-  {% endfor %}
 
-    <div class="row">
-      <div class="col d-flex justify-content-center"> 
-        <h3 class="text-center">Controls</h3>
-      </div>
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <h6 class="text-center message">{{ message }}</h6>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <a href="{% url 'create_control'%}">
+        <button type="button" class="btn btn-primary mb-2">Add New Control</button>
+      </a>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col d-flex justify-content-center"> 
-        <a href="{% url 'create_control'%}">
-          <button type="button" class="btn btn-primary mb-2">Add New Control</button>
-        </a>
-      </div>
-    </div>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Exp. Date</th>
+          <th scope="col">Name</th>
+          <th scope="col">Lot #</th>
+          <th scope="col">Amount Stored</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
 
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Exp. Date</th>
-            <th scope="col">Name</th>
-            <th scope="col">Lot #</th>
-            <th scope="col">Amount Stored</th>
-            <th scope="col">Location</th>
+      <tbody>
+        {% for control in controls %}
+          <tr class="tube-row" data-href="{% url 'edit_control' request.user.username control.pk %}">
+            <td>{{control.exp_date}}</td>
+            <td>{{control.name}}</td>
+            <td>{{control.lot_number}}</td>
+            <td>{{control.amount}}</td>
+
+            <td>
+              {% for location in control.location.all %}
+                {% if control.location.all|length > 1 %}
+                <span>
+                  {{location}} |
+                </span>
+                {% else %}
+                <span>
+                  {{location}}
+                </span>
+                {% endif %}
+              {% endfor %}
+            </td>
+
           </tr>
-        </thead>
+        {% endfor %}
+      </tbody>
 
-        <tbody>
-          {% for control in controls %}
-            <tr class="tube-row" data-href="{% url 'edit_control' request.user.username control.pk %}">
-              <td>{{control.exp_date}}</td>
-              <td>{{control.name}}</td>
-              <td>{{control.lot_number}}</td>
-              <td>{{control.amount}}</td>
-
-              <td>
-                {% for location in control.location.all %}
-                  {% if control.location.all|length > 1 %}
-                  <span>
-                    {{location}} |
-                  </span>
-                  {% else %}
-                  <span>
-                    {{location}}
-                  </span>
-                  {% endif %}
-                {% endfor %}
-              </td>
-
-            </tr>
-          {% endfor %}
-        </tbody>
-
-      </table>
-    </div>
+    </table>
+  </div>
 
 </div>
 

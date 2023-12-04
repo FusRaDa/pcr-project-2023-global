@@ -5,9 +5,6 @@
 {% block title %} Assays {% endblock %} 
 
 {% block content %}
-
-<link rel="stylesheet" href="{% static 'css/extraction_protocols.css' %}">
-
 <div class="container">
 
   <div class="row">
@@ -15,6 +12,14 @@
       <h3 class="text-center">Assays</h3>
     </div>
   </div>
+
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <h6 class="text-center message">{{ message }}</h6>
+    {% endfor %}
+  </div>
+  {% endif %}
 
   <div class="justify-content-center">
     <div class="col d-flex justify-content-center">

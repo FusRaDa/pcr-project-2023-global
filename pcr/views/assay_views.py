@@ -72,7 +72,6 @@ def edit_assay(request, username, pk):
       assay.delete()
       return redirect('assays')
     else:
-      messages.error(request, "Invalid assay name entered, please try again.")
       print(del_form.errors)
   
   context = {'assay': assay, 'form': form, 'del_form': del_form}
@@ -180,7 +179,6 @@ def edit_fluorescence(request, username, pk):
       fluorescence.delete()
       return redirect('fluorescence')
     else:
-      messages.error(request, "Invalid control name entered, please try again.")
       print(del_form.errors)
 
   context = {'form': form, 'fluorescence': fluorescence, 'del_form': del_form}
@@ -246,7 +244,6 @@ def edit_control(request, username, pk):
       control.delete()
       return redirect('controls')
     else:
-      messages.error(request, "Invalid control name entered, please try again.")
       print(del_form.errors)
 
   context = {'form': form, 'control': control, 'del_form': del_form}
