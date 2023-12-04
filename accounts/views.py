@@ -27,11 +27,14 @@ def loginPage(request):
 
     user = EmailOrUsernameModelBackend.authenticate(request, username=username, password=password)
 
+    if not user.is_active:
+      messages.info(request, 'Please verify your email.')
+
     if user is not None:
       login(request, user)
       return redirect('batches')
     else:
-      messages.info(request, 'username OR password is incorrect')
+      messages.info(request, 'username OR password is incorrect.')
 
   context = {}
   return render(request, "login.html", context)
@@ -50,7 +53,7 @@ def activateEmail(request, user, to_email):
   email = EmailMessage(mail_subject, message, to=[to_email])
   if email.send():
     messages.success(request, f'Dear {user}, please go to you email {to_email} inbox and click on \
-          received activation link to confirm and complete the registration. Note: Check your spam folder.')
+      received activation link to confirm and complete the registration. Note: Check your spam folder.')
   else:
     messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
 

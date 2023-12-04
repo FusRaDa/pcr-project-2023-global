@@ -15,8 +15,8 @@ urlpatterns = [
 
   path("extraction-protocols/", extraction_protocol_views.extraction_protocols, name="extraction_protocols"),
   path("create-extraction-protocol/", extraction_protocol_views.create_extraction_protocol, name="create_extraction_protocol"),
-  path("extraction-protocol/<str:username>/<int:pk>/", extraction_protocol_views.edit_extraction_protocol, name="edit_extraction_protocol"),
-  path("quantify-extraction-protocol/<str:username>/<int:pk>/", extraction_protocol_views.extraction_protocol_through, name="extraction_protocol_through"),
+  path("edit-extraction-protocol/<str:username>/<int:pk>/", extraction_protocol_views.edit_extraction_protocol, name="edit_extraction_protocol"),
+  path("amount-extraction-protocol/<str:username>/<int:pk>/", extraction_protocol_views.extraction_protocol_through, name="extraction_protocol_through"),
 
   path("assay-codes/", assay_code_views.assay_codes, name="assay_codes"),
   path("create-assay-code/", assay_code_views.create_assay_code, name="create_assay_code"),
@@ -24,8 +24,8 @@ urlpatterns = [
 
   path("assays/", assay_views.assays, name="assays"),
   path("create-assay/", assay_views.create_assay, name="create_assay"),
-  path("assay/<str:username>/<int:pk>/", assay_views.edit_assay, name="edit_assay"),
-  path("quantify-assay/<str:username>/<int:pk>/", assay_views.assay_through, name="assay_through"),
+  path("edit-assay/<str:username>/<int:pk>/", assay_views.edit_assay, name="edit_assay"),
+  path("amount-assay/<str:username>/<int:pk>/", assay_views.assay_through, name="assay_through"),
 
   path("fluorescence/", assay_views.fluorescence, name="fluorescence"),
   path("create-fluorescence/", assay_views.create_fluorescence, name="create_fluorescence"),
