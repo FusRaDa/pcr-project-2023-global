@@ -38,6 +38,9 @@ class PlateForm(ModelForm):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
+    
+    self.fields['location'].error_messages = {'required': "Select the storage location of this reagent."}
+
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['brand'].widget.attrs['class'] = 'form-control'
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
@@ -67,6 +70,9 @@ class TubeForm(ModelForm):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
+    
+    self.fields['location'].error_messages = {'required': "Select the storage location of this reagent."}
+
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['brand'].widget.attrs['class'] = 'form-control'
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
@@ -100,32 +106,32 @@ class ReagentForm(ModelForm):
 
     if usage == Reagent.Usages.EXTRACTION and (stock != None or unit != None):
       raise ValidationError(
-        message="If reagent is for extraction, stock concentration is not needed."
+        {'usage': ["If reagent is for extraction, stock concentration is not needed."]}
       )
 
     if stock != None and unit == None:
       raise ValidationError(
-        message="Don't forget to assign a concentration unit to your stock concentration."
+        {'unit_concentration': ["Don't forget to assign a concentration unit to your stock concentration."]}
       )
     
     if stock == None and unit != None:
       raise ValidationError(
-        message="Leave unit concentration blank if a stock concentration is not needed."
+        {'unit_concentration': ["Leave unit concentration blank if a stock concentration is not needed."]}
       )
     
     if pcr_reagent != None and usage == Reagent.Usages.EXTRACTION:
       raise ValidationError(
-        message="Leave PCR reagent type empty if reagent usage is for extraction."
+        {'pcr_reagent': ["Leave PCR reagent type empty if reagent usage is for extraction."]}
       )
     
     if pcr_reagent == None and usage == Reagent.Usages.PCR:
       raise ValidationError(
-        message="Select PCR reagent type if reagent usage is for PCR."
+        {'pcr_reagent': ["Select PCR reagent type if reagent usage is for PCR."]}
       )
     
     if pcr_reagent == Reagent.PCRReagent.WATER and (stock != None or unit != None):
       raise ValidationError(
-        message="Water for PCR does not require concentration."
+        {'pcr_reagent': ["Water for PCR does not require concentration."]}
       )
     
     if pcr_reagent == Reagent.PCRReagent.POLYMERASE and unit != Reagent.ConcentrationUnits.UNITS:
@@ -137,6 +143,9 @@ class ReagentForm(ModelForm):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['location'].error_messages = {'required': "Select the storage location of this reagent."}
+
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['brand'].widget.attrs['class'] = 'form-control'
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'

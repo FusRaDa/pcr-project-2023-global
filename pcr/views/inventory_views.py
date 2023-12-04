@@ -242,7 +242,8 @@ def create_reagent(request):
       reagent = form.save()
       return redirect('reagents')
     else:
-      print(form.errors)
+      for error in list(form.errors.values()):
+        messages.error(request, error)
 
   context = {'form': form}
   return render(request, 'inventory/create_reagent.html', context)
@@ -272,7 +273,8 @@ def edit_reagent(request, username, pk):
       form.save()
       return redirect('reagents')
     else:
-      print(form.errors)
+      for error in list(form.errors.values()):
+        messages.error(request, error)
  
   if 'delete' in request.POST:
     del_form = DeletionForm(request.POST, value=reagent.name)
