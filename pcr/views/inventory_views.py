@@ -70,9 +70,8 @@ def edit_location(request, username, pk):
       location.delete()
       return redirect('locations')
     else:
-      messages.error(request, "Invalid location name entered, please try again.")
       print(del_form.errors)
-      return redirect(request.path_info)
+   
 
   context = {'form': form, 'location': location, 'del_form': del_form}
   return render(request, 'inventory/edit_location.html', context)
@@ -139,9 +138,7 @@ def edit_plate(request, username, pk):
       plate.delete()
       return redirect('plates')
     else:
-      messages.error(request, "Invalid plate name entered, please try again.")
       print(del_form.errors)
-      return redirect(request.path_info)
 
   context = {'form': form, 'plate': plate, 'del_form': del_form}
   return render(request, 'inventory/edit_plate.html', context)
@@ -208,9 +205,7 @@ def edit_tube(request, username, pk):
       tube.delete()
       return redirect('tubes')
     else:
-      messages.error(request, "Invalid tube name entered, please try again.")
       print(del_form.errors)
-      return redirect(request.path_info)
 
   context = {'form': form, 'tube': tube, 'del_form': del_form}
   return render(request, 'inventory/edit_tube.html', context)
@@ -278,9 +273,7 @@ def edit_reagent(request, username, pk):
       reagent.delete()
       return redirect('reagents')
     else:
-      messages.error(request, "Invalid reagent name entered, please try again.")
       print(del_form.errors)
-      return redirect(request.path_info)
 
   context = {'form': form, 'reagent': reagent, 'del_form': del_form}
   return render(request, 'inventory/edit_reagent.html', context)

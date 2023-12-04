@@ -202,10 +202,10 @@
     </div>
   </div>
 
-  <div class="justify-content-center">
+  <div class="row justify-content-center">
     <div class="col d-flex justify-content-center">
       <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Location
+        Delete Reagent
       </button>
     </div>
   </div>
@@ -226,7 +226,7 @@
             </div>
             
             <div class="row justify-content-center">
-              <div class="col-sm-6">
+              <div class="col-sm-8">
                 <form method="POST" action="">
                   {% csrf_token %}
             
@@ -234,6 +234,14 @@
                     <label class="form-label">Enter: "{{reagent.name}}" &amp; Confirm</label>
                     {{del_form.confirm}}
                   </div>
+
+                  {% if del_form.errors %}
+                  <div class="row text-center mt-2">
+                    {% for key,value in del_form.errors.items %} 
+                      {{ value|escape }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
             
                   <div class="text-center mt-2">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
