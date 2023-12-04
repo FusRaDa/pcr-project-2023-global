@@ -116,27 +116,27 @@ class ReagentForm(ModelForm):
 
     if stock != None and unit == None:
       raise ValidationError(
-        {'unit_concentration': ["Don't forget to assign a concentration unit to your stock concentration."]}
+        message="Don't forget to assign a concentration unit to your stock concentration."
       )
     
     if stock == None and unit != None:
       raise ValidationError(
-        {'unit_concentration': ["Leave unit concentration blank if a stock concentration is not needed."]}
+        message="Leave unit concentration blank if a stock concentration is not needed."
       )
     
     if pcr_reagent != None and usage == Reagent.Usages.EXTRACTION:
       raise ValidationError(
-        {'pcr_reagent': ["Leave PCR reagent type empty if reagent usage is for extraction."]}
+        message="Leave PCR reagent type empty if reagent usage is for extraction."
       )
     
     if pcr_reagent == None and usage == Reagent.Usages.PCR:
       raise ValidationError(
-        {'pcr_reagent': ["Select PCR reagent type if reagent usage is for PCR."]}
+        message="Select PCR reagent type if reagent usage is for PCR."
       )
     
     if pcr_reagent == Reagent.PCRReagent.WATER and (stock != None or unit != None):
       raise ValidationError(
-        {'pcr_reagent': ["Water for PCR does not require concentration."]}
+        message="Water for PCR does not require concentration."
       )
     
     if pcr_reagent == Reagent.PCRReagent.POLYMERASE and unit != Reagent.ConcentrationUnits.UNITS:

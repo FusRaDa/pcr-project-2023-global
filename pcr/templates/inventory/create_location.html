@@ -26,11 +26,11 @@
 
     </div>
 
-    {% if messages%}
-    <div class="row text-center mt-4">
-    {% for message in messages %}
-      {{ message }}
-    {% endfor %}
+    {% if form.errors %}
+    <div class="row text-center mt-2">
+      {% for key,value in form.errors.items %} 
+        {{ value|escape }}
+      {% endfor %}
     </div>
     {% endif %}
 

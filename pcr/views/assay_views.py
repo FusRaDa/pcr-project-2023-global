@@ -116,7 +116,7 @@ def assay_through(request, username, pk):
     else:
       print(reagentformset.errors)
       print(reagentformset.non_form_errors())
-
+        
   context = {'reagentformset': reagentformset, 'reagents_data': reagents_data, 'assay': assay}
   return render(request, 'assay/assay_through.html', context)
 
@@ -208,7 +208,6 @@ def create_control(request):
       control = form.save()
       return redirect('controls')
     else:
-      messages.error(request, form.errors)
       print(form.errors)
 
   context = {'form': form}

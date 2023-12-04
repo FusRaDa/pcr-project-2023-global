@@ -5,18 +5,13 @@
 {% block title %} Edit Assay {% endblock %} 
 
 {% block content %}
-
-<link rel="stylesheet" href="{% static 'css/edit_assay_code.css' %}">
+<link rel="stylesheet" href="{% static 'css/global.css' %}">
 
 <div class="container">
 
   <div class="row justify-content-center">
     <h3 class="text-center">Updating Assay: {{assay.name}}</h3>
   </div>
-
-  {% for message in messages %}
-  <h6 class="messages text-center">{{ message }}</h6>
-  {% endfor %}
 
   <form method="POST" action="">
     {% csrf_token %}
@@ -122,6 +117,14 @@
         </div>
   
       </div>
+
+      {% if form.errors %}
+      <div class="row text-center mt-2">
+        {% for key,value in form.errors.items %} 
+          {{ value|escape }}
+        {% endfor %}
+      </div>
+      {% endif %}
   
       <div class="row justify-content-center">
         <div class="text-center mt-2"> 

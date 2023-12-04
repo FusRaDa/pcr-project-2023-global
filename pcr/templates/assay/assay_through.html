@@ -5,18 +5,9 @@
 {% block title %} Quantities - Assay {% endblock %} 
 
 {% block content %}
-
-<link rel="stylesheet" href="{% static 'css/extraction_protocol_through.css' %}">
+<link rel="stylesheet" href="{% static 'css/global.css' %}">
 
 <div class="container">
-
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
-    </div>
-  </div>
-  {% endfor %}
 
   <div class="row justify-content-center">
     <h3 class="text-center">{{assay.name}}</h3>
@@ -72,6 +63,16 @@
 
     </table>
   </div>
+
+  {% if reagentformset.errors %}
+    <div class="row text-center mt-2">
+    {% for errors in reagentformset.errors %}
+      {% for error in errors.values %}
+        {{error}}
+      {%endfor%}
+    {% endfor %}
+    </div>
+  {% endif %}
 
   <div class="text-center"> 
     <button class="btn btn-primary" type="submit">Update Reagents</button>

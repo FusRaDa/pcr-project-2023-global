@@ -73,32 +73,39 @@ class AssayForm(ModelForm):
         message="Reaction volume must be greater or equal to the sample volume."
       )
     
-    neg_ctrl_found = 0
-    for control in controls:
-      if control.is_negative_ctrl == True:
-        neg_ctrl_found += 1
+    if controls:
+      neg_ctrl_found = 0
+      for control in controls:
+        if control.is_negative_ctrl == True:
+          neg_ctrl_found += 1
 
-    if neg_ctrl_found != 1:
-      raise ValidationError(
-        message="Assay must contain one negative control."
-      )
-    
-    water_reagent_found = 0
-    for reagent in reagents:
-      if reagent.pcr_reagent == Reagent.PCRReagent.WATER:
-        water_reagent_found += 1
-    
-    if water_reagent_found != 1:
-      raise ValidationError(
-        message="Assay must contain one reagent as PCR water"
-      )
-
+      if neg_ctrl_found != 1:
+        raise ValidationError(
+          message="Assay must contain one negative control."
+        )
+   
+    if reagents:
+      water_reagent_found = 0
+      for reagent in reagents:
+        if reagent.pcr_reagent == Reagent.PCRReagent.WATER:
+          water_reagent_found += 1
+      
+      if water_reagent_found != 1:
+        raise ValidationError(
+          message="Assay must contain one reagent as PCR water"
+        )
+ 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['fluorescence'].queryset = Fluorescence.objects.filter(user=self.user)
     self.fields['controls'].queryset = Control.objects.filter(user=self.user)
     self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user, usage=Reagent.Usages.PCR)
+
+    self.fields['fluorescence'].error_messages = {'required': "Assay requires at least one fluorescence"}
+    self.fields['controls'].error_messages = {'required': "Assay requires controls."}
+    self.fields['reagents'].error_messages = {'required': "Assay requires reagents."}
+    
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['method'].widget.attrs['class'] = 'form-select'
     self.fields['type'].widget.attrs['class'] = 'form-select'
@@ -119,7 +126,7 @@ class ReagentAssayForm(ModelForm):
 
     if self.instance.reagent.pcr_reagent != Reagent.PCRReagent.WATER.name and (final_concentration == None or final_concentration_unit == None):
       raise ValidationError(
-        message="Reagents that are not water must have a final concentration."
+        message=f"Reagents ({self.instance.reagent.name}) that are not water must have a final concentration."
       )
     
     if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name and (final_concentration != None or final_concentration_unit != None):
