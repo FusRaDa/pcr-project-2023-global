@@ -27,6 +27,9 @@ class ExtractionProtocolForm(ModelForm):
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['type'].widget.attrs['class'] = 'form-select'
     self.fields['doc_url'].widget.attrs['class'] = 'form-control'
+
+    self.fields['tubes'].error_messages = {'required': "Select tubes for your extraction protocol."}
+    self.fields['reagents'].error_messages = {'required': "Select reagents for your extraction protocol."}
     
   class Meta:
     model = ExtractionProtocol
