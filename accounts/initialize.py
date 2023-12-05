@@ -331,12 +331,16 @@ def create_presets(user):
     amount = 100.00,
   )
 
+  bact3.location.add(location3)
+
   bact2 = Control.objects.create(
     user = user,
     name = "Bact-PC 100c",
     lot_number = "LOT_NUMBER_02",
     amount = 100.00,
   )
+
+  bact2.location.add(location3)
 
   bact1 = Control.objects.create(
     user = user,
@@ -345,12 +349,16 @@ def create_presets(user):
     amount = 100.00,
   )
 
+  bact1.location.add(location3)
+
   bact0 = Control.objects.create(
     user = user,
     name = "Bact-PC 1c",
     lot_number = "LOT_NUMBER_04",
     amount = 100.00,
   )
+
+  bact0.location.add(location3)
 
   negctrl = Control.objects.create(
     user = user,
@@ -359,6 +367,8 @@ def create_presets(user):
     is_negative_ctrl = True,
     amount = 100.00,
   )
+
+  negctrl.location.add(location3)
 
   # assays: cbovis & helico
   cbovis_assay = Assay.objects.create(

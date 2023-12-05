@@ -5,10 +5,9 @@
 {% block title %} Quantities - Extraction Protocol {% endblock %} 
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/global.css' %}">
 
-<link rel="stylesheet" href="{% static 'css/extraction_protocol_through.css' %}">
-
-<div class="container-fluid">
+<div class="container">
 
   {% for message in messages %}
   <div class="row">
@@ -33,58 +32,78 @@
   </div>
 
   <form action="" method="POST">
-  <div class="table-responsive">
-    <table class="table table-bordered">
-      
-      <thead>
-        <tr>
-          <th scope="col">Tubes</th>
-          <th scope="col">Amount Per Sample</th>
-          <th scope="col">Display Order</th>
-        </tr>
-      </thead>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        
+        <thead>
+          <tr>
+            <th scope="col" class="col-sm-1">Tube</th>
+            <th scope="col" class="col-sm-1">Amount Per Sample</th>
+            <th scope="col" class="col-sm-1">Display Order</th>
+          </tr>
+        </thead>
 
-      {{ tubeformset.management_form }}
-      {{ reagentformset.management_form }}
-      {% csrf_token %}
+        {{ tubeformset.management_form }}
+        {{ reagentformset.management_form }}
+        {% csrf_token %}
 
-      <tbody>
-        {% for tubes, tubeformset in tubes_data %}
-        {{tubeformset.id}}
-        <tr>
-          <td>{{tubes}}</td>
-          <td>{{tubeformset.amount_per_sample}}</td>
-          <td>{{tubeformset.order}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
+        <tbody>
+          {% for tubes, tubeformset in tubes_data %}
+          {{tubeformset.id}}
+          <tr>
+            <td>{{tubes}}</td>
+            <td>{{tubeformset.amount_per_sample}}</td>
+            <td>{{tubeformset.order}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
 
-      <thead>
-        <tr>
-          <th scope="col">Reagents</th>
-          <th scope="col">Volume Per Sample (&#181;l)</th>
-          <th scope="col">Display Order</th>
-        </tr>
-      </thead>
-      <tbody>
+        <thead>
+          <tr>
+            <th scope="col">Reagent</th>
+            <th scope="col">Volume Per Sample (&#181;l)</th>
+            <th scope="col">Display Order</th>
+          </tr>
+        </thead>
+        <tbody>
 
-        {% for reagents, reagentformset in reagents_data %}
-        {{reagentformset.id}}
-        <tr>
-          <td>{{reagents}}</td>
-          <td>{{reagentformset.amount_per_sample}}</td>
-          <td>{{reagentformset.order}}</td>
-        </tr>
+          {% for reagents, reagentformset in reagents_data %}
+          {{reagentformset.id}}
+          <tr>
+            <td>{{reagents}}</td>
+            <td>{{reagentformset.amount_per_sample}}</td>
+            <td>{{reagentformset.order}}</td>
+          </tr>
 
-        {% endfor %}
-      </tbody>
+          {% endfor %}
+        </tbody>
 
-    </table>
-  </div>
+      </table>
+    </div>
 
-  <div class="text-center"> 
-    <input class="btn btn-primary" type="Submit" value="Update Quantities">
-  </div>
+    {% if reagentformset.errors %}
+      <div class="row text-center mt-2">
+      {% for errors in reagentformset.errors %}
+        {% for error in errors.values %}
+          {{error}}
+        {%endfor%}
+      {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if tubeformset.errors %}
+      <div class="row text-center mt-2">
+      {% for errors in tubeformset.errors %}
+        {% for error in errors.values %}
+          {{error}}
+        {%endfor%}
+      {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="text-center"> 
+      <input class="btn btn-primary" type="Submit" value="Update Quantities">
+    </div>
 
   </form>
  

@@ -141,6 +141,9 @@ class ReagentAssayForm(ModelForm):
     
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
+    self.fields['final_concentration'].widget.attrs['class'] = 'form-control'
+    self.fields['final_concentration_unit'].widget.attrs['class'] = 'form-select'
+    self.fields['order'].widget.attrs['class'] = 'form-control'
 
     if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER:
       self.fields['final_concentration'].widget.attrs['disabled'] = 'True'

@@ -41,7 +41,7 @@ class TubeExtraction(models.Model):
   protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.CASCADE)
 
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # users can decide what order reagents will be que's/displayed: 1-lowest priority > highest priority, 0 will be last
-  amount_per_sample = models.IntegerField(blank=True, null=True,validators=[MinValueValidator(0)], default=0)
+  amount_per_sample = models.IntegerField(validators=[MinValueValidator(1)], default=1)
 
   def __str__(self):
     return f'{self.tube}'
@@ -52,7 +52,7 @@ class ReagentExtraction(models.Model):
   protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.CASCADE)
 
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # users can decide what order reagents will be que's/displayed: 1-lowest priority > highest priority, 0 will be last
-  amount_per_sample = models.DecimalField(decimal_places=2, blank=True, null=True, validators=[MinValueValidator(0)], max_digits=12) # in microliters
+  amount_per_sample = models.DecimalField(decimal_places=2, validators=[MinValueValidator(1)], max_digits=12, default=1) # in microliters
 
   def __str__(self):
     return f'{self.reagent}'

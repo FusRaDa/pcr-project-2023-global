@@ -16,13 +16,13 @@
     </div>
   </div>
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
-    </div>
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <h6 class="text-center message">{{ message }}</h6>
+    {% endfor %}
   </div>
-  {% endfor %}
+  {% endif %}
 
   <div class="row justify-content-center">
     <div class="col d-flex justify-content-center">

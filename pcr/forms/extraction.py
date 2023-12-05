@@ -35,12 +35,26 @@ class ExtractionProtocolForm(ModelForm):
 
 class TubeExtractionForm(ModelForm):
 
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['amount_per_sample'].widget.attrs['class'] = 'form-control'
+    self.fields['order'].widget.attrs['class'] = 'form-control'
+
+    self.fields['amount_per_sample'].error_messages = {'min_value': "Every tube should be used at least once per sample."}
+
   class Meta:
     model = TubeExtraction
     exclude = ['tube', 'protocol']
 
 
 class ReagentExtractionForm(ModelForm):
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['amount_per_sample'].widget.attrs['class'] = 'form-control'
+    self.fields['order'].widget.attrs['class'] = 'form-control'
+
+    self.fields['amount_per_sample'].error_messages = {'min_value': "Every reagent should have a volume per sample."}
 
   class Meta:
     model = ReagentExtraction

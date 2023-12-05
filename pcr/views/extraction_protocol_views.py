@@ -11,9 +11,11 @@ from ..forms.general import DeletionForm
 
 @login_required(login_url='login')
 def extraction_protocols(request):
-  extraction_protocols = ExtractionProtocol.objects.filter(user=request.user).order_by('name')
+  dna_extraction_protocols = ExtractionProtocol.objects.filter(user=request.user, type=ExtractionProtocol.Types.DNA).order_by('name')
+  rna_extraction_protocols = ExtractionProtocol.objects.filter(user=request.user, type=ExtractionProtocol.Types.RNA).order_by('name')
+  tn_extraction_protocols = ExtractionProtocol.objects.filter(user=request.user, type=ExtractionProtocol.Types.TOTAL_NUCLEIC).order_by('name')
 
-  context = {'extraction_protocols': extraction_protocols}
+  context = {'dna_extraction_protocols': dna_extraction_protocols, 'rna_extraction_protocols': rna_extraction_protocols, 'tn_extraction_protocols': tn_extraction_protocols}
   return render(request, 'extraction-protocol/extraction_protocols.html', context)
 
 
@@ -68,10 +70,8 @@ def edit_extraction_protocol(request, username, pk):
       protocol.delete()
       return redirect('extraction_protocols')
     else:
-      messages.error(request, "Invalid protocol name entered, please try again.")
       print(del_form.errors)
-      return redirect(request.path_info)
-  
+     
   context = {'form': form, 'protocol': protocol, 'del_form': del_form}
   return render(request, 'extraction-protocol/edit_extraction_protocol.html', context)
 

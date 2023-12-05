@@ -165,12 +165,12 @@
     </div>
 
     {% if form.errors %}
-      <div class="row text-center mt-2">
-        {% for key,value in form.errors.items %} 
-          {{ value|escape }}
-        {% endfor %}
-      </div>
-      {% endif %}
+    <div class="row text-center mt-2">
+      {% for key,value in form.errors.items %} 
+        {{ value|escape }}
+      {% endfor %}
+    </div>
+    {% endif %}
 
     <div class="row justify-content-center">
       <div class="text-center mt-2">
