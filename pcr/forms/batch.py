@@ -16,21 +16,23 @@ class BatchForm(ModelForm):
     widget=forms.RadioSelect,
     required=True)
   
-  extraction_protocol = forms.ModelChoiceField(
+  extraction_protocol_dna = forms.ModelChoiceField(
     queryset=None,
-    widget=forms.RadioSelect,
-    required=True)
+    widget=forms.RadioSelect(attrs={"name": "extraction_protocol"}),
+    required=False)
+  
+  extraction_protocol_rna = forms.ModelChoiceField(
+    queryset=None,
+    widget=forms.RadioSelect(attrs={"name": "extraction_protocol"}),
+    required=False)
+
+  extraction_protocol_tn = forms.ModelChoiceField(
+    queryset=None,
+    widget=forms.RadioSelect(attrs={"name": "extraction_protocol"}),
+    required=False)
   
   def clean(self):
     cleaned_data = super().clean()
-    lab_id = cleaned_data.get('lab_id')
-    extraction_protocol = cleaned_data.get('extraction_protocol')
-    code = cleaned_data.get('code')
-
-    if Batch.objects.filter(user=self.user, lab_id=lab_id).exists():
-      raise ValidationError(
-        message='Batch with the same Lab ID already exists. Please change Lab ID.',
-        )
     
     num = Batch.objects.filter(user=self.user).count() + 1
     if num > BATCH_LIMIT:
@@ -38,23 +40,19 @@ class BatchForm(ModelForm):
         message="You have reached the number of batches you can create.",
       )
     
-    protocol_type = ExtractionProtocol.objects.get(name=extraction_protocol).type
-    assays = AssayCode.objects.get(name=code).assays.all()
-
-    if protocol_type != ExtractionProtocol.Types.TOTAL_NUCLEIC:
-      incompatible = []
-      for assay in assays:
-        if assay.type != protocol_type:
-          incompatible.append(assay)
-          raise ValidationError(
-            message=f'Extraction Protocol type: {protocol_type} is not compatible for assays: {incompatible} in code: {code}',
-          )
-
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['code'].queryset = AssayCode.objects.filter(user=self.user)
-    self.fields['extraction_protocol'].queryset = ExtractionProtocol.objects.filter(user=self.user)
+    self.fields['extraction_protocol_dna'].queryset = ExtractionProtocol.objects.filter(user=self.user, type=ExtractionProtocol.Types.DNA)
+    self.fields['extraction_protocol_rna'].queryset = ExtractionProtocol.objects.filter(user=self.user, type=ExtractionProtocol.Types.RNA)
+    self.fields['extraction_protocol_tn'].queryset = ExtractionProtocol.objects.filter(user=self.user, type=ExtractionProtocol.Types.TOTAL_NUCLEIC)
+
+   
+
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['number_of_samples'].widget.attrs['class'] = 'form-control'
+    self.fields['lab_id'].widget.attrs['class'] = 'form-control'
 
   class Meta:
     model = Batch

@@ -41,9 +41,8 @@ def createBatches(request):
       )
 
       return redirect('batch_samples', username=request.user.username, pk=batch.pk)
-    
-  else:
-    print(form.errors)
+    else:
+      print(form.errors)
   
   context = {'form': form}
   return render(request, 'batch/create_batch.html', context)

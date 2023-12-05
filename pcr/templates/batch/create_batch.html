@@ -5,40 +5,146 @@
 {% block title %} Create Batch - PCRPrep {% endblock %} 
 
 {% block content %}
-<div class="container-fluid">
+<div class="container">
 
-  <div class="row">
-    <div class="col d-flex justify-content-center">
-      <h3>Create a new batch</h3>
-    </div>
+  <div class="row justify-content-center">
+    <h3 class="text-center">Create New Batch</h3>
   </div>
 
-  <div class="row">
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div class="row justify-content-center mb-2">
 
-    <div class="col d-flex justify-content-center">
-      <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="Submit" name="Create batch">
-      </form>
+      <div class="col-xs-1" align="center">
+        <div class="text-center mx-auto form-width-18">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
+
+        <div class="text-center mx-auto form-width-18">
+          <label class="form-label">Number of Samples</label>
+          {{form.number_of_samples}}
+        </div>
+
+        <div class="text-center mx-auto form-width-18">
+          <label class="form-label">Lab ID</label>
+          {{form.lab_id}}
+        </div>
+      </div>
     </div>
 
-    <div class="col d-flex justify-content-center">
-      <figure>
-      <figcaption>A batch...</figcaption>
-        <ul> 
-          <li>is a list of samples.</li>
-          <li>can only have one extraction protocol.</li>
-          <li>can only have one assay code but you can edit their following samples individually once created.</li>
-          <li>must have a lab ID to distinguish each sample.</li>
-        </ul>
-      </figure>
+    <div class="d-flex justify-content-center mb-2">
+      <ul class="nav nav-pills d-flex justify-content-center" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pills-panel-tab" data-bs-toggle="pill" data-bs-target="#panel-tab" type="button" role="tab" aria-controls="panel-tab" aria-selected="true">Panels</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-protocol-tab" data-bs-toggle="pill" data-bs-target="#protocol-tab" type="button" role="tab" aria-controls="protocol-tab" aria-selected="false">Extractions</button>
+        </li>
+      </ul>
     </div>
 
-  </div>
+    <div class="row justify-content-center mb-2">
+      <div class="tab-content" id="myTabContent">
 
+        <div class="tab-pane fade show active" id="panel-tab" role="tabpanel" aria-labelledby="panel-tab">
+
+          <div class="row">
+            <h6 class="text-center">Select panel...</h6>
+          </div>
+
+          <div class="container-sm">
+            {% if form.code|length > 0 %}
+            <div class="d-flex flex-wrap justify-content-center">
+              {% for panel in form.code %}
+                <div class="p-3 px-1">
+                  <span class="border border-primary p-2 border-5 rounded-pill">
+                    {{panel}}
+                  </span>
+                </div>
+              {% endfor %}
+            </div>
+            {% else %}
+              <div>
+                <a href="{% url 'create_assay_code' %}">
+                  <h6 class="text-center">No panels found here. Create one!</h6>
+                </a>
+              </div>
+            {% endif %}
+          </div>
+
+        </div>
+
+        <div class="tab-pane fade" id="protocol-tab" role="tabpanel" aria-labelledby="protocol-tab">
+
+          <div class="row">
+            <h6 class="text-center">Select extraction...</h6>
+          </div>
+
+          <div class="container-sm">
+            <div class="row justify-content-center">
+
+              {% if form.extraction_protocol_dna|length > 0 %}
+              <div class="col-sm-4 form-width-18">
+                <ul class="list-group">
+                  {% for ext in form.extraction_protocol_dna%}
+                    <li class="list-group-item">{{ext}}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endif %}
+
+              {% if form.extraction_protocol_rna|length > 0 %}
+              <div class="col-sm-4">
+                <ul class="list-group">
+                {% for ext in form.extraction_protocol_rna%}
+                  <li class="list-group-item">{{ext}}</li>
+                {% endfor %}
+                </ul>
+              </div>
+              {% endif %}
+
+              {% if form.extraction_protocol_tn|length > 0 %}
+              <div class="col-sm-4">
+                <ul class="list-group">
+                {% for ext in form.extraction_protocol_tn%}
+                  <li class="list-group-item">{{ext}}</li>
+                {% endfor %}
+                </ul>
+              </div>
+              {% endif %}
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    {% if form.errors %}
+    <div class="row text-center mt-2">
+      {% for key,value in form.errors.items %} 
+        {{ value|escape }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center">
+      <div class="text-center mt-2"> 
+        <a class="btn btn-secondary" href="{% url 'batches' %}">Cancel</a>
+        <button class="btn btn-primary" type="submit">Create Batch</button>
+      </div>
+    </div>
+
+  </form>
 </div>
 
-{{form.errors}}
-
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮟' ?  '⮝' : '⮟';
+    });
+  });
+</script>
 {% endblock %}
