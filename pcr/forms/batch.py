@@ -14,25 +14,60 @@ class BatchForm(ModelForm):
   code = forms.ModelChoiceField(
     queryset=None,
     widget=forms.RadioSelect,
-    required=True)
+    required=False)
   
   extraction_protocol_dna = forms.ModelChoiceField(
     queryset=None,
-    widget=forms.RadioSelect(attrs={"name": "extraction_protocol"}),
-    required=False)
+    widget=forms.RadioSelect(attrs={'class': 'radio-ext-prot'}),
+    required=False,)
   
   extraction_protocol_rna = forms.ModelChoiceField(
     queryset=None,
-    widget=forms.RadioSelect(attrs={"name": "extraction_protocol"}),
+    widget=forms.RadioSelect(attrs={'class': 'radio-ext-prot'}),
     required=False)
 
   extraction_protocol_tn = forms.ModelChoiceField(
     queryset=None,
-    widget=forms.RadioSelect(attrs={"name": "extraction_protocol"}),
+    widget=forms.RadioSelect(attrs={'class': 'radio-ext-prot'}),
     required=False)
   
   def clean(self):
     cleaned_data = super().clean()
+    lab_id = cleaned_data.get('lab_id')
+    code = cleaned_data.get('code')
+    extraction_protocol_dna = cleaned_data.get('extraction_protocol_dna')
+    extraction_protocol_rna = cleaned_data.get('extraction_protocol_rna')
+    extraction_protocol_tn = cleaned_data.get('extraction_protocol_tn')
+
+    if Batch.objects.filter(user=self.user, lab_id=lab_id).exists():
+      raise ValidationError(
+        message="A batch with this Lab ID already exists."
+      )
+
+    if extraction_protocol_dna == None and extraction_protocol_rna == None and extraction_protocol_tn == None:
+      raise ValidationError(
+        message="Please select an extraction protocol."
+      )
+    
+    if extraction_protocol_dna !=  None and (extraction_protocol_rna !=None or extraction_protocol_tn != None):
+      raise ValidationError(
+        message="Only one extraction protocol can be selected. Reset radios and select again."
+      )
+    
+    if extraction_protocol_rna !=  None and (extraction_protocol_dna !=None or extraction_protocol_tn != None):
+      raise ValidationError(
+        message="Only one extraction protocol can be selected. Reset radios and select again."
+      )
+    
+    if extraction_protocol_tn !=  None and (extraction_protocol_rna !=None or extraction_protocol_dna != None):
+      raise ValidationError(
+        message="Only one extraction protocol can be selected. Reset radios and select again."
+      )
+    
+    if code == None:
+      raise ValidationError(
+        message="Please select a panel."
+      )
     
     num = Batch.objects.filter(user=self.user).count() + 1
     if num > BATCH_LIMIT:
@@ -48,15 +83,13 @@ class BatchForm(ModelForm):
     self.fields['extraction_protocol_rna'].queryset = ExtractionProtocol.objects.filter(user=self.user, type=ExtractionProtocol.Types.RNA)
     self.fields['extraction_protocol_tn'].queryset = ExtractionProtocol.objects.filter(user=self.user, type=ExtractionProtocol.Types.TOTAL_NUCLEIC)
 
-   
-
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['number_of_samples'].widget.attrs['class'] = 'form-control'
     self.fields['lab_id'].widget.attrs['class'] = 'form-control'
 
   class Meta:
     model = Batch
-    exclude = ['user', 'date_performed']
+    exclude = ['user', 'date_performed', 'extraction_protocol']
 
 
 class DeleteBatchForm(forms.Form):

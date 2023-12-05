@@ -26,9 +26,22 @@ def createBatches(request):
     form = BatchForm(request.POST, user=request.user)
 
     if form.is_valid():
+      extraction_protocol_dna = form.cleaned_data['extraction_protocol_dna']
+      extraction_protocol_rna = form.cleaned_data['extraction_protocol_rna']
+      extraction_protocol_tn = form.cleaned_data['extraction_protocol_tn']
 
       batch = form.save(commit=False)
       batch.user = request.user
+
+      if extraction_protocol_dna:
+        batch.extraction_protocol = extraction_protocol_dna
+
+      if extraction_protocol_rna:
+        batch.extraction_protocol = extraction_protocol_rna
+
+      if extraction_protocol_tn:
+        batch.extraction_protocol = extraction_protocol_tn
+
       batch = form.save()
 
       number_of_samples = form.cleaned_data['number_of_samples']
