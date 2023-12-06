@@ -69,12 +69,13 @@
   <form action="" method="POST">
     {{ formset.management_form }}
     {% csrf_token %}
+
     <div class="table-responsive">
       <table class="table table-bordered">
         <thead>
           <tr>
             <th scope="col">Lab ID</th>
-            <th scope="col">Sample ID</th>
+            <th scope="col" class="col-4">Sample ID</th>
             <th scope="col">Assay</th>
           </tr>
         </thead>
@@ -92,7 +93,7 @@
             <td>{{samples.lab_id_num}}</td>
             <td>{{formset.sample_id}}</td>
 
-            <td class="col-8" id="{{samples.pk}}-list">
+            <td>
               <a href="{% url 'sample_assay' request.user.username samples.pk %}">
                 <i class="fa-solid fa-vial-circle-check"></i>
               </a>
@@ -108,15 +109,12 @@
                 {% endif %}
               {% endfor %}
             </td>
-
           </tr>
 
           {% endfor %}
-
         </tbody>
 
       </table>
-
     </div>
 
     {% if formset.errors %}
@@ -132,10 +130,10 @@
     <div class="row justify-content-center">
       <div class="text-center mt-2"> 
         <a class="btn btn-secondary" href="{% url 'batches' %}">Cancel</a>
-        <button class="btn btn-primary" type="submit" name="update">Create Batch</button>
+        <button class="btn btn-primary" type="submit" name="update">Update Sample ID's</button>
       </div>
     </div>
-
+  
   </form>
 
   <div class="justify-content-center">
@@ -226,20 +224,8 @@
 
 </div>
 
-<!-- https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize -->
-<script>
-  $("textarea").each(function () {
-    this.setAttribute("style", "height:200px" + (this.scrollHeight) + "px;overflow-y:scroll;");
-  }).on("input", function () {
-    this.style.height = 0;
-    this.style.height = (this.scrollHeight) + "px";
-  });
-</script>
-
 <script>
   const button = document.getElementById("populate-button");
-  const delButton = document.getElementById("delete-button");
-  const confirmInput = document.getElementById("confirm-del")
 
   function populate() {
     inputNum = $('.form-control')
@@ -257,18 +243,7 @@
     }
   }
 
-  function del() {
-    batchId = '{{batch.lab_id}}'
-    if (confirmInput.value === batchId) {
-      window.location.href = "{% url 'delete_batch' request.user.username batch.pk %}"
-    } else {
-      alert("Invalid Lab ID entered, please try again.")
-    }
-  }
-
   button.addEventListener("click", populate);
-  delButton.addEventListener("click", del);
-
 </script>
 
 {% endblock %}

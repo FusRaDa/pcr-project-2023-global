@@ -5,17 +5,79 @@
 {% block title %} Edit Sample Assays {% endblock %} 
 
 {% block content %}
-
-<link rel="stylesheet" href="{% static 'css/sample_assay.css' %}">
-
 <div class="container">
 
   <form method="POST" action="">
     {% csrf_token %}
-    {{form}}
+    <div class="row justify-content-center">
 
-    <div class="row justify-content-center"> 
-      <input class="btn btn-primary mt-2" type="Submit" value="Update Assays">
+      {% if form.pcr_dna|length > 0 %}
+      <div class="col-sm form-width-18 mb-2">
+        <div class="card">
+          <div class="card-header">
+            PCR DNA Assays
+          </div>
+          <ul class="list-group list-group-flush">
+            {% for assay in form.pcr_dna %}
+              <li class="list-group-item">{{assay}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if form.pcr_rna|length > 0 %}
+      <div class="col-sm form-width-18 mb-2">
+        <div class="card">
+          <div class="card-header">
+            PCR RNA Assays
+          </div>
+          <ul class="list-group list-group-flush">
+            {% for assay in form.pcr_rna %}
+              <li class="list-group-item">{{assay}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if form.qpcr_dna|length > 0 %}
+      <div class="col-sm form-width-18 mb-2">
+        <div class="card">
+          <div class="card-header">
+            qPCR DNA Assays
+          </div>
+          <ul class="list-group list-group-flush">
+            {% for assay in form.qpcr_dna %}
+              <li class="list-group-item">{{assay}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if form.qpcr_rna|length > 0 %}
+      <div class="col-sm form-width-18 mb-2">
+        <div class="card">
+          <div class="card-header">
+            qPCR RNA Assays
+          </div>
+          <ul class="list-group list-group-flush">
+            {% for assay in form.qpcr_rna %}
+              <li class="list-group-item">{{assay}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+
+    <div class="row">
+
+    <div class="row justify-content-center">
+      <div class="text-center mt-2"> 
+        <a class="btn btn-secondary" href="{% url 'batch_samples' request.user.username sample.batch.pk %}">Cancel</a>
+        <button class="btn btn-primary" type="submit">Update &amp; Edit Quantity</button>
+      </div>
     </div>
 
   </form>

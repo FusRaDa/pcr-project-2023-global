@@ -63,24 +63,6 @@ def createBatches(request):
 
 
 @login_required(login_url='login')
-def deleteBatch(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no batch to delete.")
-    return redirect('batches')
-  
-  try:
-    batch = Batch.objects.get(user=user, pk=pk)
-    batch.delete()
-  except ObjectDoesNotExist:
-    messages.error(request, "There is no batch to delete.")
-    return redirect('batches')
-
-  return redirect('batches')
-
-
-@login_required(login_url='login')
 def batchSamples(request, username, pk):
   context = {}
   SampleFormSet = inlineformset_factory(
@@ -164,10 +146,10 @@ def editSampleAssay(request, username, pk):
       sample.assays.clear()
       for assay in assays:
         sample.assays.add(assay)
-        
+
       return redirect('batch_samples', request.user.username, sample.batch.pk)
     else:
       print(form.errors)
 
-  context = {'form': form}
+  context = {'form': form, 'sample': sample}
   return render(request, 'batch/sample_assay.html', context)

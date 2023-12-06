@@ -26,72 +26,75 @@
   </div>
 
   {% if dna_extraction_protocols %}
-  <div class="row justify-content-center mt-2">
-    <h5 class="text-center">DNA Extraction</h5>
-    {% for ext in dna_extraction_protocols %}
-    <div class="col-sm-3 mt-2">
-     
-       <div class="card">
-        <div class="card-header">
-          {{ext.name}}
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Type: {{ext.type}}</li>
-          <li class="list-group-item">Tubes
-
-            <button type="button" class="btn btn-primary btn-sm btn-arrow float-end" data-bs-toggle="collapse" data-bs-target="#tube-collapse-{{ext.pk}}" aria-expanded="false" aria-controls="tube-collapse-{{ext.pk}}">
-              ⮟
-            </button>
-
-            <div class="collapse" id="tube-collapse-{{ext.pk}}">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for e in ext.tubes.all %}
-                  <li class="list-group-item">{{e}}</li>
-                  {% endfor %}
-                </ul>
+  <h6 class="text-center">DNA Extractions</h6>
+  <div class="container-sm">
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+      {% for ext in dna_extraction_protocols %}
+    
+       
+         <div class="card form-width-18">
+          <div class="card-header">
+            {{ext.name}}
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Type: {{ext.type}}</li>
+            <li class="list-group-item">Tubes
+  
+              <button type="button" class="btn btn-primary btn-sm btn-arrow float-end" data-bs-toggle="collapse" data-bs-target="#tube-collapse-{{ext.pk}}" aria-expanded="false" aria-controls="tube-collapse-{{ext.pk}}">
+                ⮟
+              </button>
+  
+              <div class="collapse" id="tube-collapse-{{ext.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for e in ext.tubes.all %}
+                    <li class="list-group-item">{{e}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
               </div>
-            </div>
-
-          </li>
-          <li class="list-group-item">Reagents
-
-            <button type="button" class="btn btn-primary btn-sm btn-arrow float-end" data-bs-toggle="collapse" data-bs-target="#reagent-collapse-{{ext.pk}}" aria-expanded="false" aria-controls="reagent-collapse-{{ext.pk}}">
-              ⮟
-            </button>
-
-            <div class="collapse" id="reagent-collapse-{{ext.pk}}">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for e in ext.reagents.all %}
-                  <li class="list-group-item">{{e}}</li>
-                  {% endfor %}
-                </ul>
+  
+            </li>
+            <li class="list-group-item">Reagents
+  
+              <button type="button" class="btn btn-primary btn-sm btn-arrow float-end" data-bs-toggle="collapse" data-bs-target="#reagent-collapse-{{ext.pk}}" aria-expanded="false" aria-controls="reagent-collapse-{{ext.pk}}">
+                ⮟
+              </button>
+  
+              <div class="collapse" id="reagent-collapse-{{ext.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for e in ext.reagents.all %}
+                    <li class="list-group-item">{{e}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
               </div>
-            </div>
-
-          </li>
-        </ul>
-        <div class="card-body">
-          <a href="{% url 'edit_extraction_protocol' request.user.username ext.pk %}" class="card-link">Edit Protocol</a>
-          {% if ext.doc_url %}
-            <a href={{ext.doc_url}} target="_blank" class="card-link">View Docs</a>
-          {% endif %}
+  
+            </li>
+          </ul>
+          <div class="card-body">
+            <a href="{% url 'edit_extraction_protocol' request.user.username ext.pk %}" class="card-link">Edit Protocol</a>
+            {% if ext.doc_url %}
+              <a href={{ext.doc_url}} target="_blank" class="card-link">View Docs</a>
+            {% endif %}
+          </div>
         </div>
-      </div>
-
+  
+      
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
+  
   {% endif %}
 
   {% if rna_extraction_protocols %}
-  <div class="row justify-content-center mt-2">
-    <h5 class="text-center">RNA Extraction</h5>
+  <h6 class="text-center">RNA Extractions</h6>
+  <div class="row row-cols-2 justify-content-center mt-2">
     {% for ext in rna_extraction_protocols %}
-    <div class="col-sm-3 mt-2">
+    <div class="col-sm mt-2">
      
-       <div class="card">
+       <div class="card form-width-18">
         <div class="card-header">
           {{ext.name}}
         </div>
@@ -146,12 +149,12 @@
   {% endif %}
 
   {% if tn_extraction_protocols %}
-  <div class="row justify-content-center mt-2">
-    <h5 class="text-center">Total-nucleic Extraction</h5>
+  <h6 class="text-center">Total-nucleic Extractions</h6>
+  <div class="row row-cols-2 justify-content-center mt-2">
     {% for ext in tn_extraction_protocols %}
-    <div class="col-sm-3 mt-2">
+    <div class="col-sm mt-2">
      
-       <div class="card">
+       <div class="card form-width-18">
         <div class="card-header">
           {{ext.name}}
         </div>

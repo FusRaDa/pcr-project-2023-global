@@ -9,7 +9,6 @@ from .views import inventory_views
 urlpatterns = [
   path("", batch_views.viewBatches, name="batches"),
   path("create-batch/", batch_views.createBatches, name="create_batch"),
-  path("delete-batch/<str:username>/<int:pk>/", batch_views.deleteBatch, name="delete_batch"),
   path("batch-samples/<str:username>/<int:pk>/", batch_views.batchSamples, name="batch_samples"),
   path("sample-assay/<str:username>/<int:pk>/", batch_views.editSampleAssay, name="sample_assay"),
 
