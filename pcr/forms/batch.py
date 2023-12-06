@@ -159,26 +159,18 @@ class SampleAssayForm(ModelForm):
     widget=forms.CheckboxSelectMultiple,
     required=False,)
   
-  def clean(self):
-    cleaned_data = super().clean()
-    assays = cleaned_data.get('assays')
-    sample = Sample.objects.get(pk=self.instance.pk)
-    batch_type = sample.batch.extraction_protocol.type
-
-    if batch_type != ExtractionProtocol.Types.TOTAL_NUCLEIC:
-      incompatible = []
-      for assay in assays:
-        if assay.type != batch_type:
-          incompatible.append(assay)
-
-      if len(incompatible) > 0:
-        raise ValidationError(
-          message=f'Extraction Protocol: {batch_type} is not compatible for assays: {incompatible}',
-        )
-
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
+
+    try:
+      self.fields['pcr_dna'].initial = self.instance.assays.all()
+      self.fields['pcr_rna'].initial = self.instance.assays.all()
+      self.fields['qpcr_dna'].initial = self.instance.assays.all()
+      self.fields['qpcr_rna'].initial = self.instance.assays.all()
+    except ValueError:
+      pass
+
     if self.instance.batch.extraction_protocol.type == ExtractionProtocol.Types.TOTAL_NUCLEIC:
       self.fields['pcr_dna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.DNA, method=Assay.Methods.PCR).order_by('name')
       self.fields['pcr_rna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.RNA, method=Assay.Methods.PCR).order_by('name')

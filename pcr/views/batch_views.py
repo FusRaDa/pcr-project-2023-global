@@ -153,6 +153,18 @@ def editSampleAssay(request, username, pk):
     form = SampleAssayForm(request.POST, user=request.user, instance=sample)
     if form.is_valid():
       form.save()
+
+      pcr_dna = form.cleaned_data['pcr_dna']
+      pcr_rna = form.cleaned_data['pcr_rna']
+      qpcr_dna = form.cleaned_data['qpcr_dna']
+      qpcr_rna = form.cleaned_data['qpcr_rna']
+
+      assays = pcr_dna | pcr_rna | qpcr_dna | qpcr_rna
+
+      sample.assays.clear()
+      for assay in assays:
+        sample.assays.add(assay)
+        
       return redirect('batch_samples', request.user.username, sample.batch.pk)
     else:
       print(form.errors)
