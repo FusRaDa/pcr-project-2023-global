@@ -49,17 +49,17 @@ class BatchForm(ModelForm):
         message="Please select an extraction protocol."
       )
     
-    if extraction_protocol_dna !=  None and (extraction_protocol_rna !=None or extraction_protocol_tn != None):
+    if extraction_protocol_dna != None and (extraction_protocol_rna !=None or extraction_protocol_tn != None):
       raise ValidationError(
         message="Only one extraction protocol can be selected. Reset radios and select again."
       )
     
-    if extraction_protocol_rna !=  None and (extraction_protocol_dna !=None or extraction_protocol_tn != None):
+    if extraction_protocol_rna != None and (extraction_protocol_dna !=None or extraction_protocol_tn != None):
       raise ValidationError(
         message="Only one extraction protocol can be selected. Reset radios and select again."
       )
     
-    if extraction_protocol_tn !=  None and (extraction_protocol_rna !=None or extraction_protocol_dna != None):
+    if extraction_protocol_tn != None and (extraction_protocol_rna !=None or extraction_protocol_dna != None):
       raise ValidationError(
         message="Only one extraction protocol can be selected. Reset radios and select again."
       )
@@ -68,6 +68,20 @@ class BatchForm(ModelForm):
       raise ValidationError(
         message="Please select a panel."
       )
+    
+    if extraction_protocol_dna != None:
+      for assay in code.assays.all():
+        if assay.type != Assay.Types.DNA:
+          raise ValidationError(
+            message=f"Assay: {assay.name} with type {assay.type} is not compatible with {extraction_protocol_dna}."
+          )
+        
+    if extraction_protocol_rna != None:
+      for assay in code.assays.all():
+        if assay.type != Assay.Types.RNA:
+          raise ValidationError(
+            message=f"Assay: {assay.name} with type {assay.type} is not compatible with {extraction_protocol_rna}."
+          )
     
     num = Batch.objects.filter(user=self.user).count() + 1
     if num > BATCH_LIMIT:
@@ -125,14 +139,30 @@ class SampleForm(ModelForm):
 
 class SampleAssayForm(ModelForm):
 
-  assays = forms.ModelMultipleChoiceField(
-    queryset=None,
+  pcr_dna = forms.ModelMultipleChoiceField(
+    queryset=Assay.objects.none(),
     widget=forms.CheckboxSelectMultiple,
-    required=True)
+    required=False,)
+  
+  pcr_rna = forms.ModelMultipleChoiceField(
+    queryset=Assay.objects.none(),
+    widget=forms.CheckboxSelectMultiple,
+    required=False,)
+  
+  qpcr_dna = forms.ModelMultipleChoiceField(
+    queryset=Assay.objects.none(),
+    widget=forms.CheckboxSelectMultiple,
+    required=False,)
+  
+  qpcr_rna = forms.ModelMultipleChoiceField(
+    queryset=Assay.objects.none(),
+    widget=forms.CheckboxSelectMultiple,
+    required=False,)
   
   def clean(self):
-    assays = self.cleaned_data.get('assays')
-    sample = Sample.objects.get(user=self.user, pk=self.instance.pk)
+    cleaned_data = super().clean()
+    assays = cleaned_data.get('assays')
+    sample = Sample.objects.get(pk=self.instance.pk)
     batch_type = sample.batch.extraction_protocol.type
 
     if batch_type != ExtractionProtocol.Types.TOTAL_NUCLEIC:
@@ -140,15 +170,29 @@ class SampleAssayForm(ModelForm):
       for assay in assays:
         if assay.type != batch_type:
           incompatible.append(assay)
-          raise ValidationError(
-            message=f'Extraction Protocol: {batch_type} is not compatible for assays: {incompatible}',
-          )
+
+      if len(incompatible) > 0:
+        raise ValidationError(
+          message=f'Extraction Protocol: {batch_type} is not compatible for assays: {incompatible}',
+        )
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
-    self.fields['assays'].queryset = Assay.objects.filter(user=self.user)
+    if self.instance.batch.extraction_protocol.type == ExtractionProtocol.Types.TOTAL_NUCLEIC:
+      self.fields['pcr_dna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.DNA, method=Assay.Methods.PCR).order_by('name')
+      self.fields['pcr_rna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.RNA, method=Assay.Methods.PCR).order_by('name')
+      self.fields['qpcr_dna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.DNA, method=Assay.Methods.qPCR).order_by('name')
+      self.fields['qpcr_rna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.RNA, method=Assay.Methods.qPCR).order_by('name')
+
+    if self.instance.batch.extraction_protocol.type == ExtractionProtocol.Types.DNA: 
+      self.fields['pcr_dna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.DNA, method=Assay.Methods.PCR).order_by('name')
+      self.fields['qpcr_dna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.DNA, method=Assay.Methods.qPCR).order_by('name')
+
+    if self.instance.batch.extraction_protocol.type == ExtractionProtocol.Types.RNA:
+      self.fields['pcr_rna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.RNA, method=Assay.Methods.PCR).order_by('name')
+      self.fields['qpcr_rna'].queryset = Assay.objects.filter(user=self.user, type=Assay.Types.RNA, method=Assay.Methods.qPCR).order_by('name')
 
   class Meta:
     model = Sample
-    fields = ['assays']
+    exclude = ['user', 'lab_id_num', 'sample_id', 'assays', 'batch']

@@ -105,7 +105,9 @@ def batchSamples(request, username, pk):
     return redirect('batches')
 
   samples = batch.sample_set.all()
+
   formset = SampleFormSet(instance=batch)
+  del_form = DeletionForm(value=batch.name)
 
   data = zip(samples, formset)
 
@@ -126,7 +128,7 @@ def batchSamples(request, username, pk):
     else:
       print(del_form.errors)
    
-  context = {'batch': batch, 'data': data, 'formset': formset}
+  context = {'batch': batch, 'data': data, 'formset': formset, 'del_form': del_form}
   return render(request, 'batch/batch_samples.html', context)
 
 
