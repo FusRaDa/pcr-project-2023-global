@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 
 from ..models.batch import Batch, Sample
 from ..forms.batch import BatchForm, SampleForm, SampleAssayForm
+from ..forms.general import DeletionForm
 from ..custom.functions import create_samples
 
 
@@ -108,7 +109,7 @@ def batchSamples(request, username, pk):
 
   data = zip(samples, formset)
 
-  if request.method == 'POST':
+  if 'update' in request.POST:
     formset = SampleFormSet(request.POST, instance=batch)
     if formset.is_valid():
       formset.save()
@@ -116,6 +117,14 @@ def batchSamples(request, username, pk):
     else:
       print(formset.errors)
       print(formset.non_form_errors())
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=batch.name)
+    if del_form.is_valid():
+      batch.delete()
+      return redirect('batches')
+    else:
+      print(del_form.errors)
    
   context = {'batch': batch, 'data': data, 'formset': formset}
   return render(request, 'batch/batch_samples.html', context)
