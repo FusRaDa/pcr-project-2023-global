@@ -3,10 +3,9 @@ from django.core.validators import MinValueValidator
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
-# Create your models here.
+
 class StorePlate(models.Model):
   name = models.CharField(blank=False, max_length=25)
-  brand = models.CharField(blank=True, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
   catalog_number = models.CharField(blank=False, max_length=25)
 
@@ -39,7 +38,6 @@ class StorePlate(models.Model):
 
 class StoreTube(models.Model):
   name = models.CharField(blank=False, max_length=25)
-  brand = models.CharField(blank=True, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
   catalog_number = models.CharField(blank=False, max_length=25)
 
@@ -88,7 +86,6 @@ class StoreReagent(models.Model):
     WATER = 'WATER', _('WATER')
 
   name = models.CharField(blank=False, max_length=50)
-  brand = models.CharField(blank=True, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
   catalog_number = models.CharField(blank=False, max_length=25)
 
