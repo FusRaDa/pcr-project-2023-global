@@ -81,7 +81,7 @@ class AssayForm(ModelForm):
 
       if neg_ctrl_found != 1:
         raise ValidationError(
-          message="Assay must contain one negative control."
+          message="Assay must only contain one negative control."
         )
    
     if reagents:
@@ -92,7 +92,7 @@ class AssayForm(ModelForm):
       
       if water_reagent_found != 1:
         raise ValidationError(
-          message="Assay must contain one reagent as PCR water"
+          message="Assay must only contain one reagent as PCR water"
         )
  
   def __init__(self, *args, **kwargs):
