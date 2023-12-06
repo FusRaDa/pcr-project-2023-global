@@ -31,79 +31,83 @@
     </div>
   </div>
 
-  <div class="row">
+  
     {% for location in locations %}
-    <div class="col-sm-6 mt-2">
-     
-       <div class="card">
-        <div class="card-header">
-          {{location.name}}
+    <div class="row justify-content-center mt-2">
+
+      <div class="col" align="center">
+      
+        <div class="card form-width-18">
+          <div class="card-header">
+            {{location.name}}
+          </div>
+          
+          <ul class="list-group list-group-flush">
+            {% if location.plate_set.all %}
+            <li class="list-group-item"> Plates
+              <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#plates-collapse-{{location.pk}}" aria-expanded="false" aria-controls="plates-collapse-{{location.pk}}">
+                ⮟
+              </button>
+
+              <div class="collapse" id="plates-collapse-{{location.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for plate in location.plate_set.all %}
+                    <li class="list-group-item">{{plate}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </li>
+            {% endif %}
+
+            {% if location.tube_set.all %}
+            <li class="list-group-item"> Tubes
+              <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#tubes-collapse-{{location.pk}}" aria-expanded="false" aria-controls="tubes-collapse-{{location.pk}}">
+                ⮟
+              </button>
+
+              <div class="collapse" id="tubes-collapse-{{location.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for tube in location.tube_set.all %}
+                    <li class="list-group-item">{{tube}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </li>
+            {% endif %}
+
+            {% if location.reagent_set.all %}
+            <li class="list-group-item"> Reagents
+              <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#reagents-collapse-{{location.pk}}" aria-expanded="false" aria-controls="reagents-collapse-{{location.pk}}">
+                ⮟
+              </button>
+
+              <div class="collapse" id="reagents-collapse-{{location.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for reagent in location.reagent_set.all %}
+                    <li class="list-group-item">{{reagent}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+
+            </li>
+            {% endif %}
+          </ul>
+          <div class="card-body">
+            <a href="{% url 'edit_location' request.user.username location.pk %}" class="card-link">Edit Location</a>
+          </div>
         </div>
-        
-        <ul class="list-group list-group-flush">
-          {% if location.plate_set.all %}
-          <li class="list-group-item"> Plates
-            <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#plates-collapse-{{location.pk}}" aria-expanded="false" aria-controls="plates-collapse-{{location.pk}}">
-              ⮟
-            </button>
 
-            <div class="collapse" id="plates-collapse-{{location.pk}}">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for plate in location.plate_set.all %}
-                  <li class="list-group-item">{{plate}}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-
-          </li>
-          {% endif %}
-          {% if location.tube_set.all %}
-          <li class="list-group-item"> Tubes
-            <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#tubes-collapse-{{location.pk}}" aria-expanded="false" aria-controls="tubes-collapse-{{location.pk}}">
-              ⮟
-            </button>
-
-            <div class="collapse" id="tubes-collapse-{{location.pk}}">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for tube in location.tube_set.all %}
-                  <li class="list-group-item">{{tube}}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-
-          </li>
-          {% endif %}
-          {% if location.reagent_set.all %}
-          <li class="list-group-item"> Reagents
-            <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#reagents-collapse-{{location.pk}}" aria-expanded="false" aria-controls="reagents-collapse-{{location.pk}}">
-              ⮟
-            </button>
-
-            <div class="collapse" id="reagents-collapse-{{location.pk}}">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for reagent in location.reagent_set.all %}
-                  <li class="list-group-item">{{reagent}}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-
-          </li>
-          {% endif %}
-        </ul>
-        <div class="card-body">
-          <a href="{% url 'edit_location' request.user.username location.pk %}" class="card-link">Edit Location</a>
-        </div>
       </div>
 
     </div>
     {% endfor %}
-  </div>
+
 
   <script>
     $('.btn-arrow').click(function(){
