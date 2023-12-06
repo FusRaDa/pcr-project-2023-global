@@ -5,8 +5,6 @@
 {% block title %} Edit Extraction Protocol {% endblock %} 
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/global.css' %}">
-
 <div class="container">
 
   {% for message in messages %}
@@ -25,7 +23,7 @@
     {% csrf_token %}
     <div class="row justify-content-center">
       
-      <div class="col-sm-3">
+      <div class="col-sm-3 form-width-18">
         <div class="text-center">
           <label class="form-label">Name</label>
           {{form.name}}
@@ -42,13 +40,13 @@
         </div>
       </div>
 
-      <div class="col-sm-3">
-        <div class="card" style="width: 18rem;">
+      <div class="col-sm-3 form-width-18 mb-2">
+        <div class="card">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               Tubes
               <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#tubes-collapse" aria-expanded="false" aria-controls="tubes-collapse">
-                ⮟
+                ⮝
               </button>
             </li>
 
@@ -67,13 +65,13 @@
         </div>
       </div>
 
-      <div class="col-sm-3">
-        <div class="card" style="width: 18rem;">
+      <div class="col-sm-3 form-width-18 ">
+        <div class="card">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               Tubes
               <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
-                ⮟
+                ⮝
               </button>
             </li>
 
@@ -167,7 +165,7 @@
   <script>
     $('.btn-arrow').click(function(){
       $(this).text(function(i,old){
-          return old=='⮝' ?  '⮟' : '⮝';
+        return old=='⮟' ?  '⮝' : '⮟';
       });
     });
   </script>
