@@ -73,7 +73,7 @@ def activate(request, uidb64, token):
 
     create_presets(user)
 
-    # default_group = Group.objects.get(name="Incoming")
+    # default_group = Group.objects.get(name="Premium")
     # user.groups.add(default_group)
 
     messages.success(request, 'Thank you for your email confirmation. Now you can login your account.')
