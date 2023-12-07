@@ -30,7 +30,6 @@ class Kit(models.Model):
 
 class StorePlate(models.Model):
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
-  brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
   
   class Sizes(models.IntegerChoices):
     EIGHT = 8, _('8')
@@ -40,7 +39,6 @@ class StorePlate(models.Model):
     THREE_HUNDRED_EIGHTY_FOUR = 384, _('384')
 
   name = models.CharField(blank=False, max_length=25)
-  catalog_number = models.CharField(blank=False, max_length=25, unique=True)
 
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
@@ -49,49 +47,27 @@ class StorePlate(models.Model):
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
 
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['brand', 'catalog_number'], 
-        name='store_plate_unique',
-        violation_error_message = "An item with the same brand and catalog number already exists.",
-      )
-    ]
-
   def __str__(self):
     return f"{self.name}-{self.catalog_number}"
 
 
 class StoreTube(models.Model):
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
-  brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 
   name = models.CharField(blank=False, max_length=25)
-  catalog_number = models.CharField(blank=False, max_length=25, unique=True)
-
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
 
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
 
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['brand', 'catalog_number'], 
-        name='store_tube_unique',
-        violation_error_message = "An item with the same brand and catalog number already exists.",
-      )
-    ]
-
   def __str__(self):
-    return self.name
+    return f"{self.name}-{self.catalog_number}"
 
 
 # reagents are exclusively meant to be for PCR
 class StoreReagent(models.Model):
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
-  brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 
   class Usages(models.TextChoices):
     EXTRACTION = 'EXTRACTION', _('EXTRACTION')
@@ -116,8 +92,6 @@ class StoreReagent(models.Model):
     WATER = 'WATER', _('WATER')
 
   name = models.CharField(blank=False, max_length=50)
-  catalog_number = models.CharField(blank=False, max_length=25)
-
   usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.PCR, max_length=25)
   pcr_reagent = models.CharField(choices=PCRReagent.choices, blank=True, null=True, default=None, max_length=25) # determine calculations for type of pcr reagent
  
@@ -130,15 +104,6 @@ class StoreReagent(models.Model):
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['brand', 'catalog_number'], 
-        name='store_reagent_unique',
-        violation_error_message = "An item with the same brand and catalog number already exists.",
-      )
-    ]
     
   def __str__(self):
     return f"{self.name}-{self.catalog_number}"

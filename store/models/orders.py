@@ -11,7 +11,7 @@ class Order(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   kit = models.ForeignKey(Kit, on_delete=models.SET_NULL)
 
-  amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
+  amount = models.IntegerField(validators=[MinValueValidator(1)], default=1)
 
   date_added = models.DateTimeField(default=now, editable=False)
   has_ordered = models.BooleanField(blank=False, default=False)

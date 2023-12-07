@@ -47,15 +47,6 @@ class Plate(models.Model):
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
 
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'lot_number', 'catalog_number'], 
-        name='plate_unique',
-        violation_error_message = "Tubes with the same lot and catalog number already exists."
-      )
-    ]
-
   def __str__(self):
     return self.name
 
@@ -75,15 +66,6 @@ class Tube(models.Model):
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'lot_number', 'catalog_number'], 
-        name='tube_unique',
-        violation_error_message = "Tubes with the same lot and catalog number already exists."
-      )
-    ]
 
   def __str__(self):
     return self.name
@@ -135,15 +117,6 @@ class Reagent(models.Model):
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'lot_number', 'catalog_number'], 
-        name='reagent_unique',
-        violation_error_message = "Reagents with the same lot and catalog number already exists."
-      )
-    ]
     
   def __str__(self):
     return f"{self.name}-{self.lot_number}"
