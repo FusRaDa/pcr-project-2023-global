@@ -3,11 +3,35 @@ from django.core.validators import MinValueValidator
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
+from ..models.affiliates import Brand
+
+
+class Tag(models.Model):
+  name = models.CharField(blank=False, max_length=50, unique=True)
+
+  def __str__(self):
+    return self.name
+
+
+class Kit(models.Model):
+  brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+
+  name = models.CharField(blank=False, max_length=50)
+  catalog_number = models.CharField(blank=False, max_length=25, unique=True)
+  price = models.DecimalField(blank=False, decimal_places=2, max_digits=7)
+
+  affiliate_link = models.URLField(max_length=200)
+
+  tags = models.ManyToManyField(Tag)
+
+  def __str__(self):
+    return f"{self.name}-{self.catalog_number}"
+
 
 class StorePlate(models.Model):
-  name = models.CharField(blank=False, max_length=25)
-  catalog_number = models.CharField(blank=False, max_length=25)
-
+  kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
+  brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+  
   class Sizes(models.IntegerChoices):
     EIGHT = 8, _('8')
     TWENTY_FOUR = 24, _('24')
@@ -15,26 +39,50 @@ class StorePlate(models.Model):
     NINETY_SIX = 96, _('96')
     THREE_HUNDRED_EIGHTY_FOUR = 384, _('384')
 
+  name = models.CharField(blank=False, max_length=25)
+  catalog_number = models.CharField(blank=False, max_length=25, unique=True)
+
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-  
+
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
 
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(
+        fields=['brand', 'catalog_number'], 
+        name='store_plate_unique',
+        violation_error_message = "An item with the same brand and catalog number already exists.",
+      )
+    ]
+
   def __str__(self):
-    return self.name
+    return f"{self.name}-{self.catalog_number}"
 
 
 class StoreTube(models.Model):
+  kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
+  brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+
   name = models.CharField(blank=False, max_length=25)
-  catalog_number = models.CharField(blank=False, max_length=25)
+  catalog_number = models.CharField(blank=False, max_length=25, unique=True)
 
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
- 
+
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
+
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(
+        fields=['brand', 'catalog_number'], 
+        name='store_tube_unique',
+        violation_error_message = "An item with the same brand and catalog number already exists.",
+      )
+    ]
 
   def __str__(self):
     return self.name
@@ -42,6 +90,8 @@ class StoreTube(models.Model):
 
 # reagents are exclusively meant to be for PCR
 class StoreReagent(models.Model):
+  kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
+  brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 
   class Usages(models.TextChoices):
     EXTRACTION = 'EXTRACTION', _('EXTRACTION')
@@ -80,6 +130,15 @@ class StoreReagent(models.Model):
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
+
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(
+        fields=['brand', 'catalog_number'], 
+        name='store_reagent_unique',
+        violation_error_message = "An item with the same brand and catalog number already exists.",
+      )
+    ]
     
   def __str__(self):
     return f"{self.name}-{self.catalog_number}"

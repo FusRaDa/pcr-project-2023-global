@@ -8,8 +8,8 @@ class Contact(models.Model):
   company = models.CharField(blank=False, max_length=25)
   first_name = models.CharField(blank=False, max_length=25)
   last_name = models.CharField(blank=False, max_length=25)
-  email = models.EmailField(blank=False, max_length=50)
-  phone_number = models.CharField(blank=False, max_length=15)
+  email = models.EmailField(blank=False, max_length=50, unique=True)
+  phone_number = models.CharField(blank=False, max_length=15, unique=True)
 
 
 class Brand(models.Model):
