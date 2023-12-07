@@ -4,17 +4,19 @@ from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
 
+class Brand(models.Model):
+  name = models.CharField(blank=False, unique=True, max_length=50)
+  logo = models.ImageField(upload_to='static/images')
+  
+  is_affiliated = models.BooleanField(blank=False, default=False)
+
+
 class Contact(models.Model):
+  brand = models.ForeignKey(Brand, on_delete=models.CASCADE, blank=True, null=True, default=None)
+
   company = models.CharField(blank=False, max_length=25)
   first_name = models.CharField(blank=False, max_length=25)
   last_name = models.CharField(blank=False, max_length=25)
   email = models.EmailField(blank=False, max_length=50, unique=True)
   phone_number = models.CharField(blank=False, max_length=15, unique=True)
-
-
-class Brand(models.Model):
-  name = models.CharField(blank=False, unique=True, max_length=50)
-  contacts = models.ManyToManyField(Contact)
-
-  is_affiliated = models.BooleanField(blank=False, default=False)
 
