@@ -9,7 +9,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 
 from .decorators import unauthenticated_user
-from django.contrib.auth.models import Group, User
+from users.models import User
 
 from .tokens import account_activation_token
 from .models import EmailOrUsernameModelBackend
@@ -27,7 +27,7 @@ def loginPage(request):
 
     user = EmailOrUsernameModelBackend.authenticate(request, username=username, password=password)
 
-    if not user.is_active:
+    if user is not None and not user.is_active:
       messages.info(request, 'Please verify your email.')
 
     if user is not None:
@@ -72,9 +72,6 @@ def activate(request, uidb64, token):
     user.save()
 
     create_presets(user)
-
-    # default_group = Group.objects.get(name="Premium")
-    # user.groups.add(default_group)
 
     messages.success(request, 'Thank you for your email confirmation. Now you can login your account.')
     return redirect('login')

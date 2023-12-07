@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'main',
+    'users',
     'accounts',
     'pcr',
 ]
@@ -132,6 +134,9 @@ STATIC_URL = 'static/'
 
 
 # Custom settings
+
+# Custom user extension
+AUTH_USER_MODEL = 'users.User'
 
 # Settings for account activation via email
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

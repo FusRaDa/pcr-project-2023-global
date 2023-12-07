@@ -4,7 +4,7 @@ from django.forms import modelformset_factory
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
 from django.contrib import messages
-from django.contrib.auth.models import User
+from users.models import User
 
 from ..models.assay import Assay, Fluorescence, Control
 from ..forms.assay import AssayForm, ReagentAssay, ReagentAssayForm, FluorescenceForm, ControlForm

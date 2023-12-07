@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.contrib.auth.models import User
+from users.models import User
 
 from ..models.batch import Batch, Sample
 from ..forms.batch import BatchForm, SampleForm, SampleAssayForm
