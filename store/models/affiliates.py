@@ -9,6 +9,8 @@ class Brand(models.Model):
   logo = models.ImageField(upload_to='static/images')
   
   is_affiliated = models.BooleanField(blank=False, default=False)
+  
+  date_joined = models.DateTimeField(default=now, editable=False)
 
   def __str__(self):
     return self.name

@@ -18,11 +18,20 @@ class Kit(models.Model):
 
   name = models.CharField(blank=False, max_length=50)
   catalog_number = models.CharField(blank=False, max_length=25, unique=True)
-  price = models.DecimalField(blank=False, decimal_places=2, max_digits=7)
+  price = models.DecimalField(blank=False, decimal_places=2, max_digits=7) #USD
 
   affiliate_link = models.URLField(max_length=200)
 
   tags = models.ManyToManyField(Tag)
+
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(
+        fields=['brand', 'catalog_number'], 
+        name='kit_unique',
+        violation_error_message = "A kit with the same brand and catalog number already exists.",
+      )
+    ]
 
   def __str__(self):
     return f"{self.name}-{self.catalog_number}"
@@ -48,7 +57,7 @@ class StorePlate(models.Model):
   exp_date = models.DateField(blank=True, null=True, default=None)
 
   def __str__(self):
-    return f"{self.name}-{self.catalog_number}"
+    return self.name
 
 
 class StoreTube(models.Model):
@@ -62,7 +71,7 @@ class StoreTube(models.Model):
   exp_date = models.DateField(blank=True, null=True, default=None)
 
   def __str__(self):
-    return f"{self.name}-{self.catalog_number}"
+    return self.name
 
 
 # reagents are exclusively meant to be for PCR
@@ -106,5 +115,5 @@ class StoreReagent(models.Model):
   exp_date = models.DateField(blank=True, null=True, default=None)
     
   def __str__(self):
-    return f"{self.name}-{self.catalog_number}"
+    return self.name
   
