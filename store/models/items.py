@@ -6,7 +6,6 @@ from django.utils.translation import gettext_lazy as _
 
 class StorePlate(models.Model):
   name = models.CharField(blank=False, max_length=25)
-  lot_number = models.CharField(blank=False, max_length=25)
   catalog_number = models.CharField(blank=False, max_length=25)
 
   class Sizes(models.IntegerChoices):
@@ -23,22 +22,12 @@ class StorePlate(models.Model):
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
 
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'lot_number', 'catalog_number'], 
-        name='plate_unique',
-        violation_error_message = "Tubes with the same lot and catalog number already exists."
-      )
-    ]
-
   def __str__(self):
     return self.name
 
 
 class StoreTube(models.Model):
   name = models.CharField(blank=False, max_length=25)
-  lot_number = models.CharField(blank=False, max_length=25)
   catalog_number = models.CharField(blank=False, max_length=25)
 
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
@@ -46,15 +35,6 @@ class StoreTube(models.Model):
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'lot_number', 'catalog_number'], 
-        name='tube_unique',
-        violation_error_message = "Tubes with the same lot and catalog number already exists."
-      )
-    ]
 
   def __str__(self):
     return self.name
@@ -86,7 +66,6 @@ class StoreReagent(models.Model):
     WATER = 'WATER', _('WATER')
 
   name = models.CharField(blank=False, max_length=50)
-  lot_number = models.CharField(blank=False, max_length=25)
   catalog_number = models.CharField(blank=False, max_length=25)
 
   usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.PCR, max_length=25)
@@ -101,17 +80,7 @@ class StoreReagent(models.Model):
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'lot_number', 'catalog_number'], 
-        name='reagent_unique',
-        violation_error_message = "Reagents with the same lot and catalog number already exists."
-      )
-    ]
     
   def __str__(self):
-    return f"{self.name}-{self.lot_number}"
-  
+    return f"{self.name}-{self.catalog_number}"
   
