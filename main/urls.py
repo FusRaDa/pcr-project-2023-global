@@ -23,6 +23,9 @@ urlpatterns = [
   path('admin/', admin.site.urls),
   path('', include("accounts.urls")),
   path('', include("pcr.urls")),
+  path('', include("users.urls")),
+
+  path("stripe/", include("djstripe.urls", namespace="djstripe")),
 ]
 
 

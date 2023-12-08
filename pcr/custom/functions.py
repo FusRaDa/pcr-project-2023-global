@@ -1,6 +1,5 @@
 from ..models.batch import Batch, Sample
 
-
 def create_samples(number_of_samples, lab_id, user):
 
   batch = Batch.objects.get(user=user, lab_id=lab_id)

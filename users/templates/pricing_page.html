@@ -1,0 +1,12 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Upgrade to Premium {% endblock %} 
+
+{% block content %}
+<script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+<stripe-pricing-table pricing-table-id="prctbl_1OL7FoFtbvVO8zYH6f9tKcEL"
+publishable-key="pk_test_51N1uCqFtbvVO8zYHs2K1VeLXwu8jW8gid7eUyN3pkKI9r5vpNVI6RGeQ4MZW8ySmPHPdDCz92mYhjDW4wEd3YP4x00xKLD9CPD">
+</stripe-pricing-table>
+{% endblock %}

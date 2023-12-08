@@ -3,7 +3,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from ..custom.constants import BATCH_LIMIT
+# from ..custom.constants import FREE_LIMITS
 from ..models.extraction import ExtractionProtocol
 from ..models.assay import Assay, AssayCode
 from ..models.batch import Batch, Sample
@@ -83,11 +83,11 @@ class BatchForm(ModelForm):
             message=f"Assay: {assay.name} with type {assay.type} is not compatible with {extraction_protocol_rna}."
           )
     
-    num = Batch.objects.filter(user=self.user).count() + 1
-    if num > BATCH_LIMIT:
-      raise ValidationError(
-        message="You have reached the number of batches you can create.",
-      )
+    # num = Batch.objects.filter(user=self.user).count() + 1
+    # if num > BATCH_LIMIT:
+    #   raise ValidationError(
+    #     message="You have reached the number of batches you can create.",
+    #   )
     
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
