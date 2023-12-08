@@ -12,12 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-import configparser
 
-config = configparser.ConfigParser()
-config.read('C:\\Users\\FusRada\\Desktop\\Python\\pcrproject\\docs\\accounts.txt')
-email = config.get('EMAIL', 'email')
-password = config.get('EMAIL', 'password')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-g#+ns06zzmmh1zme^#-u*n4cfo#*xtkp$7to+sd-%uya!1zch4'
+SECRET_KEY = os.environ.get("SECRET_KEY", "asdfgdgfdfdf%fdagdfgadf%fhhgh")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -44,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'djstripe',
 
     'main',
     'users',
@@ -143,12 +140,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = email
-EMAIL_HOST_USER = email
-EMAIL_HOST_PASSWORD = password
+EMAIL_FROM = os.environ.get("EMAIL", "<sending_email>")
+EMAIL_HOST_USER = os.environ.get("EMAIL", "<sending_email>")
+EMAIL_HOST_PASSWORD = os.environ.get("PASSWORD", "<email_password>")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 PASSWORD_RESET_TIMEOUT = 14400
+
+# Stripe
+STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY", "<your publishable key>")
+STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "<your secret key>")
+STRIPE_LIVE_MODE = False
+# Needed for webhooks, which are discussed later in the guide.
+DJSTRIPE_WEBHOOK_SECRET = os.environ.get("DJSTRIPE_WEBHOOK_SECRET", "whsec_xxx")
 
 # Media files storage settings
 MEDIA_URL = '/images/'
