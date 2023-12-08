@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
+
 
 import stripe
 from djstripe.settings import djstripe_settings
@@ -21,7 +21,7 @@ def pricing_page(request):
 def subscription_confirm(request):
   # set our stripe keys up
   stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
-
+  
   # get the session id from the URL and retrieve the session object from Stripe
   session_id = request.GET.get("session_id")
   session = stripe.checkout.Session.retrieve(session_id)
@@ -43,4 +43,14 @@ def subscription_confirm(request):
 
   # show a message to the user and redirect
   messages.success(request, f"You've successfully signed up. Thanks for the support!")
-  return HttpResponseRedirect(reverse("subscription_details"))
+  return redirect('batches')
+
+
+@login_required
+def create_portal_session(request):
+    stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
+    portal_session = stripe.billing_portal.Session.create(
+      customer=request.user.customer.id,
+      return_url="https://127.0.0.1:8000/subscription-details/",
+    )
+    return HttpResponseRedirect(portal_session.url)

@@ -14,11 +14,5 @@ class User(AbstractUser):
     help_text="The user's Stripe Customer object, if it exists"
   )
 
-  def is_subscribed(self):
-    if self.subscription != None:
-      return self.subscription
-    else:
-      return "Free"
-       
   def __str__(self):
-    return self.username
+    return f"{self.username} {self.subscription} {self.customer}"
