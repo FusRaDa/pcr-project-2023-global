@@ -4,7 +4,6 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 
-
 import stripe
 from djstripe.settings import djstripe_settings
 
@@ -19,11 +18,15 @@ def pricing_page(request):
 
 @login_required(login_url='login')
 def subscription_confirm(request):
+
   # set our stripe keys up
   stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
   
   # get the session id from the URL and retrieve the session object from Stripe
   session_id = request.GET.get("session_id")
+  if session_id == None:
+     return redirect('batches')
+ 
   session = stripe.checkout.Session.retrieve(session_id)
 
   # get the subscribing user from the client_reference_id we passed in above
@@ -44,6 +47,7 @@ def subscription_confirm(request):
   # show a message to the user and redirect
   messages.success(request, f"You've successfully signed up. Thanks for the support!")
   return redirect('batches')
+
 
 
 @login_required
