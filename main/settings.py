@@ -148,6 +148,8 @@ EMAIL_USE_TLS = True
 PASSWORD_RESET_TIMEOUT = 14400
 
 # Stripe
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+
 STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY", "<your publishable key>")
 STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "<your secret key>")
 STRIPE_LIVE_MODE = False
