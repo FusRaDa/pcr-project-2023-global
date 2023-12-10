@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 import stripe
+from djstripe import webhooks as djstripe_hooks
 from djstripe.settings import djstripe_settings
-
 from djstripe.models import Subscription
 from djstripe.models import Product
 
@@ -48,8 +50,7 @@ def subscription_confirm(request):
   messages.success(request, f"You've successfully signed up. Thanks for the support!")
   return redirect('batches')
 
-
-
+  
 @login_required
 def create_portal_session(request):
     stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
@@ -58,3 +59,14 @@ def create_portal_session(request):
       return_url="https://127.0.0.1:8000/subscription-details/",
     )
     return HttpResponseRedirect(portal_session.url)
+
+
+# Stripe webhooks
+@csrf_exempt
+@djstripe_hooks.handler("customer.subscription.deleted", "checkout.session.completed")
+def handle_stripe_events(request):
+  print("customer now has a subscription")
+  json_data = json.loads(request.body)
+  print(json_data)
+
+  return HttpResponse(status=200)
