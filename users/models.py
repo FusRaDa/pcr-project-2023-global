@@ -19,7 +19,7 @@ class User(AbstractUser):
     if self.subscription != None and self.customer != None:
       return "🧪"
     else:
-      return "🧪"
+      return ""
 
   def __str__(self):
     return f"{self.username}{self.is_subscribed()}"

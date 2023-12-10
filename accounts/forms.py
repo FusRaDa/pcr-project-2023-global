@@ -14,17 +14,17 @@ class CreateUserForm(UserCreationForm):
 
     if not email:
       raise ValidationError(
-        ({'email': ["Please enter an email."]})
+        message="Please enter an email."
       )
     
     if not first_name:
       raise ValidationError(
-        ({'first_name': ["Please enter your first name."]})
+        message="Please enter your first name."
       )
     
     if not last_name:
       raise ValidationError(
-        ({'last_name': ["Please enter your last name."]})
+        message="Please enter your last name."
       )
 
   def __init__(self, *args, **kwargs):
@@ -32,6 +32,20 @@ class CreateUserForm(UserCreationForm):
     self.fields['email'].required = True
     self.fields['first_name'].required = True
     self.fields['last_name'].required = True
+
+    self.fields['username'].widget.attrs['class'] = 'form-control'
+    self.fields['first_name'].widget.attrs['class'] = 'form-control'
+    self.fields['last_name'].widget.attrs['class'] = 'form-control'
+    self.fields['email'].widget.attrs['class'] = 'form-control'
+    self.fields['password1'].widget.attrs['class'] = 'form-control'
+    self.fields['password2'].widget.attrs['class'] = 'form-control'
+
+    self.fields['username'].widget.attrs['placeholder'] = 'Your unique username...'
+    self.fields['first_name'].widget.attrs['placeholder'] = 'Your first name...'
+    self.fields['last_name'].widget.attrs['placeholder'] = 'Your last name...'
+    self.fields['email'].widget.attrs['placeholder'] = 'Your email...'
+    self.fields['password1'].widget.attrs['placeholder'] = 'Enter password...'
+    self.fields['password2'].widget.attrs['placeholder'] = 'Enter password again...'
 
   class Meta: 
     model = User
