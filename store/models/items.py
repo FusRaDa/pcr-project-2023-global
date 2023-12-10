@@ -52,10 +52,6 @@ class StorePlate(models.Model):
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
 
-  last_updated = models.DateTimeField(auto_now=True)
-  date_created = models.DateTimeField(default=now, editable=False)
-  exp_date = models.DateField(blank=True, null=True, default=None)
-
   def __str__(self):
     return self.name
 
@@ -65,10 +61,6 @@ class StoreTube(models.Model):
 
   name = models.CharField(blank=False, max_length=25)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-
-  last_updated = models.DateTimeField(auto_now=True)
-  date_created = models.DateTimeField(default=now, editable=False)
-  exp_date = models.DateField(blank=True, null=True, default=None)
 
   def __str__(self):
     return self.name
@@ -110,10 +102,6 @@ class StoreReagent(models.Model):
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)
 
-  last_updated = models.DateTimeField(auto_now=True)
-  date_created = models.DateTimeField(default=now, editable=False)
-  exp_date = models.DateField(blank=True, null=True, default=None)
-    
   def __str__(self):
     return self.name
   

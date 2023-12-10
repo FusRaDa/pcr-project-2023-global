@@ -11,7 +11,7 @@ import json
 import stripe
 from djstripe import webhooks as djstripe_hooks
 from djstripe.settings import djstripe_settings
-from djstripe.models import Product, Subscription, Customer
+from djstripe.models import Product, Subscription, Customer, APIKey
 
 @login_required(login_url='login')
 def pricing_page(request):
@@ -76,7 +76,8 @@ def handle_stripe_sub(request):
     data = event_dict['data']['object']
 
     stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
-
+    print(djstripe_settings.STRIPE_SECRET_KEY)
+    
     try:
       subscription_holder = get_user_model().objects.get(id=data['client_reference_id'])
 
