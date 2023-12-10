@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from djstripe import webhooks
 
 # Create your models here.
 class User(AbstractUser):
@@ -16,8 +15,14 @@ class User(AbstractUser):
     help_text="The user's Stripe Customer object, if it exists"
   )
 
+  def is_subscribed(self):
+    if self.subscription != None and self.customer != None:
+      return "🧪"
+    else:
+      return "🧪"
+
   def __str__(self):
-    return f"{self.username} {self.subscription} {self.customer}"
+    return f"{self.username}{self.is_subscribed()}"
   
 
 

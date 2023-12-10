@@ -31,13 +31,11 @@
     </div>
   </div>
 
-  
+  <div class="row justify-content-center mt-2">
     {% for location in locations %}
-    <div class="row justify-content-center mt-2">
 
-      <div class="col" align="center">
-      
-        <div class="card form-width-18">
+      <div class="col-sm-3 form-width-18 mb-2">
+        <div class="card">
           <div class="card-header">
             {{location.name}}
           </div>
@@ -102,11 +100,11 @@
             <a href="{% url 'edit_location' request.user.username location.pk %}" class="card-link">Edit Location</a>
           </div>
         </div>
-
       </div>
 
-    </div>
     {% endfor %}
+  </div>
+    
 
 
   <script>
