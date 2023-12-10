@@ -9,8 +9,7 @@ import json
 import stripe
 from djstripe import webhooks as djstripe_hooks
 from djstripe.settings import djstripe_settings
-from djstripe.models import Subscription
-from djstripe.models import Product
+from djstripe.models import Product, Subscription, Customer
 
 @login_required(login_url='login')
 def pricing_page(request):
@@ -21,33 +20,33 @@ def pricing_page(request):
 @login_required(login_url='login')
 def subscription_confirm(request):
 
-  # set our stripe keys up
-  stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
+  # # set our stripe keys up
+  # stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
   
-  # get the session id from the URL and retrieve the session object from Stripe
-  session_id = request.GET.get("session_id")
-  if session_id == None:
-     return redirect('batches')
+  # # get the session id from the URL and retrieve the session object from Stripe
+  # session_id = request.GET.get("session_id")
+  # if session_id == None:
+  #    return redirect('batches')
  
-  session = stripe.checkout.Session.retrieve(session_id)
+  # session = stripe.checkout.Session.retrieve(session_id)
 
-  # get the subscribing user from the client_reference_id we passed in above
-  client_reference_id = int(session.client_reference_id)
-  subscription_holder = get_user_model().objects.get(id=client_reference_id)
-  # sanity check that the logged in user is the one being updated
-  assert subscription_holder == request.user
+  # # get the subscribing user from the client_reference_id we passed in above
+  # client_reference_id = int(session.client_reference_id)
+  # subscription_holder = get_user_model().objects.get(id=client_reference_id)
+  # # sanity check that the logged in user is the one being updated
+  # assert subscription_holder == request.user
 
-  # get the subscription object form Stripe and sync to djstripe
-  subscription = stripe.Subscription.retrieve(session.subscription)
-  djstripe_subscription = Subscription.sync_from_stripe_data(subscription)
+  # # get the subscription object form Stripe and sync to djstripe
+  # subscription = stripe.Subscription.retrieve(session.subscription)
+  # djstripe_subscription = Subscription.sync_from_stripe_data(subscription)
 
-  # set the subscription and customer on our user
-  subscription_holder.subscription = djstripe_subscription
-  subscription_holder.customer = djstripe_subscription.customer
-  subscription_holder.save()
+  # # set the subscription and customer on our user
+  # subscription_holder.subscription = djstripe_subscription
+  # subscription_holder.customer = djstripe_subscription.customer
+  # subscription_holder.save()
 
-  # show a message to the user and redirect
-  messages.success(request, f"You've successfully signed up. Thanks for the support!")
+  # # show a message to the user and redirect
+  # messages.success(request, f"You've successfully signed up. Thanks for the support!")
   return redirect('batches')
 
   
@@ -63,10 +62,34 @@ def create_portal_session(request):
 
 # Stripe webhooks
 @csrf_exempt
-@djstripe_hooks.handler("customer.subscription.deleted", "checkout.session.completed")
-def handle_stripe_events(request):
-  print("customer now has a subscription")
-  json_data = json.loads(request.body)
-  print(json_data)
+@djstripe_hooks.handler("checkout.session.completed", "customer.subscription.deleted")
+def handle_stripe_sub(request):
+
+  event_dict = json.loads(request.body)
+
+  print(event_dict['type'])
+
+  if event_dict['type'] == 'checkout.session.completed':
+    data = event_dict['data']['object']
+
+    stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
+
+    subscription_holder = get_user_model().objects.get(id=data['client_reference_id'])
+
+    subscription = stripe.Subscription.retrieve(data['subscription'])
+    djstripe_subscription = Subscription.sync_from_stripe_data(subscription)
+
+    subscription_holder.subscription = djstripe_subscription
+    subscription_holder.customer = djstripe_subscription.customer
+    subscription_holder.save()
+
+  if event_dict['type'] == 'customer.subscription.deleted':
+    data = event_dict['data']['object']
+
+    subscription = Subscription.objects.get(id=data['id'])
+    customer = Customer.objects.get(id=data['customer'])
+
+    subscription.delete()
+    customer.delete()
 
   return HttpResponse(status=200)
