@@ -14,7 +14,6 @@ class Batch(models.Model):
 
   # Batch refers to a list of samples that are to be extracted
   name = models.CharField(blank=False, max_length=25)
-  number_of_samples = models.IntegerField(validators=[MinValueValidator(1)]) # number of samples in batch
   lab_id = models.CharField(blank=False, max_length=5) # This will be a short STRING to be shown on the plate such as ABC
 
   code = models.ForeignKey(AssayCode, on_delete=models.RESTRICT) # a batch can only refer to one list of assays (AssayList) - but users can individually edit samples after
@@ -34,14 +33,32 @@ class Batch(models.Model):
     ]
 
   @property
+  def number_of_samples(self):
+    return f"{self.sample_set.count() - 1} + 1"
+
+  @property
   def number_of_assays(self):
     return self.code.assays.count()
 
   @property
   def total_tests(self):
-    num = self.code.assays.count()
-    return self.number_of_samples * num
- 
+    number_of_assays = self.code.assays.count()
+    number_of_samples = self.sample_set.count()
+    total_expected = number_of_samples * number_of_assays
+
+    total_tests = 0
+    for sample in self.sample_set.all():
+      total_tests += sample.assays.count()
+
+    remains = total_tests - total_expected
+
+    if total_tests == total_expected:
+      return total_expected
+    elif remains < 0:
+      return f"{total_expected} - {abs(remains)}"
+    else:
+      return f"{total_expected} + {remains}"
+
   def __str__(self):
     return f'{self.name}-{self.lab_id}'
 

@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MinValueValidator
 
 # from ..custom.constants import FREE_LIMITS
 from ..models.extraction import ExtractionProtocol
@@ -9,7 +10,21 @@ from ..models.assay import Assay, AssayCode
 from ..models.batch import Batch, Sample
 
 
+class NumberSamplesForm(forms.Form):
+
+  number_of_samples = forms.IntegerField(
+    validators=[MinValueValidator(1)])
+  
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs) 
+    self.fields['number_of_samples'].widget.attrs['class'] = 'form-control'
+    self.fields['number_of_samples'].widget.attrs['min'] = 1
+
+
 class BatchForm(ModelForm):
+
+  number_of_samples = forms.IntegerField(
+    validators=[MinValueValidator(1)])
 
   code = forms.ModelChoiceField(
     queryset=None,
@@ -99,6 +114,7 @@ class BatchForm(ModelForm):
 
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['number_of_samples'].widget.attrs['class'] = 'form-control'
+    self.fields['number_of_samples'].widget.attrs['min'] = 1
     self.fields['lab_id'].widget.attrs['class'] = 'form-control'
 
   class Meta:
@@ -129,7 +145,7 @@ class SampleForm(ModelForm):
   def __init__(self, *args, **kwargs):
     super(SampleForm, self).__init__(*args, **kwargs)
     for visible in self.visible_fields():
-      visible.field.widget.attrs['class'] = 'form-control'
+      visible.field.widget.attrs['class'] = 'form-control sample-id-form'
 
   class Meta:
     model = Sample
@@ -159,6 +175,18 @@ class SampleAssayForm(ModelForm):
     widget=forms.CheckboxSelectMultiple,
     required=False,)
   
+  def clean(self):
+    cleaned_data = super().clean()
+    pcr_dna = cleaned_data.get('pcr_dna')
+    pcr_rna = cleaned_data.get('pcr_rna')
+    qpcr_dna = cleaned_data.get('qpcr_dna')
+    qpcr_rna = cleaned_data.get('qpcr_rna')
+
+    if not pcr_dna and not pcr_rna and not qpcr_dna and not qpcr_rna:
+      raise ValidationError(
+        message="A sample must have at least one assay."
+      )
+
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 

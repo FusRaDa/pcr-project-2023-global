@@ -8,7 +8,7 @@ from .models.pcr import ThermalCyclerProtocol, Process, ProcessPlate
 
 # Register your models here.
 
-pcr_models = [
+models = [
   Reagent, Fluorescence, Control, 
   Assay, AssayCode, ExtractionProtocol, 
   Batch, Sample, ThermalCyclerProtocol, 
@@ -17,4 +17,4 @@ pcr_models = [
   ReagentExtraction, TubeExtraction,
 ]
 
-admin.site.register(pcr_models)
+admin.site.register(models)

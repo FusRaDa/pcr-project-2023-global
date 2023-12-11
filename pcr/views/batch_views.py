@@ -6,7 +6,7 @@ from django.contrib import messages
 from users.models import User
 
 from ..models.batch import Batch, Sample
-from ..forms.batch import BatchForm, SampleForm, SampleAssayForm
+from ..forms.batch import BatchForm, SampleForm, SampleAssayForm, NumberSamplesForm
 from ..forms.general import DeletionForm
 from ..custom.functions import create_samples
 
@@ -90,6 +90,7 @@ def batchSamples(request, username, pk):
 
   formset = SampleFormSet(instance=batch)
   del_form = DeletionForm(value=batch.name)
+  samplesform = NumberSamplesForm()
 
   data = zip(samples, formset)
 
@@ -109,8 +110,25 @@ def batchSamples(request, username, pk):
       return redirect('batches')
     else:
       print(del_form.errors)
-   
-  context = {'batch': batch, 'data': data, 'formset': formset, 'del_form': del_form}
+
+  if 'number-of-samples' in request.POST:
+    samplesform = NumberSamplesForm(request.POST)
+    if samplesform.is_valid():
+      number_of_samples = samplesform.cleaned_data['number_of_samples']
+      lab_id = batch.lab_id
+
+      for sample in samples:
+        sample.delete()
+
+      create_samples(
+        number_of_samples=number_of_samples, 
+        lab_id=lab_id, 
+        user=request.user,
+      )
+
+    return redirect(request.path_info)
+      
+  context = {'batch': batch, 'data': data, 'formset': formset, 'del_form': del_form, 'samplesform': samplesform}
   return render(request, 'batch/batch_samples.html', context)
 
 
