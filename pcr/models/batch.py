@@ -7,7 +7,8 @@ from users.models import User
 from .assay import AssayCode, Assay
 from .extraction import ExtractionProtocol
 
-
+# Batches can only be created and deleted. If changes such as lab ID or number of samples must be made to a batch it must be deleted and created again.
+# A batch is a set of samples with the extraction protocol where sample assays can be individually added/removed
 class Batch(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -18,6 +19,8 @@ class Batch(models.Model):
 
   code = models.ForeignKey(AssayCode, on_delete=models.RESTRICT) # a batch can only refer to one list of assays (AssayList) - but users can individually edit samples after
   extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.RESTRICT)
+
+  is_extracted = models.BooleanField(default=False) #If True all samples have been extracted and is ready for PCR.
 
   date_created = models.DateTimeField(default=now, editable=False)
   
