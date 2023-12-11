@@ -1,3 +1,4 @@
+import collections
 from django.utils.timezone import now
 from django.db import models
 from django.core.validators import MinValueValidator
@@ -33,31 +34,39 @@ class Batch(models.Model):
     ]
 
   @property
-  def number_of_samples(self):
-    return f"{self.sample_set.count() - 1} + 1"
-
+  def contains_anomaly(self):
+    anomaly_detected = False
+    assays_in_code = self.code.assays.all()
+    for sample in self.sample_set.all():
+      if set(sample.assays.all()) != set(assays_in_code):
+        anomaly_detected = True
+        break
+    return anomaly_detected
+  
   @property
   def number_of_assays(self):
-    return self.code.assays.count()
+    if self.contains_anomaly:
+      return f"{self.code.assays.count()} ⚠"
+    else:
+      return self.code.assays.count()
 
   @property
+  def number_of_samples(self):
+    if self.contains_anomaly:
+      return f"{self.sample_set.count() - 1} + 1(NC) ⚠"
+    else:
+      return f"{self.sample_set.count() - 1} + 1(NC)"
+  
+  @property
   def total_tests(self):
-    number_of_assays = self.code.assays.count()
-    number_of_samples = self.sample_set.count()
-    total_expected = number_of_samples * number_of_assays
-
     total_tests = 0
     for sample in self.sample_set.all():
       total_tests += sample.assays.count()
-
-    remains = total_tests - total_expected
-
-    if total_tests == total_expected:
-      return total_expected
-    elif remains < 0:
-      return f"{total_expected} - {abs(remains)}"
+    
+    if self.contains_anomaly:
+      return f"{total_tests} ⚠"
     else:
-      return f"{total_expected} + {remains}"
+      return total_tests
 
   def __str__(self):
     return f'{self.name}-{self.lab_id}'
@@ -81,6 +90,13 @@ class Sample(models.Model):
         violation_error_message = "A batch with this lab ID already exists.",
       )
     ]
+
+  @property
+  def is_anomaly(self):
+    if set(self.assays.all()) != set(self.batch.code.assays.all()):
+      return True
+    else:
+      return False
 
   def __str__(self):
     return self.lab_id_num
