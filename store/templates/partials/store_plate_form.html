@@ -1,5 +1,12 @@
 <form>
   <div class="border border-2 border-primary m-1 form-width-18">
+
+    <button 
+      type="button" 
+      class="btn-close float-end"
+      hx-on:click="this.parentNode.remove()">
+    </button>
+
     <div class="text-center">
       <label class="form-label">Name</label>
       {{form.name}}
