@@ -5,7 +5,7 @@ from django.contrib import messages
 
 from users.models import User
 from ..models.orders import Order, KitOrder
-from ..forms.orders import OrderForm, KitOrderForm
+from ..forms.orders import KitOrderForm
 
 
 @login_required(login_url='login')
