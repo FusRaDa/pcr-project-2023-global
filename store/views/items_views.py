@@ -4,10 +4,10 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
 from ..models.items import Kit, StorePlate, StoreReagent, StoreTube
-from ..forms.items import KitForm
+from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm
+from ..forms.general import DeletionForm
 
 
-@staff_member_required(login_url='login')
 def kits(request):
   kits = Kit.objects.all()
   context = {'kits': kits}
@@ -23,5 +23,87 @@ def create_kit(request):
 
 
 @staff_member_required(login_url='login')
-def items_in_kit(request):
-  pass
+def edit_kit(request, pk):
+  kit = Kit.objects.get(pk=pk)
+
+  form = KitForm(instance=kit)
+  del_form = DeletionForm(value=kit.name)
+
+  if 'update' in request.POST:
+    form = KitForm(request.POST, instance=kit)
+    if form.is_valid():
+      form.save()
+      # return redirect('assay_through', request.user.username, pk) to items
+    else:
+      print(form.errors)
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=kit.name)
+    if del_form.is_valid():
+      kit.delete()
+      return redirect('kits')
+    else:
+      print(del_form.errors)
+
+  context = {'form': form, 'del_form': del_form}
+  return render(request, 'items/edit_kit.html', context)
+
+
+@staff_member_required(login_url='login')
+def create_tube(request):
+  if request.method == 'POST':
+    pass
+
+  return render(request, 'partials/store_tube_form.html', {'form': StoreTubeForm()})
+
+
+@staff_member_required(login_url='login')
+def delete_tube(request, pk):
+  tube = StoreTube.objects.get(pk=pk)
+  del_form = DeletionForm(value=tube.name)
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=tube.name)
+    if del_form.is_valid():
+      tube.delete()
+
+  return render(request, 'partials/delete_tube.html', {'del_form': del_form})
+
+
+@staff_member_required(login_url='login')
+def create_plate(request):
+  if request.method == 'POST':
+    pass
+
+  return render(request, 'partials/store_plate_form.html', {'form': StorePlateForm()})
+
+
+@staff_member_required(login_url='login')
+def delete_plate(request, pk):
+  plate = StorePlate.objects.get(pk=pk)
+  del_form = DeletionForm(value=plate.name)
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=plate.name)
+    if del_form.is_valid():
+      plate.delete()
+
+  return render(request, 'partials/delete_plate.html', {'del_form': del_form})
+
+
+@staff_member_required(login_url='login')
+def create_reagent(request):
+  if request.method == 'POST':
+    pass
+
+  return render(request, 'partials/store_reagent_form.html', {'form': StoreReagentForm()})
+
+
+@staff_member_required(login_url='login')
+def delete_reagent(request, pk):
+  reagent = StoreReagent.objects.get(pk=pk)
+  del_form = DeletionForm(value=reagent.name)
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=reagent.name)
+    if del_form.is_valid():
+      reagent.delete()
+      
+  return render(request, 'partials/delete_reagent.html', {'del_form': del_form})

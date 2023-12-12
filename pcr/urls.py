@@ -1,10 +1,6 @@
 from django.urls import path
-from .views import batch_views
-from .views import assay_code_views
-from .views import extraction_protocol_views 
-from .views import assay_views
-from .views import inventory_views
-  
+from .views import batch_views, assay_code_views, extraction_protocol_views, assay_views, inventory_views
+
 
 urlpatterns = [
   path("", batch_views.viewBatches, name="batches"),

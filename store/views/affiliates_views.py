@@ -31,7 +31,6 @@ def contacts(request):
   return render(request, 'affiliates/contacts.html', context)
 
 
-@staff_member_required(login_url='login')
 def create_contact(request):
   form = ContactForm()
   if request.method == "POST":

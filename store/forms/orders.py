@@ -5,13 +5,6 @@ from django.core.exceptions import ValidationError
 from ..models.orders import Order, KitOrder
 
 
-class OrderForm(ModelForm):
-
-  class Meta:
-    model = Order
-    fields = '__all__'
-
-
 class KitOrderForm(ModelForm):
 
   class Meta:

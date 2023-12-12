@@ -47,10 +47,10 @@ class StorePlate(models.Model):
     NINETY_SIX = 96, _('96')
     THREE_HUNDRED_EIGHTY_FOUR = 384, _('384')
 
-  name = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=25, default="PLATE")
 
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
-  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
 
   def __str__(self):
     return self.name
@@ -59,8 +59,8 @@ class StorePlate(models.Model):
 class StoreTube(models.Model):
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
 
-  name = models.CharField(blank=False, max_length=25)
-  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  name = models.CharField(blank=False, max_length=25, default="TUBE")
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
 
   def __str__(self):
     return self.name
@@ -92,11 +92,11 @@ class StoreReagent(models.Model):
     POLYMERASE = 'POLYMERASE', _('POLYMERASE') #used as units/micro-liter
     WATER = 'WATER', _('WATER')
 
-  name = models.CharField(blank=False, max_length=50)
+  name = models.CharField(blank=False, max_length=50, default="REAGENT")
   usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.PCR, max_length=25)
   pcr_reagent = models.CharField(choices=PCRReagent.choices, blank=True, null=True, default=None, max_length=25) # determine calculations for type of pcr reagent
  
-  volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
+  volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12, default=1)
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
 
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
