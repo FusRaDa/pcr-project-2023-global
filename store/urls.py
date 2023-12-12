@@ -14,14 +14,14 @@ urlpatterns = [
   path('create-kit/', items_views.create_kit, name='create_kit'),
   path('edit-kit/<int:pk>/', items_views.edit_kit, name='edit_kit'),
 
-  path('create-tube/', items_views.create_tube, name='create_tube'),
-  path('edit-tube/<int:pk>/', items_views.edit_tube, name='edit_tube'),
+  path('create-tube-store/', items_views.create_tube, name='create_tube_store'),
+  path('edit-tube-store/<int:pk>/', items_views.edit_tube, name='edit_tube_store'),
 
-  path('create-plate/', items_views.create_plate, name='create_plate'),
-  path('edit-plate/<int:pk>/', items_views.edit_plate, name='edit_plate'),
+  path('create-plate-store/', items_views.create_plate, name='create_plate_store'),
+  path('edit-plate-store/<int:pk>/', items_views.edit_plate, name='edit_plate_store'),
 
-  path('create-reagent/', items_views.create_reagent, name='create_reagent'),
-  path('edit-reagent/<int:pk>/', items_views.edit_reagent, name='edit_reagent'),
+  path('create-reagent-store/', items_views.create_reagent, name='create_reagent_store'),
+  path('edit-reagent-store/<int:pk>/', items_views.edit_reagent, name='edit_reagent_store'),
 
   path('orders/', orders_views.orders, name='orders'),
   path('edit-order/<str:username>/<int:pk>/', orders_views.edit_order, name='edit_order'),

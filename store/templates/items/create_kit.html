@@ -1,0 +1,134 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Create Kit {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <form>
+    <div class="row justify-content-center">
+
+      <div class="col-sm-3 form-width-18">
+        <div class="card mt-2">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Brand
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#brand-collapse" aria-expanded="false" aria-controls="brand-collapse">
+                ⮝
+              </button>
+            </li>
+
+            <div class="collapse show" id="brand-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for brand in form.brand %}
+                    <li class="list-group-item">
+                      {{brand}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Catalog Number</label>
+          {{form.catalog_number}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Price (USD)</label>
+          {{form.price}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Affiliate Link</label>
+          {{form.affiliate_link}}
+        </div>
+      </div>
+
+
+      <div class="col-sm-3 form-width-18">
+        <div class="card mt-2">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Tags
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#tags-collapse" aria-expanded="false" aria-controls="tags-collapse">
+                ⮝
+              </button>
+            </li>
+
+            <div class="collapse show" id="tags-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for tag in form.tags %}
+                    <li class="list-group-item">
+                      {{tag}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </form> 
+
+  <div class="row justify-content-center">
+    <div class="text-center mt-2">
+      <button 
+        class="btn btn-primary" 
+        type="submit" 
+        hx-get="{% url 'create_reagent_store'%}"
+        hx-target="#reagent-forms"
+        hx-swap="beforeend"
+        >+ Reagent
+      </button>
+      <button 
+        class="btn btn-primary" 
+        type="submit"
+        hx-get="{% url 'create_tube_store'%}"
+        hx-target="#tube-forms"
+        hx-swap="beforeend"
+        >+ Tube</button>
+      <button 
+        class="btn btn-primary" 
+        type="submit"
+        hx-get="{% url 'create_plate_store'%}"
+        hx-target="#plate-forms"
+        hx-swap="beforeend"
+        >+ Plate</button>
+    </div>
+  </div>
+
+  <div class="d-flex flex-wrap justify-content-center" id="reagent-forms">
+  </div>
+
+  <div class="d-flex flex-wrap justify-content-center" id="tube-forms">
+  </div>
+
+  <div class="d-flex flex-wrap justify-content-center" id="plate-forms">
+  </div>
+
+</div>
+
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮟' ?  '⮝' : '⮟';
+    });
+  });
+</script>
+{% endblock %}
