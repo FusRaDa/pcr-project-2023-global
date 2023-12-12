@@ -4,8 +4,13 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
 from ..models.items import Kit, StorePlate, StoreReagent, StoreTube
+from ..forms.items import KitForm
 
 
-@staff_member_required(redirect_field_name='batches')
+@staff_member_required(login_url='login')
 def create_kit(request):
-  print('kit')
+
+  form = KitForm()
+  
+  context = {'form': form}
+  return render(request, 'items/create_kit.html', context)
