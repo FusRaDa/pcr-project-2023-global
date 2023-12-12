@@ -6,6 +6,7 @@ from django.contrib import messages
 from ..models.items import Kit, StorePlate, StoreReagent, StoreTube
 from ..forms.items import KitForm
 
+
 @staff_member_required(login_url='login')
 def kits(request):
   kits = Kit.objects.all()
