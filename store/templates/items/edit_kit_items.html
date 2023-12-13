@@ -1,0 +1,63 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Kit Items {% endblock %} 
+
+{% block content %}
+<div class="container">
+  <div class="d-flex flex-wrap justify-content-center" id="reagents">
+  </div>
+
+  <div class="d-flex flex-wrap justify-content-center" id="tubes">
+  </div>
+
+  <div class="d-flex flex-wrap justify-content-center" id="plates">
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="text-center mt-2">
+      <button 
+        class="btn btn-primary" 
+        type="submit" 
+        hx-get="{% url 'create_reagent_store'%}"
+        hx-target="#reagent-forms"
+        hx-swap="beforeend"
+        >+ Reagent
+      </button>
+      <button 
+        class="btn btn-primary" 
+        type="submit"
+        hx-get="{% url 'create_tube_store'%}"
+        hx-target="#tube-forms"
+        hx-swap="beforeend"
+        >+ Tube</button>
+      <button 
+        class="btn btn-primary" 
+        type="submit"
+        hx-get="{% url 'create_plate_store'%}"
+        hx-target="#plate-forms"
+        hx-swap="beforeend"
+        >+ Plate</button>
+    </div>
+  </div>
+
+  <input type="hidden" value="{{item.id}}" name="id">
+
+  <div class="d-flex flex-wrap justify-content-center" id="reagent-forms">
+  </div>
+
+  <div class="d-flex flex-wrap justify-content-center" id="tube-forms">
+  </div>
+
+  <div class="d-flex flex-wrap justify-content-center" id="plate-forms">
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="text-center mt-2">
+      <a class="btn btn-secondary" href="{% url 'kits' %}">Cancel</a>
+      <button class="btn btn-primary" type="submit" name="update">Create Kit</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

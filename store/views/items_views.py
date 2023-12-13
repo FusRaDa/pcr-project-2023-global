@@ -17,7 +17,13 @@ def kits(request):
 @staff_member_required(login_url='login')
 def create_kit(request):
   form = KitForm()
-  
+
+  if request.method == 'POST':
+    form - KitForm(request.POST)
+    if form.is_valid:
+      kit = form.save()
+      return render(request, 'items/edit_kit_items.html', context)
+
   context = {'form': form}
   return render(request, 'items/create_kit.html', context)
 
@@ -45,8 +51,14 @@ def edit_kit(request, pk):
     else:
       print(del_form.errors)
 
-  context = {'form': form, 'del_form': del_form}
+  context = {'form': form, 'del_form': del_form, 'kit': kit}
   return render(request, 'items/edit_kit.html', context)
+
+
+@staff_member_required(login_url='login')
+def edit_kit_items(request, pk):
+  pass
+
 
 
 @staff_member_required(login_url='login')
