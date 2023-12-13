@@ -51,6 +51,40 @@
 
   </form>
 
+  <div class="row justify-content-center">
+
+    <div class="col">
+
+      {% if brand.contact_set.all %}
+      <h5 class="text-center">Contacts</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone Number</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for contact in brand.contact_set.all %}
+            <tr class="batch-row" data-href="{% url 'edit_contact' contact.pk %}">
+              <td>{{contact.first_name}} {{contact.last_name}}</td>
+              <td>{{contact.email}}</td>
+              <td>{{contact.phone_number}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
   <div class="justify-content-center">
     <div class="col d-flex justify-content-center">
       <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
@@ -106,4 +140,12 @@
   </div>
 
 </div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".batch-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
 {% endblock%}
