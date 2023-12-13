@@ -34,7 +34,7 @@
 
         <a class="navbar-brand" href="{% url 'batches' %}">
           <img src="/static/images/favicon.ico" width="30" height="30" class="d-inline-block align-top" alt="">
-          LabPrep
+          PCRPrep
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -100,6 +100,19 @@
             </ul>
 
             <ul class="navbar-nav ms-auto">
+
+              {% if request.user.is_staff %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Staff Access
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url 'brands' %}">Brands</a></li>
+                  <li><a class="dropdown-item" href="{% url 'contacts' %}">Contacts</a></li>
+                  <li><a class="dropdown-item" href="{% url 'kits' %}">Kits</a></li>
+                </ul>
+              </li>
+              {% endif %}
 
               <li class="nav-item">
                 <a class="nav-link" href="#">{{request.user}}</a>

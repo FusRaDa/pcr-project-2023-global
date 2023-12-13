@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'djstripe',
+    'phonenumber_field',
 
     'main',
     'users',

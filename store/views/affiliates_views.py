@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.admin.views.decorators import staff_member_required
+from django.db.models import ProtectedError
+from django.contrib import messages
 
 from ..models.affiliates import Brand, Contact
-from ..forms.affiliates import BrandForm, ContactForm
+from ..forms.affiliates import BrandForm, ContactForm, BrandContactForm
 from ..forms.general import DeletionForm
 
 
@@ -43,8 +45,12 @@ def edit_brand(request, pk):
   if 'delete' in request.POST:
     del_form = DeletionForm(request.POST, value=brand.name)
     if del_form.is_valid():
-      brand.delete()
-      return redirect('brands')
+      try:
+        brand.delete()
+        return redirect('brands')
+      except ProtectedError:
+        messages.error(request, f"Cannot delete {brand.name} as it contains contacts.")
+        return redirect('brands')
     else:
       print(del_form.errors)
     
@@ -54,8 +60,10 @@ def edit_brand(request, pk):
 
 @staff_member_required(login_url='login')
 def contacts(request):
-  contacts = Contact.objects.all()
-  context = {'contacts': contacts}
+  assigned_contacts = Contact.objects.exclude(brand=None)
+  awaiting_contacts = Contact.objects.filter(brand=None)
+
+  context = {'assigned_contacts': assigned_contacts, 'awaiting_contacts': awaiting_contacts}
   return render(request, 'affiliates/contacts.html', context)
 
 
@@ -66,6 +74,7 @@ def create_contact(request):
     form = ContactForm(request.POST)
     if form.is_valid():
       form.save()
+      return redirect('contacts')
     else:
       print(form.errors)
   
@@ -76,16 +85,17 @@ def create_contact(request):
 @staff_member_required(login_url='login')
 def edit_contact(request, pk):
   contact = Contact.objects.get(pk=pk)
-  form = ContactForm(instance=contact)
+  form = BrandContactForm(instance=contact)
+  del_form = DeletionForm(value=contact.company)
 
-  if request.method == 'POST':
-    form = ContactForm(request.POST, instance=contact)
+  if 'update' in request.POST:
+    form = BrandContactForm(request.POST, instance=contact)
     if form.is_valid():
       form.save()
       return redirect('contacts')
     
   if 'delete' in request.POST:
-    del_form = DeletionForm(request.POST, value=contact.name)
+    del_form = DeletionForm(request.POST, value=contact.company)
     if del_form.is_valid():
       contact.delete()
       return redirect('contacts')

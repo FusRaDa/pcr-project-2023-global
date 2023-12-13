@@ -3,6 +3,8 @@ from django.core.validators import MinValueValidator
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 class Brand(models.Model):
   name = models.CharField(blank=False, unique=True, max_length=50)
@@ -21,13 +23,13 @@ class Brand(models.Model):
 
 
 class Contact(models.Model):
-  brand = models.ForeignKey(Brand, on_delete=models.CASCADE, blank=True, null=True, default=None)
+  brand = models.ForeignKey(Brand, on_delete=models.PROTECT, blank=True, null=True, default=None)
 
   company = models.CharField(blank=False, max_length=25)
   first_name = models.CharField(blank=False, max_length=25)
   last_name = models.CharField(blank=False, max_length=25)
   email = models.EmailField(blank=False, max_length=50, unique=True)
-  phone_number = models.CharField(blank=False, max_length=15, unique=True)
+  phone_number = PhoneNumberField(blank=False, max_length=15, unique=True)
 
   def __str__(self):
     return f"{self.first_name} {self.last_name}"

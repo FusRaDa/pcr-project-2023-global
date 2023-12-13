@@ -19,7 +19,41 @@ class BrandForm(ModelForm):
 
 class ContactForm(ModelForm):
 
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['company'].widget.attrs['class'] = 'form-control'
+    self.fields['first_name'].widget.attrs['class'] = 'form-control'
+    self.fields['last_name'].widget.attrs['class'] = 'form-control'
+    self.fields['email'].widget.attrs['class'] = 'form-control'
+    self.fields['phone_number'].widget.attrs['class'] = 'form-control'
+
+  class Meta:
+    model = Contact
+    exclude = ['brand']
+
+
+class BrandContactForm(ModelForm):
+
+  brand = forms.ModelChoiceField(
+    queryset=Brand.objects.all(),
+    widget=forms.RadioSelect,
+    required=False)
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['company'].widget.attrs['class'] = 'form-control'
+    self.fields['first_name'].widget.attrs['class'] = 'form-control'
+    self.fields['last_name'].widget.attrs['class'] = 'form-control'
+    self.fields['email'].widget.attrs['class'] = 'form-control'
+    self.fields['phone_number'].widget.attrs['class'] = 'form-control'
+
+    self.fields['company'].widget.attrs['readonly'] = 'True'
+    self.fields['first_name'].widget.attrs['readonly'] = 'True'
+    self.fields['last_name'].widget.attrs['readonly'] = 'True'
+    self.fields['email'].widget.attrs['readonly'] = 'True'
+    self.fields['phone_number'].widget.attrs['readonly'] = 'True'
+
   class Meta:
     model = Contact
     fields = '__all__'
-    exclude = ['brand']
+
