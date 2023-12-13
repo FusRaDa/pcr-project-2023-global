@@ -6,6 +6,12 @@ from ..models.affiliates import Brand, Contact
 
 class BrandForm(ModelForm):
 
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['logo'].widget.attrs['class'] = 'form-control'
+    self.fields['is_affiliated'].widget.attrs['class'] = 'form-check-input'
+
   class Meta:
     model = Brand
     fields = '__all__'

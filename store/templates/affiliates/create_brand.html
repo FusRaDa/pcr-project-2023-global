@@ -5,8 +5,51 @@
 {% block title %} Add Brand {% endblock %} 
 
 {% block content %}
+<div class="container">
 
+  <div class="row justify-content-center">
+    <h3 class="text-center">Add New Brand</h3>
+  </div>
 
+  <form method="POST" action="" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <div class="row justify-content-center mb-2">
 
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
 
+        <div class="text-center ">
+          <label class="form-label">Is Affiliated?</label>
+          {{form.is_affiliated}}
+        </div>
+
+        <div class="text-center ">
+          <label class="form-label">Upload Logo</label>
+          {{form.logo}}
+        </div>
+      </div>
+
+    </div>
+
+    {% if form.errors %}
+    <div class="row text-center mt-2">
+      {% for key,value in form.errors.items %} 
+        {{ value|escape }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center mb-2">
+      <div class="text-center mt-2">
+        <a class="btn btn-secondary" href="{% url 'brands' %}">Cancel</a>
+        <button type="submit" class="btn btn-primary">Add Brand</button>
+      </div>
+    </div>
+
+  </form>
+
+</div>
 {% endblock%}

@@ -6,9 +6,15 @@ from django.utils.translation import gettext_lazy as _
 
 class Brand(models.Model):
   name = models.CharField(blank=False, unique=True, max_length=50)
-  logo = models.ImageField(upload_to='static/images')
-  
+  logo = models.ImageField(null=True, blank=True)
   is_affiliated = models.BooleanField(blank=False, default=False)
+
+  @property
+  def brand_logo(self):
+    if self.logo:
+      return self.logo
+    else:
+      return "/profile-icon.png"
 
   def __str__(self):
     return self.name
