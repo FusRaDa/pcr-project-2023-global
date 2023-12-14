@@ -139,21 +139,27 @@ def create_reagent(request):
 def edit_reagent(request, pk):
   reagent = StoreReagent.objects.get(pk=pk)
 
-  form = StoreTubeForm(instance=reagent)
+  form = StoreReagentForm(instance=reagent)
   del_form = DeletionForm(value=reagent.name)
 
   if 'update' in request.POST:
-    form = StoreTubeForm(request.POST, instance=reagent)
+    form = StoreReagentForm(request.POST, instance=reagent)
     if form.is_valid():
       form.save()
+      return redirect('edit_kit_items', reagent.kit.pk)
+    else:
+      print(form.errors)
 
   if 'delete' in request.POST:
     del_form = DeletionForm(request.POST, value=reagent.name)
     if del_form.is_valid():
       reagent.delete()
+      return redirect('edit_kit_items', reagent.kit.pk)
+    else:
+      print(del_form.errors)
 
-  context = {'form': form, 'del_form': del_form}
-  return render(request, 'partials/delete_reagent.html', context)
+  context = {'form': form, 'del_form': del_form, 'reagent': reagent}
+  return render(request, 'items/edit_reagent.html', context)
 
 
 @staff_member_required(login_url='login')
@@ -187,14 +193,20 @@ def edit_tube(request, pk):
     form = StoreTubeForm(request.POST, instance=tube)
     if form.is_valid():
       form.save()
+      return redirect('edit_kit_items', tube.kit.pk)
+    else:
+      print(form.errors)
 
   if 'delete' in request.POST:
     del_form = DeletionForm(request.POST, value=tube.name)
     if del_form.is_valid():
       tube.delete()
+      return redirect('edit_kit_items', tube.kit.pk)
+    else:
+      print(del_form.errors)
   
-  context = {'form': form, 'del_form': del_form}
-  return render(request, 'partials/delete_tube.html', context)
+  context = {'form': form, 'del_form': del_form, 'tube': tube}
+  return render(request, 'items/edit_tube.html', context)
 
 
 @staff_member_required(login_url='login')
@@ -228,11 +240,17 @@ def edit_plate(request, pk):
     form = StorePlateForm(request.POST, instance=plate)
     if form.is_valid():
       form.save()
+      return redirect('edit_kit_items', plate.kit.pk)
+    else:
+      print(form.errors)
 
   if 'delete' in request.POST:
     del_form = DeletionForm(request.POST, value=plate.name)
     if del_form.is_valid():
       plate.delete()
+      return redirect('edit_kit_items', plate.kit.pk)
+    else:
+      print(del_form.errors)
 
-  context = {'form': form, 'del_form': del_form}
-  return render(request, 'partials/delete_plate.html', context)
+  context = {'form': form, 'del_form': del_form, 'plate': plate}
+  return render(request, 'items/edit_plate.html', context)
