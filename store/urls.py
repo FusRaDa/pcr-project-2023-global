@@ -10,6 +10,10 @@ urlpatterns = [
   path('create-brand/', affiliates_views.create_brand, name='create_brand'),
   path('edit-brand/<int:pk>/', affiliates_views.edit_brand, name='edit_brand'),
 
+  path('tags/', items_views.tags, name='tags'),
+  path('create-tag/', items_views.create_tag, name='create_tag'),
+  path('edit-tag/<int:pk>/', items_views.edit_tag, name='edit_tag'),
+
   path('kits/', items_views.kits, name='kits'),
   path('create-kit/', items_views.create_kit, name='create_kit'),
   path('edit-kit/<int:pk>/', items_views.edit_kit, name='edit_kit'),

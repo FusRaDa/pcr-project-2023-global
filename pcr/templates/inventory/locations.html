@@ -104,18 +104,14 @@
 
     {% endfor %}
   </div>
-    
-
-
-  <script>
-    $('.btn-arrow').click(function(){
-      $(this).text(function(i,old){
-        return old=='⮝' ?  '⮟' : '⮝';
-      });
-    });
-  </script>
-
+  
 </div>
 
-
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮝' ?  '⮟' : '⮝';
+    });
+  });
+</script>
 {% endblock %}

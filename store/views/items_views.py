@@ -3,9 +3,56 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
-from ..models.items import Kit, StorePlate, StoreReagent, StoreTube
-from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm
+from ..models.items import Kit, StorePlate, StoreReagent, StoreTube, Tag
+from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm, TagForm
 from ..forms.general import DeletionForm
+
+@staff_member_required(login_url='login')
+def tags(request):
+  tags = Tag.objects.all()
+  context = {'tags': tags}
+  return render(request, 'items/tags.html', context)
+
+
+@staff_member_required(login_url='login')
+def create_tag(request):
+  form = TagForm()
+
+  if request.method == 'POST':
+    form = TagForm(request.POST)
+    if form.is_valid:
+      form.save()
+      return redirect('tags')
+
+  context = {'form': form}
+  return render(request, 'items/create_tag.html', context)
+
+
+@staff_member_required(login_url='login')
+def edit_tag(request, pk):
+  tag = Tag.objects.get(pk=pk)
+
+  form = TagForm(instance=tag)
+  del_form = DeletionForm(value=tag.name)
+
+  if 'update' in request.POST:
+    form = TagForm(request.POST, instance=tag)
+    if form.is_valid():
+      form.save()
+      return redirect('tags')
+    else:
+      print(form.errors)
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=tag.name)
+    if del_form.is_valid():
+      tag.delete()
+      return redirect('tags')
+    else:
+      print(del_form.errors)
+
+  context = {'form': form, 'del_form': del_form, 'tag': tag}
+  return render(request, 'items/edit_tag.html', context)
 
 
 def kits(request):
@@ -19,9 +66,9 @@ def create_kit(request):
   form = KitForm()
 
   if request.method == 'POST':
-    form - KitForm(request.POST)
+    form = KitForm(request.POST)
     if form.is_valid:
-      kit = form.save()
+      form.save()
       return render(request, 'items/edit_kit_items.html', context)
 
   context = {'form': form}

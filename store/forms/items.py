@@ -5,17 +5,28 @@ from django.core.exceptions import ValidationError
 from ..models.items import Kit, StorePlate, StoreTube, StoreReagent, Tag
 from ..models.affiliates import Brand
 
+
+class TagForm(ModelForm):
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+
+  class Meta:
+    model = Tag
+    fields = '__all__'
+
 class KitForm(ModelForm):
 
   brand = forms.ModelChoiceField(
     queryset=Brand.objects.all(),
     widget=forms.RadioSelect,
-    required=False)
+    required=True)
   
   tags = forms.ModelMultipleChoiceField(
     queryset=Tag.objects.all(),
     widget=forms.CheckboxSelectMultiple,
-    required=True)
+    required=False)
 
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)

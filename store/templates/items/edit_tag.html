@@ -2,13 +2,13 @@
 
 {% load static %}
                                                                                                                                                                                                                               
-{% block title %} Edit Brand {% endblock %} 
+{% block title %} Edit Tag {% endblock %} 
 
 {% block content %}
 <div class="container">
 
   <div class="row justify-content-center">
-    <h3 class="text-center">Edit Brand</h3>
+    <h3 class="text-center">Edit Tag</h3>
   </div>
 
   <form method="POST" action="" enctype='multipart/form-data'>
@@ -19,16 +19,6 @@
         <div class="text-center">
           <label class="form-label">Name</label>
           {{form.name}}
-        </div>
-
-        <div class="text-center ">
-          <label class="form-label">Is Affiliated?</label>
-          {{form.is_affiliated}}
-        </div>
-
-        <div class="text-center ">
-          <label class="form-label">Upload Logo</label>
-          {{form.logo}}
         </div>
       </div>
 
@@ -44,50 +34,17 @@
 
     <div class="row justify-content-center mb-2">
       <div class="text-center mt-2">
-        <a class="btn btn-secondary" href="{% url 'brands' %}">Cancel</a>
-        <button type="submit" class="btn btn-primary" name="update">Update</button>
+        <a class="btn btn-secondary" href="{% url 'tags' %}">Cancel</a>
+        <button type="submit" class="btn btn-primary" name="update">Add Tag</button>
       </div>
     </div>
 
   </form>
 
-  <div class="row justify-content-center">
-    <div class="col">
-
-      {% if brand.contact_set.all %}
-      <h5 class="text-center">Contacts</h5>
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Email</th>
-              <th scope="col">Phone Number</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {% for contact in brand.contact_set.all %}
-            <tr class="batch-row" data-href="{% url 'edit_contact' contact.pk %}">
-              <td>{{contact.first_name}} {{contact.last_name}}</td>
-              <td>{{contact.email}}</td>
-              <td>{{contact.phone_number}}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-
-        </table>
-      </div>
-      {% endif %}
-
-    </div>
-  </div>
-
   <div class="justify-content-center">
     <div class="col d-flex justify-content-center">
       <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Brand
+        Delete Tag
       </button>
     </div>
   </div>
@@ -96,7 +53,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Deleting Brand...</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting Kit...</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -112,7 +69,7 @@
                 {% csrf_token %}
           
                 <div class="text-center mx-auto">
-                  <label class="form-label">Enter: "{{brand.name}}" &amp; Confirm</label>
+                  <label class="form-label">Enter: "{{kit.name}}" &amp; Confirm</label>
                   {{del_form.confirm}}
                 </div>
 
@@ -139,12 +96,4 @@
   </div>
 
 </div>
-
-<script>
-  jQuery(document).ready(function($) {
-    $(".batch-row").click(function() {
-        window.location = $(this).data("href");
-    });
-  });
-</script>
-{% endblock%}
+{% endblock %}

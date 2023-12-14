@@ -1,0 +1,80 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                         
+{% block title %} Tags {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Tags</h3>
+    </div>
+  </div>
+
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <h6 class="text-center message">{{ message }}</h6>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="justify-content-center mb-2">
+    <div class="col d-flex justify-content-center">
+      <a href="{% url 'create_tag' %}">
+        <button type="button" class="btn btn-primary">
+          Add Tag
+        </button>
+      </a>
+    </div>
+  </div>
+
+  <div class="row justify-content-center mt-2">
+    {% for tag in tags %}
+
+      <div class="col-sm-3 form-width-18 mb-2">
+        <div class="card">
+          <div class="card-header">
+            {{tag.name}}
+          </div>
+        
+          <ul class="list-group list-group-flush">
+            {% if tag.kit_set.all %}
+            <li class="list-group-item"> Kits
+              <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#tag-collapse-{{tag.pk}}" aria-expanded="false" aria-controls="tag-collapse-{{tag.pk}}">
+                ⮟
+              </button>
+
+              <div class="collapse" id="tag-collapse-{{tag.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for tag in tag.kit_set.all %}
+                    <li class="list-group-item">{{tag}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </li>
+            {% endif %}
+          </ul>
+
+          <div class="card-body">
+            <a href="{% url 'edit_tag' tag.pk %}" class="card-link">Edit Tag</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮝' ?  '⮟' : '⮝';
+    });
+  });
+</script>
+{% endblock %}
