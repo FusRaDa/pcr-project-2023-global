@@ -91,7 +91,7 @@ def edit_kit(request, pk):
     form = KitForm(request.POST, instance=kit)
     if form.is_valid():
       form.save()
-      # return redirect('assay_through', request.user.username, pk) to items
+      return redirect('edit_kit_items', pk)
     else:
       print(form.errors)
 
