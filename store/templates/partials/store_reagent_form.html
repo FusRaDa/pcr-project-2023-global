@@ -1,6 +1,7 @@
 <form 
   hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
   hx-post="{% url 'create_reagent_store' %}"
+  hx-include="[name='pk']"
   hx-target="#reagents"
   hx-swap="beforeend"
   hx-on::after-request="this.remove()"

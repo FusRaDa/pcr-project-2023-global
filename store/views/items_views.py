@@ -115,67 +115,24 @@ def edit_kit_items(request, pk):
 
 
 @staff_member_required(login_url='login')
-def create_tube(request):
-  if request.method == 'POST':
-    pass
-
-  return render(request, 'partials/store_tube_form.html', {'form': StoreTubeForm()})
-
-
-@staff_member_required(login_url='login')
-def edit_tube(request, pk):
-  tube = StoreTube.objects.get(pk=pk)
-
-  form = StoreTubeForm(instance=tube)
-  del_form = DeletionForm(value=tube.name)
-
-  if 'update' in request.POST:
-    form = StoreTubeForm(request.POST, instance=tube)
-    if form.is_valid():
-      form.save()
-
-  if 'delete' in request.POST:
-    del_form = DeletionForm(request.POST, value=tube.name)
-    if del_form.is_valid():
-      tube.delete()
-
-  return render(request, 'partials/delete_tube.html', {'del_form': del_form})
-
-
-@staff_member_required(login_url='login')
-def create_plate(request):
-  if request.method == 'POST':
-    pass
-
-  return render(request, 'partials/store_plate_form.html', {'form': StorePlateForm()})
-
-
-@staff_member_required(login_url='login')
-def edit_plate(request, pk):
-  plate = StorePlate.objects.get(pk=pk)
-
-  form = StorePlateForm(instance=plate)
-  del_form = DeletionForm(value=plate.name)
-
-  if 'update' in request.POST:
-    form = StorePlateForm(request.POST, instance=plate)
-    if form.is_valid():
-      form.save()
-
-  if 'delete' in request.POST:
-    del_form = DeletionForm(request.POST, value=plate.name)
-    if del_form.is_valid():
-      plate.delete()
-
-  return render(request, 'partials/delete_plate.html', {'del_form': del_form})
-
-
-@staff_member_required(login_url='login')
 def create_reagent(request):
-  if request.method == 'POST':
-    pass
+  form = StoreReagentForm()
 
-  return render(request, 'partials/store_reagent_form.html', {'form': StoreReagentForm()})
+  if request.method == 'POST':
+    form = StoreReagentForm(request.POST)
+    if form.is_valid():
+      kit_pk = int(request.POST['pk'])
+      kit = Kit.objects.get(pk=kit_pk)
+      reagent = form.save(commit=False)
+      reagent.kit = kit
+      reagent.save()
+      context = {'reagent': reagent}
+      return render(request, 'partials/kit_reagents.html', context)
+    else:
+      print(form.errors)
+
+  context = {'form': form}
+  return render(request, 'partials/store_reagent_form.html', context)
 
 
 @staff_member_required(login_url='login')
@@ -195,4 +152,87 @@ def edit_reagent(request, pk):
     if del_form.is_valid():
       reagent.delete()
 
-  return render(request, 'partials/delete_reagent.html', {'del_form': del_form})
+  context = {'form': form, 'del_form': del_form}
+  return render(request, 'partials/delete_reagent.html', context)
+
+
+@staff_member_required(login_url='login')
+def create_tube(request):
+  form = StoreTubeForm()
+  if request.method == 'POST':
+    form = StoreTubeForm(request.POST)
+    if form.is_valid():
+      kit_pk = int(request.POST['pk'])
+      kit = Kit.objects.get(pk=kit_pk)
+      tube = form.save(commit=False)
+      tube.kit = kit
+      tube.save()
+      context = {'tube': tube}
+      return render(request, 'partials/kit_tubes.html', context)
+    else:
+      print(form.errors)
+
+  context = {'form': form}
+  return render(request, 'partials/store_tube_form.html', context)
+
+
+@staff_member_required(login_url='login')
+def edit_tube(request, pk):
+  tube = StoreTube.objects.get(pk=pk)
+
+  form = StoreTubeForm(instance=tube)
+  del_form = DeletionForm(value=tube.name)
+
+  if 'update' in request.POST:
+    form = StoreTubeForm(request.POST, instance=tube)
+    if form.is_valid():
+      form.save()
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=tube.name)
+    if del_form.is_valid():
+      tube.delete()
+  
+  context = {'form': form, 'del_form': del_form}
+  return render(request, 'partials/delete_tube.html', context)
+
+
+@staff_member_required(login_url='login')
+def create_plate(request):
+  form = StorePlateForm()
+  if request.method == 'POST':
+    form = StorePlateForm(request.POST)
+    if form.is_valid():
+      kit_pk = int(request.POST['pk'])
+      kit = Kit.objects.get(pk=kit_pk)
+      plate = form.save(commit=False)
+      plate.kit = kit
+      plate.save()
+      context = {'plate': plate}
+      return render(request, 'partials/kit_plates.html', context)
+    else:
+      print(form.errors)
+  
+  context = {'form': form}
+  return render(request, 'partials/store_plate_form.html', context)
+
+
+@staff_member_required(login_url='login')
+def edit_plate(request, pk):
+  plate = StorePlate.objects.get(pk=pk)
+
+  form = StorePlateForm(instance=plate)
+  del_form = DeletionForm(value=plate.name)
+
+  if 'update' in request.POST:
+    form = StorePlateForm(request.POST, instance=plate)
+    if form.is_valid():
+      form.save()
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=plate.name)
+    if del_form.is_valid():
+      plate.delete()
+
+  context = {'form': form, 'del_form': del_form}
+  return render(request, 'partials/delete_plate.html', context)

@@ -1,4 +1,11 @@
-<form>
+<form 
+  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+  hx-post="{% url 'create_tube_store' %}"
+  hx-include="[name='pk']"
+  hx-target="#tubes"
+  hx-swap="beforeend"
+  hx-on::after-request="this.remove()"
+  hx-trigger="click from:#submit-all">
   <div class="border border-2 border-primary m-1 form-width-18">
 
     <button 
