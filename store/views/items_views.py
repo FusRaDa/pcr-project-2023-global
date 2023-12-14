@@ -3,9 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
+from ..models.affiliates import Brand
 from ..models.items import Kit, StorePlate, StoreReagent, StoreTube, Tag
 from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm, TagForm
 from ..forms.general import DeletionForm
+
 
 @staff_member_required(login_url='login')
 def tags(request):
@@ -55,9 +57,10 @@ def edit_tag(request, pk):
   return render(request, 'items/edit_tag.html', context)
 
 
+@staff_member_required(login_url='login')
 def kits(request):
-  kits = Kit.objects.all()
-  context = {'kits': kits}
+  brands = Brand.objects.all()
+  context = {'brands': brands}
   return render(request, 'items/kits.html', context)
 
 
@@ -67,9 +70,11 @@ def create_kit(request):
 
   if request.method == 'POST':
     form = KitForm(request.POST)
-    if form.is_valid:
-      form.save()
-      return render(request, 'items/edit_kit_items.html', context)
+    if form.is_valid():
+      kit = form.save()
+      return redirect('edit_kit_items', kit.pk)
+    else:
+      print(form.errors)
 
   context = {'form': form}
   return render(request, 'items/create_kit.html', context)
@@ -104,8 +109,9 @@ def edit_kit(request, pk):
 
 @staff_member_required(login_url='login')
 def edit_kit_items(request, pk):
-  pass
-
+  kit = Kit.objects.get(pk=pk)
+  context = {'kit': kit}
+  return render(request, 'items/edit_kit_items.html', context)
 
 
 @staff_member_required(login_url='login')

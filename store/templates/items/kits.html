@@ -1,0 +1,77 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                         
+{% block title %} Kits {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Kits</h3>
+    </div>
+  </div>
+
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <h6 class="text-center message">{{ message }}</h6>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="justify-content-center mb-2">
+    <div class="col d-flex justify-content-center">
+      <a href="{% url 'create_kit' %}">
+        <button type="button" class="btn btn-primary">
+          Add Kit
+        </button>
+      </a>
+    </div>
+  </div>
+
+  {% for brand in brands %}
+  {% if brand.kit_set.all %}
+  <div class="row justify-content-center mt-2">
+    <div class="col">
+
+      <h5>{{brand}}{{brand.affiliate}}</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col" class="col-sm-2">Name</th>
+              <th scope="col" class="col-sm-2">Catalog Number</th>
+              <th scope="col" class="col-sm-2">Price</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for kit in brand.kit_set.all %}
+              <tr class="batch-row" data-href="{% url 'edit_kit' kit.pk %}">
+                <td>{{kit.name}}</td>
+                <td>{{kit.catalog_number}}</td>
+                <td>{{kit.price}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+  
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+
+</div>
+
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮝' ?  '⮟' : '⮝';
+    });
+  });
+</script>
+{% endblock %}

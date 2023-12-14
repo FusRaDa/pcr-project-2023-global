@@ -7,7 +7,8 @@
 {% block content %}
 <div class="container">
 
-  <form>
+  <form method="POST" action="">
+    {% csrf_token %}
     <div class="row justify-content-center">
 
       <div class="col-sm-3 form-width-18">
@@ -95,7 +96,7 @@
     <div class="row justify-content-center">
       <div class="text-center mt-2">
         <a class="btn btn-secondary" href="{% url 'kits' %}">Cancel</a>
-        <button class="btn btn-primary" type="submit" name="update">Create Kit</button>
+        <button class="btn btn-primary" type="submit">Create Kit</button>
       </div>
     </div>
 

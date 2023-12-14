@@ -38,7 +38,7 @@
       <div class="card">
         <img src="/images/{{brand.brand_logo}}" class="card-img-right" alt="...">
         <div class="card-body">
-          <h5 class="card-title">{{brand.name}}{% if brand.is_affiliated %}<span>✔</span>{% endif %}</h5>
+          <h5 class="card-title">{{brand.name}}{{brand.affiliate}}</h5>
           <a href="{% url 'edit_brand' brand.pk %}" class="btn btn-primary">Edit Brand</a> 
         </div>
       </div>

@@ -17,6 +17,7 @@ urlpatterns = [
   path('kits/', items_views.kits, name='kits'),
   path('create-kit/', items_views.create_kit, name='create_kit'),
   path('edit-kit/<int:pk>/', items_views.edit_kit, name='edit_kit'),
+  path('edit-kit-items/<int:pk>/', items_views.edit_kit_items, name='edit_kit_items'),
 
   path('create-tube-store/', items_views.create_tube, name='create_tube_store'),
   path('edit-tube-store/<int:pk>/', items_views.edit_tube, name='edit_tube_store'),

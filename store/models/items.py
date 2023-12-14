@@ -20,7 +20,7 @@ class Kit(models.Model):
   catalog_number = models.CharField(blank=False, max_length=25, unique=True)
   price = models.DecimalField(blank=False, decimal_places=2, max_digits=7) #USD
 
-  affiliate_link = models.URLField(max_length=200)
+  affiliate_link = models.URLField(max_length=200, blank=True, null=True)
 
   tags = models.ManyToManyField(Tag)
 

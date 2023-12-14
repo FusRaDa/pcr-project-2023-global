@@ -17,6 +17,13 @@ class Brand(models.Model):
       return self.logo
     else:
       return "/profile-icon.png"
+    
+  @property
+  def affiliate(self):
+    if self.is_affiliated:
+      return "✔"
+    else:
+      return ""
 
   def __str__(self):
     return self.name
