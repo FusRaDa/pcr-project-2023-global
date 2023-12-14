@@ -67,6 +67,48 @@ class StoreTubeForm(ModelForm):
 
 class StoreReagentForm(ModelForm):
 
+  def clean(self):
+    cleaned_data = super().clean()
+    stock = cleaned_data.get('stock_concentration')
+    unit = cleaned_data.get('unit_concentration')
+    pcr_reagent = cleaned_data.get('pcr_reagent')
+    usage = cleaned_data.get('usage')
+
+    if usage == StoreReagent.Usages.EXTRACTION and (stock != None or unit != None):
+      raise ValidationError(
+        {'usage': ["If reagent is for extraction, stock concentration is not needed."]}
+      )
+
+    if stock != None and unit == None:
+      raise ValidationError(
+        message="Don't forget to assign a concentration unit to your stock concentration."
+      )
+    
+    if stock == None and unit != None:
+      raise ValidationError(
+        message="Leave unit concentration blank if a stock concentration is not needed."
+      )
+    
+    if pcr_reagent != None and usage == StoreReagent.Usages.EXTRACTION:
+      raise ValidationError(
+        message="Leave PCR reagent type empty if reagent usage is for extraction."
+      )
+    
+    if pcr_reagent == None and usage == StoreReagent.Usages.PCR:
+      raise ValidationError(
+        message="Select PCR reagent type if reagent usage is for PCR."
+      )
+    
+    if pcr_reagent == StoreReagent.PCRReagent.WATER and (stock != None or unit != None):
+      raise ValidationError(
+        message="Water for PCR does not require concentration."
+      )
+    
+    if pcr_reagent == StoreReagent.PCRReagent.POLYMERASE and unit != StoreReagent.ConcentrationUnits.UNITS:
+      raise ValidationError(
+        message="Polymerase must have a concentration unit of U/\u00B5L."
+      )
+
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.fields['name'].widget.attrs['class'] = 'form-control'

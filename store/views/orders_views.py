@@ -8,6 +8,10 @@ from ..models.orders import Order, KitOrder
 from ..forms.orders import KitOrderForm
 
 
+def store(request):
+  pass
+
+
 @login_required(login_url='login')
 def orders(request):
   orders = Order.objects.filter(user=request.user, has_ordered=True)

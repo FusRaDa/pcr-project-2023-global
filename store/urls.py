@@ -28,6 +28,8 @@ urlpatterns = [
   path('create-reagent-store/', items_views.create_reagent, name='create_reagent_store'),
   path('edit-reagent-store/<int:pk>/', items_views.edit_reagent, name='edit_reagent_store'),
 
+  path('store/', orders_views.store, name='store'),
+
   path('orders/', orders_views.orders, name='orders'),
   path('edit-order/<str:username>/<int:pk>/', orders_views.edit_order, name='edit_order'),
 ]
