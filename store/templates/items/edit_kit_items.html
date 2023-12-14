@@ -9,80 +9,92 @@
 
   <input type="hidden" value="{{kit.pk}}" name="pk">
 
-  {% if kit.storereagent_set.all %}
-  <div class="row justify-content-center">
-    <div class="col-sm-3 form-width-18">
-      <ul class="list-group" id="reagents">
-        <li class="list-group-item active">Reagents List</li>
-        {% for reagent in kit.storereagent_set.all %}
-          {% include 'partials/kit_reagents.html' %}
-        {% endfor %}
-      </ul>
+
+  <div class="row justify-content-center mt-2">
+
+    <div class="col-sm-3 form-width-18 mb-2">
+      <div class="card">
+        <div class="card-header">
+          Reagents List
+        </div>
+        
+        <ul class="list-group list-group-flush">
+          {% for reagent in kit.storereagent_set.all %}
+            {% include 'partials/kit_reagents.html' %}
+          {% endfor %}
+          <button 
+            id="reagents"
+            type="button" 
+            class="list-group-item list-group-item-action list-group-item-primary"
+            hx-get="{% url 'create_reagent_store' %}"
+            hx-target="#reagent-forms"
+            hx-include="[name='pk']"
+            hx-swap="beforeend">
+            + Reagent
+          </button>
+        </ul>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-center" id="reagent-forms">
+      </div>
     </div>
-    {% endif %}
 
-    {% if kit.storetube_set.all %}
-    <div class="col-sm-3 form-width-18">
-      <ul class="list-group" id="tubes">
-        <li class="list-group-item active">Tubes List</li>
-        {% for tube in kit.storetube_set.all %}
-          {% include 'partials/kit_tubes.html' %}
-        {% endfor %}
-      </ul>
+
+    <div class="col-sm-3 form-width-18 mb-2">
+      <div class="card">
+        <div class="card-header">
+          Tubes List
+        </div>
+        
+        <ul class="list-group list-group-flush">
+          {% for tube in kit.storetube_set.all %}
+            {% include 'partials/kit_tubes.html' %}
+          {% endfor %}
+          <button 
+            id="tubes"
+            type="button" 
+            class="list-group-item list-group-item-action list-group-item-primary"
+            hx-get="{% url 'create_tube_store' %}"
+            hx-target="#tube-forms"
+            hx-include="[name='pk']"
+            hx-swap="beforeend">
+            + Tube
+          </button>
+        </ul>
+      </div>
+      
+      <div class="d-flex flex-wrap justify-content-center" id="tube-forms">
+      </div>
     </div>
-    {% endif %}
+ 
 
-    {% if kit.storeplate_set.all %}
-    <div class="col-sm-3 form-width-18">
-      <ul class="list-group" id="plates">
-        <li class="list-group-item active">Plates List</li>
-        {% for plate in kit.storeplate_set.all %}
-          {% include 'partials/kit_plates.html' %}
-        {% endfor %}
-      </ul>
+    <div class="col-sm-3 form-width-18 mb-2">
+      <div class="card">
+        <div class="card-header">
+          Plates List
+        </div>
+        
+        <ul class="list-group list-group-flush">
+          {% for plate in kit.storeplate_set.all %}
+            {% include 'partials/kit_plates.html' %}
+          {% endfor %}
+          <button 
+            id="plates"
+            type="button" 
+            class="list-group-item list-group-item-action list-group-item-primary"
+            hx-get="{% url 'create_plate_store' %}"
+            hx-target="#plate-forms"
+            hx-include="[name='pk']"
+            hx-swap="beforeend">
+            + Reagent
+          </button>
+        </ul>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-center" id="plate-forms">
+      </div>
     </div>
-    {% endif %}
-  </div>
-
-  <div class="row justify-content-center">
-    <div class="text-center mt-2">
-      <button 
-        class="btn btn-primary" 
-        type="submit" 
-        hx-get="{% url 'create_reagent_store' %}"
-        hx-target="#reagent-forms"
-        hx-include="[name='pk']"
-        hx-swap="beforeend"
-        >+ Reagent
-      </button>
-      <button 
-        class="btn btn-primary" 
-        type="submit"
-        hx-get="{% url 'create_tube_store'%}"
-        hx-target="#tube-forms"
-        hx-include="[name='pk']"
-        hx-swap="beforeend"
-        >+ Tube</button>
-      <button 
-        class="btn btn-primary" 
-        type="submit"
-        hx-get="{% url 'create_plate_store'%}"
-        hx-target="#plate-forms"
-        hx-include="[name='pk']"
-        hx-swap="beforeend"
-        >+ Plate</button>
-    </div>
-  </div>
-
-  <input type="hidden" value="{{item.id}}" name="id">
-
-  <div class="d-flex flex-wrap justify-content-center" id="reagent-forms">
-  </div>
-
-  <div class="d-flex flex-wrap justify-content-center" id="tube-forms">
-  </div>
-
-  <div class="d-flex flex-wrap justify-content-center" id="plate-forms">
+ 
   </div>
 
   <div class="row justify-content-center">
@@ -92,4 +104,12 @@
     </div>
   </div>
 </div>
+
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮝' ?  '⮟' : '⮝';
+    });
+  });
+</script>
 {% endblock %}

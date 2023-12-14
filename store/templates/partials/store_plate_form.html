@@ -3,10 +3,10 @@
   hx-post="{% url 'create_plate_store' %}"
   hx-include="[name='pk']"
   hx-target="#plates"
-  hx-swap="beforeend"
+  hx-swap="beforebegin"
   hx-on::after-request="this.remove()"
   hx-trigger="click from:#submit-all">
-  <div class="border border-2 border-primary m-1 form-width-18">
+  <div class="border border-2 border-primary p-4">
 
     <button 
       type="button" 
@@ -29,4 +29,13 @@
       {{form.amount}}
     </div>
   </div>
+
+  {% if form.errors %}
+  <div class="row text-center mt-2">
+    {% for key,value in form.errors.items %} 
+      {{ value|escape }}
+    {% endfor %}
+  </div>
+  {% endif %}
+
 </form> 

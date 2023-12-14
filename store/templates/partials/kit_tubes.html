@@ -1,3 +1,18 @@
-<a href="{% url 'edit_tube_store' tube.pk %}" class="list-group-item list-group-item-action">
-  {{tube.name}}
-</a>
+<li class="list-group-item">{{tube.name}}
+  <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#tube-collapse-{{tube.pk}}" aria-expanded="false" aria-controls="tube-collapse-{{tube.pk}}">
+    ⮟
+  </button>
+
+  <div class="collapse" id="tube-collapse-{{tube.pk}}">
+    <div class="card-body"> 
+      <ul class="list-group">
+
+        <li class="list-group-item">Amount: {{tube.amount}}</li>
+        <a href="{% url 'edit_tube_store' tube.pk %}" class="list-group-item list-group-item-action">
+          Edit Tube
+        </a>
+
+      </ul>
+    </div>
+  </div>
+</li>

@@ -1,3 +1,19 @@
-<a href="{% url 'edit_plate_store' plate.pk %}" class="list-group-item list-group-item-action">
-  {{plate.name}}
-</a>
+<li class="list-group-item">{{plate.name}}
+  <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#plate-collapse-{{plate.pk}}" aria-expanded="false" aria-controls="plate-collapse-{{plate.pk}}">
+    ⮟
+  </button>
+
+  <div class="collapse" id="plate-collapse-{{plate.pk}}">
+    <div class="card-body"> 
+      <ul class="list-group">
+
+        <li class="list-group-item">Size: {{plate.size}}</li>
+        <li class="list-group-item">Amount: {{plate.amount}}</li>
+        <a href="{% url 'edit_plate_store' plate.pk %}" class="list-group-item list-group-item-action">
+          Edit Plate
+        </a>
+
+      </ul>
+    </div>
+  </div>
+</li>

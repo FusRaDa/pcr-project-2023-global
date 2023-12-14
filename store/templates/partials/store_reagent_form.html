@@ -1,12 +1,12 @@
 <form 
   hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
   hx-post="{% url 'create_reagent_store' %}"
-  hx-include="[name='pk']"
   hx-target="#reagents"
-  hx-swap="beforeend"
+  hx-include="[name='pk']"
+  hx-swap="beforebegin"
   hx-on::after-request="this.remove()"
   hx-trigger="click from:#submit-all">
-  <div class="border border-2 border-primary m-1 form-width-18">
+  <div class="border border-2 border-primary p-4">
 
     <button 
       type="button" 
@@ -14,7 +14,7 @@
       hx-on:click="this.parentNode.remove()">
     </button>
 
-    <div class="text-center">
+    <div class="text-center ">
       <label class="form-label">Name</label>
       {{form.name}}
     </div>
@@ -50,4 +50,13 @@
     </div>
 
   </div>
+
+  {% if form.errors %}
+  <div class="row text-center mt-2">
+    {% for key,value in form.errors.items %} 
+      {{ value|escape }}
+    {% endfor %}
+  </div>
+  {% endif %}
+
 </form> 
