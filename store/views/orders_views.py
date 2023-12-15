@@ -30,12 +30,13 @@ def store(request):
       brands = form.cleaned_data['brands']
       tags = form.cleaned_data['tags']
 
-      kits = Kit.objects.filter(brand=brands, tags=tags, name=kit_name, catalog_number=cat_num)
+      kits = Kit.objects.filter(brand__id__in=brands, tags=tags, name__icontains=kit_name, catalog_number__icontains=cat_num)
 
       # use in production with postgresql
-      # kits = Kit.objects.annotate(similarity=TrigramSimilarity('name', kit_name)).filter(similarity__gt=0.3, brand=brands, tags=tags, name=kit_name, catalog_number=cat_num).order_by('-similarity')
-
-  context = {'order': order, 'kits': kits}
+      # kits = Kit.objects.annotate(similarity=TrigramSimilarity('name', kit_name)).filter(similarity__gt=0.3, brand=brands, tags=tags, name__icontains=kit_name, catalog_number__icontains=cat_num).order_by('-similarity')
+    else:
+      print(form.errors)
+  context = {'order': order, 'kits': kits, 'form': form}
   return render(request, 'orders/store.html', context)
 
 
