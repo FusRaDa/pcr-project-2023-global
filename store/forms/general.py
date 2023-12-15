@@ -5,11 +5,24 @@ from django.utils.translation import gettext_lazy as _
 from ..models.affiliates import Brand
 from ..models.items import Tag
 
-class SearchStoreForm(forms.Form):
-  kit_name = forms.CharField(required=False)
 
+class SearchCatalogForm(forms.Form):
   cat_num = forms.CharField(required=False)
 
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs) 
+    self.fields['cat_num'].widget.attrs['class'] = 'form-control'
+
+
+class SearchNameForm(forms.Form):
+  kit_name = forms.CharField(required=False)
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs) 
+    self.fields['kit_name'].widget.attrs['class'] = 'form-control'
+
+
+class SearchBrandTagForm(forms.Form):
   brands = forms.ModelMultipleChoiceField(
     queryset=Brand.objects.all(),
     widget=forms.CheckboxSelectMultiple,
@@ -19,11 +32,6 @@ class SearchStoreForm(forms.Form):
     queryset=Tag.objects.all(),
     widget=forms.CheckboxSelectMultiple,
     required=False)
-
-  def __init__(self, *args, **kwargs):
-    super().__init__(*args, **kwargs) 
-    self.fields['kit_name'].widget.attrs['class'] = 'form-control'
-    self.fields['cat_num'].widget.attrs['class'] = 'form-control'
 
 
 class DeletionForm(forms.Form):

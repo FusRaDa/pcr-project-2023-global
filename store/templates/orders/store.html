@@ -11,30 +11,45 @@
     {% csrf_token %}
     <div class="row">
       <div class="col">
-        {{form.kit_name}}
+        {{kit_name_form.kit_name}}
       </div>
+    </div>
 
+    <div>
+      <button type="submit" class="btn btn-primary" name="search-kit-name">Search By Kit</button>
+    </div>
+  </form>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div class="row">
       <div class="col">
-        {{form.cat_num}}
+        {{catalog_number_form.cat_num}}
       </div>
 
       <div>
-        <button type="submit" class="btn btn-primary" name="search">Search</button>
+        <button type="submit" class="btn btn-primary" name="search-catalog-number">Search By Catalog #</button>
+      </div>
+    </div>
+  </form>
+  
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col">
+        {{brand_tag_form.brands}}
       </div>
     </div>
 
     <div class="row">
       <div class="col">
-        {{form.brands}}
+        {{brand_tag_form.tags}}
       </div>
     </div>
 
-    <div class="row">
-      <div class="col">
-        {{form.tags}}
-      </div>
+    <div>
+      <button type="submit" class="btn btn-primary" name="search-brand-tag">Search By Brands/Tag</button>
     </div>
-
   </form>
 
   <div class="row">
