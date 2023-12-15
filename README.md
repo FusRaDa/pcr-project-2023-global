@@ -6,6 +6,6 @@ The purpose of this project is create paperwork for lab technicians doing PCR by
 
 Current Apps: accounts, inventory, main, pcr
 
-TEST
+THIS IS THE MAIN BRANCH
 
-Last updated - 11/06/23
+Last updated - 12/15/23
