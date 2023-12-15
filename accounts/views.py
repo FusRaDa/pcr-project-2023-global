@@ -14,7 +14,6 @@ from users.models import User
 from .tokens import account_activation_token
 from .models import EmailOrUsernameModelBackend
 from .forms import CreateUserForm
-from .initialize import create_presets
 
 
 # login user with their username or email and password
@@ -70,8 +69,6 @@ def activate(request, uidb64, token):
   if user is not None and account_activation_token.check_token(user, token):
     user.is_active = True
     user.save()
-
-    create_presets(user)
 
     messages.success(request, 'Thank you for your email confirmation. Now you can login your account.')
     return redirect('login')
