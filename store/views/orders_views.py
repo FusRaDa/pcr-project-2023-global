@@ -153,6 +153,10 @@ def review_order(request, username, pk):
       print(orderformset.errors)
       print(orderformset.non_form_errors())
 
+  if 'process' in request.POST:
+    # order.has_ordered == True
+    print('order processed - sike')
+    
   context = {'orderformset': orderformset, 'kits_data': kits_data, 'display_data': display_data, 'order': order}
   return render(request, 'orders/review_order.html', context)
 

@@ -31,7 +31,44 @@
         <div class="float-end">
           <a href="{% url 'store' %}" class="btn btn-secondary">Store</a>
           <button type="submit" class="btn btn-primary" name="recalculate">Update</button>
-          <button type="submit" class="btn btn-success" name="process">Process Order</button>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#process-modal">Process</button>
+        </div>
+
+        <div class="modal fade" id="process-modal" tabindex="-1" role="dialog" aria-labelledby="process-modalTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Processing Order...</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                
+                <div class="container-sm">
+      
+                  <div class="row justify-content-center">
+                    <h5 class="text-center">Are you sure?</h5>
+                    <ol>
+                      <li>Once an order has been processed, it will no longer be editable.</li>
+                      <li>Make sure you update the amounts ordered per kit before proceeding.</li>
+                      <li>By processing this order, you will be able to add these items to your inventory.</li>
+                      <li>Order files will be generated for your convenience.</li>
+                    </ol>
+                  </div>
+
+                  <div class="row justify-content-center">
+                    <form method="POST" action="">
+                      <div class="text-center mt-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" name="process">Confirm</button>
+                      </div>
+                    </form>
+                  </div>
+      
+                </div>
+      
+              </div>
+            </div>
+          </div>
         </div>
 
       </form>
@@ -84,5 +121,6 @@
     </div>
 
   </div>
+
 </div>
 {% endblock %}
