@@ -11,7 +11,7 @@
     <button 
       type="button" 
       class="btn-close float-end"
-      hx-on:click="this.parentNode.remove()">
+      hx-on:click="this.parentNode.parentNode.remove()">
     </button>
 
     <div class="text-center">
@@ -19,18 +19,18 @@
       {{form.name}}
     </div>
 
-    <div class="text-center">
+    <div class="text-center mb-2">
       <label class="form-label">Amount</label>
       {{form.amount}}
     </div>
-  </div>
 
-  {% if form.errors %}
-  <div class="row text-center mt-2">
-    {% for key,value in form.errors.items %} 
-      {{ value|escape }}
-    {% endfor %}
-  </div>
-  {% endif %}
+    {% if form.errors %}
+    <div class="row text-center mt-2">
+      {% for key,value in form.errors.items %} 
+        {{ value|escape }}
+      {% endfor %}
+    </div>
+    {% endif %}
 
+  </div>
 </form> 

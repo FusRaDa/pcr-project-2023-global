@@ -22,14 +22,15 @@
             <span class="input-group-text input-group-price">{{kits.kit.price}} USD ea.</span>
             {{orderformset.amount_ordered}}
           </div>
-        {% endfor %}
+        {% endfor %} 
 
         <div class="float-start">
           <h4>Total Cost: ${{order.total_cost}}</h4>
-        </div>  
+        </div> 
         
         <div class="float-end">
-          <button type="submit" class="btn btn-primary" name="recalculate">Recalculate</button>
+          <a href="{% url 'store' %}" class="btn btn-secondary">Store</a>
+          <button type="submit" class="btn btn-primary" name="recalculate">Update</button>
           <button type="submit" class="btn btn-success" name="process">Process Order</button>
         </div>
 
@@ -37,9 +38,50 @@
 
     </div>
 
-    <div class="col-sm-6">
-      previous orders
-    </di>
+    <div class="col-sm-6"> 
+
+      {% for order_kits, kits in display_data %}
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col" class="col-sm-4">{{order_kits.name}} × {{kits.amount_ordered}}</th>
+              <th scope="col" class="col-sm-1">Amount</th>
+              <th scope="col" class="col-sm-1">Total</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            {% for reagents in order_kits.storereagent_set.all %}
+            <tr class="table-success">
+              <td>{{reagents.name}}</td>
+              <td>{{reagents.volume}} {{reagents.unit_volume}} × {{kits.amount_ordered}}</td>
+              <td>{{reagents.total_amount}} {{reagents.unit_volume}}</td>
+            </tr>
+            {% endfor %}
+
+            {% for tubes in order_kits.storetube_set.all %}
+            <tr class="table-primary">
+              <td>{{tubes.name}}</td>
+              <td>{{tubes.amount}} × {{kits.amount_ordered}}</td>
+              <td>{{tubes.total_amount}}</td>
+            </tr>
+            {% endfor %}
+
+            {% for plates in order_kits.storeplate_set.all %}
+            <tr class="table-warning">
+              <td>{{plates.name}}</td>
+              <td>{{plates.amount}} × {{kits.amount_ordered}}</td>
+              <td>{{plates.total_amount}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+  
+        </table>
+      </div>
+      {% endfor %}
+
+    </div>
 
   </div>
 </div>

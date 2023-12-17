@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator
+from decimal import Decimal
 
 from users.models import User
 from ..models.items import Kit
@@ -20,7 +21,7 @@ class Order(models.Model):
     cost = 0
     amounts = self.kitorder_set.all()
     for amount in amounts:
-      cost += amount.kit.price * amount.amount_ordered
+      cost += Decimal(amount.kit.price * amount.amount_ordered)
     return cost
 
   def __str__(self):

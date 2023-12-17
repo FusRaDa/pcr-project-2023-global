@@ -129,6 +129,7 @@ def review_order(request, username, pk):
   
   try:
     order = Order.objects.get(user=user, pk=pk)
+    order_kits = order.kits.all()
     kits = KitOrder.objects.prefetch_related('kit', 'order').filter(order=order)
   except ObjectDoesNotExist:
     messages.error(request, "There is no order to edit.")
@@ -141,6 +142,8 @@ def review_order(request, username, pk):
   orderformset = KitOrderFormSet(queryset=kits)
   kits_data = zip(kits, orderformset)
 
+  display_data = zip(order_kits, kits)
+
   if 'recalculate' in request.POST:
     orderformset = KitOrderFormSet(request.POST)
     if orderformset.is_valid():
@@ -150,7 +153,7 @@ def review_order(request, username, pk):
       print(orderformset.errors)
       print(orderformset.non_form_errors())
 
-  context = {'orderformset': orderformset, 'kits_data': kits_data, 'order': order}
+  context = {'orderformset': orderformset, 'kits_data': kits_data, 'display_data': display_data, 'order': order}
   return render(request, 'orders/review_order.html', context)
 
 
