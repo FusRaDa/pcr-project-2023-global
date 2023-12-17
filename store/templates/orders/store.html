@@ -14,23 +14,24 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               Kits In Order
-              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#kits-collapse" aria-expanded="false" aria-controls="kits-collapse">
                 ⮝
               </button>
             </li>
 
-            <div class="collapse show" id="reagents-collapse">
+            <div class="collapse show" id="kits-collapse">
               <div class="card-body"> 
-                <ul class="list-group">
+                <ul class="list-group" id="orders-in-kit">
                   {% for kit in order.kits.all %}
-                    <li class="list-group-item">
-                      {{kit}}
-                    </li>
+                    {% include 'partials/kit_order.html'%}
                   {% endfor %}
                 </ul>
               </div>
             </div>
           </ul>
+          <div class="card-footer text-center">
+            <a href="#" class="btn btn-primary">Review Order</a>
+          </div>
         </div>
     </div>
 

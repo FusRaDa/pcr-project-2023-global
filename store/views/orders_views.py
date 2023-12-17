@@ -62,7 +62,6 @@ def store(request):
 
 @login_required(login_url='login')
 def add_kit_to_order(request, username, order_pk, kit_pk):
-
   user = User.objects.get(username=username)
 
   if request.user != user:
@@ -78,13 +77,26 @@ def add_kit_to_order(request, username, order_pk, kit_pk):
   if 'add' in request.POST:
     kit = Kit.objects.get(pk=kit_pk)
     order.kits.add(kit)
+    context = {'kit': kit}
+    return render(request, 'partials/kit_order.html', context)
 
   return HttpResponse(status=200)
 
 
 @login_required(login_url='login')
-def process_order(request, username, pk):
-  pass
+def review_order(request, username, pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no order to edit.")
+    return redirect('store')
+  
+  try:
+    order = Order.objects.get(user=user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no order to edit.")
+    return redirect('store')
+
 
 
 @login_required(login_url='login')

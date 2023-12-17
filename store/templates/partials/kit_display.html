@@ -6,6 +6,8 @@
       <button
         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
         hx-post="{% url 'add_kit_to_order' request.user.username order.pk kit.pk%}"
+        hx-target="#orders-in-kit"
+        hx-swap="beforeend"
         hx-on:click="this.parentNode.parentNode.remove()"
         class="btn btn-primary" 
         name="add">
