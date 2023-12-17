@@ -7,70 +7,98 @@
 {% block content %}
 <div class="container">
 
-  <form method="POST" action="">
-    {% csrf_token %}
-    <div class="row">
-      <div class="col">
-        {{kit_name_form.kit_name}}
+  <div class="row mt-2 justify-content-center">
+
+    <div class="col-sm-3">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Kits In Order
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+                ⮝
+              </button>
+            </li>
+
+            <div class="collapse show" id="reagents-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for kit in order.kits.all %}
+                    <li class="list-group-item">
+                      {{kit}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+    </div>
+
+    <div class="col-sm-9">
+      <div class="container">
+
+        <form method="POST" action="">
+          {% csrf_token %}
+          <div class="row">
+
+            <div class="col-sm-6">
+              <div class="input-group mb-3">
+                {{kit_name_form.kit_name}}
+                <button type="submit" class="btn btn-primary" name="search-kit-name">Search By Kit</button>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="input-group mb-3">
+                {{catalog_number_form.cat_num}}
+                <button type="submit" class="btn btn-primary" name="search-catalog-number">Search By Catalog</button>
+              </div>
+            </div>
+
+          </div>
+        </form>
+
+
+        <form method="POST" action="">
+          {% csrf_token %}
+          <div class="d-flex gap-1 flex-wrap justify-content-start">
+            {% for brand in brand_tag_form.brands %}
+              <div class="p-2 border border-primary border-4 rounded">
+                {{brand}}
+              </div>
+            {% endfor %}
+          </div>
+      
+          <div class="d-flex gap-1 flex-wrap justify-content-start mt-2">
+            {% for tag in brand_tag_form.tags %}
+            <div class="p-2 border border-warning border-4 rounded">
+              {{tag}}
+            </div>
+            {% endfor %}
+          </div>
+      
+          <div class="text-center mt-2">
+            <button type="submit" class="btn btn-primary" name="search-brand-tag">Search By Brands/Tags</button>
+          </div>
+
+        </form>
+
+        {% for kit in kits %}
+          {% include 'partials/kit_display.html' %}
+        {% endfor %}
+
       </div>
     </div>
-
-    <div>
-      <button type="submit" class="btn btn-primary" name="search-kit-name">Search By Kit</button>
-    </div>
-  </form>
-
-  <form method="POST" action="">
-    {% csrf_token %}
-    <div class="row">
-      <div class="col">
-        {{catalog_number_form.cat_num}}
-      </div>
-
-      <div>
-        <button type="submit" class="btn btn-primary" name="search-catalog-number">Search By Catalog #</button>
-      </div>
-    </div>
-  </form>
-  
-  <form method="POST" action="">
-    {% csrf_token %}
-    <div class="row">
-      <div class="col">
-        {{brand_tag_form.brands}}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        {{brand_tag_form.tags}}
-      </div>
-    </div>
-
-    <div>
-      <button type="submit" class="btn btn-primary" name="search-brand-tag">Search By Brands/Tag</button>
-    </div>
-  </form>
-
-  <div class="row">
-
-    <div class="col-sm-10">
-      {% for kit in kits %}
-        {% include 'partials/kit_display.html' %}
-      {% endfor %}
-    </div>
-
-    <div class="col-sm-2">
-      Kits In Order
-      {% for kit in order.kits.all %}
-        {{kit.name}}
-      {% endfor %}
-    </div>
-
 
   </div>
 
-
-
 </div>
+
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮟' ?  '⮝' : '⮟';
+    });
+  });
+</script>
 {% endblock %}

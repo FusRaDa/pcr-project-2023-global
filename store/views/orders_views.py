@@ -77,7 +77,7 @@ def add_kit_to_order(request, username, order_pk, kit_pk):
 
   if 'add' in request.POST:
     kit = Kit.objects.get(pk=kit_pk)
-    order.kit.add(kit)
+    order.kits.add(kit)
 
   return HttpResponse(status=200)
 

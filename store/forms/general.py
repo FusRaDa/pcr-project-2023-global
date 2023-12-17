@@ -32,7 +32,7 @@ class SearchBrandTagForm(forms.Form):
     queryset=Tag.objects.all(),
     widget=forms.CheckboxSelectMultiple,
     required=False)
-
+  
 
 class DeletionForm(forms.Form):
 
@@ -42,6 +42,7 @@ class DeletionForm(forms.Form):
     self.value = kwargs.pop('value')
     super().__init__(*args, **kwargs) 
     self.fields['confirm'].widget.attrs['class'] = 'form-control'
+    
     
   def clean(self):
     cleaned_data = super().clean()
