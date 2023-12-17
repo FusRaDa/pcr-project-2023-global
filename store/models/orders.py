@@ -15,6 +15,14 @@ class Order(models.Model):
   date_added = models.DateTimeField(default=now, editable=False)
   has_ordered = models.BooleanField(blank=False, default=False)
 
+  @property
+  def total_cost(self):
+    cost = 0
+    amounts = self.kitorder_set.all()
+    for amount in amounts:
+      cost += amount.kit.price * amount.amount_ordered
+    return cost
+
   def __str__(self):
     return f"Order - {self.date_added}"
   
@@ -26,4 +34,4 @@ class KitOrder(models.Model):
   amount_ordered = models.IntegerField(validators=[MinValueValidator(1)], default=1)
 
   def __str__(self):
-    return f"through - {self.kit.name}"
+    return f"Through - {self.kit.name}"

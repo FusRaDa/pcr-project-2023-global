@@ -112,6 +112,7 @@ def remove_kit_from_order(request, username, order_pk, kit_pk):
 
 @login_required(login_url='login')
 def review_order(request, username, pk):
+  context = {}
 
   KitOrderFormSet = modelformset_factory(
     KitOrder,
@@ -128,7 +129,7 @@ def review_order(request, username, pk):
   
   try:
     order = Order.objects.get(user=user, pk=pk)
-    kits = order.kits.all()
+    kits = KitOrder.objects.prefetch_related('kit', 'order').filter(order=order)
   except ObjectDoesNotExist:
     messages.error(request, "There is no order to edit.")
     return redirect('store')
@@ -140,11 +141,11 @@ def review_order(request, username, pk):
   orderformset = KitOrderFormSet(queryset=kits)
   kits_data = zip(kits, orderformset)
 
-  if request.method == "POST":
+  if 'recalculate' in request.POST:
     orderformset = KitOrderFormSet(request.POST)
     if orderformset.is_valid():
       orderformset.save()
-      return redirect('store')
+      return redirect(request.path_info)
     else:
       print(orderformset.errors)
       print(orderformset.non_form_errors())

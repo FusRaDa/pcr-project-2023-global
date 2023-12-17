@@ -18,29 +18,29 @@
   <div class="row mt-2 justify-content-center">
 
     <div class="col-sm-3">
-        <div class="card">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              Kits In Order
-              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#kits-collapse" aria-expanded="false" aria-controls="kits-collapse">
-                ⮝
-              </button>
-            </li>
+      <div class="card">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Kits In Order
+            <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#kits-collapse" aria-expanded="false" aria-controls="kits-collapse">
+              ⮝
+            </button>
+          </li>
 
-            <div class="collapse show" id="kits-collapse">
-              <div class="card-body"> 
-                <ul class="list-group" id="orders-in-kit">
-                  {% for kit in order.kits.all %}
-                    {% include 'partials/kit_order.html'%}
-                  {% endfor %}
-                </ul>
-              </div>
+          <div class="collapse show" id="kits-collapse">
+            <div class="card-body"> 
+              <ul class="list-group" id="orders-in-kit">
+                {% for kit in order.kits.all %}
+                  {% include 'partials/kit_order.html'%}
+                {% endfor %}
+              </ul>
             </div>
-          </ul>
-          <div class="card-footer text-center">
-            <a href="{% url 'review_order' request.user.username order.pk %}" class="btn btn-primary">Review Order</a>
           </div>
+        </ul>
+        <div class="card-footer text-center">
+          <a href="{% url 'review_order' request.user.username order.pk %}" class="btn btn-primary">Review Order</a>
         </div>
+      </div>
     </div>
 
     <div class="col-sm-9">

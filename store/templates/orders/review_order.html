@@ -1,0 +1,46 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                         
+{% block title %} Store {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row justify-content-center mt-2">
+
+    <div class="col-sm-6">
+
+      <form method="POST" action="">
+        {{ orderformset.management_form }}
+        {% csrf_token %}
+
+        {% for kits, orderformset in kits_data %}
+          {{orderformset.id}}
+          <div class="input-group mb-3">
+            <span class="input-group-text input-group-kit">{{kits.kit.name}}</span>
+            <span class="input-group-text input-group-price">{{kits.kit.price}} USD ea.</span>
+            {{orderformset.amount_ordered}}
+          </div>
+        {% endfor %}
+
+        <div class="float-start">
+          <h4>Total Cost: ${{order.total_cost}}</h4>
+        </div>  
+        
+        <div class="float-end">
+          <button type="submit" class="btn btn-primary" name="recalculate">Recalculate</button>
+          <button type="submit" class="btn btn-success" name="process">Process Order</button>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="col-sm-6">
+      previous orders
+    </di>
+
+  </div>
+</div>
+{% endblock %}
