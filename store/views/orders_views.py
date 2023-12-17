@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -24,7 +25,7 @@ def store(request):
   else:
     order = Order.objects.get(user=request.user, has_ordered=False)
 
-  kits = Kit.objects.all().exclude(id__in=[kit.pk for kit in order.kits.all()])
+  kits = Kit.objects.all().order_by('name')
 
   brand_tag_form = SearchBrandTagForm(prefix='brand-tag-form')
   if 'search-brand-tag' in request.POST:
@@ -32,7 +33,10 @@ def store(request):
     if brand_tag_form.is_valid():
       brands = brand_tag_form.cleaned_data['brands']
       tags = brand_tag_form.cleaned_data['tags']
-      kits = Kit.objects.filter(Q(brand__in=brands) | Q(tags__in=tags)).exclude(id__in=[kit.pk for kit in order.kits.all()])
+      if tags or brands:
+        kits = Kit.objects.filter((Q(brand__in=brands) | Q(tags__in=tags)))
+      if tags and brands:
+        kits = Kit.objects.filter((Q(brand__in=brands) & Q(tags__in=tags)))
     else:
       print(brand_tag_form.errors)
 
@@ -41,7 +45,7 @@ def store(request):
     kit_name_form = SearchNameForm(request.POST, prefix='kit-name-form')
     if kit_name_form.is_valid():
       name = kit_name_form.cleaned_data['kit_name']
-      kits = Kit.objects.filter(name__icontains=name).exclude(id__in=[kit.pk for kit in order.kits.all()])
+      kits = Kit.objects.filter(name__icontains=name)
       # use in production with postgresql
       # kits = Kit.objects.annotate(similarity=TrigramSimilarity('name', kit_name)).filter(similarity__gt=0.3).order_by('-similarity')
     else:
@@ -52,7 +56,7 @@ def store(request):
     catalog_number_form = SearchCatalogForm(request.POST, prefix='catalog-number-form')
     if catalog_number_form.is_valid():
       catalog_number = catalog_number_form.cleaned_data['cat_num']
-      kits = Kit.objects.filter(catalog_number__icontains=catalog_number).exclude(id__in=[kit.pk for kit in order.kits.all()])
+      kits = Kit.objects.filter(catalog_number__icontains=catalog_number)
     else:
       print(catalog_number_form.errors)
 
@@ -76,15 +80,46 @@ def add_kit_to_order(request, username, order_pk, kit_pk):
 
   if 'add' in request.POST:
     kit = Kit.objects.get(pk=kit_pk)
-    order.kits.add(kit)
-    context = {'kit': kit}
-    return render(request, 'partials/kit_order.html', context)
+
+    if order.kits.contains(kit):
+      return HttpResponse(status=200)
+    else:
+      order.kits.add(kit)
+      context = {'kit': kit, 'order': order}
+      return render(request, 'partials/kit_order.html', context)
+
+
+@login_required(login_url='login')
+def remove_kit_from_order(request, username, order_pk, kit_pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no order to edit.")
+    return redirect('store')
+  
+  try:
+    order = Order.objects.get(user=user, pk=order_pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no order to edit.")
+    return redirect('store')
+  
+  if 'remove' in request.POST:
+    kit = Kit.objects.get(pk=kit_pk)
+    order.kits.remove(kit)
 
   return HttpResponse(status=200)
 
 
 @login_required(login_url='login')
 def review_order(request, username, pk):
+
+  KitOrderFormSet = modelformset_factory(
+    KitOrder,
+    form=KitOrderForm,
+    extra=0,
+    )
+  orderformset = None
+
   user = User.objects.get(username=username)
 
   if request.user != user:
@@ -93,9 +128,29 @@ def review_order(request, username, pk):
   
   try:
     order = Order.objects.get(user=user, pk=pk)
+    kits = order.kits.all()
   except ObjectDoesNotExist:
     messages.error(request, "There is no order to edit.")
     return redirect('store')
+  
+  if not order.kits.exists():
+    messages.error(request, "Please select at least one kit to add to your order.")
+    return redirect('store')
+
+  orderformset = KitOrderFormSet(queryset=kits)
+  kits_data = zip(kits, orderformset)
+
+  if request.method == "POST":
+    orderformset = KitOrderFormSet(request.POST)
+    if orderformset.is_valid():
+      orderformset.save()
+      return redirect('store')
+    else:
+      print(orderformset.errors)
+      print(orderformset.non_form_errors())
+
+  context = {'orderformset': orderformset, 'kits_data': kits_data, 'order': order}
+  return render(request, 'orders/review_order.html', context)
 
 
 

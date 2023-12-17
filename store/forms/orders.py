@@ -7,6 +7,10 @@ from ..models.orders import Order, KitOrder
 
 class KitOrderForm(ModelForm):
 
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['amount_ordered'].widget.attrs['class'] = 'form-control'
+
   class Meta:
     model = KitOrder
-    fields = '__all__'
+    exclude = ['order', 'kit']

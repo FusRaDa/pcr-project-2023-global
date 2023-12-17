@@ -30,7 +30,8 @@ urlpatterns = [
 
   path('store/', orders_views.store, name='store'),
   path('add-kit-to-order/<str:username>/<int:order_pk>/<int:kit_pk>/', orders_views.add_kit_to_order, name='add_kit_to_order'),
+  path('remove-kit-from-order/<str:username>/<int:order_pk>/<int:kit_pk>/', orders_views.remove_kit_from_order, name='remove_kit_from_order'),
 
-  path('process-order/<str:username>/<int:pk>/', orders_views.review_order, name='review_order'),
+  path('review-order/<str:username>/<int:pk>/', orders_views.review_order, name='review_order'),
   path('orders/', orders_views.orders, name='orders'),
 ]
