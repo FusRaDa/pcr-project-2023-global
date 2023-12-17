@@ -10,13 +10,13 @@ from ..models.items import Kit
 # one order can only have on kit/product 
 class Order(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
-  kit = models.ManyToManyField(Kit, through='KitOrder')
+  kits = models.ManyToManyField(Kit, through='KitOrder')
 
   date_added = models.DateTimeField(default=now, editable=False)
   has_ordered = models.BooleanField(blank=False, default=False)
 
   def __str__(self):
-    return f"{self.kit}-{self.user.username}"
+    return f"Order - {self.date_added}"
   
 
 class KitOrder(models.Model):
@@ -26,4 +26,4 @@ class KitOrder(models.Model):
   amount_ordered = models.IntegerField(validators=[MinValueValidator(1)], default=1)
 
   def __str__(self):
-    return self.kit
+    return f"through - {self.kit.name}"

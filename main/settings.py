@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,10 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -142,18 +144,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = os.getenv('EMAIL')
-EMAIL_HOST_USER = os.getenv('EMAIL')
-EMAIL_HOST_PASSWORD = os.getenv('PASSWORD')
+EMAIL_FROM = config('EMAIL')
+EMAIL_HOST_USER = config('EMAIL')
+EMAIL_HOST_PASSWORD = config('PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 PASSWORD_RESET_TIMEOUT = 14400
 
 # Stripe
-STRIPE_LIVE_SECRET_KEY = os.getenv('STRIPE_LIVE_SECRET_KEY')
-STRIPE_TEST_SECRET_KEY = os.getenv('STRIPE_TEST_SECRET_KEY')
-STRIPE_LIVE_MODE = os.getenv('STRIPE_LIVE_MODE', 'False') == False  # Change to True in production
-DJSTRIPE_WEBHOOK_SECRET = os.getenv('DJSTRIPE_WEBHOOK_SECRET') # Get it from the section in the Stripe dashboard where you added the webhook endpoint
+STRIPE_LIVE_SECRET_KEY = config('STRIPE_LIVE_SECRET_KEY')
+STRIPE_TEST_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY')
+STRIPE_LIVE_MODE = config('STRIPE_LIVE_MODE', default=False, cast=bool)  # Change to True in production
+DJSTRIPE_WEBHOOK_SECRET = config('DJSTRIPE_WEBHOOK_SECRET') # Get it from the section in the Stripe dashboard where you added the webhook endpoint
 DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 

@@ -15,6 +15,8 @@ class Tag(models.Model):
 class Kit(models.Model):
   brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 
+  image = models.ImageField(null=True, blank=True)
+
   name = models.CharField(blank=False, max_length=50)
   catalog_number = models.CharField(blank=False, max_length=25, unique=True)
   price = models.DecimalField(blank=False, decimal_places=2, max_digits=7) #USD

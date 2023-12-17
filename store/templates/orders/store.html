@@ -56,12 +56,15 @@
 
     <div class="col-sm-10">
       {% for kit in kits %}
-        {{kit.name}}
+        {% include 'partials/kit_display.html' %}
       {% endfor %}
     </div>
 
     <div class="col-sm-2">
-      order
+      Kits In Order
+      {% for kit in order.kits.all %}
+        {{kit.name}}
+      {% endfor %}
     </div>
 
 

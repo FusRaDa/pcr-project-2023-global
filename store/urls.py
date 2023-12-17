@@ -29,6 +29,7 @@ urlpatterns = [
   path('edit-reagent-store/<int:pk>/', items_views.edit_reagent, name='edit_reagent_store'),
 
   path('store/', orders_views.store, name='store'),
+  path('add-kit-to-order/<str:username>/<int:order_pk>/<int:kit_pk>/', orders_views.add_kit_to_order, name='add_kit_to_order'),
 
   path('orders/', orders_views.orders, name='orders'),
 ]

@@ -9,6 +9,7 @@ from ..models.extraction import ExtractionProtocol, TubeExtraction, ReagentExtra
 from ..forms.extraction import ExtractionProtocolForm, TubeExtractionForm, ReagentExtractionForm
 from ..forms.general import DeletionForm
 
+
 @login_required(login_url='login')
 def extraction_protocols(request):
   dna_extraction_protocols = ExtractionProtocol.objects.filter(user=request.user, type=ExtractionProtocol.Types.DNA).order_by('name')

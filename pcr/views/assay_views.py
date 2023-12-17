@@ -10,6 +10,7 @@ from ..models.assay import Assay, Fluorescence, Control
 from ..forms.assay import AssayForm, ReagentAssay, ReagentAssayForm, FluorescenceForm, ControlForm
 from ..forms.general import DeletionForm
 
+
 @login_required(login_url='login')
 def assays(request):
   pcr_dna = Assay.objects.filter(user=request.user, method=Assay.Methods.PCR, type=Assay.Types.DNA).order_by('name')
