@@ -131,7 +131,7 @@ def review_order(request, username, pk):
   try:
     order = Order.objects.get(user=user, pk=pk)
     order_kits = order.kits.all()
-    kits = KitOrder.objects.prefetch_related('kit', 'order').filter(order=order)
+    kits = order.kitorder_set.all()
   except ObjectDoesNotExist:
     messages.error(request, "There is no order to edit.")
     return redirect('store')
@@ -170,3 +170,28 @@ def orders(request):
   orders = Order.objects.filter(user=request.user, has_ordered=True).order_by('-date_processed')
   context = {'orders': orders}
   return render(request, 'orders/orders.html', context)
+
+
+@login_required(login_url='login')
+def view_order(request, username, pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no order to view.")
+    return redirect('orders')
+  
+  try:
+    order = Order.objects.get(user=user, pk=pk)
+    kits = order.kits.all()
+    kit_order = order.kitorder_set.all()
+    if order.has_ordered == False:
+      return redirect('store')
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no order to view.")
+    return redirect('orders')
+  
+  order_data = zip(kits, kit_order)
+  
+  context = {'order_data': order_data}
+  return render(request, 'orders/view_order.html', context)
+  

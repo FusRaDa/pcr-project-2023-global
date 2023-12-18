@@ -13,40 +13,40 @@
 
   <div class="row">
 
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col" class="col-sm-2">Date Processed</th>
-              <th scope="col" class="col-sm-2">Cost (USD)</th>
-              <th scope="col" class="col-sm-2">Order Files</th>
-            </tr>
-          </thead>
-          
-          <tbody>
-            {% for order in orders %}
-            <tr>
-              <td>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" class="col-sm-2">Date Processed</th>
+            <th scope="col" class="col-sm-2">Cost (USD)</th>
+            <th scope="col" class="col-sm-2">Order Files</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>
+              <a href="{% url 'view_order' request.user.username order.pk %}">
+                <i class="fa-solid fa-cart-shopping"></i>
+              </a>
+              {{order.date_format}}
+              <div class="float-end">
                 <a href="#">
-                  <i class="fa-solid fa-circle-info"></i>
+                  <i class="fa-solid fa-copy"></i>
                 </a>
-                {{order.date_format}}
-                <div class="float-end">
-                  <a href="#">
-                    <i class="fa-solid fa-copy"></i>
-                  </a>
-                </div>
-              </td>
-              <td>{{order.total_cost}}</td>
-              <td>
-                <button type="submit" class="btn btn-primary btn-sm" name="search-catalog-number"><i class="fa-solid fa-download"></i> ZIP</button>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-  
-        </table>
-      </div>
+              </div>
+            </td>
+            <td>{{order.total_cost}}</td>
+            <td>
+              <button type="submit" class="btn btn-primary btn-sm" name="search-catalog-number"><i class="fa-solid fa-download"></i> ZIP</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
 
   </div>
 

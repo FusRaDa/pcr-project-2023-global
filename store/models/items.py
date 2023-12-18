@@ -53,13 +53,6 @@ class StorePlate(models.Model):
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
 
-  @property
-  def total_amount(self):
-    amount = self.kit.kitorder_set.all()
-    for a in amount:
-      num = a.amount_ordered
-    return self.amount * num
-
   def __str__(self):
     return self.name
 
@@ -69,13 +62,6 @@ class StoreTube(models.Model):
 
   name = models.CharField(blank=False, max_length=25, default="TUBE")
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
-
-  @property
-  def total_amount(self):
-    amount = self.kit.kitorder_set.all()
-    for a in amount:
-      num = a.amount_ordered
-    return self.amount * num
 
   def __str__(self):
     return self.name
@@ -116,13 +102,6 @@ class StoreReagent(models.Model):
 
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)
-
-  @property
-  def total_amount(self):
-    amount = self.kit.kitorder_set.all()
-    for a in amount:
-      num = a.amount_ordered
-    return Decimal(self.volume * num)
 
   def __str__(self):
     return self.name

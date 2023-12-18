@@ -34,4 +34,5 @@ urlpatterns = [
 
   path('review-order/<str:username>/<int:pk>/', orders_views.review_order, name='review_order'),
   path('orders/', orders_views.orders, name='orders'),
+  path('view-order/<str:username>/<int:pk>/', orders_views.view_order, name='view_order'),
 ]

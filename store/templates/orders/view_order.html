@@ -1,0 +1,62 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                         
+{% block title %} Store {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    <h5 class="text-center">Viewing Order</h5>
+  </div>
+
+  <div class="row">
+
+    {% for kits, kit_order in order_data %}
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" class="col-sm-3">{{kits.name}} × {{kit_order.amount_ordered}}</th>
+            <th scope="col" class="col-sm-2">Amount</th>
+            <th scope="col" class="col-sm-1">Total</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          {% for reagents in kits.storereagent_set.all %}
+          <tr class="table-success">
+            <td>{{reagents.name}}</td>
+            <td>{{reagents.volume}} {{reagents.unit_volume}} × {{kit_order.amount_ordered}}</td>
+            <td>{{reagents.total_amount}} {{reagents.unit_volume}}</td>
+          </tr>
+          {% endfor %}
+
+          {% for tubes in kits.storetube_set.all %}
+          <tr class="table-primary">
+            <td>{{tubes.name}}</td>
+            <td>{{tubes.amount}} × {{kit_order.amount_ordered}}</td>
+            <td>{{tubes.total_amount}}</td>
+          </tr>
+          {% endfor %}
+
+          {% for plates in kits.storeplate_set.all %}
+          <tr class="table-warning">
+            <td>{{plates.name}}</td>
+            <td>{{plates.amount}} × {{kit_order.amount_ordered}}</td>
+            <td>{{plates.total_amount}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+    {% endfor %}
+
+  </div>
+
+
+
+</div>
+{% endblock %}
