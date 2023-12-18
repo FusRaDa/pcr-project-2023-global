@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator
 from decimal import Decimal
@@ -13,8 +12,8 @@ class Order(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   kits = models.ManyToManyField(Kit, through='KitOrder')
 
-  date_added = models.DateTimeField(default=now, editable=False)
   has_ordered = models.BooleanField(blank=False, default=False)
+  date_processed = models.DateTimeField(blank=True, null=True, editable=False, default=None)
 
   @property
   def total_cost(self):
