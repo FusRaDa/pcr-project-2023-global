@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
-from django.utils.timezone import now
+from datetime import datetime
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -155,9 +155,11 @@ def review_order(request, username, pk):
       print(orderformset.non_form_errors())
 
   if 'process' in request.POST:
-    # order.has_ordered = True
-    # order.date_processed = now
-    print('order processed - sike')
+    order.has_ordered = True
+    order.date_processed = datetime.now()
+    order.save()
+    return redirect('orders')
+    # change this later for processing order
     
   context = {'orderformset': orderformset, 'kits_data': kits_data, 'display_data': display_data, 'order': order}
   return render(request, 'orders/review_order.html', context)
@@ -165,6 +167,6 @@ def review_order(request, username, pk):
 
 @login_required(login_url='login')
 def orders(request):
-  orders = Order.objects.filter(user=request.user, has_ordered=True).order_by('-date_added')
+  orders = Order.objects.filter(user=request.user, has_ordered=True).order_by('-date_processed')
   context = {'orders': orders}
   return render(request, 'orders/orders.html', context)

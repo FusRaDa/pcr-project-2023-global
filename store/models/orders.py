@@ -23,8 +23,11 @@ class Order(models.Model):
       cost += Decimal(amount.kit.price * amount.amount_ordered)
     return cost
 
+  def date_format(self):
+    return self.date_processed.strftime("%Y/%m/%d")
+  
   def __str__(self):
-    return f"Order - {self.date_added}"
+    return f"Order by: {self.user}"
   
 
 class KitOrder(models.Model):

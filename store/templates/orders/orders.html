@@ -7,14 +7,53 @@
 {% block content %}
 <div class="container">
 
+  <div class"row">
+    <h5 class="text-center">Previous Orders</h5>
+  </div>
+
   <div class="row">
 
     <div class="col-sm-6">
-      Orders
+      Kits and Items
     </div>
 
     <div class="col-sm-6">
-      Kits and Items
+
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col" class="col-sm-2">Date Processed</th>
+              <th scope="col" class="col-sm-2">Cost (USD)</th>
+              <th scope="col" class="col-sm-2">Order Files</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            {% for order in orders %}
+            <tr>
+              <td>
+                <a href="#">
+                  <i class="fa-solid fa-circle-info"></i>
+                </a>
+                {{order.date_format}}
+                <div class="float-end">
+                  <a href="#">
+                    <i class="fa-solid fa-copy"></i>
+                  </a>
+                </div>
+              </td>
+              <td>{{order.total_cost}}</td>
+              <td>
+                <button type="submit" class="btn btn-primary btn-sm" name="search-catalog-number"><i class="fa-solid fa-download"></i> ZIP</button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+  
+        </table>
+      </div>
+
     </div>
 
   </div>
