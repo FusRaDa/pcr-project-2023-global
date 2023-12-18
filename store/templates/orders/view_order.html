@@ -1,6 +1,7 @@
 {% extends "base.html" %} 
 
 {% load static %}
+{% load custom_tags %}
                                                                                                                                                                                                          
 {% block title %} Store {% endblock %} 
 
@@ -29,7 +30,7 @@
           <tr class="table-success">
             <td>{{reagents.name}}</td>
             <td>{{reagents.volume}} {{reagents.unit_volume}} × {{kit_order.amount_ordered}}</td>
-            <td>{{reagents.total_amount}} {{reagents.unit_volume}}</td>
+            <td>{{reagents.volume|dec_mult:kit_order.amount_ordered}} {{reagents.unit_volume}}</td>
           </tr>
           {% endfor %}
 
@@ -37,7 +38,7 @@
           <tr class="table-primary">
             <td>{{tubes.name}}</td>
             <td>{{tubes.amount}} × {{kit_order.amount_ordered}}</td>
-            <td>{{tubes.total_amount}}</td>
+            <td>{{tubes.amount|dec_mult:kit_order.amount_ordered}}</td>
           </tr>
           {% endfor %}
 
@@ -45,7 +46,7 @@
           <tr class="table-warning">
             <td>{{plates.name}}</td>
             <td>{{plates.amount}} × {{kit_order.amount_ordered}}</td>
-            <td>{{plates.total_amount}}</td>
+            <td>{{plates.amount|dec_mult:kit_order.amount_ordered}}</td>
           </tr>
           {% endfor %}
         </tbody>
