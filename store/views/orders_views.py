@@ -161,9 +161,8 @@ def review_order(request, username, pk):
   return render(request, 'orders/review_order.html', context)
 
 
-
 @login_required(login_url='login')
 def orders(request):
-  orders = Order.objects.filter(user=request.user, has_ordered=True)
+  orders = Order.objects.filter(user=request.user, has_ordered=True).order_by('-date_added')
   context = {'orders': orders}
   return render(request, 'orders/orders.html', context)

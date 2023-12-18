@@ -38,6 +38,7 @@
           </div>
         </ul>
         <div class="card-footer text-center">
+          <a href="{% url 'orders' %}"  class="btn btn-secondary">Previous Orders</a>
           <a href="{% url 'review_order' request.user.username order.pk %}" class="btn btn-primary">Review Order</a>
         </div>
       </div>
@@ -71,7 +72,7 @@
           {% csrf_token %}
           <div class="d-flex gap-1 flex-wrap justify-content-start">
             {% for brand in brand_tag_form.brands %}
-              <div class="p-2 border border-primary border-4 rounded">
+              <div class="p-2 border border-success border-4 rounded">
                 {{brand}}
               </div>
             {% endfor %}
@@ -91,9 +92,11 @@
 
         </form>
 
-        {% for kit in kits %}
-          {% include 'partials/kit_display.html' %}
-        {% endfor %}
+        <div class="d-flex gap-3 flex-wrap justify-content-center mt-2">
+          {% for kit in kits %}
+            {% include 'partials/kit_display.html' %}
+          {% endfor %}
+        </div>
 
       </div>
     </div>
