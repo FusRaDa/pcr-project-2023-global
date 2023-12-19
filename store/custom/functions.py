@@ -21,7 +21,6 @@ def generate_order_files(order, inputs):
       writer.writerow(field)
       for input in inputs:   
         if input['brand'] == brand.name:
-          print('entered')
           writer.writerow([input['catalog_number'], input['amount']])
     
     files.append(file.name)

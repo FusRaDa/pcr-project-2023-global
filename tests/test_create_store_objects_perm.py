@@ -1,6 +1,6 @@
 import pytest
 
-from store.custom.functions import generate_order_file
+from store.custom.functions import generate_order_files
 
 from store.models.affiliates import Brand, Contact
 from store.models.items import Tag, Kit, StorePlate, StoreReagent, StoreTube
@@ -17,6 +17,3 @@ def run():
     name="BRAND_2",
     is_affiliated = False,
   )
-
-
-generate_order_file()

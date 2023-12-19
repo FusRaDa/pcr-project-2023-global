@@ -16,10 +16,10 @@
 
     {% for kits, kit_order in order_data %}
     <div class="table-responsive">
-      Cat#: {{kits.catalog_number}}
+      {{kits.brand}} Cat#: {{kits.catalog_number}} <a type="button" class="btn btn-primary btn-sm float-end">Add To Inventory</a>
       <table class="table table-bordered">
         <thead>
-          <tr>
+          <tr class="table-dark">
             <th scope="col" class="col-sm-3">{{kits.name}} × {{kit_order.amount_ordered}}</th>
             <th scope="col" class="col-sm-2">Amount</th>
             <th scope="col" class="col-sm-1">Total</th>

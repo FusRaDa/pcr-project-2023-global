@@ -245,3 +245,7 @@ def copy_order(request, username, pk):
       order.kits.add(kit)
   
   return redirect('store')
+
+@login_required(login_url='login')
+def add_to_inventory(request):
+  pass
