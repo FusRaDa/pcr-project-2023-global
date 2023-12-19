@@ -2,7 +2,7 @@ import csv
 from zipfile import ZipFile
 import os
 
-def generate_order_files(order, zipped_data):
+def generate_order_files(order, inputs):
   path = 'static/files/'
 
   brand_arr = []
@@ -19,20 +19,17 @@ def generate_order_files(order, zipped_data):
       field = ['Catalog number', 'Quantity']
 
       writer.writerow(field)
-      for order_kits, kits in zipped_data:
-        if order_kits.brand == brand:
-          writer.writerow([order_kits.catalog_number, kits.amount_ordered])
+      for input in inputs:   
+        if input['brand'] == brand.name:
+          print('entered')
+          writer.writerow([input['catalog_number'], input['amount']])
+    
+    files.append(file.name)
 
-    files.append(file)
-
-  for file in files:
-    print(file.name)
-
-  zip_file_name = path + f"order_list_{order.date_file}.zip"
-  with ZipFile(zip_file_name, 'w') as zipf:
+  with ZipFile(path + f"order_{order.pk}_list_{order.date_file}.zip", 'w') as zipf:
 
     for file in files:
-      arcname = file.name.rsplit('/', 1)[-1]
-      zipf.write(file.name, arcname=arcname)
-      os.remove(file.name)
+      arcname = file.rsplit('/', 1)[-1]
+      zipf.write(file, arcname=arcname)
+      os.remove(file)
 

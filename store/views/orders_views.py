@@ -171,7 +171,15 @@ def review_order(request, username, pk):
     order.date_processed = timezone.now()
     order.save()
 
-    generate_order_files(order, display_data)
+    kits_zip = order.kits.all()
+    kit_orders = order.kitorder_set.all()
+    zip_data = zip(kits_zip, kit_orders)
+
+    inputs = []
+    for kits_zip, kit_orders in zip_data:
+      inputs.append({'brand': kits_zip.brand.name, 'catalog_number': kits_zip.catalog_number, 'amount': kit_orders.amount_ordered})
+
+    generate_order_files(order, inputs)
 
     return redirect('orders')
     # change this later for processing order
