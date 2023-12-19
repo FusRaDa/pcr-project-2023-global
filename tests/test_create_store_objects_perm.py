@@ -19,3 +19,4 @@ def run():
   )
 
 
+generate_order_file()

@@ -10,6 +10,8 @@ from django.db.models import Q
 # use in production with postgresql https://docs.djangoproject.com/en/3.2/ref/contrib/postgres/search/#trigramsimilarity
 from django.contrib.postgres.search import TrigramSimilarity
 
+from ..custom.functions import generate_order_files
+
 from users.models import User
 from ..models.items import Kit
 from ..models.orders import Order, KitOrder
@@ -165,6 +167,9 @@ def review_order(request, username, pk):
     order.has_ordered = True
     order.date_processed = datetime.now()
     order.save()
+
+    generate_order_files(order, display_data)
+
     return redirect('orders')
     # change this later for processing order
     
