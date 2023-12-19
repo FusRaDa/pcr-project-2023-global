@@ -32,7 +32,7 @@
               </a>
               {{order.date_format}}
               <div class="float-end">
-                <a href="#">
+                <a data-bs-toggle="modal" data-bs-target="#order-modal{{order.pk}}">
                   <i class="fa-solid fa-copy"></i>
                 </a>
               </div>
@@ -49,6 +49,52 @@
     </div>
 
   </div>
+
+  {% for order in orders %}
+  <div class="modal fade" id="order-modal{{order.pk}}" tabindex="-1" role="dialog" aria-labelledby="order-modal{{order.pk}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Copying Order...</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="container-sm">
+
+            <div class="row justify-content-center">
+              <h5 class="text-center">Are you sure?</h5>
+              <ol>
+                <li>Copy kits from this past order to your current order.</li>
+                <li>All kits in your current will be replaced by kits in this past order.</li>
+                <li>You must declare amount of kits to order again.</li>
+              </ol>
+
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-primary">Kits Ordered</li>
+                {% for kit in order.kits.all %}
+                <li class="list-group-item">{{kit.name}}</li>
+                {% endfor %}
+              </ul>
+
+            </div>
+
+            <div class="row justify-content-center">
+              <form method="POST" action="">
+                <div class="text-center mt-2">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <a href="{% url 'copy_order' request.user.username order.pk %}" type="submit" class="btn btn-primary">Confirm</a>
+                </div>
+              </form>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 
 
 </div>

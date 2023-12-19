@@ -155,6 +155,13 @@ def review_order(request, username, pk):
       print(orderformset.non_form_errors())
 
   if 'process' in request.POST:
+    orderformset = KitOrderFormSet(request.POST)
+    if orderformset.is_valid():
+      orderformset.save()
+    else:
+      print(orderformset.errors)
+      print(orderformset.non_form_errors())
+
     order.has_ordered = True
     order.date_processed = datetime.now()
     order.save()
@@ -194,4 +201,31 @@ def view_order(request, username, pk):
   
   context = {'order_data': order_data}
   return render(request, 'orders/view_order.html', context)
+
+
+@login_required(login_url='login')
+def copy_order(request, username, pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no order to copy.")
+    return redirect('orders')
   
+  try:
+    past_order = Order.objects.get(user=user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no order to copy.")
+    return redirect('orders')
+  
+  orders = Order.objects.filter(user=user, has_ordered=False)
+  if not orders.exists():
+    order = Order.objects.create(user=request.user, has_ordered=False)
+    for kit in past_order.kits.all():
+      order.kits.add(kit)
+  else:
+    order = Order.objects.get(user=request.user, has_ordered=False)
+    order.kits.clear()
+    for kit in past_order.kits.all():
+      order.kits.add(kit)
+  
+  return redirect('store')
