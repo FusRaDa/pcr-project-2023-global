@@ -215,7 +215,7 @@ def view_order(request, username, pk):
   
   order_data = zip(kits, kit_order)
   
-  context = {'order_data': order_data}
+  context = {'order_data': order_data, 'order': order}
   return render(request, 'orders/view_order.html', context)
 
 
@@ -246,6 +246,34 @@ def copy_order(request, username, pk):
   
   return redirect('store')
 
+
 @login_required(login_url='login')
-def add_to_inventory(request):
-  pass
+def add_to_inventory(request, username, order_pk, kit_pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no kit to add to your inventory.")
+    return redirect('orders')
+  
+  try:
+    order = Order.objects.get(user=user, pk=order_pk)
+    kit = Kit.objects.get(pk=kit_pk)
+
+    kit_order = order.kitorder_set.get(kit=kit)
+    print(kit_order.amount_ordered)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no kit to add to your inventory.")
+    return redirect('orders')
+  
+  if order.kits.all().contains(kit):
+    pass
+  else:
+    messages.error(request, "There is no kit to add to your inventory.")
+    return redirect('orders')
+
+  context = {}
+  return render(request, 'orders/add_to_inventory.html', context)
+  
+
+  
+

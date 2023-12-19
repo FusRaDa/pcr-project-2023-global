@@ -36,4 +36,6 @@ urlpatterns = [
   path('orders/', orders_views.orders, name='orders'),
   path('view-order/<str:username>/<int:pk>/', orders_views.view_order, name='view_order'),
   path('copy-order/<str:username>/<int:pk>/', orders_views.copy_order, name='copy_order'),
+
+  path('add-to-inventory/<str:username>/<int:order_pk>/<int:kit_pk>/', orders_views.add_to_inventory, name='add_to_inventory'),
 ]

@@ -16,7 +16,7 @@
 
     {% for kits, kit_order in order_data %}
     <div class="table-responsive">
-      {{kits.brand}} Cat#: {{kits.catalog_number}} <a type="button" class="btn btn-primary btn-sm float-end">Add To Inventory</a>
+      {{kits.brand}} Cat#: {{kits.catalog_number}} <a type="button" href="{% url 'add_to_inventory' request.user.username order.pk kits.pk %}" class="btn btn-primary btn-sm float-end">Add To Inventory</a>
       <table class="table table-bordered">
         <thead>
           <tr class="table-dark">

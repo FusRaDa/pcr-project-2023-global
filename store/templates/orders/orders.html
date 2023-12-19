@@ -11,6 +11,14 @@
     <h5 class="text-center">Previous Orders</h5>
   </div>
 
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
   <div class="row">
 
     <div class="table-responsive">
