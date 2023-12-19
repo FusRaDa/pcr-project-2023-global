@@ -30,6 +30,10 @@ class Order(models.Model):
     # look into https://pypi.org/project/django-tz-detect/ for turning UTC into user local timezone!
     return self.date_processed.strftime("%Y/%m/%d at %I:%M %p")
   
+  @property
+  def date_file(self):
+    return self.date_processed.strftime("%Y_%m_%d")
+  
   def __str__(self):
     return f"Order by: {self.user}"
   

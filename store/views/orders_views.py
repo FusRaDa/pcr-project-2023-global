@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
+
 from datetime import datetime
+from django.utils import timezone
+
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -165,7 +168,7 @@ def review_order(request, username, pk):
       print(orderformset.non_form_errors())
 
     order.has_ordered = True
-    order.date_processed = datetime.now()
+    order.date_processed = timezone.now()
     order.save()
 
     generate_order_files(order, display_data)
