@@ -4,8 +4,8 @@ The purpose of this project is create paperwork for lab technicians doing PCR by
 2 - Creating assays.
 3 - Creating plates and locations of samples.
 
-Current Apps: accounts, inventory, main, pcr
+Current Apps: accounts, inventory, main, pcr, users
 
-THIS IS THE MAIN BRANCH
+THIS IS THE MAIN BRANCH - Python 3.10.7
 
-Last updated - 12/15/23
+Last updated - 12/19/23

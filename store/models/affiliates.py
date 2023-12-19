@@ -14,9 +14,9 @@ class Brand(models.Model):
   @property
   def brand_logo(self):
     if self.logo:
-      return self.logo
+      return f"images/{self.logo}"
     else:
-      return "/profile-icon.png"
+      return "images/profile-icon.png"
     
   @property
   def affiliate(self):
