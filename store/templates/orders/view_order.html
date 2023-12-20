@@ -16,7 +16,7 @@
 
     {% for kits, kit_order in order_data %}
     <div class="table-responsive">
-
+      
       <div class="float-start fw-bold">{{kits.brand}} Cat#: {{kits.catalog_number}}</div>
       <div class="float-end">
         ({{kit_order.remaining_transfers}}/{{kit_order.amount_ordered}})

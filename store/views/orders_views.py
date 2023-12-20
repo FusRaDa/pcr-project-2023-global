@@ -188,7 +188,8 @@ def review_order(request, username, pk):
     for kits_zip, kit_orders in zip_data:
       inputs.append({'brand': kits_zip.brand.name, 'catalog_number': kits_zip.catalog_number, 'amount': kit_orders.amount_ordered})
 
-    generate_order_files(order, inputs)
+    file_path = generate_order_files(order, inputs)
+    order.orders_file = file_path
 
     return redirect('orders')
     # change this later for processing order

@@ -26,13 +26,16 @@ def generate_order_files(order, inputs):
           writer.writerow([input['catalog_number'], input['amount']])
     
     files.append(file.name)
-
-  with ZipFile(path + f"order_{order.pk}_list_{order.date_file}.zip", 'w') as zipf:
+    
+  file_path = path + f"order_{order.pk}_list_{order.date_file}.zip"
+  with ZipFile(path, 'w') as zipf:
 
     for file in files:
       arcname = file.rsplit('/', 1)[-1]
       zipf.write(file, arcname=arcname)
       os.remove(file)
+
+  return file_path
 
 
 def kit_to_inventory(kit, user, lot_number):
