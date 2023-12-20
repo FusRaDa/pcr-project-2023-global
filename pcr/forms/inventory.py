@@ -26,7 +26,7 @@ class PlateForm(ModelForm):
   location = forms.ModelMultipleChoiceField(
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
-    required=True)
+    required=False)
   
   exp_date = forms.DateField(
       widget=forms.DateInput(attrs={'type': 'date'}),
@@ -53,12 +53,38 @@ class PlateForm(ModelForm):
     exclude = ['user', 'last_updated']
 
 
+class EditPlateForm(ModelForm):
+
+  location = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=False)
+  
+  exp_date = forms.DateField(
+      widget=forms.DateInput(attrs={'type': 'date'}),
+      label='Date Start',
+      required=False)
+  
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+  class Meta:
+    model = Plate
+    fields = ['amount', 'exp_date', 'location']
+    exclude = ['user', 'last_updated']
+
+
 class TubeForm(ModelForm):
 
   location = forms.ModelMultipleChoiceField(
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
-    required=True)
+    required=False)
   
   exp_date = forms.DateField(
       widget=forms.DateInput(attrs={'type': 'date'}),
@@ -70,8 +96,6 @@ class TubeForm(ModelForm):
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
     
-    self.fields['location'].error_messages = {'required': "Select the storage location of this reagent."}
-
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['brand'].widget.attrs['class'] = 'form-control'
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
@@ -84,9 +108,34 @@ class TubeForm(ModelForm):
     self.fields['lot_number'].widget.attrs['placeholder'] = "Lot number of box..."
     self.fields['catalog_number'].widget.attrs['placeholder'] = "Catalog number of item..."
     
+  class Meta:
+    model = Tube
+    exclude = ['user', 'last_updated']
+
+
+class EditTubeForm(ModelForm):
+
+  location = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=False)
+  
+  exp_date = forms.DateField(
+      widget=forms.DateInput(attrs={'type': 'date'}),
+      label='Date Start',
+      required=False)
+
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
   class Meta:
     model = Tube
+    fields = ['amount', 'exp_date', 'location']
     exclude = ['user', 'last_updated']
 
 
@@ -95,7 +144,7 @@ class ReagentForm(ModelForm):
   location = forms.ModelMultipleChoiceField(
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
-    required=True)
+    required=False)
   
   exp_date = forms.DateField(
       widget=forms.DateInput(attrs={'type': 'date'}),
@@ -111,19 +160,9 @@ class ReagentForm(ModelForm):
 
     if usage == Reagent.Usages.EXTRACTION and (stock != None or unit != None):
       raise ValidationError(
-        {'usage': ["If reagent is for extraction, stock concentration is not needed."]}
+        message="If reagent is for extraction, stock concentration is not needed."
       )
 
-    if stock != None and unit == None:
-      raise ValidationError(
-        message="Don't forget to assign a concentration unit to your stock concentration."
-      )
-    
-    if stock == None and unit != None:
-      raise ValidationError(
-        message="Leave unit concentration blank if a stock concentration is not needed."
-      )
-    
     if pcr_reagent != None and usage == Reagent.Usages.EXTRACTION:
       raise ValidationError(
         message="Leave PCR reagent type empty if reagent usage is for extraction."
@@ -139,9 +178,19 @@ class ReagentForm(ModelForm):
         message="Water for PCR does not require concentration."
       )
     
-    if pcr_reagent == Reagent.PCRReagent.POLYMERASE and unit != Reagent.ConcentrationUnits.UNITS:
+    if pcr_reagent == Reagent.PCRReagent.POLYMERASE and (unit != Reagent.ConcentrationUnits.UNITS or stock == None):
       raise ValidationError(
         message="Polymerase must have a concentration unit of U/\u00B5L."
+      )
+    
+    if pcr_reagent == Reagent.PCRReagent.GENERAL and unit == Reagent.ConcentrationUnits.UNITS:
+      raise ValidationError(
+        message="General PCR reagents cannot have a concentration unit of U/\u00B5L."
+      )
+    
+    if pcr_reagent == Reagent.PCRReagent.GENERAL and (unit == None or stock == None):
+      raise ValidationError(
+        message="General PCR reagents must have a concentration."
       )
   
   def __init__(self, *args, **kwargs):
@@ -165,4 +214,30 @@ class ReagentForm(ModelForm):
   
   class Meta:
     model = Reagent
+    exclude = ['user', 'last_updated']
+
+
+class EditReagentForm(ModelForm):
+
+  location = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=False)
+  
+  exp_date = forms.DateField(
+      widget=forms.DateInput(attrs={'type': 'date'}),
+      label='Date Start',
+      required=False)
+  
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['volume'].widget.attrs['class'] = 'form-control'
+    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+  
+  class Meta:
+    model = Reagent
+    fields = ['location', 'volume', 'exp_date']
     exclude = ['user', 'last_updated']

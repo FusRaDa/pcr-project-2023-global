@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from django.db.models import F
 from django.contrib import messages
 from users.models import User
 
 from ..models.inventory import Location, Reagent, Tube, Plate
-from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm
+from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, EditTubeForm, EditPlateForm, EditReagentForm
 from ..forms.general import DeletionForm
 
 
@@ -121,11 +122,11 @@ def edit_plate(request, username, pk):
     messages.error(request, "There is no plate to edit.")
     return redirect('plates')
   
-  form = PlateForm(user=request.user, instance=plate)
+  form = EditPlateForm(user=request.user, instance=plate)
   del_form = DeletionForm(value=plate.name)
 
   if 'update' in request.POST:
-    form = PlateForm(request.POST, user=request.user, instance=plate)
+    form = EditPlateForm(request.POST, user=request.user, instance=plate)
     if form.is_valid():
       form.save()
       return redirect('plates')
@@ -188,11 +189,11 @@ def edit_tube(request, username, pk):
     messages.error(request, "There is no tube to edit.")
     return redirect('locations')
   
-  form = TubeForm(instance=tube, user=request.user)
+  form = EditTubeForm(instance=tube, user=request.user)
   del_form = DeletionForm(value=tube.name)
 
   if 'update' in request.POST:
-    form = TubeForm(request.POST, user=request.user, instance=tube)
+    form = EditTubeForm(request.POST, user=request.user, instance=tube)
     if form.is_valid():
       form.save()
       return redirect('tubes')
@@ -256,11 +257,11 @@ def edit_reagent(request, username, pk):
     messages.error(request, "There is no reagent to edit.")
     return redirect('reagents')
   
-  form = ReagentForm(instance=reagent, user=request.user)
+  form = EditReagentForm(instance=reagent, user=request.user)
   del_form = DeletionForm(value=reagent.name)
 
   if 'update' in request.POST:
-    form = ReagentForm(request.POST, user=request.user, instance=reagent)
+    form = EditReagentForm(request.POST, user=request.user, instance=reagent)
     if form.is_valid():
       form.save()
       return redirect('reagents')

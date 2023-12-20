@@ -117,6 +117,6 @@ class Reagent(models.Model):
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
-    
+
   def __str__(self):
     return f"{self.name}-{self.lot_number}"
