@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.forms import modelformset_factory
+from django.forms import modelformset_factory, formset_factory
 
 from datetime import datetime
 from django.utils import timezone
@@ -13,13 +13,14 @@ from django.db.models import Q
 # use in production with postgresql https://docs.djangoproject.com/en/3.2/ref/contrib/postgres/search/#trigramsimilarity
 from django.contrib.postgres.search import TrigramSimilarity
 
-from ..custom.functions import generate_order_files
+from ..custom.functions import generate_order_files, kit_to_inventory
 
 from users.models import User
 from ..models.items import Kit
 from ..models.orders import Order, KitOrder
 from ..forms.orders import KitOrderForm
-from ..forms.general import SearchBrandTagForm, SearchCatalogForm, SearchNameForm
+from ..forms.general import SearchBrandTagForm, SearchCatalogForm, SearchNameForm, ItemLotNumberForm
+from pcr.models.inventory import Plate, Tube, Reagent
 
 
 @login_required(login_url='login')
@@ -249,6 +250,7 @@ def copy_order(request, username, pk):
 
 @login_required(login_url='login')
 def add_to_inventory(request, username, order_pk, kit_pk):
+
   user = User.objects.get(username=username)
 
   if request.user != user:
@@ -258,20 +260,31 @@ def add_to_inventory(request, username, order_pk, kit_pk):
   try:
     order = Order.objects.get(user=user, pk=order_pk)
     kit = Kit.objects.get(pk=kit_pk)
-
     kit_order = order.kitorder_set.get(kit=kit)
-    print(kit_order.amount_ordered)
   except ObjectDoesNotExist:
     messages.error(request, "There is no kit to add to your inventory.")
     return redirect('orders')
-  
-  if order.kits.all().contains(kit):
-    pass
-  else:
-    messages.error(request, "There is no kit to add to your inventory.")
-    return redirect('orders')
 
-  context = {}
+  OrderFormSet = formset_factory(
+    ItemLotNumberForm, 
+    extra=kit_order.amount_ordered, 
+    max_num=kit_order.amount_ordered
+    )
+  
+  formset = OrderFormSet()
+
+  if request.method == 'POST':
+    formset = OrderFormSet(request.POST)
+    if formset.is_valid():
+      for form in formset:
+        lot_number = form.cleaned_data.get('lot_number')
+        if lot_number != None:
+          kit_to_inventory(kit, user, lot_number)
+          print('add kit...')
+          # kit_order.amount_ordered -= 1
+      
+
+  context = {'formset': formset, 'kit': kit, 'order': order, 'kit_order': kit_order}
   return render(request, 'orders/add_to_inventory.html', context)
   
 

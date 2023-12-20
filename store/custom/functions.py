@@ -2,6 +2,8 @@ import csv
 from zipfile import ZipFile
 import os
 
+from pcr.models.inventory import Tube, Plate, Reagent
+
 def generate_order_files(order, inputs):
   path = 'static/files/'
 
@@ -31,4 +33,43 @@ def generate_order_files(order, inputs):
       arcname = file.rsplit('/', 1)[-1]
       zipf.write(file, arcname=arcname)
       os.remove(file)
+
+
+def kit_to_inventory(kit, user, lot_number):
+
+  for reagent in kit.storereagent_set.all():
+    Reagent.objects.create(
+      user = user,
+      name = reagent.name,
+      brand = kit.brand,
+      lot_number = lot_number,
+      catalog_number = kit.catalog_number,
+      usage = reagent.usage,
+      pcr_reagent = reagent.pcr_reagent,
+      volume = reagent.volume,
+      unit_volume = reagent.unit_volume,
+      stock_concentration = reagent.stock_concentration,
+      unit_concentration = reagent.unit_concentration,
+    )
+
+  for tube in kit.storetube_set.all():
+    Tube.objects.create(
+      user = user,
+      name = tube.name,
+      brand = kit.brand,
+      lot_number = lot_number,
+      catalog_number = kit.catalog_number,
+      amount = tube.amount,
+    )
+
+  for plate in kit.storeplate_set.all():
+    Plate.objects.create(
+      user = user,
+      name = plate.name,
+      brand = kit.brand,
+      lot_number = lot_number,
+      catalog_number = kit.catalog_number,
+      size = plate.size,
+      amount = plate.amount,
+    )
 

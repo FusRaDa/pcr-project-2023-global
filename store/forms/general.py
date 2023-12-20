@@ -6,6 +6,14 @@ from ..models.affiliates import Brand
 from ..models.items import Tag
 
 
+class ItemLotNumberForm(forms.Form):
+  lot_number = forms.CharField(required=False)
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs) 
+    self.fields['lot_number'].widget.attrs['class'] = 'form-control'
+
+
 class SearchCatalogForm(forms.Form):
   cat_num = forms.CharField(required=False)
 
