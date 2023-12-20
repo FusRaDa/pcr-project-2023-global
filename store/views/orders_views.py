@@ -272,6 +272,10 @@ def add_to_inventory(request, username, order_pk, kit_pk):
   except ObjectDoesNotExist:
     messages.error(request, "There is no kit to add to your inventory.")
     return redirect('orders')
+  
+  if kit_order.remaining_transfers == 0:
+    messages.error(request, "There is no longer any more of this kit to add from that order.")
+    return redirect('orders')
 
   OrderFormSet = formset_factory(
     ItemLotNumberForm, 
@@ -289,8 +293,9 @@ def add_to_inventory(request, username, order_pk, kit_pk):
         if lot_number != None:
           kit_to_inventory(kit, user, lot_number)
           print('add kit...')
-          # kit_order.amount_ordered -= 1
-      
+          kit_order.remaining_transfers -= 1
+          kit_order.save()
+      return redirect('view_order', request.user.username, order.pk)
 
   context = {'formset': formset, 'kit': kit, 'order': order, 'kit_order': kit_order}
   return render(request, 'orders/add_to_inventory.html', context)

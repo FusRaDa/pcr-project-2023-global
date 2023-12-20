@@ -16,7 +16,13 @@
 
     {% for kits, kit_order in order_data %}
     <div class="table-responsive">
-      {{kits.brand}} Cat#: {{kits.catalog_number}} <a type="button" href="{% url 'add_to_inventory' request.user.username order.pk kits.pk %}" class="btn btn-primary btn-sm float-end">Add To Inventory</a>
+
+      <div class="float-start fw-bold">{{kits.brand}} Cat#: {{kits.catalog_number}}</div>
+      <div class="float-end">
+        ({{kit_order.remaining_transfers}}/{{kit_order.amount_ordered}})
+        <a type="button" href="{% url 'add_to_inventory' request.user.username order.pk kits.pk %}" class="btn btn-primary btn-sm {% if kit_order.remaining_transfers == 0 %} disabled {% endif %}">Add To Inventory</a>
+      </div>
+ 
       <table class="table table-bordered">
         <thead>
           <tr class="table-dark">
