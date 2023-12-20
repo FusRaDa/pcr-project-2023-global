@@ -2,6 +2,8 @@ import csv
 from zipfile import ZipFile
 import os
 
+from django.core.files import File
+
 from pcr.models.inventory import Tube, Plate, Reagent
 
 def generate_order_files(order, inputs):
@@ -26,16 +28,19 @@ def generate_order_files(order, inputs):
           writer.writerow([input['catalog_number'], input['amount']])
     
     files.append(file.name)
-    
+  
   file_path = path + f"order_{order.pk}_list_{order.date_file}.zip"
-  with ZipFile(path, 'w') as zipf:
+  with ZipFile(file_path, 'w') as zipf:
 
     for file in files:
       arcname = file.rsplit('/', 1)[-1]
       zipf.write(file, arcname=arcname)
       os.remove(file)
 
-  return file_path
+  local_file = open(file_path, 'rb')
+  order.orders_file.save(f"order_{order.pk}_list_{order.date_file}.zip", local_file)
+  local_file.close()
+
 
 
 def kit_to_inventory(kit, user, lot_number):
