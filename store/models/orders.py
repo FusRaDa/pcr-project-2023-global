@@ -43,7 +43,7 @@ class KitOrder(models.Model):
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
 
   amount_ordered = models.IntegerField(validators=[MinValueValidator(1)], default=1)
-  in_inventory = models.BooleanField(default=False, editable=False)
+  remaining_transfers = models.IntegerField(validators=[MinValueValidator(0)], default=0)
 
   def __str__(self):
     return f"Through - {self.kit.name}"

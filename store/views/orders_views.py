@@ -154,6 +154,10 @@ def review_order(request, username, pk):
   if 'recalculate' in request.POST:
     orderformset = KitOrderFormSet(request.POST)
     if orderformset.is_valid():
+      orderformset.save(commit=False)
+      for form in orderformset:
+        amount_ordered = form.cleaned_data.get('amount_ordered')
+        form.instance.remaining_transfers = amount_ordered
       orderformset.save()
       return redirect(request.path_info)
     else:
@@ -163,6 +167,10 @@ def review_order(request, username, pk):
   if 'process' in request.POST:
     orderformset = KitOrderFormSet(request.POST)
     if orderformset.is_valid():
+      orderformset.save(commit=False)
+      for form in orderformset:
+        amount_ordered = form.cleaned_data.get('amount_ordered')
+        form.instance.remaining_transfers = amount_ordered
       orderformset.save()
     else:
       print(orderformset.errors)
@@ -267,8 +275,8 @@ def add_to_inventory(request, username, order_pk, kit_pk):
 
   OrderFormSet = formset_factory(
     ItemLotNumberForm, 
-    extra=kit_order.amount_ordered, 
-    max_num=kit_order.amount_ordered
+    extra=kit_order.remaining_transfers, 
+    max_num=kit_order.remaining_transfers
     )
   
   formset = OrderFormSet()

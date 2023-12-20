@@ -14,4 +14,4 @@ class KitOrderForm(ModelForm):
 
   class Meta:
     model = KitOrder
-    exclude = ['order', 'kit']
+    exclude = ['order', 'kit', 'remaining_transfers']
