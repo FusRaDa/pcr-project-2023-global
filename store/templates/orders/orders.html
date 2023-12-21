@@ -47,8 +47,9 @@
             </td>
             <td>{{order.total_cost}}</td>
             <td>
-              <a href={{order.orders_file.url}} download>
-                <button type="submit" class="btn btn-primary btn-sm" name="search-catalog-number"><i class="fa-solid fa-download"></i> ZIP</button>
+              
+              <a {% if order.orders_file %} href={{order.orders_file.url}} {% endif %} download>
+                <button type="submit" class="btn btn-primary btn-sm {% if not order.orders_file %} disabled {% endif %}" name="search-catalog-number"><i class="fa-solid fa-download"></i> ZIP</button>
               </a>
             </td>
           </tr>

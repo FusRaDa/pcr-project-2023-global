@@ -1,10 +1,17 @@
 import csv
 from zipfile import ZipFile
+import random
+import string
 import os
 
-from django.core.files import File
-
 from pcr.models.inventory import Tube, Plate, Reagent
+
+
+def generate_random_file_name(length):
+  letters = string.ascii_lowercase
+  result_str = ''.join(random.choice(letters) for i in range(length))
+  return result_str
+
 
 def generate_order_files(order, inputs):
   path = 'static/orders/'
@@ -28,18 +35,23 @@ def generate_order_files(order, inputs):
           writer.writerow([input['catalog_number'], input['amount']])
     
     files.append(file.name)
-  
-  file_path = path + f"order_{order.pk}_list_{order.date_file}.zip"
-  with ZipFile(file_path, 'w') as zipf:
+
+  rdm = generate_random_file_name(8)
+  date = order.date_processed.strftime("%Y_%m_%d")
+  file_name = f"order_{date}_list_{rdm}.zip"
+
+  with ZipFile(path + file_name, 'w') as zipf:
 
     for file in files:
       arcname = file.rsplit('/', 1)[-1]
       zipf.write(file, arcname=arcname)
       os.remove(file)
 
-  local_file = open(file_path, 'rb')
-  order.orders_file.save(f"order_{order.pk}_list_{order.date_file}.zip", local_file)
+  local_file = open(path + file_name, 'rb')
+  order.orders_file.save(file_name, local_file)
   local_file.close()
+
+  os.remove(path + file_name)
 
 
 
