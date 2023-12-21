@@ -7,7 +7,7 @@ from django.core.files import File
 from pcr.models.inventory import Tube, Plate, Reagent
 
 def generate_order_files(order, inputs):
-  path = 'static/files/'
+  path = 'static/orders/'
 
   brand_arr = []
   for kit in order.kits.all():

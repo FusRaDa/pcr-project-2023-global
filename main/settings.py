@@ -160,10 +160,10 @@ DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new ins
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
 # Media files storage settings
-MEDIA_URL = '/images/'
+MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = [
   os.path.join(BASE_DIR, 'static')
 ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static')

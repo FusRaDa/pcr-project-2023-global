@@ -15,7 +15,7 @@ class Order(models.Model):
   has_ordered = models.BooleanField(blank=False, default=False)
   date_processed = models.DateTimeField(blank=True, null=True, editable=False, default=None)
 
-  orders_file = models.FileField(null=True, blank=True)
+  orders_file = models.FileField(null=True, blank=True, upload_to='orders')
 
   @property
   def total_cost(self):
