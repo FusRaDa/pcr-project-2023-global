@@ -38,7 +38,7 @@ def generate_order_files(order, inputs):
 
   rdm = generate_random_file_name(8)
   date = order.date_processed.strftime("%Y_%m_%d")
-  file_name = f"order_{date}_list_{rdm}.zip"
+  file_name = f"{order.user}_order_{date}_{rdm}.zip"
 
   with ZipFile(path + file_name, 'w') as zipf:
 

@@ -8,7 +8,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class Brand(models.Model):
   name = models.CharField(blank=False, unique=True, max_length=50)
-  logo = models.ImageField(null=True, blank=True, upload_to='brands', default='brands/default-brand.jpg')
+  logo = models.ImageField(null=True, blank=True, upload_to='brands', default='brands/default-brand.png')
   is_affiliated = models.BooleanField(blank=False, default=False)
 
   @property

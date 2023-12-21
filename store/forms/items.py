@@ -34,6 +34,7 @@ class KitForm(ModelForm):
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['price'].widget.attrs['class'] = 'form-control'
     self.fields['affiliate_link'].widget.attrs['class'] = 'form-control'
+    self.fields['image'].widget.attrs['class'] = 'form-control'
 
   class Meta:
     model = Kit

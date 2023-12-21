@@ -69,7 +69,7 @@ def create_kit(request):
   form = KitForm()
 
   if request.method == 'POST':
-    form = KitForm(request.POST)
+    form = KitForm(request.POST, request.FILES)
     if form.is_valid():
       kit = form.save()
       return redirect('edit_kit_items', kit.pk)
@@ -88,7 +88,7 @@ def edit_kit(request, pk):
   del_form = DeletionForm(value=kit.name)
 
   if 'update' in request.POST:
-    form = KitForm(request.POST, instance=kit)
+    form = KitForm(request.POST, request.FILES, instance=kit)
     if form.is_valid():
       form.save()
       return redirect('edit_kit_items', pk)

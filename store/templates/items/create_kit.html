@@ -7,7 +7,7 @@
 {% block content %}
 <div class="container">
 
-  <form method="POST" action="">
+  <form method="POST" action="" enctype='multipart/form-data'>
     {% csrf_token %}
     <div class="row justify-content-center">
 
@@ -55,6 +55,11 @@
         <div class="text-center">
           <label class="form-label">Affiliate Link</label>
           {{form.affiliate_link}}
+        </div>
+
+        <div class="text-center ">
+          <label class="form-label">Upload Image</label>
+          {{form.image}}
         </div>
       </div>
 
