@@ -119,8 +119,10 @@ class Review(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
 
-  text = models.TextField()
-  rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0) # https://www.w3schools.com/howto/howto_css_star_rating.asp
+  text = models.TextField(blank=False)
+
+  rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=5) # https://www.w3schools.com/howto/howto_css_star_rating.asp
+  flags = models.IntegerField(validators=[MinValueValidator(0)], default=0)
 
   def __str__(self):
     return f"{self.kit.name} by {self.user}"

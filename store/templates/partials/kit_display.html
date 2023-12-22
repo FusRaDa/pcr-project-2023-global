@@ -17,14 +17,14 @@
 
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 
-      <a href="#" class="btn btn-warning float-start">Reviews</a>
+      <a href="{% url 'reviews' kit.pk %}" class="btn btn-warning btn-sm float-start">Reviews/Details</a>
 
       <button
         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
         hx-post="{% url 'add_kit_to_order' request.user.username order.pk kit.pk %}"
         hx-target="#orders-in-kit"
         hx-swap="beforeend"
-        class="btn btn-primary float-end" 
+        class="btn btn-primary btn-sm float-end" 
         name="add">
         Add Kit
       </button>

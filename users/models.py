@@ -15,6 +15,8 @@ class User(AbstractUser):
     help_text="The user's Stripe Customer object, if it exists"
   )
 
+  can_review = models.BooleanField(default=True)
+
   def is_subscribed(self):
     if self.subscription != None and self.customer != None:
       return "🧪"

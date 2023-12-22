@@ -5,7 +5,7 @@ from django.contrib import messages
 
 from ..models.affiliates import Brand
 from ..models.items import Kit, StorePlate, StoreReagent, StoreTube, Tag, Review
-from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm, TagForm
+from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm, TagForm, ReviewForm
 from ..forms.general import DeletionForm
 
 
@@ -258,8 +258,32 @@ def edit_plate(request, pk):
 
 @login_required(login_url='login')
 def reviews(request, pk):
+  form = ReviewForm()
+
+  if request.user.can_review == False:
+    messages.error(request, "You have been banned from making reviews for violating our policy. Please contact abc@gmail.com for assistance.")
+    return redirect(request.path_info)
+  
   kit = Kit.objects.get(pk=pk)
   reviews = Review.objects.filter(kit=kit)
 
-  context = {'kit': kit, 'reviews': reviews}
+  has_reviewed = False
+  if Review.objects.filter(user=request.user, kit=kit).exists():
+    has_reviewed = True
+  
+  if request.method == "POST":
+    form = ReviewForm(request.POST)
+    if form.is_valid():
+      review = form.save(commit=False)
+      review.user = request.user
+      review.kit = kit
+      review.save()
+      return redirect(request.path_info)
+    else:
+      print(form.errors)
+
+  context = {'kit': kit, 'reviews': reviews, 'has_reviewed': has_reviewed, 'form': form}
   return render(request, 'items/reviews.html', context)
+
+
+  

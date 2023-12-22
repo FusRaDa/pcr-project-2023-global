@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
 
-from ..models.items import Kit, StorePlate, StoreTube, StoreReagent, Tag
+from ..models.items import Kit, StorePlate, StoreTube, StoreReagent, Tag, Review
 from ..models.affiliates import Brand
 
 
@@ -123,3 +123,17 @@ class StoreReagentForm(ModelForm):
   class Meta:
     model = StoreReagent
     exclude = ['kit']
+
+
+class ReviewForm(ModelForm):
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['text'].widget.attrs['class'] = 'form-control'
+    self.fields['rating'].widget.attrs['class'] = 'form-control'
+    self.fields['rating'].widget.attrs['min'] = 0
+    self.fields['rating'].widget.attrs['max'] = 5
+
+  class Meta:
+    model = Review
+    exclude = ['kit', 'user', 'flags']

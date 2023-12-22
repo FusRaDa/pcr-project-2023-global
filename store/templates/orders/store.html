@@ -21,7 +21,7 @@
 
   <div class="row mt-2 justify-content-center">
 
-    <div class="col-sm-3">
+    <div class="col-sm-3 px-4 mb-2">
       <div class="card">
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -42,8 +42,8 @@
           </div>
         </ul>
         <div class="card-footer text-center">
-          <a href="{% url 'orders' %}"  class="btn btn-secondary">Previous Orders</a>
-          <a href="{% url 'review_order' request.user.username order.pk %}" class="btn btn-primary">Review Order</a>
+          <a href="{% url 'orders' %}"  class="btn btn-secondary btn-sm float-start">Previous Orders</a>
+          <a href="{% url 'review_order' request.user.username order.pk %}" class="btn btn-primary btn-sm float-end">Review Order</a>
         </div>
       </div>
     </div>
@@ -57,14 +57,14 @@
             <div class="col-sm-6">
               <div class="input-group mb-3">
                 {{kit_name_form.kit_name}}
-                <button type="submit" class="btn btn-primary" name="search-kit-name">Search By Kit</button>
+                <button type="submit" class="btn btn-primary" name="search-kit-name">🔎 Kit</button>
               </div>
             </div>
 
             <div class="col-sm-6">
               <div class="input-group mb-3">
                 {{catalog_number_form.cat_num}}
-                <button type="submit" class="btn btn-primary" name="search-catalog-number">Search By Catalog</button>
+                <button type="submit" class="btn btn-primary" name="search-catalog-number">🔎 Catalog</button>
               </div>
             </div>
 
