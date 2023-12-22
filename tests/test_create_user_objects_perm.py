@@ -16,10 +16,7 @@ def run():
 
   username = 'fusrada1'
 
-  try:
-    user = User.objects.get(username=username)
-  except ObjectDoesNotExist:
-    return f"{username} not found. Test failed"
+  user = User.objects.get(username=username)
 
   # according to https://www.sigmaaldrich.com/US/en/technical-documents/protocol/genomics/pcr/standard-pcr
   ThermalCyclerProtocol.objects.create(
