@@ -1,16 +1,33 @@
-<div class="card border border-primary border-5" style="width: 18rem;">
-  <img {% if kit.image %} src="{{kit.image.url}}" {% endif %} class="card-img-top" alt="...">
+<div class="card border border-primary border-5 form-width-18">
+  <a {% if kit.affiliate_link %} href="{{kit.affiliate_link}}" target="_blank" {% endif %}>
+    <img {% if kit.image %} src="{{kit.image.url}}" {% endif %} class="card-img-top" alt="...">
+  </a>
   <div class="card-body">
     <h5 class="card-title">{{kit.name}}</h5>
+
+      <i class="fa-solid fa-star"></i>
+      <i class="fa-solid fa-star"></i>
+      <i class="fa-regular fa-star"></i>
+      <i class="fa-regular fa-star"></i>
+      <i class="fa-regular fa-star"></i>
+
+      {% if kit.avg_review %}
+      <span>{{kit.avg_review}}/5</span>
+      {% endif %}
+
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+      <a href="#" class="btn btn-warning float-start">Reviews</a>
+
       <button
         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-        hx-post="{% url 'add_kit_to_order' request.user.username order.pk kit.pk%}"
+        hx-post="{% url 'add_kit_to_order' request.user.username order.pk kit.pk %}"
         hx-target="#orders-in-kit"
         hx-swap="beforeend"
-        class="btn btn-primary" 
+        class="btn btn-primary float-end" 
         name="add">
         Add Kit
       </button>
+
   </div>
 </div>

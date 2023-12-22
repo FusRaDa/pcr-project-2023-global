@@ -1,0 +1,23 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                         
+{% block title %} Store {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    <h5 class="text-center">Review for {{kit.name}}</h5>
+  </div>
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+{% endblock %}

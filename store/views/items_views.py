@@ -4,7 +4,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
 from ..models.affiliates import Brand
-from ..models.items import Kit, StorePlate, StoreReagent, StoreTube, Tag
+from ..models.items import Kit, StorePlate, StoreReagent, StoreTube, Tag, Review
 from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm, TagForm
 from ..forms.general import DeletionForm
 
@@ -254,3 +254,12 @@ def edit_plate(request, pk):
 
   context = {'form': form, 'del_form': del_form, 'plate': plate}
   return render(request, 'items/edit_plate.html', context)
+
+
+@login_required(login_url='login')
+def reviews(request, pk):
+  kit = Kit.objects.get(pk=pk)
+  reviews = Review.objects.filter(kit=kit)
+
+  context = {'kit': kit, 'reviews': reviews}
+  return render(request, 'items/reviews.html', context)

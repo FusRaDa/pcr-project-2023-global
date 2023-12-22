@@ -36,6 +36,12 @@ class Kit(models.Model):
       )
     ]
 
+  @property
+  def avg_review(self):
+    reviews = self.review_set.all()
+    for review in reviews:
+      print(review.rating)
+
   def __str__(self):
     return f"{self.name}-{self.catalog_number}"
 
@@ -114,7 +120,7 @@ class Review(models.Model):
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
 
   text = models.TextField()
-  rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0) # https://www.w3schools.com/howto/howto_css_star_rating.asp
+  rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0) # https://www.w3schools.com/howto/howto_css_star_rating.asp
 
   def __str__(self):
     return f"{self.kit.name} by {self.user}"
