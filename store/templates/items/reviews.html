@@ -1,7 +1,7 @@
 {% extends "base.html" %} 
 
 {% load static %}
-                                                                                                                                                                                                         
+                                                                                                                                                                        
 {% block title %} Store {% endblock %} 
 
 {% block content %}
@@ -22,7 +22,42 @@
   <div class="row">
 
     <div class="col-sm-6">
-      Kit Details
+
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col" class="col-sm-4">Cat#: {{kit.catalog_number}}</th>
+              <th scope="col" class="col-sm-2">Amount</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            {% for reagents in kit.storereagent_set.all %}
+            <tr class="table-success">
+              <td>{{reagents.name}}</td>
+              <td>{{reagents.volume}} {{reagents.unit_volume}}</td>
+            </tr>
+            {% endfor %}
+
+            {% for tubes in kit.storetube_set.all %}
+            <tr class="table-primary">
+              <td>{{tubes.name}}</td>
+              <td>{{tubes.amount}}</td>
+            </tr>
+            {% endfor %}
+
+            {% for plates in kit.storeplate_set.all %}
+            <tr class="table-warning">
+              <td>{{plates.name}}</td>
+              <td>{{plates.amount}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+  
+        </table>
+      </div>
+
     </div>
 
     <div class="col-sm-6">

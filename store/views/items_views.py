@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 
 from ..models.affiliates import Brand
 from ..models.items import Kit, StorePlate, StoreReagent, StoreTube, Tag, Review
 from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm, TagForm, ReviewForm
 from ..forms.general import DeletionForm
+from users.models import User
 
 
 @staff_member_required(login_url='login')
@@ -284,6 +286,22 @@ def reviews(request, pk):
 
   context = {'kit': kit, 'reviews': reviews, 'has_reviewed': has_reviewed, 'form': form}
   return render(request, 'items/reviews.html', context)
+
+
+@login_required(login_url='login')
+def edit_review(request, username, review_pk, kit_pk):
+
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no review to edit.")
+    return redirect('reviews', kit_pk)
+  
+  try:
+    review = Review.objects.get(pk=review_pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no review to edit.")
+    return redirect('reviews', kit_pk)
 
 
   

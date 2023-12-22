@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
@@ -122,7 +123,9 @@ class Review(models.Model):
   text = models.TextField(blank=False)
 
   rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=5) # https://www.w3schools.com/howto/howto_css_star_rating.asp
-  flags = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  is_reported = models.BooleanField(default=False)
+
+  date_updated = models.DateField(default=now)
 
   def __str__(self):
     return f"{self.kit.name} by {self.user}"

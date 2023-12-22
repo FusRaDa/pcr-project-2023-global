@@ -136,4 +136,4 @@ class ReviewForm(ModelForm):
 
   class Meta:
     model = Review
-    exclude = ['kit', 'user', 'flags']
+    exclude = ['kit', 'user', 'is_reported', 'date_updated']
