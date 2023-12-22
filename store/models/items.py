@@ -1,7 +1,9 @@
 from django.db import models
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
+
+from users.models import User
 from ..models.affiliates import Brand
 
 
@@ -105,4 +107,16 @@ class StoreReagent(models.Model):
 
   def __str__(self):
     return self.name
+  
+
+class Review(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
+
+  text = models.TextField()
+  rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0) # https://www.w3schools.com/howto/howto_css_star_rating.asp
+
+  def __str__(self):
+    return f"{self.kit.name} by {self.user}"
+
   
