@@ -261,10 +261,6 @@ def edit_plate(request, pk):
 @login_required(login_url='login')
 def reviews(request, pk):
   form = ReviewForm()
-
-  if request.user.can_review == False:
-    messages.error(request, "You have been banned from making reviews for violating our policy. Please contact abc@gmail.com for assistance.")
-    return redirect(request.path_info)
   
   kit = Kit.objects.get(pk=pk)
   reviews = Review.objects.filter(kit=kit)
@@ -274,6 +270,11 @@ def reviews(request, pk):
     has_reviewed = True
   
   if request.method == "POST":
+
+    if request.user.can_review == False:
+      messages.error(request, "You have been banned from making reviews for violating our policy. Please contact abc@gmail.com for assistance.")
+      return redirect(request.path_info)
+  
     form = ReviewForm(request.POST)
     if form.is_valid():
       review = form.save(commit=False)

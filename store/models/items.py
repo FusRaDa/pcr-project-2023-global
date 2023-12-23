@@ -40,8 +40,17 @@ class Kit(models.Model):
   @property
   def avg_review(self):
     reviews = self.review_set.all()
-    for review in reviews:
-      print(review.rating)
+    if len(reviews) > 0:
+      review_num = 0
+      sum = 0
+      for review in reviews:
+        sum += review.rating
+        review_num += 1
+      avg = int(sum / review_num)
+      return avg
+    else:
+      return None
+    
 
   def __str__(self):
     return f"{self.name}-{self.catalog_number}"
@@ -129,5 +138,3 @@ class Review(models.Model):
 
   def __str__(self):
     return f"{self.kit.name} by {self.user}"
-
-  
