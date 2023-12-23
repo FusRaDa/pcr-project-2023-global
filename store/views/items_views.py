@@ -291,7 +291,6 @@ def reviews(request, pk):
 
 @login_required(login_url='login')
 def edit_review(request, username, review_pk, kit_pk):
-
   user = User.objects.get(username=username)
 
   if request.user != user:
@@ -300,9 +299,30 @@ def edit_review(request, username, review_pk, kit_pk):
   
   try:
     review = Review.objects.get(pk=review_pk)
+    if review.user != request.user:
+      messages.error(request, "There is no review to edit.")
+      return redirect('reviews', kit_pk)
+    
   except ObjectDoesNotExist:
     messages.error(request, "There is no review to edit.")
     return redirect('reviews', kit_pk)
+  
+  form = ReviewForm(instance=review)
+
+  if 'update' in request.POST:
+    form = ReviewForm(request.POST, instance=review)
+    if form.is_valid():
+      form.save()
+      return redirect('reviews', kit_pk)
+    else:
+      print(form.errors)
+
+  if 'delete' in request.POST:
+    review.delete()
+    return redirect('reviews', kit_pk)
+  
+  context = {'form': form, 'review': review}
+  return render(request, 'kits/edit_review.html', context)
 
 
   
