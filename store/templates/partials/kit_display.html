@@ -54,7 +54,7 @@
         <i class="fa-solid fa-star"></i>
         <i class="fa-solid fa-star"></i>
         {% endif %}
-        {{kit.avg_rating}}/5 ({{kit.review_num}} Reviews) 
+        {{kit.avg_rating}}/5 ({{kit.review_num}} Review(s)) 
       </div>
       {% else %}
         <div><u>No Reviews</u></div>
@@ -62,17 +62,17 @@
 
     <p class="card-text">{{kit.description}}</p>
 
-      <a href="{% url 'reviews' kit.pk %}" class="btn btn-warning btn-sm float-start">Reviews/Details</a>
+    <a href="{% url 'reviews' kit.pk %}" class="btn btn-warning btn-sm float-start">Reviews/Details</a>
 
-      <button
-        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-        hx-post="{% url 'add_kit_to_order' request.user.username order.pk kit.pk %}"
-        hx-target="#orders-in-kit"
-        hx-swap="beforeend"
-        class="btn btn-primary btn-sm float-end" 
-        name="add">
-        Add Kit
-      </button>
+    <button
+      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+      hx-post="{% url 'add_kit_to_order' request.user.username order.pk kit.pk %}"
+      hx-target="#orders-in-kit"
+      hx-swap="beforeend"
+      class="btn btn-primary btn-sm float-end" 
+      name="add">
+      Add Kit
+    </button>
 
   </div>
 </div>

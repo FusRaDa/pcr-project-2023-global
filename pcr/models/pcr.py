@@ -43,7 +43,7 @@ class Process(models.Model):
   date_created = models.DateTimeField(default=now, editable=False)
 
   def __str__(self):
-    return self.samples.name
+    return self.date_created
 
 
 class ProcessPlate(models.Model):
@@ -60,3 +60,6 @@ class ProcessPlate(models.Model):
   samples = models.ManyToManyField(Sample)
   protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT) # protocol can only be deleted if no plates are using it
   plate = models.ForeignKey(Plate, on_delete=models.RESTRICT)
+
+  def __str__(self):
+    return self.type
