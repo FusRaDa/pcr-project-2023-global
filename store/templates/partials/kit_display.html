@@ -5,17 +5,62 @@
   <div class="card-body">
     <h5 class="card-title">{{kit.name}}</h5>
 
-      <i class="fa-solid fa-star"></i>
-      <i class="fa-solid fa-star"></i>
-      <i class="fa-regular fa-star"></i>
-      <i class="fa-regular fa-star"></i>
-      <i class="fa-regular fa-star"></i>
+      {% if kit.avg_rating %}
+      <div>
+        {% if kit.avg_rating == 0 %}
+        <i class="fa-regular fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        {% endif %}
 
-      {% if kit.avg_review %}
-      <span>{{kit.avg_review}}/5</span>
+        {% if kit.avg_rating == 1 %}
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        {% endif %}
+
+        {% if kit.avg_rating == 2 %}
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        {% endif %}
+
+        {% if kit.avg_rating == 3 %}
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        {% endif %}
+
+        {% if kit.avg_rating == 4 %}
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        {% endif %}
+
+        {% if kit.avg_rating == 5 %}
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        {% endif %}
+        {{kit.avg_rating}}/5 ({{kit.review_num}} Reviews) 
+      </div>
+      {% else %}
+        <div><u>No Reviews</u></div>
       {% endif %}
 
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <p class="card-text">{{kit.description}}</p>
 
       <a href="{% url 'reviews' kit.pk %}" class="btn btn-warning btn-sm float-start">Reviews/Details</a>
 

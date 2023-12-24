@@ -21,6 +21,7 @@ class Kit(models.Model):
   image = models.ImageField(null=True, blank=True, upload_to='kits', default='kits/default-kit.png')
 
   name = models.CharField(blank=False, max_length=50)
+  description = models.TextField(blank=False, default="Kit Description")
   catalog_number = models.CharField(blank=False, max_length=25, unique=True)
   price = models.DecimalField(blank=False, decimal_places=2, max_digits=7) #USD
 
@@ -38,7 +39,7 @@ class Kit(models.Model):
     ]
 
   @property
-  def avg_review(self):
+  def avg_rating(self):
     reviews = self.review_set.all()
     if len(reviews) > 0:
       review_num = 0
@@ -51,7 +52,10 @@ class Kit(models.Model):
     else:
       return None
     
-
+  @property
+  def review_num(self):
+    return self.review_set.count()
+    
   def __str__(self):
     return f"{self.name}-{self.catalog_number}"
 

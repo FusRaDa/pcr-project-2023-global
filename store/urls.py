@@ -20,6 +20,7 @@ urlpatterns = [
   path('edit-kit-items/<int:pk>/', items_views.edit_kit_items, name='edit_kit_items'),
 
   path('reviews/<int:pk>', items_views.reviews, name='reviews'),
+  path('edit_review/<str:username>/<int:review_pk>/<int:kit_pk>/', items_views.edit_review, name='edit_review'),
 
   path('create-tube-store/', items_views.create_tube, name='create_tube_store'),
   path('edit-tube-store/<int:pk>/', items_views.edit_tube, name='edit_tube_store'),

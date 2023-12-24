@@ -322,7 +322,7 @@ def edit_review(request, username, review_pk, kit_pk):
     return redirect('reviews', kit_pk)
   
   context = {'form': form, 'review': review}
-  return render(request, 'kits/edit_review.html', context)
+  return render(request, 'items/edit_review.html', context)
 
 
   

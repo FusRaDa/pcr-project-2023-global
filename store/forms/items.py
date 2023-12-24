@@ -31,6 +31,7 @@ class KitForm(ModelForm):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['description'].widget.attrs['class'] = 'form-control'
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['price'].widget.attrs['class'] = 'form-control'
     self.fields['affiliate_link'].widget.attrs['class'] = 'form-control'
