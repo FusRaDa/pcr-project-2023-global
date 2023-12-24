@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import batch_views, assay_code_views, extraction_protocol_views, assay_views, inventory_views
+from .views import batch_views, assay_code_views, extraction_protocol_views, assay_views, inventory_views, pcr_views
 
 
 urlpatterns = [
@@ -45,4 +45,8 @@ urlpatterns = [
   path("reagents/", inventory_views.reagents, name="reagents"),
   path("create-reagent/", inventory_views.create_reagent, name="create_reagent"),
   path("edit-reagent/<str:username>/<int:pk>/", inventory_views.edit_reagent, name="edit_reagent"),
+
+  path("tcprotocols/", pcr_views.tcprotocols, name='tcprotocols'),
+  path("create-tcprotocol/", pcr_views.create_tcprotocol, name='create_tcprotocol'),
+  path("edit_tcprotocol/<str:username>/<int:pk>/", pcr_views.edit_tcprotocol, name='edit_tcprotocol'),
 ]

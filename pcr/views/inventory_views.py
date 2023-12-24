@@ -40,7 +40,6 @@ def create_location(request):
 
 @login_required(login_url='login')
 def edit_location(request, username, pk):
-  context = {}
   user = User.objects.get(username=username)
 
   if request.user != user:
@@ -72,7 +71,6 @@ def edit_location(request, username, pk):
     else:
       print(del_form.errors)
    
-
   context = {'form': form, 'location': location, 'del_form': del_form}
   return render(request, 'inventory/edit_location.html', context)
 # **LOCATIONS VIEWS** #
