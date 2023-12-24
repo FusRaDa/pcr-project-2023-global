@@ -20,7 +20,7 @@ class Batch(models.Model):
   code = models.ForeignKey(AssayCode, on_delete=models.RESTRICT) # a batch can only refer to one list of assays (AssayList) - but users can individually edit samples after
   extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.RESTRICT)
 
-  is_extracted = models.BooleanField(default=False) #If True all samples have been extracted and is ready for PCR.
+  is_extracted = models.BooleanField(default=False) # Once set to true, batch and samples can no longer be edited and files for extraction are generated.
 
   date_created = models.DateTimeField(default=now, editable=False)
   

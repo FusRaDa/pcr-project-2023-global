@@ -11,6 +11,14 @@
     <h3>Batch Samples</h3>
   </div>
 
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
   <div class="row justify-content-center">
     <h6 class="text-center">
       **Once created, batches cannot be changed and can only be deleted with its samples.**

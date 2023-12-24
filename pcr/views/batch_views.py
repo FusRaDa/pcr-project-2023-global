@@ -64,7 +64,6 @@ def createBatches(request):
 
 @login_required(login_url='login')
 def batchSamples(request, username, pk):
-  context = {}
   SampleFormSet = inlineformset_factory(
     Batch, 
     Sample, 
@@ -82,6 +81,9 @@ def batchSamples(request, username, pk):
   
   try:
     batch = Batch.objects.get(user=user, pk=pk)
+    if batch.is_extracted:
+      messages.error(request, "There is no batch to view.")
+      return redirect('batches')
   except ObjectDoesNotExist:
     messages.error(request, "There is no batch to view.")
     return redirect('batches')
@@ -127,14 +129,28 @@ def batchSamples(request, username, pk):
       )
 
     return redirect(request.path_info)
-      
+  
+  if 'extracted' in request.POST:
+    invalid_samples = []
+    for sample in samples:
+      if not sample.sample_id:
+        invalid_samples.append(sample.lab_id)
+
+    if len(invalid_samples) > 0:
+      messages.error(request, f"Samples {invalid_samples} have not been given a sample ID. Please update before proceeding.")
+      return redirect('batches')
+    
+    # batch.is_extracted == True
+    # batch.save()
+
+    # generate printable samples list
+  
   context = {'batch': batch, 'data': data, 'formset': formset, 'del_form': del_form, 'samplesform': samplesform}
   return render(request, 'batch/batch_samples.html', context)
 
 
 @login_required(login_url='login')
 def editSampleAssay(request, username, pk):
-  context = {}
   user = User.objects.get(username=username)
 
   if request.user != user:
