@@ -11,6 +11,12 @@ from .inventory import Plate
 class ThermalCyclerProtocol(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+  class Types(models.TextChoices):
+    DNA = 'DNA', _('DNA')
+    RNA = 'RNA', _('RNA')
+
+  type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25) # genetic material in thermal cycler/plate
+
   name = models.CharField(blank=False, max_length=25)
   denature_temp = models.DecimalField(decimal_places=2, max_digits=12) # Celsius
   denature_duration = models.IntegerField(validators=[MinValueValidator(0)]) # seconds
@@ -36,26 +42,28 @@ class ThermalCyclerProtocol(models.Model):
 class Process(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  samples = models.ManyToManyField(Sample)
   protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT) # protocol can only be deleted if no plates are using it
   plate = models.ForeignKey(Plate, on_delete=models.RESTRICT)
 
-  date_created = models.DateTimeField(default=now, editable=False)
+  samples = models.ManyToManyField(Sample)
+
+  is_processed = models.BooleanField(default=False)
+
+  date_processed = models.DateTimeField(blank=True, null=True, editable=False)
 
   def __str__(self):
-    return self.date_created
+    return self.date_processed
 
 
 class ProcessPlate(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
+  process = models.ForeignKey(Process, on_delete=models.CASCADE)
 
   class Types(models.TextChoices):
     DNA = 'DNA', _('DNA')
     RNA = 'RNA', _('RNA')
 
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25) # type of genetic material in plate - a plate CANNOT do both DNA & RNA
-
-  process = models.ForeignKey(Process, on_delete=models.CASCADE)
 
   samples = models.ManyToManyField(Sample)
   protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT) # protocol can only be deleted if no plates are using it

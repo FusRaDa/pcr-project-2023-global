@@ -13,8 +13,7 @@ from ..custom.functions import create_samples
 
 @login_required(login_url='login')
 def viewBatches(request):
-  batches = Batch.objects.filter(user=request.user).order_by('-date_created')
-
+  batches = Batch.objects.filter(user=request.user, is_extracted=False).order_by('-date_created')
   context = {'batches': batches}
   return render(request, 'batch/batches.html', context)
 
@@ -82,7 +81,7 @@ def batchSamples(request, username, pk):
   try:
     batch = Batch.objects.get(user=user, pk=pk)
     if batch.is_extracted:
-      messages.error(request, "There is no batch to view.")
+      messages.error(request, "This batch has already been processed for extraction and can no longer be updated.")
       return redirect('batches')
   except ObjectDoesNotExist:
     messages.error(request, "There is no batch to view.")
@@ -143,7 +142,7 @@ def batchSamples(request, username, pk):
     # batch.is_extracted == True
     # batch.save()
 
-    # generate printable samples list
+    # redirect to html page
   
   context = {'batch': batch, 'data': data, 'formset': formset, 'del_form': del_form, 'samplesform': samplesform}
   return render(request, 'batch/batch_samples.html', context)

@@ -8,6 +8,24 @@ from users.models import User
 from ..forms.general import DeletionForm
 from ..forms.pcr import ThermalCyclerProtocolForm
 from ..models.pcr import ThermalCyclerProtocol, Process, ProcessPlate
+from ..models.batch import Batch, Sample
+
+
+@login_required(login_url='login')
+def extracted_batches(request):
+  batches = Batch.objects.filter(user=request.user, is_extracted=True).order_by('-date_created')
+
+  process = Process.objects.filter(user=request.user, is_processed=False)
+  if not process.exists():
+    process = Process.objects.create(user=request.user, is_processed=False)
+  else:
+    process = Process.objects.get(user=request.user, is_processed=False)
+
+  context = {'batches', batches, 'process', process}
+  return render(request, 'pcr/extracted_batches.html', context)
+
+
+
 
 @login_required(login_url='login')
 def tcprotocols(request):
