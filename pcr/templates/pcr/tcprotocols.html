@@ -7,7 +7,54 @@
 {% block content %}
 <div class="container">
 
-  
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Thermal Cycler Protocols </h3>
+    </div>
+  </div>
 
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <a href="{% url 'create_tcprotocol'%}">
+        <button type="button" class="btn btn-primary mb-2">Add New Protocol</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="row justify-content-center mt-2">
+    {% for protocol in protocols %}
+
+      <div class="col-sm-3 form-width-18 mb-2">
+        <div class="card">
+          <div class="card-header">
+            {{protocol.name}}
+          </div>
+          
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Genetic Material: {{protocol.type}}</li>
+            <li class="list-group-item">Denature: {{protocol.denature_duration}}s @ {{protocol.denature_temp}}℃</li>
+            <li class="list-group-item">Anneal: {{protocol.anneal_duration}}s @ {{protocol.anneal_temp}}℃</li>
+            <li class="list-group-item">Extend: {{protocol.extension_duration}}s @ {{protocol.extension_temp}}℃</li>
+            <li class="list-group-item">Total Cycles: {{protocol.number_of_cycles}}</li>
+          </ul>
+
+          <div class="card-body">
+            <a href="{% url 'edit_tcprotocol' request.user.username protocol.pk %}" class="card-link">Edit Protocol</a>
+          </div>
+        </div>
+      </div>
+
+    {% endfor %}
+  </div>
+
+  
 </div>
 {% endblock %}

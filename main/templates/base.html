@@ -85,19 +85,22 @@
                   <li><a class="dropdown-item" href="{% url 'fluorescence' %}">Fluorescense</a></li>
                 </ul>
               </li>
-  
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'extraction_protocols' %}">Extractions</a>
-              </li>
 
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'assay_codes' %}">Panels</a>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Protocols
+                </a>
+                <ul class="dropdown-menu">
+                  <a class="dropdown-item" href="{% url 'assay_codes' %}">Panels</a>
+                  <a class="dropdown-item" href="{% url 'extraction_protocols' %}">Extractions</a>
+                  <a class="dropdown-item" href="{% url 'tcprotocols' %}">Thermal Cycler</a>
+                </ul>
               </li>
   
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'batches' %}">Batches</a>
               </li>
-  
+
               <li class="nav-item">
                 <a class="nav-link" href="#">PCR</a>
               </li>

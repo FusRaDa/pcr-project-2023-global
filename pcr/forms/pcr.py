@@ -9,6 +9,7 @@ class ThermalCyclerProtocolForm(ModelForm):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs) 
     self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['type'].widget.attrs['class'] = 'form-select'
     self.fields['denature_temp'].widget.attrs['class'] = 'form-control'
     self.fields['denature_duration'].widget.attrs['class'] = 'form-control'
     self.fields['anneal_temp'].widget.attrs['class'] = 'form-control'

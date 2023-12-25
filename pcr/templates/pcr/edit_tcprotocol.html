@@ -7,7 +7,151 @@
 {% block content %}
 <div class="container">
 
-  
+  <div class="row justify-content-center">
+    <h3 class="text-center">Updating Thermal Cycler Protocol</h3>
+  </div>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div class="row justify-content-center mb-2">
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Type</label>
+          {{form.type}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Number of Cycles</label>
+          {{form.number_of_cycles}}
+        </div>
+      </div>
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center">
+          <label class="form-label">Denature Temp</label>
+          <div class="input-group mb-3">
+            {{form.denature_temp}}
+            <span class="input-group-text" id="basic-addon1">℃</span>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Denature Duration</label>
+          <div class="input-group mb-3">
+            {{form.denature_duration}}
+            <span class="input-group-text" id="basic-addon1">sec.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center">
+          <label class="form-label">Annealing Temp</label>
+          <div class="input-group mb-3">
+            {{form.anneal_temp}}
+            <span class="input-group-text" id="basic-addon1">℃</span>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Annealing Duration</label>
+          <div class="input-group mb-3">
+            {{form.anneal_duration}}
+            <span class="input-group-text" id="basic-addon1">sec.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center">
+          <label class="form-label">Extension Temp</label>
+          <div class="input-group mb-3">
+            {{form.extension_temp}}
+            <span class="input-group-text" id="basic-addon1">℃</span>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Extension Duration</label>
+          <div class="input-group mb-3">
+            {{form.extension_duration}}
+            <span class="input-group-text" id="basic-addon1">sec.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      <div class="text-center mt-2"> 
+        <a class="btn btn-secondary" href="{% url 'tcprotocols' %}">Cancel</a>
+        <button class="btn btn-primary" type="submit" name="update">Update Protocol</button>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="row justify-content-center">
+    <div class="col d-flex justify-content-center">
+      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">
+        Delete Protocol
+      </button>
+    </div>
+  </div>
+
+  <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting protocol...</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="container-sm">
+
+            <div class="row justify-content-center">
+              <h5 class="text-center">Are you sure?</h5>
+            </div>
+            
+            <div class="row justify-content-center">
+              <div class="col-sm-8">
+                <form method="POST" action="">
+                  {% csrf_token %}
+            
+                  <div class="text-center mx-auto">
+                    <label class="form-label">Enter: "{{protocol.name}}" &amp; Confirm</label>
+                    {{del_form.confirm}}
+                  </div>
+
+                  {% if del_form.errors %}
+                  <div class="row text-center mt-2">
+                    {% for key,value in del_form.errors.items %} 
+                      {{ value|escape }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+            
+                  <div class="text-center mt-2">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" name="delete">Confirm</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
 {% endblock %}

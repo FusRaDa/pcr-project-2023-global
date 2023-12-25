@@ -17,7 +17,7 @@ class ThermalCyclerProtocol(models.Model):
 
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25) # genetic material in thermal cycler/plate
 
-  name = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=100)
   denature_temp = models.DecimalField(decimal_places=2, max_digits=12) # Celsius
   denature_duration = models.IntegerField(validators=[MinValueValidator(0)]) # seconds
   anneal_temp = models.DecimalField(decimal_places=2, max_digits=12) # Celsius
