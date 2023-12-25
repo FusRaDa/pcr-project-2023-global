@@ -24,10 +24,26 @@ def extracted_batches(request):
   context = {'batches', batches, 'process', process}
   return render(request, 'pcr/extracted_batches.html', context)
 
-@login_required(login_url='login')
-def add_sample_to_process(request, username, sample_pk, process_pk):
-  pass
 
+@login_required(login_url='login')
+def add_sample_to_process(request, username, pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no sample or process found.")
+    return redirect('extracted_batches')
+  
+  try:
+    sample = Sample.objects.get(user=user, pk=pk)
+    process = Process.objects.get(user=request.user, is_processed=False)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no sample or process found.")
+    return redirect('extracted_batches')
+
+
+@login_required(login_url='login')
+def review_process(request, username, pk):
+  pass
 
 
 @login_required(login_url='login')
