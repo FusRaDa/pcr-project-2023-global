@@ -47,6 +47,8 @@ urlpatterns = [
   path("edit-reagent/<str:username>/<int:pk>/", inventory_views.edit_reagent, name="edit_reagent"),
 
   path("extracted-batches/", pcr_views.extracted_batches, name='extracted_batches'),
+  path("add-sample-to-process/", pcr_views.add_sample_to_process, name='add_sample_to_process'),
+  path("remove-sample-from-process", pcr_views.remove_sample_from_process, name='remove_sample_from_process'),
 
   path("tcprotocols/", pcr_views.tcprotocols, name='tcprotocols'),
   path("create-tcprotocol/", pcr_views.create_tcprotocol, name='create_tcprotocol'),

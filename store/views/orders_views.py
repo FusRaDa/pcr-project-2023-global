@@ -80,7 +80,7 @@ def add_kit_to_order(request, username, order_pk, kit_pk):
     return redirect('store')
   
   try:
-    order = Order.objects.get(user=user, pk=order_pk)
+    order = Order.objects.get(user=user, pk=order_pk, has_ordered=False)
   except ObjectDoesNotExist:
     messages.error(request, "There is no order to edit.")
     return redirect('store')
@@ -105,7 +105,7 @@ def remove_kit_from_order(request, username, order_pk, kit_pk):
     return redirect('store')
   
   try:
-    order = Order.objects.get(user=user, pk=order_pk)
+    order = Order.objects.get(user=user, pk=order_pk, has_ordered=False)
   except ObjectDoesNotExist:
     messages.error(request, "There is no order to edit.")
     return redirect('store')

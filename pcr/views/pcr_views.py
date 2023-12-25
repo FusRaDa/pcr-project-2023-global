@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
+from django.http import HttpResponse
 from django.contrib import messages
 from users.models import User
 
@@ -26,7 +27,7 @@ def extracted_batches(request):
 
 
 @login_required(login_url='login')
-def add_sample_to_process(request, username, pk):
+def add_sample_to_process(request, username, process_pk, sample_pk):
   user = User.objects.get(username=username)
 
   if request.user != user:
@@ -34,11 +35,40 @@ def add_sample_to_process(request, username, pk):
     return redirect('extracted_batches')
   
   try:
-    sample = Sample.objects.get(user=user, pk=pk)
-    process = Process.objects.get(user=request.user, is_processed=False)
+    sample = Sample.objects.get(user=user, pk=sample_pk)
+    process = Process.objects.get(user=request.user, is_processed=False, pk=process_pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no sample or process found.")
     return redirect('extracted_batches')
+  
+  if 'add' in request.POST:
+    if process.samples.contains(sample):
+      return HttpResponse(status=200)
+    else:
+      process.samples.add(sample)
+      context = {'sample': sample, 'process': process}
+      return render(request, 'pcr/add_sample_to_process.html', context)
+
+
+@login_required(login_url='login')
+def remove_sample_from_process(request, username, process_pk, sample_pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no sample or process found.")
+    return redirect('extracted_batches')
+  
+  try:
+    sample = Sample.objects.get(user=user, pk=sample_pk)
+    process = Process.objects.get(user=request.user, is_processed=False, pk=process_pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no sample or process found.")
+    return redirect('extracted_batches')
+  
+  if 'remove' in request.POST:
+    process.samples.remove(sample)
+  
+  return HttpResponse(status=200)
 
 
 @login_required(login_url='login')

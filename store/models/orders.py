@@ -12,7 +12,7 @@ class Order(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   kits = models.ManyToManyField(Kit, through='KitOrder')
 
-  has_ordered = models.BooleanField(blank=False, default=False)
+  has_ordered = models.BooleanField(default=False)
   date_processed = models.DateTimeField(blank=True, null=True, editable=False, default=None)
 
   orders_file = models.FileField(null=True, blank=True, upload_to='orders')
