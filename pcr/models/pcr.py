@@ -42,10 +42,12 @@ class ThermalCyclerProtocol(models.Model):
 class Process(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT) # protocol can only be deleted if no plates are using it
+  dna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='dna_protocol', blank=True, null=True)
+  rna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='rna_protocol', blank=True, null=True)
+
   plate = models.ForeignKey(Plate, on_delete=models.RESTRICT)
 
-  samples = models.ManyToManyField(Sample)
+  samples = models.ManyToManyField(Sample, through='ProcessSample')
 
   is_processed = models.BooleanField(default=False)
 
@@ -53,6 +55,16 @@ class Process(models.Model):
 
   def __str__(self):
     return self.date_processed
+  
+
+class ProcessSample(models.Model):
+  process = models.ForeignKey(Process, on_delete=models.CASCADE)
+  sample = models.ForeignKey(Sample, on_delete=models.CASCADE)
+
+  in_plate = models.BooleanField(default=False)
+
+  def __str__(self):
+    return f"{self.process}-{self.sample}"
 
 
 class ProcessPlate(models.Model):

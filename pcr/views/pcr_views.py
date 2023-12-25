@@ -24,6 +24,9 @@ def extracted_batches(request):
   context = {'batches', batches, 'process', process}
   return render(request, 'pcr/extracted_batches.html', context)
 
+@login_required(login_url='login')
+def add_sample_to_process(request, username, sample_pk, process_pk):
+  pass
 
 
 
