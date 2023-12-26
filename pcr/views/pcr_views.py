@@ -27,6 +27,30 @@ def extracted_batches(request):
 
 
 @login_required(login_url='login')
+def add_batch_samples(request, username, process_pk, batch_pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no sample or process found.")
+    return redirect('extracted_batches')
+  
+  try:
+    batch = Batch.objects.get(user=user, pk=batch_pk)
+    process = Process.objects.get(user=request.user, pk=process_pk, is_processed=False)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no sample or process found.")
+    return redirect('extracted_batches')
+  
+  if 'all' in request.POST:
+    for sample in batch.sample_set.all():
+      process.samples.add(sample)
+      context = {'sample': sample, 'process': process}
+      return render(request, 'pcr/samples_in_process.html', context) 
+
+  return HttpResponse(status=200)
+
+
+@login_required(login_url='login')
 def add_sample_to_process(request, username, process_pk, sample_pk):
   user = User.objects.get(username=username)
 
@@ -42,12 +66,12 @@ def add_sample_to_process(request, username, process_pk, sample_pk):
     return redirect('extracted_batches')
   
   if 'add' in request.POST:
-    if process.samples.contains(sample):
-      return HttpResponse(status=200)
-    else:
+    if not process.samples.contains(sample):
       process.samples.add(sample)
       context = {'sample': sample, 'process': process}
-      return render(request, 'pcr/add_sample_to_process.html', context)
+      return render(request, 'pcr/samples_in_process.html', context)
+
+  return HttpResponse(status=200)
 
 
 @login_required(login_url='login')

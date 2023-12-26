@@ -30,7 +30,15 @@
         <div class="card mb-2">
           <div class="card-header">
             <p class="fw-bold">{{batch.name}} ({{batch.total_samples}} Samples)</p>{{batch.date_created}}
-            <a href="#" type="button" class="btn btn-success btn-sm float-end">Add All</a>
+            <button
+              hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+              hx-post="{% url 'add_batch_samples' request.user.username process.pk batch.pk %}"
+              hx-target="#process-samples"
+              hx-swap="beforeend"
+              class="btn btn-success btn-sm float-end" 
+              name="all">
+              Add All
+            </button>
           </div>
           
           <ul class="list-group list-group-flush">
@@ -48,7 +56,15 @@
                       {% for assay in sample.assays.all %}
                       <span class="badge rounded-pill text-bg-primary">{{assay}}</span>
                       {% endfor %}
-                      <a href="#" type="button" class="btn btn-success btn-sm float-end">Add Sample</a>
+                      <button
+                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                        hx-post="{% url 'add_sample_to_process' request.user.username process.pk sample.pk %}"
+                        hx-target="#process-samples"
+                        hx-swap="beforeend"
+                        class="btn btn-success btn-sm float-end" 
+                        name="add">
+                        Add Sample
+                      </button>
                     </ii>
                     {% endfor %}
                   </ul>
@@ -65,15 +81,9 @@
     <div class="col-sm-4">
       <h5 class="text-center">Samples In Process</h5>
 
-      <ol class="list-group list-group-numbered">
+      <ol class="list-group list-group-numbered" id="process-samples">
         {% for sample in process.samples.all %}
-        <li class="list-group-item {% if sample.is_anomaly %} list-group-item-warning {% endif %}">
-          <div class="fw-bold">{{sample.lab_id_num}}: {{sample.sample_id}}</div>
-          {% for assay in sample.assays.all %}
-          <span class="badge rounded-pill text-bg-primary">{{assay}}</span>
-          {% endfor %}
-          <a href="#" type="button" class="btn btn-danger btn-sm float-end">Remove Sample</a>
-        </ii>
+          {% include 'pcr/samples_in_process.html' %}
         {% endfor %}
       </ol>
 

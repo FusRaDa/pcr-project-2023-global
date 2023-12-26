@@ -1,0 +1,16 @@
+<li class="list-group-item {% if sample.is_anomaly %} list-group-item-warning {% endif %}">
+  ➤ {{sample.lab_id_num}}: {{sample.sample_id}}
+  <div class="col">
+  {% for assay in sample.assays.all %}
+  <span class="badge rounded-pill text-bg-primary">{{assay}}</span>
+  {% endfor %}
+  </div>
+  <button
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+    hx-post="{% url 'remove_sample_from_process' request.user.username process.pk sample.pk %}"
+    hx-on:click="this.parentNode.remove()"
+    class="btn btn-danger btn-sm float-end"
+    name="remove">
+    Remove
+  </button>
+</ii>
