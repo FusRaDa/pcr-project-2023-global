@@ -42,11 +42,16 @@ def add_batch_samples(request, username, process_pk, batch_pk):
     return redirect('extracted_batches')
   
   if 'all' in request.POST:
-    for sample in batch.sample_set.all():
-      process.samples.add(sample)
-      context = {'sample': sample, 'process': process}
-      return render(request, 'pcr/samples_in_process.html', context) 
+    added_samples = []
+    samples = batch.sample_set.all()
+    for sample in samples:
+      if not process.samples.contains(sample):
+        process.samples.add(sample)
+        added_samples.append(sample)
 
+    context = {'added_samples': added_samples, 'process': process}
+    return render(request, 'pcr/batch_in_process.html', context)
+      
   return HttpResponse(status=200)
 
 
