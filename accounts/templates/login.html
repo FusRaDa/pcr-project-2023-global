@@ -33,18 +33,24 @@
           <label for="floatingPassword">Password</label>
         </div>
 
-        <div class="text-center mt-2">
-          Don't have an account?&nbsp;<a href="{% url 'register' %}" class="ml-2">Sign Up</a>
-          Forgot password?&nbsp;<a href="{% url 'reset_password' %}" class="ml-2">Reset</a>
+        {% for message in messages %}
+        <div class="row">
+          <div class="col d-flex justify-content-center"> 
+            <p class="messages text-center">{{ message }}</p>
+          </div>
         </div>
+        {% endfor %}
       
         <div class="text-center mt-2"> 
           <button class="btn btn-primary" type="submit">Login</button>
         </div>
 
+        <div class="text-center mt-2">
+          Don't have an account?&nbsp;<a href="{% url 'register' %}" class="ml-2">Sign Up</a>
+          Forgot password?&nbsp;<a href="{% url 'reset_password' %}" class="ml-2">Reset</a>
+        </div>
+
       </form>
-
-
 
     </div>
 

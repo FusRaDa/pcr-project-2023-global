@@ -1,7 +1,3 @@
-import pytest
-
-from django.core.exceptions import ObjectDoesNotExist
-
 from pcr.models.pcr import ThermalCyclerProtocol
 from pcr.models.inventory import Tube, Plate, Reagent, Location
 from pcr.models.extraction import ExtractionProtocol
@@ -10,12 +6,8 @@ from pcr.models.assay import Assay, AssayCode, Control, Fluorescence
 from users.models import User
 
 
-# pytest tests/test_create_user_objects_perm.py
-def run():
-
-  username = 'fusrada1'
-
-  user = User.objects.get(username=username)
+# python pcr/custom/test_user_object.py
+def create_tutorial_objects(user):
 
   # according to https://www.sigmaaldrich.com/US/en/technical-documents/protocol/genomics/pcr/standard-pcr
   ThermalCyclerProtocol.objects.create(

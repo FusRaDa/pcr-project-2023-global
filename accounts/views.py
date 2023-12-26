@@ -14,6 +14,7 @@ from users.models import User
 from .tokens import account_activation_token
 from .models import EmailOrUsernameModelBackend
 from .forms import CreateUserForm
+from .functions import create_tutorial_objects
 
 
 # login user with their username or email and password
@@ -33,7 +34,7 @@ def loginPage(request):
       login(request, user)
       return redirect('batches')
     else:
-      messages.info(request, 'username OR password is incorrect.')
+      messages.info(request, '**username and/or password is incorrect.**')
 
   context = {}
   return render(request, "login.html", context)
@@ -69,6 +70,8 @@ def activate(request, uidb64, token):
   if user is not None and account_activation_token.check_token(user, token):
     user.is_active = True
     user.save()
+
+    create_tutorial_objects(user)
 
     messages.success(request, 'Thank you for your email confirmation. Now you can login your account.')
     return redirect('login')

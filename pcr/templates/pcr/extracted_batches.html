@@ -29,12 +29,12 @@
         
         <div class="card mb-2">
           <div class="card-header">
-            Batch: {{batch.name}}
+            <p class="fw-bold">{{batch.name}} ({{batch.total_samples}} Samples)</p>{{batch.date_created}}
             <a href="#" type="button" class="btn btn-success btn-sm float-end">Add All</a>
           </div>
           
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">Panel: {{batch.code}} | Samples {% if batch.contains_anomaly %} ⚠ {% endif %}
+            <li class="list-group-item">Panel: {{batch.code}} {% if batch.contains_anomaly %} ⚠ {% endif %}
               <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#batch-collapse-{{batch.pk}}" aria-expanded="false" aria-controls="batch-collapse-{{batch.pk}}">
                 ⮟
               </button>
@@ -65,8 +65,8 @@
     <div class="col-sm-4">
       <h5 class="text-center">Samples In Process</h5>
 
-      {% comment %} <ol class="list-group list-group-numbered">
-        {% for sample in batch.sample_set.all %}
+      <ol class="list-group list-group-numbered">
+        {% for sample in process.samples.all %}
         <li class="list-group-item {% if sample.is_anomaly %} list-group-item-warning {% endif %}">
           <div class="fw-bold">{{sample.lab_id_num}}: {{sample.sample_id}}</div>
           {% for assay in sample.assays.all %}
@@ -75,30 +75,6 @@
           <a href="#" type="button" class="btn btn-danger btn-sm float-end">Remove Sample</a>
         </ii>
         {% endfor %}
-      </ol> {% endcomment %}
-
-      <ol class="list-group list-group-numbered">
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-          <div class="ms-2 me-auto">
-            <div class="fw-bold">Subheading</div>
-            Content for list item
-          </div>
-          <span class="badge bg-primary rounded-pill">14</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-          <div class="ms-2 me-auto">
-            <div class="fw-bold">Subheading</div>
-            Content for list item
-          </div>
-          <span class="badge bg-primary rounded-pill">14</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-          <div class="ms-2 me-auto">
-            <div class="fw-bold">Subheading</div>
-            Content for list item
-          </div>
-          <span class="badge bg-primary rounded-pill">14</span>
-        </li>
       </ol>
 
     </div>

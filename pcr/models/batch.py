@@ -58,6 +58,10 @@ class Batch(models.Model):
       return f"{self.sample_set.count() - 1} + 1(NC)"
   
   @property
+  def total_samples(self):
+    return self.sample_set.count() 
+  
+  @property
   def total_tests(self):
     total_tests = 0
     for sample in self.sample_set.all():

@@ -28,8 +28,3 @@ def create_samples(number_of_samples, lab_id, user):
   )
 
   control.assays.add(*assays)
-
-
-
-  
-
