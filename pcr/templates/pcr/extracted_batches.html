@@ -43,15 +43,13 @@
                 <div class="card-body"> 
                   <ul class="list-group">
                     {% for sample in batch.sample_set.all %}
-                    <li class="list-group-item {% if sample.is_anomaly %} list-group-item-warning {% endif %}">{{sample.lab_id_num}}: {{sample.sample_id}}
-                      <a href="#" type="button" class="btn btn-success btn-sm float-end">Add Sample</a>
-                    </li>
                     <li class="list-group-item {% if sample.is_anomaly %} list-group-item-warning {% endif %}">
-                      Assays:
+                      <div class="fw-bold">{{sample.lab_id_num}}: {{sample.sample_id}}</div>
                       {% for assay in sample.assays.all %}
                       <span class="badge rounded-pill text-bg-primary">{{assay}}</span>
                       {% endfor %}
-                    </li>
+                      <a href="#" type="button" class="btn btn-success btn-sm float-end">Add Sample</a>
+                    </ii>
                     {% endfor %}
                   </ul>
                 </div>
@@ -65,7 +63,44 @@
     </div>
 
     <div class="col-sm-4">
-      samples to process plate
+      <h5 class="text-center">Samples In Process</h5>
+
+      {% comment %} <ol class="list-group list-group-numbered">
+        {% for sample in batch.sample_set.all %}
+        <li class="list-group-item {% if sample.is_anomaly %} list-group-item-warning {% endif %}">
+          <div class="fw-bold">{{sample.lab_id_num}}: {{sample.sample_id}}</div>
+          {% for assay in sample.assays.all %}
+          <span class="badge rounded-pill text-bg-primary">{{assay}}</span>
+          {% endfor %}
+          <a href="#" type="button" class="btn btn-danger btn-sm float-end">Remove Sample</a>
+        </ii>
+        {% endfor %}
+      </ol> {% endcomment %}
+
+      <ol class="list-group list-group-numbered">
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">Subheading</div>
+            Content for list item
+          </div>
+          <span class="badge bg-primary rounded-pill">14</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">Subheading</div>
+            Content for list item
+          </div>
+          <span class="badge bg-primary rounded-pill">14</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">Subheading</div>
+            Content for list item
+          </div>
+          <span class="badge bg-primary rounded-pill">14</span>
+        </li>
+      </ol>
+
     </div>
 
   </div>
