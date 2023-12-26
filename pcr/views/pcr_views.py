@@ -18,11 +18,11 @@ def extracted_batches(request):
 
   process = Process.objects.filter(user=request.user, is_processed=False)
   if not process.exists():
-    process = Process.objects.create(user=request.user, is_processed=False)
+    process = Process.objects.create(user=request.user)
   else:
     process = Process.objects.get(user=request.user, is_processed=False)
 
-  context = {'batches', batches, 'process', process}
+  context = {'batches': batches, 'process': process}
   return render(request, 'pcr/extracted_batches.html', context)
 
 
@@ -36,7 +36,7 @@ def add_sample_to_process(request, username, process_pk, sample_pk):
   
   try:
     sample = Sample.objects.get(user=user, pk=sample_pk)
-    process = Process.objects.get(user=request.user, is_processed=False, pk=process_pk)
+    process = Process.objects.get(user=request.user, pk=process_pk, is_processed=False)
   except ObjectDoesNotExist:
     messages.error(request, "There is no sample or process found.")
     return redirect('extracted_batches')

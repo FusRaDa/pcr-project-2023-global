@@ -42,19 +42,19 @@ class ThermalCyclerProtocol(models.Model):
 class Process(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  dna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='dna_protocol', blank=True, null=True)
-  rna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='rna_protocol', blank=True, null=True)
+  dna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='dna_protocol', blank=True, null=True, default=None)
+  rna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='rna_protocol', blank=True, null=True, default=None)
 
-  plate = models.ForeignKey(Plate, on_delete=models.RESTRICT)
+  plate = models.ForeignKey(Plate, on_delete=models.RESTRICT, blank=True, null=True, default=None)
 
   samples = models.ManyToManyField(Sample, through='ProcessSample')
 
   is_processed = models.BooleanField(default=False)
 
-  date_processed = models.DateTimeField(blank=True, null=True, editable=False)
+  date_processed = models.DateTimeField(blank=True, null=True, editable=False, default=None)
 
   def __str__(self):
-    return self.date_processed
+    return f"Process by {self.user}"
   
 
 class ProcessSample(models.Model):

@@ -2,7 +2,8 @@ from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
 
-from ..models.pcr import ThermalCyclerProtocol
+from ..models.pcr import ThermalCyclerProtocol, Process
+
 
 class ThermalCyclerProtocolForm(ModelForm):
 
@@ -21,3 +22,10 @@ class ThermalCyclerProtocolForm(ModelForm):
   class Meta:
     model = ThermalCyclerProtocol
     exclude = ['user']
+
+
+class ProcessForm(ModelForm):
+
+  class Meta:
+    model = Process
+    exclude = ['user', 'samples']

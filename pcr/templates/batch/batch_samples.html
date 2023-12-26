@@ -137,7 +137,7 @@
 
     <div class="row justify-content-center">
       <div class="text-center mt-2"> 
-        <a class="btn btn-secondary" href="{% url 'batches' %}">Cancel</a>
+        <a class="btn btn-secondary" href="{% url 'batches' %}">Batches</a>
         <button class="btn btn-primary" type="submit" name="update">Update Sample ID's</button>
       </div>
     </div>
@@ -148,6 +148,9 @@
     <div class="col d-flex justify-content-center">
       <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
         Delete Batch
+      </button>
+      <button type="button" class="btn btn-success mt-2 ms-1" data-bs-toggle="modal" data-bs-target="#confirm-extraction">
+        Process
       </button>
     </div>
   </div>
@@ -274,6 +277,42 @@
               <label class="form-label">Current Sample ID's:</label>
               <textarea class="form-control form-width-18 mx-auto" id="sample-id-display" readonly></textarea>
             </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirm-extraction" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Confirming extraction process...</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="col">
+
+            <ol>
+              <li>Update sample ID's before processing.</li>
+              <li>Confirming this batch allows you to process its samples for PCR.</li>
+              <li>Once you confirm, you will no longer be able to edit this batch and its samples.</li>
+              <li>Confirm once all sample ID's and assays have been updated.</li>
+              <li>You may also confirm after the batch has been extracted.</li>
+            </ol>
+
+            <form method="POST" action="">
+              {% csrf_token %}
+        
+              <div class="text-center mt-2 mb-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" name="extracted">Confirm</button>
+              </div>
+
+            </form>
 
           </div>
 

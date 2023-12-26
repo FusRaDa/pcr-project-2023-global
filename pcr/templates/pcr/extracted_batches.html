@@ -1,0 +1,35 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Process Samples {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Process Samples</h3>
+    </div>
+  </div>
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="row">
+
+    <div class="col-sm-3">
+      {% for batch in batches %}
+        {{batch}}
+      {% endfor %}
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

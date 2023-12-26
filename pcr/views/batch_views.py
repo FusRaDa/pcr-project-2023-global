@@ -99,7 +99,7 @@ def batchSamples(request, username, pk):
     formset = SampleFormSet(request.POST, instance=batch)
     if formset.is_valid():
       formset.save()
-      return redirect('batches')
+      return redirect(request.path_info)
     else:
       print(formset.errors)
       print(formset.non_form_errors())
@@ -133,17 +133,16 @@ def batchSamples(request, username, pk):
     invalid_samples = []
     for sample in samples:
       if not sample.sample_id:
-        invalid_samples.append(sample.lab_id)
+        invalid_samples.append(f"{sample.lab_id_num}")
 
     if len(invalid_samples) > 0:
       messages.error(request, f"Samples {invalid_samples} have not been given a sample ID. Please update before proceeding.")
-      return redirect('batches')
+      return redirect(request.path_info)
     
-    # batch.is_extracted == True
-    # batch.save()
+    batch.is_extracted = True
+    batch.save()
+    return redirect('extracted_batches')
 
-    # redirect to html page
-  
   context = {'batch': batch, 'data': data, 'formset': formset, 'del_form': del_form, 'samplesform': samplesform}
   return render(request, 'batch/batch_samples.html', context)
 
