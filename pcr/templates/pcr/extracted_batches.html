@@ -23,13 +23,60 @@
 
   <div class="row">
 
-    <div class="col-sm-3">
+    <div class="col-sm-8">
+      <h5 class="text-center">Batches For Process</h5>
       {% for batch in batches %}
-        {{batch}}
+        
+        <div class="card mb-2">
+          <div class="card-header">
+            Batch: {{batch.name}}
+            <a href="#" type="button" class="btn btn-success btn-sm float-end">Add All</a>
+          </div>
+          
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Panel: {{batch.code}} | Samples {% if batch.contains_anomaly %} ⚠ {% endif %}
+              <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#batch-collapse-{{batch.pk}}" aria-expanded="false" aria-controls="batch-collapse-{{batch.pk}}">
+                ⮟
+              </button>
+  
+              <div class="collapse" id="batch-collapse-{{batch.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for sample in batch.sample_set.all %}
+                    <li class="list-group-item {% if sample.is_anomaly %} list-group-item-warning {% endif %}">{{sample.lab_id_num}}: {{sample.sample_id}}
+                      <a href="#" type="button" class="btn btn-success btn-sm float-end">Add Sample</a>
+                    </li>
+                    <li class="list-group-item {% if sample.is_anomaly %} list-group-item-warning {% endif %}">
+                      Assays:
+                      {% for assay in sample.assays.all %}
+                      <span class="badge rounded-pill text-bg-primary">{{assay}}</span>
+                      {% endfor %}
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
       {% endfor %}
+
+    </div>
+
+    <div class="col-sm-4">
+      samples to process plate
     </div>
 
   </div>
 
 </div>
+
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮝' ?  '⮟' : '⮝';
+    });
+  });
+</script>
 {% endblock %}
