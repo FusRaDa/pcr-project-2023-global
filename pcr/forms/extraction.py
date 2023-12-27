@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from ..models.inventory import Tube, Reagent
-from ..models.extraction import ExtractionProtocol, TubeExtraction, ReagentExtraction, Step
+from ..models.extraction import ExtractionProtocol, TubeExtraction, ReagentExtraction
 
 
 class ExtractionProtocolForm(ModelForm):
@@ -63,17 +63,3 @@ class ReagentExtractionForm(ModelForm):
   class Meta:
     model = ReagentExtraction
     exclude = ['reagent', 'protocol']
-
-
-class StepForm(ModelForm):
-
-  def __init__(self, *args, **kwargs):
-    super().__init__(*args, **kwargs)
-    self.fields['number'].widget.attrs['class'] = 'form-control'
-    self.fields['number'].widget.attrs['min'] = 1
-    self.fields['instruction'].widget.attrs['class'] = 'form-control'
-    self.fields['instruction'].widget.attrs['placeholder'] = 'Instructions...'
-
-  class Meta:
-    model = Step
-    exclude = ['protocol']

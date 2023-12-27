@@ -49,15 +49,9 @@
                 <td>{{assay_code.name}}</td>
                 <td>
                   {% for assay in assay_code.assays.all %}
-                    {% if assay_code.assays.all|length > 1 %}
-                    <span>
-                      {{assay}} |
-                    </span>
-                    {% else %}
-                    <span>
+                    <span class="badge text-bg-primary">
                       {{assay}}
                     </span>
-                    {% endif %}
                   {% endfor %}
                 </td>
               </tr>

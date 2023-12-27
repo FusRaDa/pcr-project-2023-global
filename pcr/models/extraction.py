@@ -55,15 +55,5 @@ class ReagentExtraction(models.Model):
 
   def __str__(self):
     return f'{self.reagent}'
-  
-
-class Step(models.Model):
-  protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.CASCADE)
-
-  number = models.IntegerField(validators=[MinValueValidator(1)], default=1)
-  instruction = models.CharField(max_length=500)
-
-  def __str__(self):
-    return f"{self.protocol} - {self.number}"
 
 
