@@ -61,16 +61,7 @@ class Step(models.Model):
   protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.CASCADE)
 
   number = models.IntegerField(validators=[MinValueValidator(1)], default=1)
-  instruction = models.TextField()
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['protocol', 'number'], 
-        name='step_unique',
-        violation_error_message = "A step number for this extraction protocol already exists."
-      )
-    ]
+  instruction = models.CharField(max_length=500)
 
   def __str__(self):
     return f"{self.protocol} - {self.number}"

@@ -32,37 +32,37 @@
   </div>
 
   {% for brand in brands %}
-  {% if brand.kit_set.all %}
-  <div class="row justify-content-center mt-2">
-    <div class="col">
+    {% if brand.kit_set.all %}
+    <div class="row justify-content-center mt-2">
+      <div class="col">
 
-      <h5>{{brand}}{{brand.affiliate}}</h5>
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th scope="col" class="col-sm-2">Name</th>
-              <th scope="col" class="col-sm-2">Catalog Number</th>
-              <th scope="col" class="col-sm-2">Price</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {% for kit in brand.kit_set.all %}
-              <tr class="batch-row" data-href="{% url 'edit_kit' kit.pk %}">
-                <td>{{kit.name}}</td>
-                <td>{{kit.catalog_number}}</td>
-                <td>{{kit.price}}</td>
+        <h5>{{brand}}{{brand.affiliate}}</h5>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col" class="col-sm-2">Name</th>
+                <th scope="col" class="col-sm-2">Catalog Number</th>
+                <th scope="col" class="col-sm-2">Price</th>
               </tr>
-            {% endfor %}
-          </tbody>
+            </thead>
 
-        </table>
+            <tbody>
+              {% for kit in brand.kit_set.all %}
+                <tr class="batch-row" data-href="{% url 'edit_kit' kit.pk %}">
+                  <td>{{kit.name}}</td>
+                  <td>{{kit.catalog_number}}</td>
+                  <td>{{kit.price}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+    
       </div>
-  
     </div>
-  </div>
-  {% endif %}
+    {% endif %}
   {% endfor %}
 
 </div>

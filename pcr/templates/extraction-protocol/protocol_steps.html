@@ -7,10 +7,27 @@
 {% block content %}
 <div class="container">
 
-  <div class="row">
+  <div class="container" id="steps">
     {% for step in steps %}
-      {{step}}
+      {% include 'extraction-protocol/step.html' %}
     {% endfor %}
+  </div>
+
+  <div class="container" id="step-forms">
+  
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="text-center mt-2">
+      <button 
+        type="button" 
+        class="btn btn-primary"
+        hx-get="{% url 'create_step' request.user.username protocol.pk %}"
+        hx-target="#step-forms"
+        hx-swap="beforeend">
+        Add Step
+      </button>
+    </div>
   </div>
 
   <div class="row mt-2">

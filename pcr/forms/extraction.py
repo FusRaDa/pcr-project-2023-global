@@ -1,3 +1,4 @@
+from typing import Any
 from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
@@ -69,7 +70,9 @@ class StepForm(ModelForm):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.fields['number'].widget.attrs['class'] = 'form-control'
+    self.fields['number'].widget.attrs['min'] = 1
     self.fields['instruction'].widget.attrs['class'] = 'form-control'
+    self.fields['instruction'].widget.attrs['placeholder'] = 'Instructions...'
 
   class Meta:
     model = Step

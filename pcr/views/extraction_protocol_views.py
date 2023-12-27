@@ -143,7 +143,7 @@ def protocol_steps(request, username, pk):
   
   try:
     protocol = ExtractionProtocol.objects.get(user=user, pk=pk)
-    steps = protocol.step_set.all()
+    steps = protocol.step_set.all().order_by('number')
     tubes = TubeExtraction.objects.prefetch_related('tube', 'protocol').filter(protocol=protocol).order_by('-order')
     reagents = ReagentExtraction.objects.prefetch_related('reagent', 'protocol').filter(protocol=protocol).order_by('-order')
   except ObjectDoesNotExist:
@@ -181,7 +181,7 @@ def create_step(request, username, pk):
     else:
       print(form.errors)
 
-  context = {'form': form}
+  context = {'form': form, 'protocol': protocol}
   return render(request, 'extraction-protocol/create_step.html', context)
 
 
@@ -194,7 +194,7 @@ def edit_step(request, username, protocol_pk, step_pk):
     return redirect('extraction_protocols')
   
   try:
-    protocol = ExtractionProtocol.objects.get(user=user, pk=protocol)
+    protocol = ExtractionProtocol.objects.get(user=user, pk=protocol_pk)
     step = Step.objects.get(protocol=protocol, pk=step_pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no extraction protocol to edit.")
@@ -214,3 +214,18 @@ def edit_step(request, username, protocol_pk, step_pk):
   context = {'form': form}
   return render(request, 'extraction-protocol/edit_step.html', context)
 
+
+@login_required(login_url='login')
+def remove_step(request, username, protocol_pk, step_pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no extraction protocol to edit.")
+    return redirect('extraction_protocols')
+  
+  try:
+    protocol = ExtractionProtocol.objects.get(user=user, pk=protocol_pk)
+    step = Step.objects.get(protocol=protocol, pk=step_pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no extraction protocol to edit.")
+    return redirect('extraction_protocols')
