@@ -60,6 +60,9 @@ class ReagentExtraction(models.Model):
 class Step(models.Model):
   protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.CASCADE)
 
+  reagents = models.ManyToManyField(ReagentExtraction)
+  tubes = models.ManyToManyField(TubeExtraction)
+
   number = models.IntegerField(validators=[MinValueValidator(1)], default=1)
   method = models.TextField()
 

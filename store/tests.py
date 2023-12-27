@@ -5,17 +5,16 @@ from store.models.items import Tag, Kit, StorePlate, StoreReagent, StoreTube
 
 
 class BrandTestCase(TestCase):
-  def run():
 
-    brand1 = Brand.objects.create(
-      name = "BRAND1_COMPANY1",
-      is_affiliated = True,
-    )
+  def setup_brands(self):
+    Brand.objects.create(name="BRAND1_COMPANY1", is_affiliated=True)
+    Brand.objects.create(name="BRAND2_COMPANY2", is_affiliated=False)
 
-    brand2 = Brand.objects.create(
-      name = "BRAND2_COMPANY2",
-      is_affiliated = False,
-    )
+class ContactTestCase(TestCase):
+    
+  def setup_contacts(self):
+    brand1 = Brand.objects.get(name="BRAND1_COMPANY1")
+    brand2 = Brand.objects.get(name="BRAND2_COMPANY2")
 
     Contact.objects.create(
       brand = brand1,
@@ -35,26 +34,60 @@ class BrandTestCase(TestCase):
       phone_number = "+13453452244"
     )
 
-    tag1 = Tag.objects.create(
-      name = "TAG1"
-    )
 
-    tag2 = Tag.objects.create(
-      name = "TAG2"
-    )
+class TagTestCase(TestCase):
 
-    tag3 = Tag.objects.create(
-      name = "TAG3"
-    )
+  def setup_tags(self):
+    Tag.objects.create(name="TAG1")
+    Tag.objects.create(name="TAG2")
+    Tag.objects.create(name="TAG3")
 
-    # Kits for BRAND 1
-    kit1 = Kit.objects.create(
+
+class KitTestCase(TestCase):
+    
+    def setup_kits(self):
+      brand1 = Brand.objects.get(name="BRAND1_COMPANY1")
+      brand2 = Brand.objects.get(name="BRAND2_COMPANY2")
+
+      tag1 = Tag.objects.get(name="TAG1")
+      tag2 = Tag.objects.get(name="TAG2")
+      tag3 = Tag.objects.get(name="TAG3")
+
+      kit1 = Kit.objects.create(
+        brand = brand1,
+        name = "BRAND1_KIT1_T13",
+        catalog_number = "CATALOG_NUMBER_1",
+        price = 124.99)
+      kit1.tags.add(tag1, tag3)
+
+      kit2 = Kit.objects.create(
       brand = brand1,
-      name = "BRAND1_KIT1_T13",
-      catalog_number = "CATALOG_NUMBER_1",
-      price = 124.99,
-    )
-    kit1.tags.add(tag1, tag3)
+      name = "BRAND1_KIT2_T2",
+      catalog_number = "CATALOG_NUMBER_2",
+      price = 74.99)
+      kit2.tags.add(tag2)
+
+      kit3 = Kit.objects.create(
+      brand = brand2,
+      name = "BRAND2_KIT3_T12",
+      catalog_number = "CATALOG_NUMBER_3",
+      price = 124.99)
+      kit3.tags.add(tag1, tag2)
+
+      kit4 = Kit.objects.create(
+      brand = brand2,
+      name = "BRAND2_KIT4_T3",
+      catalog_number = "CATALOG_NUMBER_4",
+      price = 74.99)
+      kit4.tags.add(tag3)
+
+
+class StoreReagentTestCase(TestCase):
+    
+  def setup_storereagents(self):
+    kit1 = Kit.objects.get(name="BRAND1_KIT1_T13")
+    kit2 = Kit.objects.get(name="BRAND1_KIT2_T2")
+    kit3 = Kit.objects.get(name="BRAND2_KIT3_T12")
 
     StoreReagent.objects.create(
       kit = kit1,
@@ -75,20 +108,6 @@ class BrandTestCase(TestCase):
       unit_concentration = StoreReagent.ConcentrationUnits.MICROMOLES
     )
 
-    StoreTube.objects.create(
-      kit = kit1,
-      name = "TUBE1_KIT1",
-      amount = 25,
-    )
-
-    kit2 = Kit.objects.create(
-      brand = brand1,
-      name = "BRAND1_KIT2_T2",
-      catalog_number = "CATALOG_NUMBER_2",
-      price = 74.99,
-    )
-    kit2.tags.add(tag2)
-
     StoreReagent.objects.create(
       kit = kit2,
       name = "REAGENT1_KIT2",
@@ -96,22 +115,6 @@ class BrandTestCase(TestCase):
       volume = 1,
       unit_volume = StoreReagent.VolumeUnits.LITER,
     )
-
-    StorePlate.objects.create(
-      kit = kit2,
-      name = "PLATE1_KIT2",
-      size = StorePlate.Sizes.NINETY_SIX,
-      amount = 25,
-    )
-
-    # Kits for BRAND 2
-    kit3 = Kit.objects.create(
-      brand = brand2,
-      name = "BRAND2_KIT3_T12",
-      catalog_number = "CATALOG_NUMBER_3",
-      price = 124.99,
-    )
-    kit3.tags.add(tag1, tag2)
 
     StoreReagent.objects.create(
       kit = kit3,
@@ -122,19 +125,35 @@ class BrandTestCase(TestCase):
       unit_volume = StoreReagent.VolumeUnits.MILLILITER,
     )
 
-    kit4 = Kit.objects.create(
-      brand = brand2,
-      name = "BRAND2_KIT_4_T3",
-      catalog_number = "CATALOG_NUMBER_4",
-      price = 74.99,
-    )
-    kit4.tags.add(tag3)
+
+class StoreTubeTestCase(TestCase):
+
+  def setup_storetubes(self):
+    kit1 = Kit.objects.get(name="BRAND1_KIT1_T13")
+    kit4 = Kit.objects.get(name="BRAND2_KIT4_T3")
+      
+    StoreTube.objects.create(
+      kit = kit1,
+      name = "TUBE1_KIT1",
+      amount = 25)
 
     StoreTube.objects.create(
       kit = kit4,
       name = "TUBE2_KIT4",
-      amount = 50,
-    )
+      amount = 50)
+
+
+class StorePlateTestCase(TestCase):
+  
+  def setup_storeplates(self):
+    kit2 = Kit.objects.get(name="BRAND1_KIT2_T2")
+
+    StorePlate.objects.create(
+      kit = kit2,
+      name = "PLATE1_KIT2",
+      size = StorePlate.Sizes.NINETY_SIX,
+      amount = 25)
+
 
 
 
