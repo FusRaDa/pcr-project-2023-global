@@ -1,0 +1,62 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Review Batch {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="justify-content-center">
+    <div class="col d-flex justify-content-center">
+      <button type="button" class="btn btn-primary mt-2 mb-2" id="printButton">Print Paperwork</button>
+    </div>
+  </div>
+
+  <div class="container" id="printDiv">
+
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Lab ID</th>
+            <th scope="col">Sample ID</th>
+            <th scope="col">Confirm ID</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for sample in batch.sample_set.all %}
+            <tr>
+              <td>{{sample.lab_id_num}}</td>
+              <td>{{sample.sample_id}}</td>
+              <td></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  const button = document.getElementById("printButton");
+
+  function printDiv() {
+    var divContents = document.getElementById("printDiv").innerHTML;
+    var a = window.open('', '', 'height=1920', 'width=1080');
+    a.document.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"><html>');
+    a.document.write('<html>');
+    a.document.write('<body >');
+    a.document.write(divContents);
+    a.document.write('</body></html>');
+    a.document.close();
+    a.print()
+  }
+
+  button.addEventListener("click", printDiv);
+</script>
+{% endblock %}
