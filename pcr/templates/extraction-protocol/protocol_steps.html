@@ -1,0 +1,75 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Extraction Protocols {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    {% for step in steps %}
+      {{step}}
+    {% endfor %}
+  </div>
+
+  <div class="row mt-2">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col" class="col-sm-10">Reagent</th>
+            <th scope="col" class="col-sm-2">Amount Per Sample (μL)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for reagent in reagents %}
+            <tr>
+              <td>{{reagent}}</td>
+              <td>{{reagent.amount_per_sample}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col" class="col-sm-10">Tube</th>
+            <th scope="col" class="col-sm-2">Amount Per Sample</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for tube in tubes %}
+            <tr>
+              <td>{{tube}}</td>
+              <td>{{tube.amount_per_sample}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+        return old=='⮝' ?  '⮟' : '⮝';
+    });
+  });
+
+  jQuery(document).ready(function($) {
+    $(".batch-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
+{% endblock %}
