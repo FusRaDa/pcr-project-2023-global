@@ -1,6 +1,7 @@
 {% extends "base.html" %} 
 
 {% load static %}
+{% load custom_tags %}
                                                                                                                                                                                                                               
 {% block title %} Review Batch {% endblock %} 
 
@@ -11,32 +12,123 @@
     <div class="col d-flex justify-content-center">
       <button type="button" class="btn btn-primary mt-2 mb-2" id="printButton">Print Paperwork</button>
     </div>
+    <p class="text-center">**Refresh page if styles are not applied when printing.**</p>
   </div>
 
   <div class="container" id="printDiv">
 
+    <div class="row">
+      <div class="col">
+        <h6>Batch: {{batch.name}}</h6>
+        <h6>Created: {{batch.date_created}}</h6>
+        <h6>Panel: {{batch.code}}</h6>
+        <h6>Extraction: {{batch.extraction_protocol}}</h6>
+      </div>
+
+      <div class="col">
+        <h6>Anomalies: {{batch.number_of_anomalies}}</h6>
+        <h6>Number of assays: {{batch.number_of_assays}}</h6>
+        <h6>Number of samples: {{batch.total_samples}}</h6>
+        <h6>Total tests: {{batch.total_tests}}</h6>
+      </div>
+    </div>
+
     <div class="table-responsive">
+      <h5 class="text-center">Samples</h5>
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th scope="col">Lab ID</th>
-            <th scope="col">Sample ID</th>
-            <th scope="col">Confirm ID</th>
+            <th scope="col" class="col-sm-1">Lab ID</th>
+            <th scope="col" class="col-sm-3">Sample ID</th>
+            <th scope="col" class="col-sm-3">Confirm ID</th>
+            <th scope="col" class="col-sm-5">Assays</th>
           </tr>
         </thead>
 
         <tbody>
           {% for sample in batch.sample_set.all %}
             <tr>
-              <td>{{sample.lab_id_num}}</td>
+              <td>{{sample.lab_id_num}} {% if samples.is_anomaly %} ⚠ {% endif %}</td>
               <td>{{sample.sample_id}}</td>
               <td></td>
+              <td>
+                {% for assay in sample.assays.all %}
+                <span class="text-decoration-underline">{{assay}}</span>
+                {% endfor %}
+              </td>
             </tr>
           {% endfor %}
         </tbody>
 
       </table>
     </div>
+
+    <div class="table-responsive">
+      <h5 class="text-center">Extraction</h5>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" class="col-sm-8">Reagent</th>
+            <th scope="col" class="col-sm-2">Per Sample</th>
+            <th scope="col" class="col-sm-2">Total Usage</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for reagent in protocol.reagentextraction_set.all %}
+            <tr>
+              <td>{{reagent}}</td>
+              <td>{{reagent.amount_per_sample}} × {{batch.total_samples}}</td>
+              <td>{{reagent.amount_per_sample|dec_mult:batch.total_samples}} μL</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" class="col-sm-8">Tube</th>
+            <th scope="col" class="col-sm-2">Per Sample</th>
+            <th scope="col" class="col-sm-2">Total Usage</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for tube in protocol.tubeextraction_set.all %}
+            <tr>
+              <td>{{tube}}</td>
+              <td>{{tube.amount_per_sample}} × {{batch.total_samples}}</td>
+              <td>{{tube.amount_per_sample|dec_mult:batch.total_samples}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+
+    {% comment %} <div class="table-responsive">
+      <h5 class="text-center">Panel</h5>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" class="col-sm-8">Reagent</th>
+            <th scope="col" class="col-sm-2">Per Sample</th>
+            <th scope="col" class="col-sm-2">Total Usage</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for assay in panel.assays.all %}
+            <tr>
+              <td>{{sample.lab_id_num}} {% if samples.is_anomaly %} ⚠ {% endif %}</td>
+              <td>{{sample.sample_id}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div> {% endcomment %}
 
   </div>
 

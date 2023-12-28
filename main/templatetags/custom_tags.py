@@ -8,3 +8,5 @@ def dec_mult(value, arg):
   return product
 
 register.filter("dec_mult", dec_mult)
+
+

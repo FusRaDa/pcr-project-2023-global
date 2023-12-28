@@ -1,7 +1,5 @@
-import collections
 from django.utils.timezone import now
 from django.db import models
-from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from users.models import User
 
@@ -43,6 +41,15 @@ class Batch(models.Model):
         break
     return anomaly_detected
   
+  @property
+  def number_of_anomalies(self):
+    anomalies = 0
+    assays_in_code = self.code.assays.all()
+    for sample in self.sample_set.all():
+      if set(sample.assays.all()) != set(assays_in_code):
+        anomalies += 1
+    return anomalies
+     
   @property
   def number_of_assays(self):
     if self.contains_anomaly:

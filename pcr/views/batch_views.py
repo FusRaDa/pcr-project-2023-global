@@ -157,11 +157,13 @@ def batch_paperwork(request, username, pk):
   
   try:
     batch = Batch.objects.get(user=user, pk=pk)
+    protocol = batch.extraction_protocol
+    panel = batch.code
   except ObjectDoesNotExist:
     messages.error(request, "There is no batch to view.")
     return redirect('batches')
   
-  context = {'batch': batch}
+  context = {'batch': batch, 'protocol': protocol, 'panel': panel}
   return render(request, 'batch/batch_paperwork.html', context)
 
 
