@@ -122,36 +122,28 @@ class ReagentAssayForm(ModelForm):
   def clean(self):
     cleaned_data = super().clean()
     final_concentration = cleaned_data.get('final_concentration')
-    final_concentration_unit = cleaned_data.get('final_concentration_unit')
 
-    if self.instance.reagent.pcr_reagent != Reagent.PCRReagent.WATER.name and (final_concentration == None or final_concentration_unit == None):
+    if self.instance.reagent.pcr_reagent != Reagent.PCRReagent.WATER.name and final_concentration == None:
       raise ValidationError(
         message=f"Reagents ({self.instance.reagent.name}) that are not water must have a final concentration."
       )
     
-    if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name and (final_concentration != None or final_concentration_unit != None):
+    if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name and final_concentration != None:
       raise ValidationError (
         message="Water reagent's final concentration and unit must be left empty."
-      )
-    
-    if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.POLYMERASE.name and final_concentration_unit != Reagent.ConcentrationUnits.UNITS.name:
-      raise ValidationError(
-        message="Polymerase must have the concentration unit of U/\u00B5L."
       )
     
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.fields['final_concentration'].widget.attrs['class'] = 'form-control'
-    self.fields['final_concentration_unit'].widget.attrs['class'] = 'form-select'
     self.fields['order'].widget.attrs['class'] = 'form-control'
 
     if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name:
       self.fields['final_concentration'].widget.attrs['disabled'] = 'True'
-      self.fields['final_concentration_unit'].widget.attrs['disabled'] = 'True'
     
   class Meta:
     model = ReagentAssay
-    exclude = ['reagent', 'assay']
+    exclude = ['reagent', 'assay', 'final_concentration_unit']
 
 
 class AssayCodeForm(ModelForm):
@@ -182,6 +174,12 @@ class AssayCodeForm(ModelForm):
     pcr_rna = cleaned_data.get('pcr_rna')
     qpcr_dna = cleaned_data.get('qpcr_dna')
     qpcr_rna = cleaned_data.get('qpcr_rna')
+
+    for assay in pcr_dna | pcr_rna | qpcr_dna | qpcr_rna:
+      if not assay.is_complete:
+        raise ValidationError(
+          message=f"{assay} is incomplete, you cannot select this assay."
+        )
 
     if not pcr_dna and not pcr_rna and not qpcr_dna and not qpcr_rna:
       raise ValidationError(

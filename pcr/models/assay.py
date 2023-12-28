@@ -75,6 +75,14 @@ class Assay(models.Model):
   controls = models.ManyToManyField(Control)
   reagents = models.ManyToManyField(Reagent, through='ReagentAssay')
 
+  @property
+  def is_complete(self):
+    reagents = self.reagentassay_set.all()
+    for reagent in reagents:
+      if reagent.reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.final_concentration == None:
+        return False
+    return True
+
   class Meta:
     constraints = [
       models.UniqueConstraint(
@@ -105,6 +113,10 @@ class ReagentAssay(models.Model):
   final_concentration_unit = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)
 
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # users can decide what order reagents will be que's/displayed: 1-lowest priority > highest priority, 0 will be last
+
+  # @property
+  # def volume_per_sample(self):
+  #   stock_conc = self.reagent.stock_concentration
 
   def __str__(self):
     return f'{self.reagent}'

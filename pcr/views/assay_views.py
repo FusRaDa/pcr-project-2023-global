@@ -33,6 +33,12 @@ def create_assay(request):
       assay = form.save(commit=False)
       assay.user = request.user
       assay = form.save()
+
+      reagents = assay.reagentassay_set.all()
+      for reagent in reagents:
+        reagent.final_concentration_unit = reagent.reagent.unit_concentration
+        reagent.save()
+
       return redirect('assay_through', request.user, assay.pk)
     else:
       print(form.errors)
@@ -52,6 +58,7 @@ def edit_assay(request, username, pk):
   
   try:
     assay = Assay.objects.get(user=user, pk=pk)
+    reagents = assay.reagentassay_set.all()
   except ObjectDoesNotExist:
     messages.error(request, "There is no assay to edit.")
     return redirect('assays')
@@ -62,7 +69,13 @@ def edit_assay(request, username, pk):
   if 'update' in request.POST:
     form = AssayForm(request.POST, user=request.user, instance=assay)
     if form.is_valid():
+
       form.save()
+
+      for reagent in reagents:
+        reagent.final_concentration_unit = reagent.reagent.unit_concentration
+        reagent.save()
+      
       return redirect('assay_through', request.user.username, pk)
     else:
       print(form.errors)

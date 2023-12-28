@@ -85,6 +85,7 @@
         </tbody>
 
       </table>
+
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -107,28 +108,31 @@
       </table>
     </div>
 
-    {% comment %} <div class="table-responsive">
-      <h5 class="text-center">Panel</h5>
+    <h5 class="text-center">Assays</h5>
+    
+    {% for assay in panel.assays.all %}
+    <div class="table-responsive">
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th scope="col" class="col-sm-8">Reagent</th>
+            <th scope="col" class="col-sm-8">{{assay}}</th>
             <th scope="col" class="col-sm-2">Per Sample</th>
             <th scope="col" class="col-sm-2">Total Usage</th>
           </tr>
         </thead>
 
         <tbody>
-          {% for assay in panel.assays.all %}
+          {% for reagent in assay.reagentassay_set.all %}
             <tr>
-              <td>{{sample.lab_id_num}} {% if samples.is_anomaly %} ⚠ {% endif %}</td>
-              <td>{{sample.sample_id}}</td>
+              <td>{{reagent.reagent}}</td>
+              <td>hi</td>
             </tr>
           {% endfor %}
         </tbody>
 
       </table>
-    </div> {% endcomment %}
+    </div>
+    {% endfor %}
 
   </div>
 
