@@ -14,7 +14,7 @@ from users.models import User
 from .tokens import account_activation_token
 from .models import EmailOrUsernameModelBackend
 from .forms import CreateUserForm
-from .functions import create_tutorial_objects
+from .functions import create_test_objects
 
 
 # login user with their username or email and password
@@ -71,7 +71,7 @@ def activate(request, uidb64, token):
     user.is_active = True
     user.save()
 
-    create_tutorial_objects(user) # REMOVE THIS FROM PRODUCTION - FOR TESTING PURPOSES ONLY
+    create_test_objects(user) # REMOVE THIS FROM PRODUCTION - FOR TESTING PURPOSES ONLY
 
     messages.success(request, 'Thank you for your email confirmation. Now you can login your account.')
     return redirect('login')

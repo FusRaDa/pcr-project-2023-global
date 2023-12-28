@@ -44,7 +44,11 @@ class TubeExtractionForm(ModelForm):
     self.fields['amount_per_sample'].widget.attrs['class'] = 'form-control'
     self.fields['order'].widget.attrs['class'] = 'form-control'
 
+    self.fields['amount_per_sample'].widget.attrs['min'] = 1
+    self.fields['order'].widget.attrs['min'] = 0
+
     self.fields['amount_per_sample'].error_messages = {'min_value': "Every tube should be used at least once per sample."}
+    self.fields['amount_per_sample'].error_messages = {'required': "Every tube should be used at least once per sample."}
 
   class Meta:
     model = TubeExtraction
@@ -58,7 +62,11 @@ class ReagentExtractionForm(ModelForm):
     self.fields['amount_per_sample'].widget.attrs['class'] = 'form-control'
     self.fields['order'].widget.attrs['class'] = 'form-control'
 
+    self.fields['amount_per_sample'].widget.attrs['min'] = 1
+    self.fields['order'].widget.attrs['min'] = 0
+
     self.fields['amount_per_sample'].error_messages = {'min_value': "Every reagent should have a volume per sample."}
+    self.fields['amount_per_sample'].error_messages = {'required': "Every reagent should have a volume per sample."}
 
   class Meta:
     model = ReagentExtraction

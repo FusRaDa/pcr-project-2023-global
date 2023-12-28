@@ -7,7 +7,7 @@ from users.models import User
 
 
 # python pcr/custom/test_user_object.py
-def create_tutorial_objects(user):
+def create_test_objects(user):
 
   # according to https://www.sigmaaldrich.com/US/en/technical-documents/protocol/genomics/pcr/standard-pcr
   ThermalCyclerProtocol.objects.create(
