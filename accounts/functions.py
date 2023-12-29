@@ -218,7 +218,7 @@ def create_test_objects(user):
     pcr_reagent = Reagent.PCRReagent.GENERAL,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
-    stock_concentration = 20,
+    stock_concentration = 10,
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
   )
 
@@ -234,7 +234,7 @@ def create_test_objects(user):
     pcr_reagent = Reagent.PCRReagent.GENERAL,
     volume = 100.00,
     unit_volume = Reagent.VolumeUnits.MICROLITER,
-    stock_concentration = 20,
+    stock_concentration = 10,
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
   )
 
@@ -272,9 +272,9 @@ def create_test_objects(user):
 
   helico_pprimer.location.add(location3)
 
-  i_taq = Reagent.objects.create(
+  qgen = Reagent.objects.create(
     user = user,
-    name = "iTaq Universal Probes Supermix",
+    name = "Qiagen Multiplex Master Mix",
     brand = "BRAND",
     lot_number = "LOT_NUMBER_06",
     catalog_number = "CATALOG_NUMBER_06",
@@ -282,8 +282,24 @@ def create_test_objects(user):
     pcr_reagent = Reagent.PCRReagent.POLYMERASE,
     volume = 1.00,
     unit_volume = Reagent.VolumeUnits.MILLILITER,
-    stock_concentration = 5,
-    unit_concentration = Reagent.ConcentrationUnits.UNITS,
+    stock_concentration = 2,
+    unit_concentration = Reagent.ConcentrationUnits.X,
+  )
+
+  qgen.location.add(location3)
+
+  i_taq = Reagent.objects.create(
+    user = user,
+    name = "iTaq Universal Probes Supermix",
+    brand = "BRAND",
+    lot_number = "LOT_NUMBER_07",
+    catalog_number = "CATALOG_NUMBER_07",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.POLYMERASE,
+    volume = 1.00,
+    unit_volume = Reagent.VolumeUnits.MILLILITER,
+    stock_concentration = 2,
+    unit_concentration = Reagent.ConcentrationUnits.X,
   )
 
   i_taq.location.add(location3)
@@ -378,7 +394,7 @@ def create_test_objects(user):
      method = Assay.Methods.PCR,
      type = Assay.Types.DNA,
      sample_volume = 5.00,
-     reaction_volume = 20.00,
+     reaction_volume = 50.00,
   )
 
   helico_assay = Assay.objects.create(
@@ -397,22 +413,3 @@ def create_test_objects(user):
   helico_assay.controls.add(bact3, negctrl)
   helico_assay.fluorescence.add(fam)
   helico_assay.reagents.add(water, helico_frprimer, helico_pprimer, i_taq)
-
-  cbovis_code = AssayCode.objects.create(
-    user = user,
-    name = "CBOV312",
-  )
-
-  helico_code = AssayCode.objects.create(
-    user = user,
-    name = "HELI996",
-  )
-
-  cbov_heli_code = AssayCode.objects.create(
-    user = user,
-    name = "CBOV_HELI34",
-  )
-
-  cbovis_code.assays.add(cbovis_assay)
-  helico_code.assays.add(helico_assay)
-  cbov_heli_code.assays.add(cbovis_assay, helico_assay)

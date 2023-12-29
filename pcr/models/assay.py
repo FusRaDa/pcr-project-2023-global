@@ -119,12 +119,21 @@ class ReagentAssay(models.Model):
   @property
   def volume_per_sample(self):
     if self.reagent.pcr_reagent == Reagent.PCRReagent.WATER:
-      return "WATER"
+
+      inital_volume = self.assay.reaction_volume - self.assay.sample_volume
+      sum = 0
+      reagents = self.assay.reagentassay_set.all()
+      for reagent in reagents:
+        if reagent.reagent.pcr_reagent != Reagent.PCRReagent.WATER:
+          dil_f = reagent.reagent.stock_concentration / reagent.final_concentration
+          vol = reagent.assay.reaction_volume / dil_f
+          sum += vol
+      
+      volume = "{:.2f}".format(inital_volume - sum)
+      return volume
     
-    inital_volume = self.assay.reaction_volume - self.assay.sample_volume
-    
-    df = self.reagent.stock_concentration/self.final_concentration 
-    volume = inital_volume/df
+    df = self.reagent.stock_concentration / self.final_concentration 
+    volume = "{:.2f}".format(self.assay.reaction_volume / df)
 
     return volume
 
