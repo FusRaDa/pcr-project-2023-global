@@ -160,11 +160,20 @@ def batch_paperwork(request, username, pk):
     protocol = batch.extraction_protocol
 
     panel = batch.code.assays.all()
+    samples_num = []
+    controls_num = []
     samples_per_assay = []
     for assay in panel:
-      samples_per_assay.append(assay.sample_set.filter(batch=batch).count())
+      samples = assay.sample_set.filter(batch=batch).count()
+      controls = assay.controls.count()
 
-    assays = zip(panel, samples_per_assay)
+      samples_num.append(samples)
+      controls_num.append(controls)
+
+      sum = controls + samples
+      samples_per_assay.append(sum)
+
+    assays = zip(panel, samples_per_assay, samples_num, controls_num)
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no batch to view.")

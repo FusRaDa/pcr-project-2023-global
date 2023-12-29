@@ -108,16 +108,17 @@
       </table>
     </div>
 
-    <h5 class="text-center">Assays</h5>
+    <h5 class="text-center">Master Mix</h5>
     
-    {% for assay, sample_num in assays %}
+    {% for assay, total_num, sample_num, control_num in assays %}
+    Samples: {{sample_num}} Controls: {{control_num}} Total Wells: {{total_num}}
     <div class="table-responsive">
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th scope="col">{{assay}} × {{sample_num}} Samples @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
+            <th scope="col">{{assay}} × {{total_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
             <th scope="col">Total Master Mix (μL)</th>
-            <th scope="col">Per Sample (μL) × {{sample_num}}</th>
+            <th scope="col">Per Sample (μL) × {{total_num}}</th>
             <th scope="col">Stock Conc.</th>
             <th scope="col">Final Conc.</th>
             <th scope="col">DF</th>
@@ -128,7 +129,7 @@
           {% for reagent in assay.reagentassay_set.all|dictsort:"order"%}
             <tr class="table-light">
               <td>{{reagent.reagent}}</td>
-              <td class="table-success">{{reagent.volume_per_sample|dec_mult:sample_num}}</td>
+              <td class="table-success">{{reagent.volume_per_sample|dec_mult:total_num}}</td>
               <td>{{reagent.volume_per_sample}}</td>
               <td>{% if reagent.reagent.stock_concentration %} {{reagent.reagent.stock_concentration}} {{reagent.reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
               <td>{% if reagent.final_concentration %} {{reagent.final_concentration}} {{reagent.final_concentration_unit}} {% else %} ------ {% endif %}</td>
@@ -137,7 +138,7 @@
           {% endfor %}
           <tr class="table-dark">
             <td>Total</td>
-            <td>{{assay.mm_volume|dec_mult:sample_num}}</td>
+            <td>{{assay.mm_volume|dec_mult:total_num}}</td>
             <td>{{assay.mm_volume}}</td>
             <td>------</td>
             <td>------</td>
