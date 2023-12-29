@@ -12,7 +12,7 @@
     <div class="col d-flex justify-content-center">
       <button type="button" class="btn btn-primary mt-2 mb-2" id="printButton">Print Paperwork</button>
     </div>
-    <p class="text-center">**Refresh page if styles are not applied when printing.**</p>
+    <p class="text-center">**Refresh page if styles are not applied when printing. Enable background graphics to view and print color.**</p>
   </div>
 
   <div class="container" id="printDiv">
@@ -35,12 +35,12 @@
 
     <div class="table-responsive">
       <h5 class="text-center">Samples</h5>
-      <table class="table table-bordered">
+      <table class="table table-bordered" style="break-inside: avoid">
         <thead>
           <tr>
-            <th scope="col" class="col-sm-1">Lab ID</th>
+            <th scope="col" class="col-sm-2">Lab ID</th>
             <th scope="col" class="col-sm-3">Sample ID</th>
-            <th scope="col" class="col-sm-3">Confirm ID</th>
+            <th scope="col" class="col-sm-2">Confirm ID</th>
             <th scope="col" class="col-sm-5">Assays</th>
           </tr>
         </thead>
@@ -65,7 +65,7 @@
 
     <div class="table-responsive">
       <h5 class="text-center">Extraction</h5>
-      <table class="table table-bordered">
+      <table class="table table-bordered" style="break-inside: avoid">
         <thead>
           <tr>
             <th scope="col" class="col-sm-8">Reagent</th>
@@ -86,7 +86,7 @@
 
       </table>
 
-      <table class="table table-bordered">
+      <table class="table table-bordered" style="break-inside: avoid">
         <thead>
           <tr>
             <th scope="col" class="col-sm-8">Tube</th>
@@ -108,11 +108,12 @@
       </table>
     </div>
 
-    <h5 class="text-center">Master Mix</h5>
+    <h5 class="text-center" style="break-before: page">Master Mix</h5>
     
     {% for assay, total_num, sample_num, control_num in assays %}
-    Samples: {{sample_num}} Controls: {{control_num}} Total Wells: {{total_num}}
-    <div class="table-responsive">
+
+    <div class="table-responsive" style="break-inside: avoid">
+      Samples: {{sample_num}} Controls: {{control_num}} Total Wells: {{total_num}}
       <table class="table table-bordered">
         <thead>
           <tr>
