@@ -69,7 +69,7 @@
         <thead>
           <tr>
             <th scope="col" class="col-sm-8">Reagent</th>
-            <th scope="col" class="col-sm-2">Per Sample</th>
+            <th scope="col" class="col-sm-2">Per Sample × {{batch.total_samples}}</th>
             <th scope="col" class="col-sm-2">Total Usage</th>
           </tr>
         </thead>
@@ -78,7 +78,7 @@
           {% for reagent in protocol.reagentextraction_set.all %}
             <tr>
               <td>{{reagent}}</td>
-              <td>{{reagent.amount_per_sample}} × {{batch.total_samples}}</td>
+              <td>{{reagent.amount_per_sample}} μL</td>
               <td>{{reagent.amount_per_sample|dec_mult:batch.total_samples}} μL</td>
             </tr>
           {% endfor %}
@@ -90,7 +90,7 @@
         <thead>
           <tr>
             <th scope="col" class="col-sm-8">Tube</th>
-            <th scope="col" class="col-sm-2">Per Sample</th>
+            <th scope="col" class="col-sm-2">Per Sample × {{batch.total_samples}}</th>
             <th scope="col" class="col-sm-2">Total Usage</th>
           </tr>
         </thead>
@@ -99,7 +99,7 @@
           {% for tube in protocol.tubeextraction_set.all %}
             <tr>
               <td>{{tube}}</td>
-              <td>{{tube.amount_per_sample}} × {{batch.total_samples}}</td>
+              <td>{{tube.amount_per_sample}}</td>
               <td>{{tube.amount_per_sample|dec_mult:batch.total_samples}}</td>
             </tr>
           {% endfor %}
@@ -110,24 +110,32 @@
 
     <h5 class="text-center">Assays</h5>
     
-    {% for assay in panel.assays.all %}
+    {% for assay, sample_num in assays %}
     <div class="table-responsive">
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th scope="col" class="col-sm-8">{{assay}}</th>
+            <th scope="col" class="col-sm-8">{{assay}} × {{sample_num}}</th>
             <th scope="col" class="col-sm-2">Per Sample</th>
-            <th scope="col" class="col-sm-2">Total Usage</th>
+            <th scope="col" class="col-sm-2">Total</th>
           </tr>
         </thead>
 
         <tbody>
           {% for reagent in assay.reagentassay_set.all %}
             <tr>
-              <td>{{reagent.reagent}}</td>
-              <td>{{reagent.volume_per_sample}}</td>
+              <td>{{reagent.reagent}} μL</td>
+              <td>{{reagent.volume_per_sample}} μL</td>
             </tr>
           {% endfor %}
+          <tr>
+            <td>Sample</td>
+            <td>{{assay.sample_volume}} μL</td>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td>{{assay.reaction_volume}} μL</td>
+          </tr>
         </tbody>
 
       </table>

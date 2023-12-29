@@ -158,12 +158,19 @@ def batch_paperwork(request, username, pk):
   try:
     batch = Batch.objects.get(user=user, pk=pk)
     protocol = batch.extraction_protocol
-    panel = batch.code
+
+    panel = batch.code.assays.all()
+    samples_per_assay = []
+    for assay in panel:
+      samples_per_assay.append(assay.sample_set.filter(batch=batch).count())
+
+    assays = zip(panel, samples_per_assay)
+
   except ObjectDoesNotExist:
     messages.error(request, "There is no batch to view.")
     return redirect('batches')
   
-  context = {'batch': batch, 'protocol': protocol, 'panel': panel}
+  context = {'batch': batch, 'protocol': protocol, 'assays': assays}
   return render(request, 'batch/batch_paperwork.html', context)
 
 
