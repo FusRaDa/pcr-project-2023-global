@@ -84,6 +84,11 @@ class Assay(models.Model):
       if reagent.reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.final_concentration == None:
         return False
     return True
+  
+  @property
+  def mm_volume(self):
+    sub = self.reaction_volume - self.sample_volume
+    return sub
 
   class Meta:
     constraints = [
@@ -129,11 +134,11 @@ class ReagentAssay(models.Model):
           vol = reagent.assay.reaction_volume / dil_f
           sum += vol
       
-      volume = "{:.2f}".format(inital_volume - sum)
+      volume = Decimal("{:.2f}".format(inital_volume - sum))
       return volume
     
     df = self.reagent.stock_concentration / self.final_concentration 
-    volume = "{:.2f}".format(self.assay.reaction_volume / df)
+    volume = Decimal("{:.2f}".format(self.assay.reaction_volume / df))
 
     return volume
 
