@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
+from decimal import Decimal
+
 from users.models import User
 
 from .inventory import Reagent, Location
@@ -114,9 +116,17 @@ class ReagentAssay(models.Model):
 
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0) # users can decide what order reagents will be que's/displayed: 1-lowest priority > highest priority, 0 will be last
 
-  # @property
-  # def volume_per_sample(self):
-  #   stock_conc = self.reagent.stock_concentration
+  @property
+  def volume_per_sample(self):
+    if self.reagent.pcr_reagent == Reagent.PCRReagent.WATER:
+      return "WATER"
+    
+    inital_volume = self.assay.reaction_volume - self.assay.sample_volume
+    
+    df = self.reagent.stock_concentration/self.final_concentration 
+    volume = inital_volume/df
+
+    return volume
 
   def __str__(self):
     return f'{self.reagent}'

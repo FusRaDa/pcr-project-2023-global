@@ -125,7 +125,7 @@
           {% for reagent in assay.reagentassay_set.all %}
             <tr>
               <td>{{reagent.reagent}}</td>
-              <td>hi</td>
+              <td>{{reagent.volume_per_sample}}</td>
             </tr>
           {% endfor %}
         </tbody>
