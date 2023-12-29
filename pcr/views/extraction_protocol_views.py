@@ -104,8 +104,8 @@ def extraction_protocol_through(request, username, pk):
   
   try:
     protocol = ExtractionProtocol.objects.get(user=user, pk=pk)
-    tubes = TubeExtraction.objects.prefetch_related('tube', 'protocol').filter(protocol=protocol).order_by('-order')
-    reagents = ReagentExtraction.objects.prefetch_related('reagent', 'protocol').filter(protocol=protocol).order_by('-order')
+    tubes = TubeExtraction.objects.prefetch_related('tube', 'protocol').filter(protocol=protocol).order_by('order')
+    reagents = ReagentExtraction.objects.prefetch_related('reagent', 'protocol').filter(protocol=protocol).order_by('order')
   except ObjectDoesNotExist:
     messages.error(request, "There is no extraction protocol to edit.")
     return redirect('extraction_protocols')
@@ -122,7 +122,6 @@ def extraction_protocol_through(request, username, pk):
     if reagentformset.is_valid() and tubeformset.is_valid():
       tubeformset.save()
       reagentformset.save()
-      return redirect('extraction_protocols')
     else:
       print(reagentformset.errors)
       print(reagentformset.non_form_errors())

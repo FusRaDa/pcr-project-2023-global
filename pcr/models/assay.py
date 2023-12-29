@@ -141,7 +141,14 @@ class ReagentAssay(models.Model):
     volume = Decimal("{:.2f}".format(self.assay.reaction_volume / df))
 
     return volume
-
+  
+  @property
+  def dilution_factor(self):
+    if self.reagent.pcr_reagent == Reagent.PCRReagent.WATER:
+      return "------"
+    df = Decimal("{:.2f}".format(self.reagent.stock_concentration / self.final_concentration))
+    return df
+  
   def __str__(self):
     return f'{self.reagent}'
 
