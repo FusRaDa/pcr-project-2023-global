@@ -15,7 +15,7 @@
         {% if reagent.stock_concentration %}
           <li class="list-group-item">Concentration: {{reagent.stock_concentration}} {{reagent.unit_concentration}}</li>
         {% endif %}
-        <a href="{% url 'edit_reagent_store' reagent.pk %}" class="list-group-item list-group-item-action">
+        <a href="{% url 'edit_reagent_store' reagent.pk %}" class="list-group-item list-group-item-action active">
           Edit Reagent
         </a>
 

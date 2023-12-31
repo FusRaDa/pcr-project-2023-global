@@ -4,7 +4,7 @@ import random
 import string
 import os
 
-from pcr.models.inventory import Tube, Plate, Reagent
+from pcr.models.inventory import Tube, Plate, Reagent, Gel
 
 
 def generate_random_file_name(length):
@@ -80,6 +80,17 @@ def kit_to_inventory(kit, user, lot_number):
       lot_number = lot_number,
       catalog_number = kit.catalog_number,
       amount = tube.amount,
+    )
+
+  for gel in gel.storegel_set.all():
+    Gel.objects.create(
+      user = user,
+      name = gel.name,
+      brand = kit.brand,
+      lot_number = lot_number,
+      catalog_number = kit.catalog_number,
+      wells = gel.wells,
+      amount = gel.amount,
     )
 
   for plate in kit.storeplate_set.all():
