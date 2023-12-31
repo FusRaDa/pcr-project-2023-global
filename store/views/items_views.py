@@ -5,8 +5,8 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
 from ..models.affiliates import Brand
-from ..models.items import Kit, StorePlate, StoreReagent, StoreTube, Tag, Review
-from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm, TagForm, ReviewForm
+from ..models.items import Kit, StorePlate, StoreReagent, StoreTube, Tag, Review, StoreGel
+from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm, TagForm, ReviewForm, StoreGelForm
 from ..forms.general import DeletionForm
 from users.models import User
 
@@ -209,6 +209,53 @@ def edit_tube(request, pk):
   
   context = {'form': form, 'del_form': del_form, 'tube': tube}
   return render(request, 'items/edit_tube.html', context)
+
+
+@staff_member_required(login_url='login')
+def create_gel(request):
+  form = StoreGelForm()
+  if request.method == 'POST':
+    form = StoreGelForm(request.POST)
+    if form.is_valid():
+      kit_pk = int(request.POST['pk'])
+      kit = Kit.objects.get(pk=kit_pk)
+      gel = form.save(commit=False)
+      gel.kit = kit
+      gel.save()
+      context = {'gel': gel}
+      return render(request, 'partials/kit_gels.html', context)
+    else:
+      print(form.errors)
+  
+  context = {'form': form}
+  return render(request, 'partials/store_gel_form.html', context)
+
+
+@staff_member_required(login_url='login')
+def edit_gel(request, pk):
+  gel = StoreGel.objects.get(pk=pk)
+
+  form = StoreGelForm(instance=gel)
+  del_form = DeletionForm(value=gel.name)
+
+  if 'update' in request.POST:
+    form = StoreGelForm(request.POST, instance=gel)
+    if form.is_valid():
+      form.save()
+      return redirect('edit_kit_items', gel.kit.pk)
+    else:
+      print(form.errors)
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=gel.name)
+    if del_form.is_valid():
+      gel.delete()
+      return redirect('edit_kit_items', gel.kit.pk)
+    else:
+      print(del_form.errors)
+
+  context = {'form': form, 'del_form': del_form, 'gel': gel}
+  return render(request, 'items/edit_gel.html', context)
 
 
 @staff_member_required(login_url='login')

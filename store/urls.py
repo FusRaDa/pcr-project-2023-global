@@ -25,6 +25,9 @@ urlpatterns = [
   path('create-tube-store/', items_views.create_tube, name='create_tube_store'),
   path('edit-tube-store/<int:pk>/', items_views.edit_tube, name='edit_tube_store'),
 
+  path('create-gel-store/', items_views.create_gel, name='create_gel_store'),
+  path('edit-gel-store/<int:pk>/', items_views.edit_gel, name='edit_gel_store'),
+
   path('create-plate-store/', items_views.create_plate, name='create_plate_store'),
   path('edit-plate-store/<int:pk>/', items_views.edit_plate, name='edit_plate_store'),
 

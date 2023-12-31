@@ -60,16 +60,16 @@ class Kit(models.Model):
     return f"{self.name}-{self.catalog_number}"
   
 
-# class StoreGel(models.Model):
-#   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
+class StoreGel(models.Model):
+  kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
 
-#   name = models.CharField(blank=False, max_length=25, default="PLATE")
+  name = models.CharField(blank=False, max_length=25, default="GEL")
 
-#   wells = models.IntegerField(validators=[MinValueValidator(0)], default=12)
-#   amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
+  wells = models.IntegerField(validators=[MinValueValidator(0)], default=12)
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
 
-#   def __str__(self):
-#     return self.name
+  def __str__(self):
+    return self.name
 
 
 class StorePlate(models.Model):

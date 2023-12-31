@@ -93,6 +93,33 @@
       <div class="d-flex flex-wrap justify-content-center" id="plate-forms">
       </div>
     </div>
+
+    <div class="col-sm-3 form-width-18 mb-2">
+      <div class="card">
+        <div class="card-header">
+          Gel List
+        </div>
+        
+        <ul class="list-group list-group-flush">
+          {% for gel in kit.storegel_set.all %}
+            {% include 'partials/kit_gels.html' %}
+          {% endfor %}
+          <button 
+            id="gels"
+            type="button" 
+            class="list-group-item list-group-item-action list-group-item-primary"
+            hx-get="{% url 'create_gel_store' %}"
+            hx-target="#gel-forms"
+            hx-include="[name='pk']"
+            hx-swap="beforeend">
+            + Gel
+          </button>
+        </ul>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-center" id="gel-forms">
+      </div>
+    </div>
  
   </div>
 

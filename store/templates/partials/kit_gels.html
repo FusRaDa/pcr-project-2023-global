@@ -1,0 +1,19 @@
+<li class="list-group-item">{{gel.name}}
+  <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#gel-collapse-{{gel.pk}}" aria-expanded="false" aria-controls="gel-collapse-{{gel.pk}}">
+    ⮟
+  </button>
+
+  <div class="collapse" id="gel-collapse-{{gel.pk}}">
+    <div class="card-body"> 
+      <ul class="list-group">
+
+        <li class="list-group-item">Size: {{gel.size}}</li>
+        <li class="list-group-item">Wells: {{gel.wells}}</li>
+        <a href="{% url 'edit_gel_store' gel.pk %}" class="list-group-item list-group-item-action">
+          Edit Gel
+        </a>
+
+      </ul>
+    </div>
+  </div>
+</li>

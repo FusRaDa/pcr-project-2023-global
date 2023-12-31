@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
 
-from ..models.items import Kit, StorePlate, StoreTube, StoreReagent, Tag, Review
+from ..models.items import Kit, StorePlate, StoreTube, StoreReagent, Tag, Review, StoreGel
 from ..models.affiliates import Brand
 
 
@@ -40,6 +40,19 @@ class KitForm(ModelForm):
   class Meta:
     model = Kit
     fields = '__all__'
+
+
+class StoreGelForm(ModelForm):
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['wells'].widget.attrs['class'] = 'form-control'
+    self.fields['amount'].widget.attrs['class'] = 'form-control'
+
+  class Meta:
+    model = StoreGel
+    exclude = ['kit']
 
 
 class StorePlateForm(ModelForm):
