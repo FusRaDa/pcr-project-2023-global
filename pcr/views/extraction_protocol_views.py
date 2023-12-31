@@ -122,6 +122,7 @@ def extraction_protocol_through(request, username, pk):
     if reagentformset.is_valid() and tubeformset.is_valid():
       tubeformset.save()
       reagentformset.save()
+      return redirect(request.path_info)
     else:
       print(reagentformset.errors)
       print(reagentformset.non_form_errors())

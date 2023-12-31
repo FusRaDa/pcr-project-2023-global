@@ -47,7 +47,7 @@ class Process(models.Model):
 
   plate = models.ForeignKey(Plate, on_delete=models.RESTRICT, blank=True, null=True, default=None)
 
-  samples = models.ManyToManyField(Sample, through='ProcessSample')
+  samples = models.ManyToManyField(Sample)
 
   is_processed = models.BooleanField(default=False)
 
@@ -55,31 +55,3 @@ class Process(models.Model):
 
   def __str__(self):
     return f"Process by {self.user}"
-  
-
-class ProcessSample(models.Model):
-  process = models.ForeignKey(Process, on_delete=models.CASCADE)
-  sample = models.ForeignKey(Sample, on_delete=models.CASCADE)
-
-  in_plate = models.BooleanField(default=False)
-
-  def __str__(self):
-    return f"{self.process}-{self.sample}"
-
-
-class ProcessPlate(models.Model):
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
-  process = models.ForeignKey(Process, on_delete=models.CASCADE)
-
-  class Types(models.TextChoices):
-    DNA = 'DNA', _('DNA')
-    RNA = 'RNA', _('RNA')
-
-  type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25) # type of genetic material in plate - a plate CANNOT do both DNA & RNA
-
-  samples = models.ManyToManyField(Sample)
-  protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT) # protocol can only be deleted if no plates are using it
-  plate = models.ForeignKey(Plate, on_delete=models.RESTRICT)
-
-  def __str__(self):
-    return self.type

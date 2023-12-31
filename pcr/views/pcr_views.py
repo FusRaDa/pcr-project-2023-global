@@ -8,8 +8,70 @@ from users.models import User
 
 from ..forms.general import DeletionForm
 from ..forms.pcr import ThermalCyclerProtocolForm
-from ..models.pcr import ThermalCyclerProtocol, Process, ProcessPlate
+from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
+
+
+@login_required(login_url='login')
+def tcprotocols(request):
+  protocols = ThermalCyclerProtocol.objects.filter(user=request.user)
+  context = {'protocols': protocols}
+  return render(request, 'pcr/tcprotocols.html', context)
+
+
+@login_required(login_url='login')
+def create_tcprotocol(request):
+  form = ThermalCyclerProtocolForm()
+  
+  if request.method == "POST":
+    form = ThermalCyclerProtocolForm(request.POST)
+    if form.is_valid():
+      protocol = form.save(commit=False)
+      protocol.user = request.user
+      protocol.save()
+      return redirect('tcprotocols')
+    else:
+      print(form.errors)
+  
+  context = {'form': form}
+  return render(request, 'pcr/create_tcprotocol.html', context)
+
+
+@login_required(login_url='login')
+def edit_tcprotocol(request, username, pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no thermal cycler protocol to edit.")
+    return redirect('tcprotocols')
+  
+  try:
+    protocol = ThermalCyclerProtocol.objects.get(user=user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no thermal cycler protocol to edit.")
+    return redirect('tcprotocols')
+  
+  form = ThermalCyclerProtocolForm(instance=protocol)
+  del_form = DeletionForm(value=protocol.name)
+ 
+  if 'update' in request.POST:
+    form = ThermalCyclerProtocolForm(request.POST, instance=protocol)
+    if form.is_valid():
+      form.save()
+      return redirect('tcprotocols')
+    else:
+      print(form.errors)
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=protocol.name)
+    if del_form.is_valid():
+      protocol.delete()
+      return redirect('tcprotocols')
+    else:
+      print(del_form.errors)
+
+  context = {'form': form, 'del_form': del_form, 'protocol': protocol}
+  return render(request, 'pcr/edit_tcprotocol.html', context)
 
 
 @login_required(login_url='login')
@@ -116,65 +178,3 @@ def review_process(request, username, pk):
   
   context = {'process':  process}
   return render(request, 'pcr/review_process.html', context)
-
-
-@login_required(login_url='login')
-def tcprotocols(request):
-  protocols = ThermalCyclerProtocol.objects.filter(user=request.user)
-  context = {'protocols': protocols}
-  return render(request, 'pcr/tcprotocols.html', context)
-
-
-@login_required(login_url='login')
-def create_tcprotocol(request):
-  form = ThermalCyclerProtocolForm()
-  
-  if request.method == "POST":
-    form = ThermalCyclerProtocolForm(request.POST)
-    if form.is_valid():
-      protocol = form.save(commit=False)
-      protocol.user = request.user
-      protocol.save()
-      return redirect('tcprotocols')
-    else:
-      print(form.errors)
-  
-  context = {'form': form}
-  return render(request, 'pcr/create_tcprotocol.html', context)
-
-
-@login_required(login_url='login')
-def edit_tcprotocol(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no thermal cycler protocol to edit.")
-    return redirect('tcprotocols')
-  
-  try:
-    protocol = ThermalCyclerProtocol.objects.get(user=user, pk=pk)
-  except ObjectDoesNotExist:
-    messages.error(request, "There is no thermal cycler protocol to edit.")
-    return redirect('tcprotocols')
-  
-  form = ThermalCyclerProtocolForm(instance=protocol)
-  del_form = DeletionForm(value=protocol.name)
- 
-  if 'update' in request.POST:
-    form = ThermalCyclerProtocolForm(request.POST, instance=protocol)
-    if form.is_valid():
-      form.save()
-      return redirect('tcprotocols')
-    else:
-      print(form.errors)
-
-  if 'delete' in request.POST:
-    del_form = DeletionForm(request.POST, value=protocol.name)
-    if del_form.is_valid():
-      protocol.delete()
-      return redirect('tcprotocols')
-    else:
-      print(del_form.errors)
-
-  context = {'form': form, 'del_form': del_form, 'protocol': protocol}
-  return render(request, 'pcr/edit_tcprotocol.html', context)

@@ -125,6 +125,7 @@ def assay_through(request, username, pk):
     reagentformset = ReagentAssayFormSet(request.POST)
     if reagentformset.is_valid():
       reagentformset.save()
+      return redirect(request.path_info)
     else:
       print(reagentformset.errors)
       print(reagentformset.non_form_errors())
