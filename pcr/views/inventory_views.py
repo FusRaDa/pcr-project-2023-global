@@ -5,7 +5,7 @@ from django.db.models import F
 from django.contrib import messages
 from users.models import User
 
-from ..models.inventory import Location, Reagent, Tube, Plate
+from ..models.inventory import Location, Reagent, Tube, Plate, Gel
 from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, EditTubeForm, EditPlateForm, EditReagentForm
 from ..forms.general import DeletionForm
 
@@ -76,11 +76,22 @@ def edit_location(request, username, pk):
 # **LOCATIONS VIEWS** #
 
 
+# **GELS VIEWS** #
+@login_required(login_url='login')
+def gels(request):
+  gels = Gel.objects.filter(user=request.user).order_by(F('exp_date').desc(nulls_last=True))
+  context = {'gels': gels}
+  return render(request, 'inventory/gels.html', context)
+
+
+# **GELS VIEWS** #
+
+
+
 # **PLATES VIEWS** #
 @login_required(login_url='login')
 def plates(request):
   plates = Plate.objects.filter(user=request.user).order_by(F('exp_date').desc(nulls_last=True))
-
   context = {'plates': plates}
   return render(request, 'inventory/plates.html', context)
 

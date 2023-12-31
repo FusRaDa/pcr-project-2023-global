@@ -3,7 +3,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from ..models.inventory import Plate, Tube, Reagent, Location
+from ..models.inventory import Gel, Plate, Tube, Reagent, Location
 
 
 class LocationForm(ModelForm):
@@ -19,6 +19,36 @@ class LocationForm(ModelForm):
   class Meta:
     model = Location
     exclude = ['user']
+
+
+class GelForm(ModelForm):
+
+  location = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=False)
+  
+  exp_date = forms.DateField(
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
+  
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['brand'].widget.attrs['class'] = 'form-control'
+    self.fields['lot_number'].widget.attrs['class'] = 'form-control'
+    self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
+    self.fields['wells'].widget.attrs['class'] = 'form-control'
+    self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+  class Meta:
+    model = Gel
+    exclude = ['user', 'last_updated']
     
 
 class PlateForm(ModelForm):
@@ -29,16 +59,14 @@ class PlateForm(ModelForm):
     required=False)
   
   exp_date = forms.DateField(
-      widget=forms.DateInput(attrs={'type': 'date'}),
-      label='Date Start',
-      required=False)
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
   
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
-
-    self.fields['location'].error_messages = {'required': "Select the storage location of this reagent."}
 
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['brand'].widget.attrs['class'] = 'form-control'
@@ -61,9 +89,9 @@ class EditPlateForm(ModelForm):
     required=False)
   
   exp_date = forms.DateField(
-      widget=forms.DateInput(attrs={'type': 'date'}),
-      label='Date Start',
-      required=False)
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
   
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -87,9 +115,9 @@ class TubeForm(ModelForm):
     required=False)
   
   exp_date = forms.DateField(
-      widget=forms.DateInput(attrs={'type': 'date'}),
-      label='Date Start',
-      required=False)
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -121,9 +149,9 @@ class EditTubeForm(ModelForm):
     required=False)
   
   exp_date = forms.DateField(
-      widget=forms.DateInput(attrs={'type': 'date'}),
-      label='Date Start',
-      required=False)
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -147,9 +175,9 @@ class ReagentForm(ModelForm):
     required=False)
   
   exp_date = forms.DateField(
-      widget=forms.DateInput(attrs={'type': 'date'}),
-      label='Date Start',
-      required=False)
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
   
   def clean(self):
     cleaned_data = super().clean()
@@ -225,9 +253,9 @@ class EditReagentForm(ModelForm):
     required=False)
   
   exp_date = forms.DateField(
-      widget=forms.DateInput(attrs={'type': 'date'}),
-      label='Date Start',
-      required=False)
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
   
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')

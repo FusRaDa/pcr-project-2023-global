@@ -42,10 +42,14 @@ class ThermalCyclerProtocol(models.Model):
 class Process(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  dna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='dna_protocol', blank=True, null=True, default=None)
-  rna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='rna_protocol', blank=True, null=True, default=None)
+  pcr_dna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='pcr_dna', blank=True, null=True, default=None)
+  pcr_rna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='pcr_rna', blank=True, null=True, default=None)
+
+  qpcr_dna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='qpcr_dna', blank=True, null=True, default=None)
+  qpcr_rna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='qpcr_rna', blank=True, null=True, default=None)
 
   plate = models.ForeignKey(Plate, on_delete=models.RESTRICT, blank=True, null=True, default=None)
+  # gel = models.ForeignKey(Gel, on_delete=models.RESTRICT, blank=True, null=True, default=None)
 
   samples = models.ManyToManyField(Sample)
 

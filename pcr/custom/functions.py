@@ -28,3 +28,19 @@ def create_samples(number_of_samples, lab_id, user):
   )
 
   control.assays.add(*assays)
+
+
+def process_dna_pcr_samples():
+  pass
+
+
+def process_rna_pcr_samples():
+  pass
+
+
+def process_dna_qpcr_samples():
+  pass
+
+
+def process_rna_qpcr_samples():
+  pass
