@@ -35,6 +35,10 @@ urlpatterns = [
   path("create-location/", inventory_views.create_location, name='create_location'),
   path("edit-location/<str:username>/<int:pk>/", inventory_views.edit_location, name='edit_location'),
 
+  path("gels/", inventory_views.gels, name='gels'),
+  path("create-gel/", inventory_views.create_gel, name='create_gel'),
+  path("edit-gel/<str:username>/<int:pk>/", inventory_views.edit_gel, name='edit_gel'),
+
   path("plates/", inventory_views.plates, name='plates'),
   path("create-plate/", inventory_views.create_plate, name='create_plate'),
   path("edit-plate/<str:username>/<int:pk>/", inventory_views.edit_plate, name='edit_plate'),
