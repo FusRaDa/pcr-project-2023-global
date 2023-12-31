@@ -1,0 +1,109 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Add Gel {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">Add New Gel</h3>
+  </div>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div class="row justify-content-center mb-2">
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center">
+          <label class="form-label">Name</label>
+          {{form.name}}
+        </div>
+
+        <div class="text-center ">
+          <label class="form-label">Brand</label>
+          {{form.brand}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Lot Number</label>
+          {{form.lot_number}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Catalog Number</label>
+          {{form.catalog_number}}
+        </div>
+      </div>
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center">
+          <label class="form-label">Size</label>
+          {{form.wells}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Amount Stored</label>
+          {{form.amount}}
+        </div>
+        
+        <div class="text-center">
+          <label class="form-label">Expiration Date</label>
+          {{form.exp_date}}
+        </div>
+      </div>
+
+      <div class="col-sm-3 form-width-18">
+        <div class="card  mt-2">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Locations
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
+                ⮝
+              </button>
+            </li>
+
+            <div class="collapse show" id="reagents-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for loc in form.location %}
+                    <li class="list-group-item">
+                      {{loc}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {% if form.errors %}
+    <div class="row text-center mt-2">
+      {% for key,value in form.errors.items %} 
+        {{ value|escape }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center mb-2">
+      <div class="text-center mt-2">
+        <a class="btn btn-secondary" href="{% url 'gels' %}">Cancel</a>
+        <button type="submit" class="btn btn-primary">Add New Plate</button>
+      </div>
+    </div>
+
+  </form>
+  
+</div>
+
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮟' ?  '⮝' : '⮟';
+    });
+  });
+</script>
+{% endblock %}

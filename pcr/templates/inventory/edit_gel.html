@@ -18,29 +18,29 @@
       <div class="col-sm-3 form-width-18">
         <div class="text-center">
           <label class="form-label">Name</label>
-          <input type="text" class="form-control" disabled readonly value="{{plate.name}}">
+          <input type="text" class="form-control" disabled readonly value="{{gel.name}}">
         </div>
 
         <div class="text-center">
           <label class="form-label">Brand</label>
-          <input type="text" class="form-control" disabled readonly value="{{plate.brand}}">
+          <input type="text" class="form-control" disabled readonly value="{{gel.brand}}">
         </div>
 
         <div class="text-center">
           <label class="form-label">Lot Number</label>
-          <input type="text" class="form-control" disabled readonly value="{{plate.lot_number}}">
+          <input type="text" class="form-control" disabled readonly value="{{gel.lot_number}}">
         </div>
 
         <div class="text-center">
           <label class="form-label">Catalog Number</label>
-          <input type="text" class="form-control" disabled readonly value="{{plate.catalog_number}}">
+          <input type="text" class="form-control" disabled readonly value="{{gel.catalog_number}}">
         </div>
       </div>
 
       <div class="col-sm-3 form-width-18">
         <div class="text-center">
           <label class="form-label">Size</label>
-          <input type="text" class="form-control" disabled readonly value="{{plate.size}}">
+          <input type="text" class="form-control" disabled readonly value="{{gel.wells}}">
         </div>
 
         <div class="text-center">
@@ -90,7 +90,7 @@
 
     <div class="row justify-content-center">
       <div class="text-center mt-2">
-        <a class="btn btn-secondary" href="{% url 'plates' %}">Cancel</a>
+        <a class="btn btn-secondary" href="{% url 'gels' %}">Cancel</a>
         <button type="submit" class="btn btn-primary" name="update">Update Plate</button>
       </div>
     </div>
@@ -100,7 +100,7 @@
   <div class="row justify-content-center">
     <div class="col d-flex justify-content-center">
       <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Plate
+        Delete Gel
       </button>
     </div>
   </div>
@@ -109,7 +109,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Deleting plate...</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting gel...</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -126,7 +126,7 @@
                   {% csrf_token %}
             
                   <div class="text-center mx-auto">
-                    <label class="form-label">Enter: "{{plate.name}}" &amp; Confirm</label>
+                    <label class="form-label">Enter: "{{gel.name}}" &amp; Confirm</label>
                     {{del_form.confirm}}
                   </div>
 

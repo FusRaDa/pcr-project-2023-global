@@ -2,14 +2,14 @@
 
 {% load static %}
 
-{% block title %} Plates {% endblock %} 
+{% block title %} Gels {% endblock %} 
 
 {% block content %}
 <div class="container">
 
   <div class="row">
     <div class="col d-flex justify-content-center"> 
-      <h3 class="text-center">Plates</h3>
+      <h3 class="text-center">Gels</h3>
     </div>
   </div>
 
@@ -24,7 +24,7 @@
   <div class="row">
     <div class="col d-flex justify-content-center"> 
       <a href="{% url 'create_plate' %}">
-        <button type="button" class="btn btn-primary mb-2">Add New Plate</button>
+        <button type="button" class="btn btn-primary mb-2">Add New Gel</button>
       </a>
     </div>
   </div>
@@ -40,28 +40,28 @@
           <th scope="col">Brand</th>
           <th scope="col">Catalog #</th>
           <th scope="col">Lot #</th>
-          <th scope="col">Size</th>
+          <th scope="col">Wells</th>
           <th scope="col">Amount Stored</th>
           <th scope="col">Location</th>
         </tr>
       </thead>
 
       <tbody>
-        {% for plate in plates %}
+        {% for gel in gels %}
           <tr class="plate-row" data-href="{% url 'edit_plate' request.user.username plate.pk %}">
-            <td>{{plate.exp_date}}</td>
-            <td>{{plate.date_created}}</td>
-            <td>{{plate.last_updated}}</td>
-            <td>{{plate.name}}</td>
-            <td>{{plate.brand}}</td>
-            <td>{{plate.catalog_number}}</td>
-            <td>{{plate.lot_number}}</td>
-            <td>{{plate.size}}</td>
-            <td>{{plate.amount}}</td>
+            <td>{{gel.exp_date}}</td>
+            <td>{{gel.date_created}}</td>
+            <td>{{gel.last_updated}}</td>
+            <td>{{gel.name}}</td>
+            <td>{{gel.brand}}</td>
+            <td>{{gel.catalog_number}}</td>
+            <td>{{gel.lot_number}}</td>
+            <td>{{gel.wells}}</td>
+            <td>{{gel.amount}}</td>
             
             <td>
-              {% for location in plate.location.all %}
-                {% if plate.location.all|length > 1 %}
+              {% for location in gel.location.all %}
+                {% if gel.location.all|length > 1 %}
                 <span>
                   {{location}} |
                 </span>

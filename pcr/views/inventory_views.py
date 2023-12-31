@@ -6,7 +6,7 @@ from django.contrib import messages
 from users.models import User
 
 from ..models.inventory import Location, Reagent, Tube, Plate, Gel
-from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, EditTubeForm, EditPlateForm, EditReagentForm
+from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, EditGelForm, EditTubeForm, EditPlateForm, EditReagentForm
 from ..forms.general import DeletionForm
 
 
@@ -84,8 +84,61 @@ def gels(request):
   return render(request, 'inventory/gels.html', context)
 
 
-# **GELS VIEWS** #
+@login_required(login_url='login')
+def create_gel(request):
+  form = GelForm(user=request.user)
 
+  if request.method == "POST":
+    form = GelForm(request.POST, user=request.user)
+    if form.is_valid():
+      gel = form.save(commit=False)
+      gel.user = request.user
+      gel = form.save()
+      return redirect('gels')
+    else:
+      print(form.errors)
+
+  context = {'form': form}
+  return render(request, 'inventory/create_gel.html', context)
+
+
+@login_required(login_url='login')
+def edit_gel(request, username, pk):
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no plate to edit.")
+    return redirect('gels')
+  
+  try:
+    gel = Gel.objects.get(user=user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no plate to edit.")
+    return redirect('gels')
+  
+  form = EditGelForm(user=request.user, instance=gel)
+  del_form = DeletionForm(value=gel.name)
+
+  if 'update' in request.POST:
+    form = EditGelForm(request.POST, user=request.user, instance=gel)
+    if form.is_valid():
+      form.save()
+      return redirect('gels')
+    else:
+      print(form.errors)
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=gel.name)
+    if del_form.is_valid():
+      gel.delete()
+      return redirect('gels')
+    else:
+      print(del_form.errors)
+
+  context = {'form': form, 'gel': gel, 'del_form': del_form}
+  return render(request, 'inventory/edit_gel.html', context)
+
+# **GELS VIEWS** #
 
 
 # **PLATES VIEWS** #
@@ -98,15 +151,14 @@ def plates(request):
 
 @login_required(login_url='login')
 def create_plate(request):
-  context = {}
   form = PlateForm(user=request.user)
 
   if request.method == "POST":
     form = PlateForm(request.POST, user=request.user)
     if form.is_valid():
-      location = form.save(commit=False)
-      location.user = request.user
-      location = form.save()
+      plate = form.save(commit=False)
+      plate.user = request.user
+      plate = form.save()
       return redirect('plates')
     else:
       print(form.errors)
@@ -117,12 +169,11 @@ def create_plate(request):
 
 @login_required(login_url='login')
 def edit_plate(request, username, pk):
-  context = {}
   user = User.objects.get(username=username)
 
   if request.user != user:
     messages.error(request, "There is no plate to edit.")
-    return redirect('locations')
+    return redirect('plates')
   
   try:
     plate = Plate.objects.get(user=user, pk=pk)
