@@ -81,7 +81,7 @@ def batchSamples(request, username, pk):
   try:
     batch = Batch.objects.get(user=user, pk=pk)
     if batch.is_extracted:
-      messages.error(request, "This batch has already been processed for extraction and can no longer be updated.")
+      messages.error(request, "This batch has already been processed for extraction and can no longer be updated or deleted.")
       return redirect('batches')
   except ObjectDoesNotExist:
     messages.error(request, "There is no batch to view.")

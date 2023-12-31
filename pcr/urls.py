@@ -47,12 +47,13 @@ urlpatterns = [
   path("create-reagent/", inventory_views.create_reagent, name='create_reagent'),
   path("edit-reagent/<str:username>/<int:pk>/", inventory_views.edit_reagent, name='edit_reagent'),
 
+  path("tcprotocols/", pcr_views.tcprotocols, name='tcprotocols'),
+  path("create-tcprotocol/", pcr_views.create_tcprotocol, name='create_tcprotocol'),
+  path("edit_tcprotocol/<str:username>/<int:pk>/", pcr_views.edit_tcprotocol, name='edit_tcprotocol'),
+
   path("extracted-batches/", pcr_views.extracted_batches, name='extracted_batches'),
   path("add-batch-samples/<str:username>/<int:process_pk>/<int:batch_pk>/", pcr_views.add_batch_samples, name='add_batch_samples'),
   path("add-sample-to-process/<str:username>/<int:process_pk>/<int:sample_pk>/", pcr_views.add_sample_to_process, name='add_sample_to_process'),
   path("remove-sample-from-process/<str:username>/<int:process_pk>/<int:sample_pk>/", pcr_views.remove_sample_from_process, name='remove_sample_from_process'),
-
-  path("tcprotocols/", pcr_views.tcprotocols, name='tcprotocols'),
-  path("create-tcprotocol/", pcr_views.create_tcprotocol, name='create_tcprotocol'),
-  path("edit_tcprotocol/<str:username>/<int:pk>/", pcr_views.edit_tcprotocol, name='edit_tcprotocol'),
+  path("review-process/<str:username>/<int:pk>/", pcr_views.review_process, name='review_process'),
 ]

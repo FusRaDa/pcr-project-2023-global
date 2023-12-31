@@ -102,7 +102,20 @@ def remove_sample_from_process(request, username, process_pk, sample_pk):
 
 @login_required(login_url='login')
 def review_process(request, username, pk):
-  pass
+  user = User.objects.get(username=username)
+
+  if request.user != user:
+    messages.error(request, "There is no process to review.")
+    return redirect('extracted_batches')
+  
+  try:
+    process = Process.objects.get(user=user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no process to review.")
+    return redirect('extracted_batches')
+  
+  context = {'process':  process}
+  return render(request, 'pcr/review_process.html', context)
 
 
 @login_required(login_url='login')
