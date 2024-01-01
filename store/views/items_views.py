@@ -309,8 +309,12 @@ def edit_plate(request, pk):
 def reviews(request, pk):
   form = ReviewForm()
   
-  kit = Kit.objects.get(pk=pk)
-  reviews = Review.objects.filter(kit=kit)
+  try:
+    kit = Kit.objects.get(pk=pk)
+    reviews = Review.objects.filter(kit=kit)
+  except ObjectDoesNotExist:
+    messages.error(request, "Kit does not exist.")
+    return redirect('store')
 
   has_reviewed = False
   if Review.objects.filter(user=request.user, kit=kit).exists():
@@ -337,22 +341,12 @@ def reviews(request, pk):
 
 
 @login_required(login_url='login')
-def edit_review(request, username, review_pk, kit_pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no review to edit.")
-    return redirect('reviews', kit_pk)
-  
+def edit_review(request, pk):
   try:
-    review = Review.objects.get(pk=review_pk)
-    if review.user != request.user:
-      messages.error(request, "There is no review to edit.")
-      return redirect('reviews', kit_pk)
-    
+    review = Review.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no review to edit.")
-    return redirect('reviews', kit_pk)
+    return redirect('store')
   
   form = ReviewForm(instance=review)
 
@@ -360,13 +354,13 @@ def edit_review(request, username, review_pk, kit_pk):
     form = ReviewForm(request.POST, instance=review)
     if form.is_valid():
       form.save()
-      return redirect('reviews', kit_pk)
+      return redirect('reviews', review.kit.pk)
     else:
       print(form.errors)
 
   if 'delete' in request.POST:
     review.delete()
-    return redirect('reviews', kit_pk)
+    return redirect('reviews', review.kit.pk)
   
   context = {'form': form, 'review': review}
   return render(request, 'items/edit_review.html', context)

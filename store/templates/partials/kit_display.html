@@ -66,7 +66,7 @@
 
     <button
       hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-      hx-post="{% url 'add_kit_to_order' request.user.username order.pk kit.pk %}"
+      hx-post="{% url 'add_kit_to_order' order.pk kit.pk %}"
       hx-target="#orders-in-kit"
       hx-swap="beforeend"
       class="btn btn-primary btn-sm float-end" 

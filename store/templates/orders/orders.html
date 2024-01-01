@@ -35,7 +35,7 @@
           {% for order in orders %}
           <tr>
             <td>
-              <a href="{% url 'view_order' request.user.username order.pk %}">
+              <a href="{% url 'view_order' order.pk %}">
                 <i class="fa-solid fa-cart-shopping"></i>
               </a>
               {{order.date_format}}
@@ -94,7 +94,7 @@
               <form method="POST" action="">
                 <div class="text-center mt-2">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <a href="{% url 'copy_order' request.user.username order.pk %}" type="submit" class="btn btn-primary">Confirm</a>
+                  <a href="{% url 'copy_order' order.pk %}" type="submit" class="btn btn-primary">Confirm</a>
                 </div>
               </form>
             </div>

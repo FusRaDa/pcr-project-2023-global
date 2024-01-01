@@ -113,6 +113,14 @@
               <td>{{plates.amount|dec_mult:kits.amount_ordered}}</td>
             </tr>
             {% endfor %}
+
+            {% for gels in order_kits.storegel_set.all %}
+            <tr class="table-secondary">
+              <td>{{gels.name}}</td>
+              <td>{{gels.amount}} × {{kits.amount_ordered}}</td>
+              <td>{{gels.amount|dec_mult:kits.amount_ordered}}</td>
+            </tr>
+            {% endfor %}
           </tbody>
   
         </table>

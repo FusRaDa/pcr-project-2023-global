@@ -82,7 +82,7 @@ def kit_to_inventory(kit, user, lot_number):
       amount = tube.amount,
     )
 
-  for gel in gel.storegel_set.all():
+  for gel in kit.storegel_set.all():
     Gel.objects.create(
       user = user,
       name = gel.name,

@@ -72,15 +72,9 @@ def store(request):
 
 
 @login_required(login_url='login')
-def add_kit_to_order(request, username, order_pk, kit_pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no order to edit.")
-    return redirect('store')
-  
+def add_kit_to_order(request, order_pk, kit_pk):
   try:
-    order = Order.objects.get(user=user, pk=order_pk, has_ordered=False)
+    order = Order.objects.get(user=request.user, pk=order_pk, has_ordered=False)
   except ObjectDoesNotExist:
     messages.error(request, "There is no order to edit.")
     return redirect('store')
@@ -97,15 +91,9 @@ def add_kit_to_order(request, username, order_pk, kit_pk):
 
 
 @login_required(login_url='login')
-def remove_kit_from_order(request, username, order_pk, kit_pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no order to edit.")
-    return redirect('store')
-  
+def remove_kit_from_order(request, order_pk, kit_pk):
   try:
-    order = Order.objects.get(user=user, pk=order_pk, has_ordered=False)
+    order = Order.objects.get(user=request.user, pk=order_pk, has_ordered=False)
   except ObjectDoesNotExist:
     messages.error(request, "There is no order to edit.")
     return redirect('store')
@@ -118,24 +106,9 @@ def remove_kit_from_order(request, username, order_pk, kit_pk):
 
 
 @login_required(login_url='login')
-def review_order(request, username, pk):
-  context = {}
-
-  KitOrderFormSet = modelformset_factory(
-    KitOrder,
-    form=KitOrderForm,
-    extra=0,
-    )
-  orderformset = None
-
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no order to edit.")
-    return redirect('store')
-  
+def review_order(request, pk):
   try:
-    order = Order.objects.get(user=user, pk=pk)
+    order = Order.objects.get(user=request.user, has_ordered=False, pk=pk)
     order_kits = order.kits.all()
     kits = order.kitorder_set.all()
   except ObjectDoesNotExist:
@@ -145,6 +118,13 @@ def review_order(request, username, pk):
   if not order.kits.exists():
     messages.error(request, "Please select at least one kit to add to your order.")
     return redirect('store')
+  
+  KitOrderFormSet = modelformset_factory(
+    KitOrder,
+    form=KitOrderForm,
+    extra=0,
+    )
+  orderformset = None
 
   orderformset = KitOrderFormSet(queryset=kits)
   kits_data = zip(kits, orderformset)
@@ -187,11 +167,8 @@ def review_order(request, username, pk):
     inputs = []
     for kits_zip, kit_orders in zip_data:
       inputs.append({'brand': kits_zip.brand.name, 'catalog_number': kits_zip.catalog_number, 'amount': kit_orders.amount_ordered})
-
     generate_order_files(order, inputs)
-  
     return redirect('orders')
-    # change this later for processing order
     
   context = {'orderformset': orderformset, 'kits_data': kits_data, 'display_data': display_data, 'order': order}
   return render(request, 'orders/review_order.html', context)
@@ -205,19 +182,11 @@ def orders(request):
 
 
 @login_required(login_url='login')
-def view_order(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no order to view.")
-    return redirect('orders')
-  
+def view_order(request, pk):
   try:
-    order = Order.objects.get(user=user, pk=pk)
+    order = Order.objects.get(user=request.user, has_ordered=True, pk=pk)
     kits = order.kits.all()
     kit_order = order.kitorder_set.all()
-    if order.has_ordered == False:
-      return redirect('store')
   except ObjectDoesNotExist:
     messages.error(request, "There is no order to view.")
     return redirect('orders')
@@ -229,20 +198,14 @@ def view_order(request, username, pk):
 
 
 @login_required(login_url='login')
-def copy_order(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no order to copy.")
-    return redirect('orders')
-  
+def copy_order(request, pk):
   try:
-    past_order = Order.objects.get(user=user, pk=pk)
+    past_order = Order.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no order to copy.")
     return redirect('orders')
   
-  orders = Order.objects.filter(user=user, has_ordered=False)
+  orders = Order.objects.filter(user=request.user, has_ordered=False)
   if not orders.exists():
     order = Order.objects.create(user=request.user, has_ordered=False)
     for kit in past_order.kits.all():
@@ -257,16 +220,9 @@ def copy_order(request, username, pk):
 
 
 @login_required(login_url='login')
-def add_to_inventory(request, username, order_pk, kit_pk):
-
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no kit to add to your inventory.")
-    return redirect('orders')
-  
+def add_to_inventory(request, order_pk, kit_pk):
   try:
-    order = Order.objects.get(user=user, pk=order_pk)
+    order = Order.objects.get(user=request.user, pk=order_pk)
     kit = Kit.objects.get(pk=kit_pk)
     kit_order = order.kitorder_set.get(kit=kit)
   except ObjectDoesNotExist:
@@ -291,11 +247,11 @@ def add_to_inventory(request, username, order_pk, kit_pk):
       for form in formset:
         lot_number = form.cleaned_data.get('lot_number')
         if lot_number != None:
-          kit_to_inventory(kit, user, lot_number)
+          kit_to_inventory(kit, request.user, lot_number)
           print('add kit...')
           kit_order.remaining_transfers -= 1
           kit_order.save()
-      return redirect('view_order', request.user.username, order.pk)
+      return redirect('view_order', order.pk)
 
   context = {'formset': formset, 'kit': kit, 'order': order, 'kit_order': kit_order}
   return render(request, 'orders/add_to_inventory.html', context)

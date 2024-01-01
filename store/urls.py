@@ -20,7 +20,7 @@ urlpatterns = [
   path('edit-kit-items/<int:pk>/', items_views.edit_kit_items, name='edit_kit_items'),
 
   path('reviews/<int:pk>', items_views.reviews, name='reviews'),
-  path('edit_review/<str:username>/<int:review_pk>/<int:kit_pk>/', items_views.edit_review, name='edit_review'),
+  path('edit_review/<int:pk>/', items_views.edit_review, name='edit_review'),
 
   path('create-tube-store/', items_views.create_tube, name='create_tube_store'),
   path('edit-tube-store/<int:pk>/', items_views.edit_tube, name='edit_tube_store'),
@@ -35,13 +35,13 @@ urlpatterns = [
   path('edit-reagent-store/<int:pk>/', items_views.edit_reagent, name='edit_reagent_store'),
 
   path('store/', orders_views.store, name='store'),
-  path('add-kit-to-order/<str:username>/<int:order_pk>/<int:kit_pk>/', orders_views.add_kit_to_order, name='add_kit_to_order'),
-  path('remove-kit-from-order/<str:username>/<int:order_pk>/<int:kit_pk>/', orders_views.remove_kit_from_order, name='remove_kit_from_order'),
+  path('add-kit-to-order/<int:order_pk>/<int:kit_pk>/', orders_views.add_kit_to_order, name='add_kit_to_order'),
+  path('remove-kit-from-order/<int:order_pk>/<int:kit_pk>/', orders_views.remove_kit_from_order, name='remove_kit_from_order'),
 
-  path('review-order/<str:username>/<int:pk>/', orders_views.review_order, name='review_order'),
   path('orders/', orders_views.orders, name='orders'),
-  path('view-order/<str:username>/<int:pk>/', orders_views.view_order, name='view_order'),
-  path('copy-order/<str:username>/<int:pk>/', orders_views.copy_order, name='copy_order'),
+  path('review-order/<int:pk>/', orders_views.review_order, name='review_order'),
+  path('view-order/<int:pk>/', orders_views.view_order, name='view_order'),
+  path('copy-order/<int:pk>/', orders_views.copy_order, name='copy_order'),
 
-  path('add-to-inventory/<str:username>/<int:order_pk>/<int:kit_pk>/', orders_views.add_to_inventory, name='add_to_inventory'),
+  path('add-to-inventory/<int:order_pk>/<int:kit_pk>/', orders_views.add_to_inventory, name='add_to_inventory'),
 ]

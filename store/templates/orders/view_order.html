@@ -20,7 +20,7 @@
       <div class="float-start fw-bold">{{kits.brand}} Cat#: {{kits.catalog_number}}</div>
       <div class="float-end">
         ({{kit_order.remaining_transfers}}/{{kit_order.amount_ordered}})
-        <a type="button" href="{% url 'add_to_inventory' request.user.username order.pk kits.pk %}" class="btn btn-primary btn-sm {% if kit_order.remaining_transfers == 0 %} disabled {% endif %}">Add To Inventory</a>
+        <a type="button" href="{% url 'add_to_inventory' order.pk kits.pk %}" class="btn btn-primary btn-sm {% if kit_order.remaining_transfers == 0 %} disabled {% endif %}">Add To Inventory</a>
       </div>
  
       <table class="table table-bordered">
@@ -54,6 +54,14 @@
             <td>{{plates.name}}</td>
             <td>{{plates.amount}} × {{kit_order.amount_ordered}}</td>
             <td>{{plates.amount|dec_mult:kit_order.amount_ordered}}</td>
+          </tr>
+          {% endfor %}
+
+          {% for gels in kits.storegel_set.all %}
+          <tr class="table-secondary">
+            <td>{{gels.name}}</td>
+            <td>{{gels.amount}} × {{kit_order.amount_ordered}}</td>
+            <td>{{gels.amount|dec_mult:kit_order.amount_ordered}}</td>
           </tr>
           {% endfor %}
         </tbody>

@@ -43,7 +43,7 @@
         </ul>
         <div class="card-footer text-center">
           <a href="{% url 'orders' %}"  class="btn btn-secondary btn-sm float-start">Previous Orders</a>
-          <a href="{% url 'review_order' request.user.username order.pk %}" class="btn btn-primary btn-sm float-end">Review Order</a>
+          <a href="{% url 'review_order' order.pk %}" class="btn btn-primary btn-sm float-end">Review Order</a>
         </div>
       </div>
     </div>
