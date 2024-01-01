@@ -45,7 +45,7 @@
 
           <tbody>
             {% for fluor in fluorescence %}
-              <tr class="batch-row" data-href="{% url 'edit_fluorescence' request.user.username fluor.pk %}">
+              <tr class="batch-row" data-href="{% url 'edit_fluorescence' fluor.pk %}">
                 <td>{{fluor.name}}</td>
                 <td>
                   {% for assay in fluor.assay_set.all %}

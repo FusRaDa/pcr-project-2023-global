@@ -69,7 +69,7 @@ def edit_assay(request, pk):
         reagent.final_concentration_unit = reagent.reagent.unit_concentration
         reagent.save()
       
-      return redirect('assay_through', request.user.username, pk)
+      return redirect('assay_through', pk)
     else:
       print(form.errors)
 

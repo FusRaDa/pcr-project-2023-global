@@ -43,7 +43,7 @@
 
       <tbody>
         {% for control in controls %}
-          <tr class="tube-row" data-href="{% url 'edit_control' request.user.username control.pk %}">
+          <tr class="tube-row" data-href="{% url 'edit_control' control.pk %}">
             <td>{{control.exp_date}}</td>
             <td>{{control.name}}</td>
             <td>{{control.lot_number}}</td>

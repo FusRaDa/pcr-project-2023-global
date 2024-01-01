@@ -36,7 +36,7 @@
 
       <tbody>
         {% for protocol in dna_extraction_protocols %}
-          <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' request.user.username protocol.pk %}">
+          <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
             <td>{{protocol.name}}</td>
             <td>
               {% for reagent in protocol.reagents.all %}
@@ -72,7 +72,7 @@
 
       <tbody>
         {% for protocol in rna_extraction_protocols %}
-          <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' request.user.username protocol.pk %}">
+          <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
             <td>{{protocol.name}}</td>
             <td>
               {% for reagent in protocol.reagents.all %}
@@ -108,7 +108,7 @@
 
       <tbody>
         {% for protocol in tn_extraction_protocols %}
-          <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' request.user.username protocol.pk %}">
+          <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
             <td>{{protocol.name}}</td>
             <td>
               {% for reagent in protocol.reagents.all %}

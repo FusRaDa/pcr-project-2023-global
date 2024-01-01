@@ -53,7 +53,7 @@ def createBatches(request):
         user=request.user,
       )
 
-      return redirect('batch_samples', username=request.user.username, pk=batch.pk)
+      return redirect('batch_samples', pk=batch.pk)
     else:
       print(form.errors)
   
@@ -197,7 +197,7 @@ def editSampleAssay(request, pk):
       for assay in assays:
         sample.assays.add(assay)
 
-      return redirect('batch_samples', request.user.username, sample.batch.pk)
+      return redirect('batch_samples', sample.batch.pk)
     else:
       print(form.errors)
 

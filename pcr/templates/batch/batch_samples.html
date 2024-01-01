@@ -66,7 +66,7 @@
   </div>
 
   <div class="text-center mb-2">
-    <a href="{% url 'batch_paperwork' request.user.username batch.pk %}" target="_blank" class="btn btn-info">Preview</a>
+    <a href="{% url 'batch_paperwork' batch.pk %}" target="_blank" class="btn btn-info">Preview</a>
     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#number-samples" id="reset">
       Reset Samples
     </button>
@@ -103,7 +103,7 @@
             <td>{{formset.sample_id}}</td>
 
             <td>
-              <a href="{% url 'sample_assay' request.user.username samples.pk %}">
+              <a href="{% url 'sample_assay' samples.pk %}">
                 <i class="fa-solid fa-vial-circle-check"></i>
               </a>
               {% for assay in samples.assays.all %}

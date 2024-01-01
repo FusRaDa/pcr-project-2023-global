@@ -45,7 +45,7 @@
 
           <tbody>
             {% for assay_code in assay_codes %}
-              <tr class="batch-row" data-href="{% url 'edit_assay_code' request.user.username assay_code.pk %}">
+              <tr class="batch-row" data-href="{% url 'edit_assay_code' assay_code.pk %}">
                 <td>{{assay_code.name}}</td>
                 <td>
                   {% for assay in assay_code.assays.all %}

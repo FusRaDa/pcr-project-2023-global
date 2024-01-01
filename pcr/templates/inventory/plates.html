@@ -48,7 +48,7 @@
 
       <tbody>
         {% for plate in plates %}
-          <tr class="plate-row" data-href="{% url 'edit_plate' request.user.username plate.pk %}">
+          <tr class="plate-row" data-href="{% url 'edit_plate' plate.pk %}">
             <td>{{plate.exp_date}}</td>
             <td>{{plate.date_created}}</td>
             <td>{{plate.last_updated}}</td>

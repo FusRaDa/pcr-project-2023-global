@@ -65,7 +65,7 @@
 
           <tbody>
             {% for plate in location.plate_set.all %}
-            <tr class="batch-row" data-href="{% url 'edit_plate' request.user.username plate.pk %}">
+            <tr class="batch-row" data-href="{% url 'edit_plate' plate.pk %}">
               <td>{{plate.exp_date}}</td>
               <td>{{plate.last_updated}}</td>
               <td>{{plate.name}}</td>
@@ -101,7 +101,7 @@
 
           <tbody>
             {% for tube in location.tube_set.all %}
-            <tr class="batch-row" data-href="{% url 'edit_tube' request.user.username tube.pk %}">
+            <tr class="batch-row" data-href="{% url 'edit_tube' tube.pk %}">
               <td>{{tube.exp_date}}</td>
               <td>{{tube.last_updated}}</td>
               <td>{{tube.name}}</td>
@@ -137,7 +137,7 @@
 
           <tbody>
             {% for reagent in location.reagent_set.all %}
-            <tr class="batch-row" data-href="{% url 'edit_reagent' request.user.username reagent.pk %}">
+            <tr class="batch-row" data-href="{% url 'edit_reagent' reagent.pk %}">
               <td>{{reagent.exp_date}}</td>
               <td>{{reagent.last_updated}}</td>
               <td>{{reagent.name}}</td>

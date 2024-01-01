@@ -48,7 +48,7 @@
 
       <tbody>
         {% for gel in gels %}
-          <tr class="plate-row" data-href="{% url 'edit_gel' request.user.username gel.pk %}">
+          <tr class="plate-row" data-href="{% url 'edit_gel' gel.pk %}">
             <td>{{gel.exp_date}}</td>
             <td>{{gel.date_created}}</td>
             <td>{{gel.last_updated}}</td>

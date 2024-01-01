@@ -47,7 +47,7 @@
 
       <tbody>
         {% for tube in tubes %}
-          <tr class="tube-row" data-href="{% url 'edit_tube' request.user.username tube.pk %}">
+          <tr class="tube-row" data-href="{% url 'edit_tube' tube.pk %}">
             <td>{{tube.exp_date}}</td>
             <td>{{tube.date_created}}</td>
             <td>{{tube.last_updated}}</td>

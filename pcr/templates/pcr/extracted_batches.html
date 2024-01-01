@@ -26,7 +26,7 @@
     <div class="col-sm-4">
       <div class="text-center">
         <h5>Samples In Process</h5>
-        <a href="{% url 'review_process' request.user.username process.pk %}" class="btn btn-secondary btn-sm mb-2">Review Process</a>
+        <a href="{% url 'review_process' process.pk %}" class="btn btn-secondary btn-sm mb-2">Review Process</a>
       </div>
 
       <ol class="list-group list-group-numbered" id="process-samples">
@@ -45,14 +45,14 @@
             <p class="fw-bold">{{batch.name}} ({{batch.total_samples}} Samples)</p>{{batch.date_created}}
             <button
               hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-              hx-post="{% url 'add_batch_samples' request.user.username process.pk batch.pk %}"
+              hx-post="{% url 'add_batch_samples' process.pk batch.pk %}"
               hx-target="#process-samples"
               hx-swap="beforeend"
               class="btn btn-success btn-sm float-end" 
               name="all">
               Add All
             </button>
-            <a href="{% url 'batch_paperwork' request.user.username batch.pk %}" target="_blank" class="btn btn-secondary btn-sm mx-2 float-end">PPW</a>
+            <a href="{% url 'batch_paperwork' batch.pk %}" target="_blank" class="btn btn-secondary btn-sm mx-2 float-end">PPW</a>
           </div>
           
           <ul class="list-group list-group-flush">
@@ -72,7 +72,7 @@
                       {% endfor %}
                       <button
                         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                        hx-post="{% url 'add_sample_to_process' request.user.username process.pk sample.pk %}"
+                        hx-post="{% url 'add_sample_to_process' process.pk sample.pk %}"
                         hx-target="#process-samples"
                         hx-swap="beforeend"
                         class="btn btn-success btn-sm float-end" 

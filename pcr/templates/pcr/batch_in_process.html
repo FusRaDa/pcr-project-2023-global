@@ -8,7 +8,7 @@
   </div>
   <button
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-    hx-post="{% url 'remove_sample_from_process' request.user.username process.pk sample.pk %}"
+    hx-post="{% url 'remove_sample_from_process' process.pk sample.pk %}"
     hx-on:click="this.parentNode.remove()"
     class="btn btn-danger btn-sm float-end"
     name="remove">

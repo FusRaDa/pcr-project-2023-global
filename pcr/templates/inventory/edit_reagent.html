@@ -140,7 +140,7 @@
 
           <tbody>
             {% for protocol in reagent.extractionprotocol_set.all %}
-            <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' request.user.username protocol.pk %}">
+            <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
               <td>{{protocol.name}}</td>
               <td>{{protocol.type}}</td>
             </tr>
@@ -169,7 +169,7 @@
 
           <tbody>
             {% for assay in reagent.assay_set.all %}
-            <tr class="reagent-row" data-href="{% url 'edit_assay' request.user.username assay.pk %}">
+            <tr class="reagent-row" data-href="{% url 'edit_assay' assay.pk %}">
               <td>{{assay.name}}</td>
               <td>{{assay.type}}</td>
               <td>{{assay.method}}</td>

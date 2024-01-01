@@ -109,7 +109,7 @@
 
           <tbody>
             {% for protocol in tube.extractionprotocol_set.all %}
-            <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' request.user.username protocol.pk %}">
+            <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
               <td>{{protocol.name}}</td>
               <td>{{protocol.type}}</td>
             </tr>

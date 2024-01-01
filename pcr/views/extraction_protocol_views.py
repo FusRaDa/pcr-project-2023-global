@@ -31,7 +31,7 @@ def create_extraction_protocol(request):
       protocol = form.save(commit=False)
       protocol.user = request.user
       protocol.save()
-      return redirect('extraction_protocol_through', username=request.user.username, pk=protocol.pk)
+      return redirect('extraction_protocol_through', pk=protocol.pk)
     else:
       print(form.errors)
     
@@ -54,7 +54,7 @@ def edit_extraction_protocol(request, pk):
     form = ExtractionProtocolForm(request.POST, user=request.user, instance=protocol)
     if form.is_valid():
       form.save()
-      return redirect('extraction_protocol_through', request.user.username, protocol.pk)
+      return redirect('extraction_protocol_through', protocol.pk)
     else:
       print(form.errors)
 

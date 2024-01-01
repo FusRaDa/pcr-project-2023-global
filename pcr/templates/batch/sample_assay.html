@@ -83,13 +83,12 @@
 
     <div class="row justify-content-center">
       <div class="text-center mt-2"> 
-        <a class="btn btn-secondary" href="{% url 'batch_samples' request.user.username sample.batch.pk %}">Cancel</a>
+        <a class="btn btn-secondary" href="{% url 'batch_samples' sample.batch.pk %}">Cancel</a>
         <button class="btn btn-primary" type="submit">Update &amp; Edit Quantity</button>
       </div>
     </div>
 
   </form>
-
 
 </div>
 
