@@ -49,16 +49,9 @@ def create_assay_code(request):
 
 
 @login_required(login_url='login')
-def edit_assay_code(request, username, pk):
-  context = {}
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no assay code to edit.")
-    return redirect('assay_codes')
-  
+def edit_assay_code(request, pk):
   try:
-    code = AssayCode.objects.get(user=user, pk=pk)
+    code = AssayCode.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no assay code to edit.")
     return redirect('assay_codes')

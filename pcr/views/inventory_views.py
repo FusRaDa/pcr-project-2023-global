@@ -39,15 +39,9 @@ def create_location(request):
 
 
 @login_required(login_url='login')
-def edit_location(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no location to edit.")
-    return redirect('locations')
-  
+def edit_location(request, pk):
   try:
-    location = Location.objects.get(user=user, pk=pk)
+    location = Location.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no locaton to edit.")
     return redirect('locations')
@@ -103,15 +97,9 @@ def create_gel(request):
 
 
 @login_required(login_url='login')
-def edit_gel(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no plate to edit.")
-    return redirect('gels')
-  
+def edit_gel(request, pk):
   try:
-    gel = Gel.objects.get(user=user, pk=pk)
+    gel = Gel.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no plate to edit.")
     return redirect('gels')
@@ -168,15 +156,9 @@ def create_plate(request):
 
 
 @login_required(login_url='login')
-def edit_plate(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no plate to edit.")
-    return redirect('plates')
-  
+def edit_plate(request, pk):
   try:
-    plate = Plate.objects.get(user=user, pk=pk)
+    plate = Plate.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no plate to edit.")
     return redirect('plates')
@@ -234,16 +216,9 @@ def create_tube(request):
 
 
 @login_required(login_url='login')
-def edit_tube(request, username, pk):
-  context = {}
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no tube to edit.")
-    return redirect('tubes')
-  
+def edit_tube(request, pk):
   try:
-    tube = Tube.objects.get(user=user, pk=pk)
+    tube = Tube.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no tube to edit.")
     return redirect('locations')
@@ -302,16 +277,9 @@ def create_reagent(request):
 
 
 @login_required(login_url='login')
-def edit_reagent(request, username, pk):
-  context = {}
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no reagent to edit.")
-    return redirect('reagents')
-  
+def edit_reagent(request, pk):
   try:
-    reagent = Reagent.objects.get(user=user, pk=pk)
+    reagent = Reagent.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no reagent to edit.")
     return redirect('reagents')

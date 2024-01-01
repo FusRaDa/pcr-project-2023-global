@@ -62,7 +62,7 @@ def createBatches(request):
 
 
 @login_required(login_url='login')
-def batchSamples(request, username, pk):
+def batchSamples(request, pk):
   SampleFormSet = inlineformset_factory(
     Batch, 
     Sample, 
@@ -72,14 +72,8 @@ def batchSamples(request, username, pk):
     )
   formset = None
 
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no batch to view.")
-    return redirect('batches')
-  
   try:
-    batch = Batch.objects.get(user=user, pk=pk)
+    batch = Batch.objects.get(user=request.user, pk=pk)
     if batch.is_extracted:
       messages.error(request, "This batch has already been processed for extraction and can no longer be updated or deleted.")
       return redirect('batches')
@@ -148,15 +142,9 @@ def batchSamples(request, username, pk):
 
 
 @login_required(login_url='login')
-def batch_paperwork(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no sample to edit.")
-    return redirect('batches')
-  
+def batch_paperwork(request, pk):
   try:
-    batch = Batch.objects.get(user=user, pk=pk)
+    batch = Batch.objects.get(user=request.user, pk=pk)
     protocol = batch.extraction_protocol
 
     panel = batch.code.assays.all()
@@ -184,15 +172,9 @@ def batch_paperwork(request, username, pk):
 
 
 @login_required(login_url='login')
-def editSampleAssay(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no sample to edit.")
-    return redirect('batches')
-  
+def editSampleAssay(request, pk):
   try:
-    sample = Sample.objects.get(user=user, pk=pk)
+    sample = Sample.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no sample to edit.")
     return redirect('batches')

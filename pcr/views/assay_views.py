@@ -48,16 +48,9 @@ def create_assay(request):
 
 
 @login_required(login_url='login')
-def edit_assay(request, username, pk):
-  context = {}
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no assay to edit.")
-    return redirect('assays')
-  
+def edit_assay(request, pk):
   try:
-    assay = Assay.objects.get(user=user, pk=pk)
+    assay = Assay.objects.get(user=request.user, pk=pk)
     reagents = assay.reagentassay_set.all()
   except ObjectDoesNotExist:
     messages.error(request, "There is no assay to edit.")
@@ -93,9 +86,7 @@ def edit_assay(request, username, pk):
 
 
 @login_required(login_url='login')
-def assay_through(request, username, pk):
-  context = {}
-
+def assay_through(request, pk):
   ReagentAssayFormSet = modelformset_factory(
     ReagentAssay,
     form=ReagentAssayForm,
@@ -104,14 +95,8 @@ def assay_through(request, username, pk):
   
   reagentformset = None
 
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no assay to edit.")
-    return redirect('extraction_protocols')
-  
   try:
-    assay = Assay.objects.get(user=user, pk=pk)
+    assay = Assay.objects.get(user=request.user, pk=pk)
     reagents = ReagentAssay.objects.prefetch_related('reagent', 'assay').filter(assay=assay).order_by('order')
   except ObjectDoesNotExist:
     messages.error(request, "There is no assay to edit.")
@@ -162,16 +147,9 @@ def create_fluorescence(request):
 
 
 @login_required(login_url='login')
-def edit_fluorescence(request, username, pk):
-  context = {}
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no flourescence to edit.")
-    return redirect('flourescence')
-  
+def edit_fluorescence(request, pk):
   try:
-    fluorescence = Fluorescence.objects.get(user=user, pk=pk)
+    fluorescence = Fluorescence.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no flourescence to edit.")
     return redirect('fluorescence')
@@ -227,16 +205,9 @@ def create_control(request):
 
 
 @login_required(login_url='login')
-def edit_control(request, username, pk):
-  context = {}
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no control to edit.")
-    return redirect('controls')
-  
+def edit_control(request, pk):
   try:
-    control = Control.objects.get(user=user, pk=pk)
+    control = Control.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no control to edit.")
     return redirect('controls')

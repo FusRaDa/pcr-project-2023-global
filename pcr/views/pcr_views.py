@@ -38,15 +38,9 @@ def create_tcprotocol(request):
 
 
 @login_required(login_url='login')
-def edit_tcprotocol(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no thermal cycler protocol to edit.")
-    return redirect('tcprotocols')
-  
+def edit_tcprotocol(request, pk):
   try:
-    protocol = ThermalCyclerProtocol.objects.get(user=user, pk=pk)
+    protocol = ThermalCyclerProtocol.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no thermal cycler protocol to edit.")
     return redirect('tcprotocols')
@@ -89,15 +83,9 @@ def extracted_batches(request):
 
 
 @login_required(login_url='login')
-def add_batch_samples(request, username, process_pk, batch_pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no sample or process found.")
-    return redirect('extracted_batches')
-  
+def add_batch_samples(request, process_pk, batch_pk):
   try:
-    batch = Batch.objects.get(user=user, pk=batch_pk)
+    batch = Batch.objects.get(user=request.user, pk=batch_pk)
     process = Process.objects.get(user=request.user, pk=process_pk, is_processed=False)
   except ObjectDoesNotExist:
     messages.error(request, "There is no sample or process found.")
@@ -118,15 +106,9 @@ def add_batch_samples(request, username, process_pk, batch_pk):
 
 
 @login_required(login_url='login')
-def add_sample_to_process(request, username, process_pk, sample_pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no sample or process found.")
-    return redirect('extracted_batches')
-  
+def add_sample_to_process(request, process_pk, sample_pk):
   try:
-    sample = Sample.objects.get(user=user, pk=sample_pk)
+    sample = Sample.objects.get(user=request.user, pk=sample_pk)
     process = Process.objects.get(user=request.user, pk=process_pk, is_processed=False)
   except ObjectDoesNotExist:
     messages.error(request, "There is no sample or process found.")
@@ -142,15 +124,9 @@ def add_sample_to_process(request, username, process_pk, sample_pk):
 
 
 @login_required(login_url='login')
-def remove_sample_from_process(request, username, process_pk, sample_pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no sample or process found.")
-    return redirect('extracted_batches')
-  
+def remove_sample_from_process(request, process_pk, sample_pk):
   try:
-    sample = Sample.objects.get(user=user, pk=sample_pk)
+    sample = Sample.objects.get(user=request.user, pk=sample_pk)
     process = Process.objects.get(user=request.user, is_processed=False, pk=process_pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no sample or process found.")
@@ -163,15 +139,9 @@ def remove_sample_from_process(request, username, process_pk, sample_pk):
 
 
 @login_required(login_url='login')
-def review_process(request, username, pk):
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no process to review.")
-    return redirect('extracted_batches')
-  
+def review_process(request, pk):
   try:
-    process = Process.objects.get(user=user, pk=pk)
+    process = Process.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')

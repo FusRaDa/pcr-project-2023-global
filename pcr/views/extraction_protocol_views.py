@@ -40,16 +40,9 @@ def create_extraction_protocol(request):
 
 
 @login_required(login_url='login')
-def edit_extraction_protocol(request, username, pk):
-  context = {}
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no extraction protocol to edit.")
-    return redirect('extraction_protocols')
-  
+def edit_extraction_protocol(request, pk):
   try:
-    protocol = ExtractionProtocol.objects.get(user=user, pk=pk)
+    protocol = ExtractionProtocol.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no extraction protocol to edit.")
     return redirect('extraction_protocols')
@@ -78,9 +71,7 @@ def edit_extraction_protocol(request, username, pk):
 
 
 @login_required(login_url='login')
-def extraction_protocol_through(request, username, pk):
-  context = {}
-
+def extraction_protocol_through(request, pk):
   TubeExtractionFormSet = modelformset_factory(
     TubeExtraction,
     form=TubeExtractionForm,
@@ -96,14 +87,8 @@ def extraction_protocol_through(request, username, pk):
   tubeformset = None
   reagentformset = None
 
-  user = User.objects.get(username=username)
-
-  if request.user != user:
-    messages.error(request, "There is no extraction protocol to edit.")
-    return redirect('extraction_protocols')
-  
   try:
-    protocol = ExtractionProtocol.objects.get(user=user, pk=pk)
+    protocol = ExtractionProtocol.objects.get(user=request.user, pk=pk)
     tubes = TubeExtraction.objects.prefetch_related('tube', 'protocol').filter(protocol=protocol).order_by('order')
     reagents = ReagentExtraction.objects.prefetch_related('reagent', 'protocol').filter(protocol=protocol).order_by('order')
   except ObjectDoesNotExist:
