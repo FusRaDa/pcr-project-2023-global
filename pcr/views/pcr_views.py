@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
 from django.http import HttpResponse
@@ -7,9 +8,10 @@ from django.contrib import messages
 from users.models import User
 
 from ..forms.general import DeletionForm
-from ..forms.pcr import ThermalCyclerProtocolForm
+from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
+from ..models.assay import Assay
 
 
 @login_required(login_url='login')
@@ -141,10 +143,41 @@ def remove_sample_from_process(request, process_pk, sample_pk):
 @login_required(login_url='login')
 def review_process(request, pk):
   try:
-    process = Process.objects.get(user=request.user, pk=pk)
+    process = Process.objects.get(user=request.user, is_processed=False, pk=pk)
+
+    samples = process.samples.all()
+
+    all_assays = []
+    for sample in samples:
+      for assay in sample.assays.all():
+        all_assays.append(assay)
+    assays = list(set(all_assays))
+    
+    data = []
+    for assay in assays:
+      x = {assay:[]}
+      for sample in samples:
+        if sample.assays.contains(assay):
+          x[assay].append(sample)
+      data.append(x)
+
+    print(data)
+      
   except ObjectDoesNotExist:
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
   
-  context = {'process':  process}
+  form = ProcessForm(instance=process)
+
+  if request.method == 'POST':
+    form = ProcessForm(request.POST, instance=process)
+    if form.is_valid():
+      obj = form.save(commit=False)
+      obj.is_processed = True
+      obj.date_processed = now 
+      obj.save()
+    else:
+      print(form.errors)
+  
+  context = {'form': form, 'samples': samples, 'process':  process}
   return render(request, 'pcr/review_process.html', context)

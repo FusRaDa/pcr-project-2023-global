@@ -28,4 +28,4 @@ class ProcessForm(ModelForm):
 
   class Meta:
     model = Process
-    exclude = ['user', 'samples']
+    exclude = ['user', 'samples', 'is_processed', 'date_processed']

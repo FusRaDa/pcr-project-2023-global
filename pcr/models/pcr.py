@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from users.models import User
 
 from .batch import Sample
-from .inventory import Plate
+from .inventory import Plate, Gel
 
 
 class ThermalCyclerProtocol(models.Model):
@@ -48,8 +48,8 @@ class Process(models.Model):
   qpcr_dna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='qpcr_dna', blank=True, null=True, default=None)
   qpcr_rna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='qpcr_rna', blank=True, null=True, default=None)
 
-  plate = models.ForeignKey(Plate, on_delete=models.RESTRICT, blank=True, null=True, default=None)
-  # gel = models.ForeignKey(Gel, on_delete=models.RESTRICT, blank=True, null=True, default=None)
+  plate = models.ManyToManyField(Plate)
+  gel = models.ManyToManyField(Gel)
 
   samples = models.ManyToManyField(Sample)
 

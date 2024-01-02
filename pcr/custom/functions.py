@@ -31,6 +31,51 @@ def create_samples(number_of_samples, lab_id, user):
 
 
 def process_dna_pcr_samples():
+
+  data = [] # each plate goes in data 
+
+  plate = {
+    'protocol': {
+      'name': name,
+      'denature': denature,
+      'denature_temp': denature_temp,
+      'denature_duration': denature_duration,
+      'anneal_temp': anneal_temp,
+      'anneal_duration': anneal_duration,
+      'extension_temp': extension_temp,
+      'extension_duration': extension_duration,
+      'number_of_cycles': number_of_cycles,
+    },
+
+    'samples': [
+      {
+        'color': color,
+        'lab_id': lab_id,
+        'sample_id': sample_id,
+        'assay': assay
+      },
+
+      {
+        'color': color,
+        'lab_id': lab_id,
+        'sample_id': sample_id,
+        'assay': assay
+      },
+      
+      {
+        'color': color,
+        'lab_id': lab_id,
+        'sample_id': sample_id,
+        'assay': assay
+      },
+      
+    ]
+    
+
+
+  }
+
+
   pass
 
 
