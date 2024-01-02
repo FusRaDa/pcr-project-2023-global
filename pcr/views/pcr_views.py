@@ -145,7 +145,7 @@ def review_process(request, pk):
   try:
     process = Process.objects.get(user=request.user, is_processed=False, pk=pk)
 
-    samples = process.samples.all()
+    samples = process.samples.all().order_by('lab_id_num')
 
     all_assays = []
     for sample in samples:
@@ -153,16 +153,14 @@ def review_process(request, pk):
         all_assays.append(assay)
     assays = list(set(all_assays))
     
-    data = []
+    assay_samples = []
     for assay in assays:
       x = {assay:[]}
       for sample in samples:
         if sample.assays.contains(assay):
           x[assay].append(sample)
-      data.append(x)
+      assay_samples.append(x)
 
-    print(data)
-      
   except ObjectDoesNotExist:
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
@@ -179,5 +177,5 @@ def review_process(request, pk):
     else:
       print(form.errors)
   
-  context = {'form': form, 'samples': samples, 'process':  process}
+  context = {'form': form, 'assay_samples': assay_samples, 'process':  process}
   return render(request, 'pcr/review_process.html', context)
