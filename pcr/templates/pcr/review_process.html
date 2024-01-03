@@ -129,8 +129,9 @@
 
         <div class="row justify-content-center mb-2">
           <div class="text-center mt-2"> 
-            <a class="btn btn-secondary" href="{% url 'reagents' %}">Cancel</a>
-            <button class="btn btn-primary" type="submit" name="update">Add Reagent</button>
+            <a class="btn btn-secondary" href="{% url 'extracted_batches' %}">Go Back</a>
+            <a class="btn btn-info" href="{% url 'process_paperwork' process.pk %}">View Draft</a>
+            <button class="btn btn-primary" type="submit" disabled>Update Process</button>
           </div>
         </div>
  

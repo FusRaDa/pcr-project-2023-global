@@ -54,7 +54,6 @@ class ProcessForm(ModelForm):
     assays = list(set(array))
     
     for assay in assays:
-
       if assay.type == Assay.Types.DNA and assay.method == Assay.Methods.PCR and pcr_dna_protocol == None:
         raise ValidationError(
           message="This process requires a protocol for DNA in PCR."

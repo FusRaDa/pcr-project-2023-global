@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.utils.timezone import now
+from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
 from django.http import HttpResponse
@@ -12,6 +12,7 @@ from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
+from ..custom.functions import samples_by_assay, process_dna_pcr_samples
 
 
 @login_required(login_url='login')
@@ -144,23 +145,13 @@ def remove_sample_from_process(request, process_pk, sample_pk):
 def review_process(request, pk):
   try:
     process = Process.objects.get(user=request.user, is_processed=False, pk=pk)
-
     samples = process.samples.all().order_by('lab_id_num')
 
-    all_assays = []
-    for sample in samples:
-      for assay in sample.assays.all():
-        all_assays.append(assay)
-    assays = list(set(all_assays))
-    
-    assay_samples = []
-    for assay in assays:
-      x = {assay:[]}
-      for sample in samples:
-        if sample.assays.contains(assay):
-          x[assay].append(sample)
-      assay_samples.append(x)
-
+    if samples.count() < 1:
+      messages.error(request, "Process must have at least one sample.")
+      return redirect('extracted_batches')
+  
+    assay_samples = samples_by_assay(samples)
   except ObjectDoesNotExist:
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
@@ -170,13 +161,30 @@ def review_process(request, pk):
   if request.method == 'POST':
     form = ProcessForm(request.POST, instance=process, user=request.user)
     if form.is_valid():
-      print('saved')
-      # obj = form.save(commit=False)
-      # obj.is_processed = True
-      # obj.date_processed = now 
-      # obj.save()
+      obj = form.save(commit=False)
+      obj.is_processed = True
+      obj.date_processed = timezone.now()
+      obj.save()
+      return redirect('process_paperwork', process.pk)
     else:
       print(form.errors)
   
   context = {'form': form, 'assay_samples': assay_samples, 'process':  process}
   return render(request, 'pcr/review_process.html', context)
+
+
+@login_required(login_url='login')
+def process_paperwork(request, pk):
+  try:
+    process = Process.objects.get(user=request.user, pk=pk)
+    samples = process.samples.all().order_by('lab_id_num')
+    assay_samples = samples_by_assay(samples)
+
+    dna_pcr_data = process_dna_pcr_samples(assay_samples, process)
+
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no process to review.")
+    return redirect('extracted_batches')
+  
+  context = {}
+  return render(request, 'pcr/process_paperwork.html', context)
