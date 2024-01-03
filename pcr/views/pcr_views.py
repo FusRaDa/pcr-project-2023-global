@@ -12,7 +12,7 @@ from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
-from ..custom.functions import samples_by_assay, process_dna_pcr_samples
+from ..custom.functions import samples_by_assay, process_dna_pcr_samples, is_plate_amount_sufficient, is_gel_amount_sufficient
 
 
 @login_required(login_url='login')
@@ -161,10 +161,16 @@ def review_process(request, pk):
   if request.method == 'POST':
     form = ProcessForm(request.POST, instance=process, user=request.user)
     if form.is_valid():
-      obj = form.save(commit=False)
-      obj.is_processed = True
-      obj.date_processed = timezone.now()
-      obj.save()
+
+      if not is_plate_amount_sufficient(assay_samples, process):
+        messages.error(request, "The amount of plates selected is not sufficient. Please select other plates or update their amounts.")
+        return redirect('review_process', process.pk)
+      
+      if not is_gel_amount_sufficient(assay_samples, process):
+        messages.error(request, "The amount of gels selected is not sufficient. Please select other gels or update their amounts.")
+        return redirect('review_process', process.pk)
+      
+      form.save()
       return redirect('process_paperwork', process.pk)
     else:
       print(form.errors)

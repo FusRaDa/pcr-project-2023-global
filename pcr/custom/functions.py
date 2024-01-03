@@ -48,37 +48,77 @@ def samples_by_assay(samples):
   return assay_samples
 
 
-def process_dna_pcr_samples(sample_assays, process): 
+def is_plate_amount_sufficient(assay_samples, process):
+
+  total_plate_wells = 0
+  for plate in process.plate.all():
+    total_plate_wells += (plate.size * plate.amount)
+
+  pcr_dna_samples = 0
+  for index in assay_samples:
+    for assay, samples in index.items():
+      if assay.method == Assay.Methods.PCR and assay.type == Assay.Types.DNA:
+        pcr_dna_samples += len(samples)
+
+  pcr_rna_samples = 0
+  for index in assay_samples:
+    for assay, samples in index.items():
+      if assay.method == Assay.Methods.PCR and assay.type == Assay.Types.RNA:
+        pcr_rna_samples += len(samples)
+
+  print(total_plate_wells)
+
+  return False
+
+
+def is_gel_amount_sufficient(assay_samples, process):
+  pass
+
+
+
+def process_dna_pcr_samples(assay_samples, process): 
   data = [] # each plate goes in data 
 
   colors = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark']
 
-  all_samples = []
-  for index in sample_assays:
+  # collect all samples that are for DNA in PCR by assay
+  all_samples = {'samples': []}
+  for index in assay_samples:
     position = 1
     for assay, samples in index.items():
       if assay.method == Assay.Methods.PCR and assay.type == Assay.Types.DNA:
-        samples_data = []
+        color = 0
+        sample_assays = []
         for sample in samples:
           data = {position :{
-            'color': None,
+            'color': colors[color],
             'lab_id': sample.lab_id_num,
             'sample_id': sample.sample_id,
             'assay': assay
           }}
           position += 1
-          samples_data.append(data)
+          sample_assays.append(data)
 
         for control in assay.controls.all():
           data = {position :{
-            'color': None,
+            'color': colors[color],
             'lab_id': control.name,
             'sample_id': control.lot_number,
             'assay': assay
           }}
           position += 1
-          samples_data.append(data)
-        all_samples.append(samples_data)
+          sample_assays.append(data)
+          
+        color += 1
+        all_samples['samples'].append(sample_assays)
+  
+  plates_sizes = []
+  for plate in process.plate.all():
+    plates_sizes.append(plate.size)
+  
+
+
+ 
 
   # plate = {
   #   'protocol': {
