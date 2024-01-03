@@ -165,15 +165,16 @@ def review_process(request, pk):
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
   
-  form = ProcessForm(instance=process)
+  form = ProcessForm(instance=process, user=request.user)
 
   if request.method == 'POST':
-    form = ProcessForm(request.POST, instance=process)
+    form = ProcessForm(request.POST, instance=process, user=request.user)
     if form.is_valid():
-      obj = form.save(commit=False)
-      obj.is_processed = True
-      obj.date_processed = now 
-      obj.save()
+      print('saved')
+      # obj = form.save(commit=False)
+      # obj.is_processed = True
+      # obj.date_processed = now 
+      # obj.save()
     else:
       print(form.errors)
   

@@ -48,11 +48,95 @@
       {% endfor %}
     </div>
 
-
     <div class="col-sm-4">
-      form
-    </div>
+      <form method="POST" action="">
+        {% csrf_token %}
+        <h6 class="text-center">Thermal Cyler Protocols</h6>
 
+        <div class="input-group mb-2">
+          <div class="input-group-text input-group-process">DNA PCR</div>
+          {{form.pcr_dna_protocol}}
+        </div>
+
+        <div class="input-group mb-2">
+          <div class="input-group-text input-group-process">RNA PCR</div>
+          {{form.pcr_rna_protocol}}
+        </div>
+
+        <div class="input-group mb-2">
+          <div class="input-group-text input-group-process">DNA qPCR</div>
+          {{form.qpcr_dna_protocol}}
+        </div>
+
+        <div class="input-group mb-2">
+          <div class="input-group-text input-group-process">RNA qPCR</div>
+          {{form.qpcr_rna_protocol}}
+        </div>
+
+        <div class="card mt-2">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Plates
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#plate-collapse" aria-expanded="false" aria-controls="plate-collapse">
+                ⮝
+              </button>
+            </li>
+
+            <div class="collapse show" id="plate-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for plate in form.plate %}
+                    <li class="list-group-item">
+                      {{plate}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+
+        <div class="card mt-2">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Gels
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#gel-collapse" aria-expanded="false" aria-controls="gel-collapse">
+                ⮝
+              </button>
+            </li>
+
+            <div class="collapse show" id="gel-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for gel in form.gel %}
+                    <li class="list-group-item">
+                      {{gel}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+
+        {% if form.errors %}
+        <div class="row text-center mt-2">
+          {% for key,value in form.errors.items %} 
+            {{ value|escape }}
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="row justify-content-center mb-2">
+          <div class="text-center mt-2"> 
+            <a class="btn btn-secondary" href="{% url 'reagents' %}">Cancel</a>
+            <button class="btn btn-primary" type="submit" name="update">Add Reagent</button>
+          </div>
+        </div>
+ 
+      </form>
+    </div>
+   
   </div>
 
 </div>
