@@ -134,6 +134,31 @@ def batchSamples(request, pk):
       return redirect(request.path_info)
     
     batch.is_extracted = True
+
+    tube_amounts = zip(batch.extraction_protocol.tubes.all(), batch.extraction_protocol.tubeextraction_set.all())
+    for tube, usage in tube_amounts:
+      total_used_tubes = usage.amount_per_sample * batch.sample_set.count()
+      rem_tubes = tube.amount - total_used_tubes
+      if rem_tubes < 0:
+        messages.error(request, f"The amount of {tube.name} is insufficent. Update the amount of tubes.")
+        return redirect(request.path_info)
+    for tube, usage in tube_amounts:
+      total_used_tubes = usage.amount_per_sample * batch.sample_set.count()
+      tube.amount -= total_used_tubes
+      tube.save()
+
+    reagent_amounts = zip(batch.extraction_protocol.reagents.all(), batch.extraction_protocol.reagentextraction_set.all())
+    for reagent, usage in reagent_amounts:
+      total_used_reagents = usage.amount_per_sample * batch.sample_set.count()
+      rem_regeants = reagent.amount - total_used_reagents
+      if rem_regeants < 0:
+        messages.error(request, f"The amount of {reagent.name} is insufficent. Update the amount of reagents.")
+        return redirect(request.path_info)
+    for reagent, usage in reagent_amounts:
+      total_used_reagents = usage.amount_per_sample * batch.sample_set.count()
+      reagent.amount -= total_used_reagents
+      reagent.save()
+
     batch.save()
     return redirect('extracted_batches')
 
