@@ -110,7 +110,7 @@ class ControlAssay(models.Model):
   order = models.IntegerField(validators=[MinValueValidator(0)], default=0)
 
   def __str__(self):
-    return self.control
+    return f'{self.control}'
 
 
 class ReagentAssay(models.Model):

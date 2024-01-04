@@ -59,7 +59,7 @@ def edit_assay(request, pk):
   form = AssayForm(user=request.user, instance=assay)
   del_form = DeletionForm(value=assay.name)
 
-  if 'update' in request.POST:
+  if 'update_reagent' in request.POST:
     form = AssayForm(request.POST, user=request.user, instance=assay)
     if form.is_valid():
 
@@ -70,6 +70,14 @@ def edit_assay(request, pk):
         reagent.save()
       
       return redirect('assay_through', pk)
+    else:
+      print(form.errors)
+
+  if 'update_control' in request.POST:
+    form = AssayForm(request.POST, user=request.user, instance=assay)
+    if form.is_valid():
+      form.save()
+      return redirect('control_through', pk)
     else:
       print(form.errors)
 
@@ -247,7 +255,7 @@ def control_through(request, pk):
 
   try:
     assay = Assay.objects.get(user=request.user, pk=pk)
-    controls = ReagentAssay.objects.prefetch_related('control', 'assay').filter(assay=assay).order_by('order')
+    controls = ControlAssay.objects.prefetch_related('control', 'assay').filter(assay=assay).order_by('order')
   except ObjectDoesNotExist:
     messages.error(request, "There is no control to edit.")
     return redirect('controls')
@@ -266,4 +274,4 @@ def control_through(request, pk):
       print(controlformset.non_form_errors())
   
   context = {'controlformset': controlformset, 'controls_data': controls_data, 'assay': assay}
-  return render(request, 'assay/controls_order.html', context)
+  return render(request, 'assay/control_through.html', context)
