@@ -49,7 +49,7 @@ class AssayForm(ModelForm):
   fluorescence = forms.ModelMultipleChoiceField(
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
-    required=True)
+    required=False)
   
   controls = forms.ModelMultipleChoiceField(
     queryset=None,
@@ -67,6 +67,17 @@ class AssayForm(ModelForm):
     sample_volume = cleaned_data.get('sample_volume')
     controls = cleaned_data.get('controls')
     reagents = cleaned_data.get('reagents')
+    fluorescence = cleaned_data.get('fluorescence')
+
+    if self.instance.method == Assay.Methods.qPCR and not fluorescence:
+      raise ValidationError(
+        message="qPCR assays require fluorescense."
+      )
+    
+    if self.instance.method == Assay.Methods.PCR and fluorescence:
+      raise ValidationError(
+        message="PCR assays do not require fluorescense."
+      )
 
     if reaction_volume < sample_volume:
       raise ValidationError(
