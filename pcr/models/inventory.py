@@ -130,7 +130,7 @@ class Reagent(models.Model):
   usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.PCR, max_length=25)
   pcr_reagent = models.CharField(choices=PCRReagent.choices, blank=True, null=True, default=None, max_length=25) # determine calculations for type of pcr reagent
  
-  volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
+  volume = models.DecimalField(decimal_places=3, blank=False, validators=[MinValueValidator(0)], max_digits=12)
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
 
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
