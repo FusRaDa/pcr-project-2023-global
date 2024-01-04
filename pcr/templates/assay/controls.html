@@ -36,16 +36,16 @@
           <th scope="col">Exp. Date</th>
           <th scope="col">Name</th>
           <th scope="col">Lot #</th>
-          <th scope="col">Amount Stored</th>
+          <th scope="col">Amount Stored (μL)</th>
           <th scope="col">Location</th>
         </tr>
       </thead>
 
       <tbody>
         {% for control in controls %}
-          <tr class="tube-row" data-href="{% url 'edit_control' control.pk %}">
+          <tr class="tube-row {% if control.is_expired %} table-danger {% endif %} {% if control.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_control' control.pk %}">
             <td>{{control.exp_date}}</td>
-            <td>{{control.name}}</td>
+            <td>{{control.name}} {% if control.is_expired %} (EXPIRED) {% endif %} {% if control.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{control.lot_number}}</td>
             <td>{{control.amount}}</td>
 

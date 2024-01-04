@@ -67,8 +67,8 @@
 
           {% for reagents, reagentformset in reagents_data %}
           {{reagentformset.id}}
-          <tr>
-            <td>{{reagents}}</td>
+          <tr {% if reagents.reagent.is_expired %} class="table-danger" {% endif %} {% if reagents.reagent.month_exp %} class="table-warning" {% endif %}>
+            <td>{{reagents}} {% if reagents.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagents.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{reagentformset.amount_per_sample}}</td>
             <td>{{reagentformset.order}}</td>
           </tr>

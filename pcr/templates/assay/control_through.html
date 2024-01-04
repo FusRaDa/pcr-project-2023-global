@@ -30,7 +30,6 @@
             <th scope="col">Control</th>
             <th scope="col">Lot #</th>
             <th scope="col">Exp. Date</th>
-            <th scope="col">Amount Remaining (μL)</th>
             <th scope="col">Display Order</th>
           </tr>
         </thead>
@@ -42,11 +41,10 @@
 
           {{controlformset.id}}
 
-          <tr>
-            <td>{{controls}}</td>
+          <tr class="{% if controls.control.is_expired %} table-danger {% endif %} {% if controls.control.month_exp %} table-warning {% endif %}">
+            <td>{{controls}} {% if controls.control.is_expired %} (EXPIRED) {% endif %} {% if controls.control.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{controls.control.lot_number}}</td>
             <td>{{controls.control.exp_date}}</td>
-            <td>{{controls.control.amount}}</td>
             <td>{{controlformset.order}}</td>
           </tr>
 

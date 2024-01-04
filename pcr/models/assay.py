@@ -3,6 +3,9 @@ from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 
+import datetime
+from django.utils import timezone
+
 from users.models import User
 
 from .inventory import Reagent, Location
@@ -40,6 +43,20 @@ class Control(models.Model):
   exp_date = models.DateField(blank=True, null=True, default=None)
 
   location = models.ManyToManyField(Location)
+
+  @property
+  def is_expired(self):
+    if self.exp_date != None and (self.exp_date <= timezone.now().date()):
+      return True
+    else:
+      return False
+    
+  @property
+  def month_exp(self):
+    if self.exp_date != None and (self.exp_date > timezone.now().date()) and (self.exp_date - timezone.now().date() <= datetime.timedelta(days=30)):
+      return True
+    else:
+      return False
 
   class Meta:
     constraints = [

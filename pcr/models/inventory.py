@@ -2,6 +2,10 @@ from django.utils.timezone import now
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
+
+import datetime
+from django.utils import timezone
+
 from users.models import User
 
 
@@ -139,6 +143,20 @@ class Reagent(models.Model):
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
+
+  @property
+  def is_expired(self):
+    if self.exp_date != None and (self.exp_date <= timezone.now().date()):
+      return True
+    else:
+      return False
+    
+  @property
+  def month_exp(self):
+    if self.exp_date != None and (self.exp_date > timezone.now().date()) and (self.exp_date - timezone.now().date() <= datetime.timedelta(days=30)):
+      return True
+    else:
+      return False
 
   @property
   def volume_in_microliters(self):
