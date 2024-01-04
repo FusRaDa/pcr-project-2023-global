@@ -86,7 +86,16 @@ def process_dna_pcr_samples(assay_samples, process):
   
   plates_sizes = []
   for plate in process.plate.all():
-    plates_sizes.append(plate.size)
+    plates_sizes.append({'size': plate.size, 'amount': plate.amount, 'lot_number': plate.lot_number})
+  plates = sorted(plates_sizes, key=lambda d: d['size'], reverse=True)
+
+
+
+
+  
+
+
+
   
 
 

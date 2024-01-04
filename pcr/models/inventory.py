@@ -140,5 +140,14 @@ class Reagent(models.Model):
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
 
+  @property
+  def volume_in_microliters(self):
+    if self.unit_volume == Reagent.VolumeUnits.LITER:
+      return self.volume * 1000000
+    if self.unit_volume == Reagent.VolumeUnits.MILLILITER:
+      return self.volume * 1000
+    if self.unit_volume == Reagent.VolumeUnits.MICROLITER:
+      return self.volume
+
   def __str__(self):
     return f"{self.name}-{self.lot_number}"

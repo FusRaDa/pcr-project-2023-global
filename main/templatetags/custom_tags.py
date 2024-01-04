@@ -7,6 +7,10 @@ def dec_mult(value, arg):
   product = Decimal(value*arg)
   return product
 
+def remaining_amounts(value, arg):
+  return arg - value
+
 register.filter("dec_mult", dec_mult)
+register.filter("remaining_amounts", remaining_amounts)
 
 

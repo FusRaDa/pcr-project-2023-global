@@ -134,19 +134,19 @@ def batchSamples(request, pk):
       messages.error(request, f"Samples {invalid_samples} have not been given a sample ID. Please update before proceeding.")
       return redirect(request.path_info)
     
-    # batch.is_extracted = True
+    batch.is_extracted = True
 
-    # for tube in batch.extraction_protocol.tubeextraction_set.all():
-    #   total_used_tubes = tube.amount_per_sample * batch.sample_set.count()
-    #   rem_tubes = tube.tube.amount - total_used_tubes
-    #   if rem_tubes < 0:
-    #     messages.error(request, f"The amount of {tube.tube.name} lot#{tube.tube.lot_number} is insufficent. Update the amount of tubes.")
-    #     return redirect(request.path_info)
-    # for tube in batch.extraction_protocol.tubeextraction_set.all():
-    #   total_used_tubes = tube.amount_per_sample * batch.sample_set.count()
-    #   rem_tubes = tube.tube.amount - total_used_tubes
-    #   tube.tube.amount = rem_tubes
-    #   tube.tube.save()
+    for tube in batch.extraction_protocol.tubeextraction_set.all():
+      total_used_tubes = tube.amount_per_sample * batch.sample_set.count()
+      rem_tubes = tube.tube.amount - total_used_tubes
+      if rem_tubes < 0:
+        messages.error(request, f"The amount of {tube.tube.name} lot#{tube.tube.lot_number} is insufficent. Update the amount of tubes.")
+        return redirect(request.path_info)
+    for tube in batch.extraction_protocol.tubeextraction_set.all():
+      total_used_tubes = tube.amount_per_sample * batch.sample_set.count()
+      rem_tubes = tube.tube.amount - total_used_tubes
+      tube.tube.amount = rem_tubes
+      tube.tube.save()
 
     for reagent in batch.extraction_protocol.reagentextraction_set.all():
       total_used_reagents = reagent.amount_per_sample * batch.sample_set.count()

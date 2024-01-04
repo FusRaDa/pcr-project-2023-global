@@ -68,18 +68,22 @@
       <table class="table table-bordered" style="break-inside: avoid">
         <thead>
           <tr>
-            <th scope="col" class="col-sm-8">Reagent</th>
+            <th scope="col" class="col-sm-4">Reagent</th>
             <th scope="col" class="col-sm-2">Per Sample (μL) × {{batch.total_samples}}</th>
             <th scope="col" class="col-sm-2">Total Usage (μL)</th>
+            <th scope="col" class="col-sm-2">Stored Amount (μL)</th>
+            <th scope="col" class="col-sm-2">Remaining Amount (μL)</th>
           </tr>
         </thead>
 
         <tbody>
           {% for reagent in protocol.reagentextraction_set.all|dictsort:"order" %}
-            <tr>
+            <tr {% if reagent.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:reagent.reagent.volume_in_microliters < 0 %} class="table-danger" {% endif %}>
               <td>{{reagent}}</td>
               <td>{{reagent.amount_per_sample}}</td>
               <td>{{reagent.amount_per_sample|dec_mult:batch.total_samples}}</td>
+              <td>{{reagent.reagent.volume_in_microliters}}</td>
+              <td>{{reagent.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:reagent.reagent.volume_in_microliters}}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -89,18 +93,22 @@
       <table class="table table-bordered" style="break-inside: avoid">
         <thead>
           <tr>
-            <th scope="col" class="col-sm-8">Tube</th>
+            <th scope="col" class="col-sm-4">Tube</th>
             <th scope="col" class="col-sm-2">Per Sample × {{batch.total_samples}}</th>
             <th scope="col" class="col-sm-2">Total Usage</th>
+            <th scope="col" class="col-sm-2">Stored Amount</th>
+            <th scope="col" class="col-sm-2">Remaining Amount</th>
           </tr>
         </thead>
 
         <tbody>
           {% for tube in protocol.tubeextraction_set.all|dictsort:"order" %}
-            <tr>
+            <tr {% if tube.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:tube.tube.amounts < 0 %} class="table-danger" {% endif %}>
               <td>{{tube}}</td>
               <td>{{tube.amount_per_sample}}</td>
               <td>{{tube.amount_per_sample|dec_mult:batch.total_samples}}</td>
+              <td>{{tube.tube.amount}}</td>
+              <td>{{tube.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:tube.tube.amount}}</td>
             </tr>
           {% endfor %}
         </tbody>
