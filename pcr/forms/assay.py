@@ -3,7 +3,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from ..models.assay import Assay, AssayCode, ReagentAssay, Fluorescence, Control
+from ..models.assay import Assay, AssayCode, ReagentAssay, Fluorescence, Control, ControlAssay
 from ..models.inventory import Reagent, Location
 
 
@@ -115,6 +115,17 @@ class AssayForm(ModelForm):
   class Meta:
     model = Assay
     exclude = ['user']
+
+
+class ControlAssayForm(ModelForm):
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['order'].widget.attrs['class'] = 'form-control'
+
+  class Meta:
+    model = ControlAssay
+    exclude = ['control', 'assay']
 
 
 class ReagentAssayForm(ModelForm):

@@ -74,7 +74,7 @@ class Assay(models.Model):
   reaction_volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
   
   fluorescence = models.ManyToManyField(Fluorescence)
-  controls = models.ManyToManyField(Control)
+  controls = models.ManyToManyField(Control, through='ControlAssay')
   reagents = models.ManyToManyField(Reagent, through='ReagentAssay')
 
   @property
@@ -101,6 +101,16 @@ class Assay(models.Model):
 
   def __str__(self):
     return self.name
+  
+
+class ControlAssay(models.Model):
+  control = models.ForeignKey(Control, on_delete=models.CASCADE)
+  assay = models.ForeignKey(Assay, on_delete=models.CASCADE)
+
+  order = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+
+  def __str__(self):
+    return self.control
 
 
 class ReagentAssay(models.Model):

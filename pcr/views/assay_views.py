@@ -6,8 +6,8 @@ from django.db.models import F
 from django.contrib import messages
 from users.models import User
 
-from ..models.assay import Assay, Fluorescence, Control
-from ..forms.assay import AssayForm, ReagentAssay, ReagentAssayForm, FluorescenceForm, ControlForm
+from ..models.assay import Assay, Fluorescence, Control, ControlAssay, ReagentAssay
+from ..forms.assay import AssayForm, ReagentAssayForm, FluorescenceForm, ControlForm, ControlAssayForm
 from ..forms.general import DeletionForm
 
 
@@ -233,3 +233,37 @@ def edit_control(request, pk):
 
   context = {'form': form, 'control': control, 'del_form': del_form}
   return render(request, 'assay/edit_control.html', context)
+
+
+@login_required(login_url='login')
+def control_through(request, pk):
+  ControlAssayFormSet = modelformset_factory(
+    ControlAssay,
+    form=ControlAssayForm,
+    extra=0,
+  )
+
+  controlformset = None
+
+  try:
+    assay = Assay.objects.get(user=request.user, pk=pk)
+    controls = ReagentAssay.objects.prefetch_related('control', 'assay').filter(assay=assay).order_by('order')
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no control to edit.")
+    return redirect('controls')
+  
+  controlformset = ControlAssayFormSet(queryset=controls)
+
+  controls_data = zip(controls, controlformset)
+
+  if request.method == "POST":
+    controlformset = ControlAssayFormSet(request.POST)
+    if controlformset.is_valid():
+      controlformset.save()
+      return redirect(request.path_info)
+    else:
+      print(controlformset.errors)
+      print(controlformset.non_form_errors())
+  
+  context = {'controlformset': controlformset, 'controls_data': controls_data, 'assay': assay}
+  return render(request, 'assay/controls_order.html', context)
