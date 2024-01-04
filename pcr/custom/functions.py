@@ -54,36 +54,40 @@ def process_dna_pcr_samples(assay_samples, process):
   colors = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark']
 
   # collect all samples that are for DNA in PCR by assay
-  all_samples = {'samples': []}
+  dna_pcr_samples = []
   for index in assay_samples:
-    position = 1
     for assay, samples in index.items():
       if assay.method == Assay.Methods.PCR and assay.type == Assay.Types.DNA:
         color = 0
-        sample_assays = []
+    
+        data = []
         for sample in samples:
-          data = {position :{
+          sample_data = {
+            'position': None,
             'color': colors[color],
             'lab_id': sample.lab_id_num,
             'sample_id': sample.sample_id,
-            'assay': assay
-          }}
-          position += 1
-          sample_assays.append(data)
-
+          }
+          data.append(sample_data)
+     
         for control in assay.controls.all():
-          data = {position :{
+          control_data = {
+            'position': None,
             'color': colors[color],
             'lab_id': control.name,
             'sample_id': control.lot_number,
-            'assay': assay
-          }}
-          position += 1
-          sample_assays.append(data)
-          
+          }
+          data.append(control_data)
+
         color += 1
-        all_samples['samples'].append(sample_assays)
-  
+        if color > 7:
+          color = 0
+
+        assay_data = {assay.name: data}
+        dna_pcr_samples.append(assay_data)
+        print(dna_pcr_samples)
+    
+
   plates_sizes = []
   for plate in process.plate.all():
     plates_sizes.append({'size': plate.size, 'amount': plate.amount, 'lot_number': plate.lot_number})
