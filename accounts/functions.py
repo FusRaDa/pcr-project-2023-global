@@ -285,7 +285,6 @@ def create_test_objects(user):
     stock_concentration = 2,
     unit_concentration = Reagent.ConcentrationUnits.X,
   )
-
   qgen.location.add(location3)
 
   i_taq = Reagent.objects.create(
@@ -301,8 +300,82 @@ def create_test_objects(user):
     stock_concentration = 2,
     unit_concentration = Reagent.ConcentrationUnits.X,
   )
-
   i_taq.location.add(location3)
+
+  hiv1_primer_probe = Reagent.objects.create(
+    user = user,
+    name = "HIV1 Primer/Probe Mix",
+    brand = "BRAND",
+    lot_number = "LOT_NUMBER_08",
+    catalog_number = "CATALOG_NUMBER_08",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.GENERAL,
+    volume = 1,
+    unit_volume = Reagent.VolumeUnits.MILLILITER,
+    stock_concentration = 10,
+    unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
+  )
+  hiv1_primer_probe.location.add(location3)
+
+  oasig = Reagent.objects.create(
+    user = user,
+    name = "Lyophilised oasig OneStep Master Mix",
+    brand = "BRAND",
+    lot_number = "LOT_NUMBER_09",
+    catalog_number = "CATALOG_NUMBER_09",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.POLYMERASE,
+    volume = 1,
+    unit_volume = Reagent.VolumeUnits.MILLILITER,
+    stock_concentration = 2,
+    unit_concentration = Reagent.ConcentrationUnits.X,
+  )
+  oasig.location.add(location3)
+
+  reaction_mix = Reagent.objects.create(
+    user = user,
+    name = "2X Reaction Mix",
+    brand = "BRAND",
+    lot_number = "LOT_NUMBER_09",
+    catalog_number = "CATALOG_NUMBER_09",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.POLYMERASE,
+    volume = 1,
+    unit_volume = Reagent.VolumeUnits.MILLILITER,
+    stock_concentration = 2,
+    unit_concentration = Reagent.ConcentrationUnits.X,
+  )
+  reaction_mix.location.add(location3)
+
+  brel_553 = Reagent.objects.create(
+    user = user,
+    name = "BREL 553",
+    brand = "BRAND",
+    lot_number = "LOT_NUMBER_10",
+    catalog_number = "CATALOG_NUMBER_10",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.GENERAL,
+    volume = 1,
+    unit_volume = Reagent.VolumeUnits.MILLILITER,
+    stock_concentration = 10,
+    unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
+  )
+  brel_553.location.add(location3)
+
+  brel_554 = Reagent.objects.create(
+    user = user,
+    name = "BREL 554",
+    brand = "BRAND",
+    lot_number = "LOT_NUMBER_11",
+    catalog_number = "CATALOG_NUMBER_11",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.GENERAL,
+    volume = 1,
+    unit_volume = Reagent.VolumeUnits.MILLILITER,
+    stock_concentration = 10,
+    unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
+  )
+  brel_554.location.add(location3)
   # **INVENTORY SECTION** #
 
 
@@ -326,6 +399,16 @@ def create_test_objects(user):
 
   dna_ext_fecal.tubes.add(tubes1, tubes2, tubes3)
   dna_ext_fecal.reagents.add(proteinase_k, al_buffer, ethanol, aw1_buffer, aw2_buffer, ae_buffer, atl_buffer)
+
+  rna_ext_fecal = ExtractionProtocol.objects.create(
+    user = user,
+    name = "RNA Extraction - Fecal",
+    type = ExtractionProtocol.Types.RNA,
+    doc_url = "",
+  )
+
+  rna_ext_fecal.tubes.add(tubes1, tubes2, tubes3)
+  rna_ext_fecal.reagents.add(ethanol, aw1_buffer, aw2_buffer, ae_buffer, atl_buffer)
   
   
   # **EXTRACTION SECTION** #
@@ -388,6 +471,15 @@ def create_test_objects(user):
   negctrl.location.add(location3)
 
   # assays: cbovis & helico
+  hantaan_assay = Assay.objects.create(
+    user = user,
+    name = "Hantaan Virus",
+    method = Assay.Methods.PCR,
+    type = Assay.Types.RNA,
+    sample_volume = 5.00,
+    reaction_volume = 50.00,
+  )
+
   cbovis_assay = Assay.objects.create(
      user = user,
      name = "C.Bovis",
@@ -406,6 +498,18 @@ def create_test_objects(user):
     reaction_volume = 20.00,
   ) 
 
+  hiv1_assay = Assay.objects.create(
+    user = user,
+    name = "HIV 1",
+    method = Assay.Methods.qPCR,
+    type = Assay.Types.RNA,
+    sample_volume = 5.00,
+    reaction_volume = 20.00,
+  )
+
+  hantaan_assay.controls.add(bact3, negctrl)
+  hantaan_assay.reagents.add(reaction_mix, brel_553, brel_554, water)
+
   cbovis_assay.controls.add(bact3, bact2, bact1, bact0, negctrl)
   cbovis_assay.fluorescence.add(tex)
   cbovis_assay.reagents.add(water, cbov_frprimer, cbov_pprimer, i_taq)
@@ -413,3 +517,6 @@ def create_test_objects(user):
   helico_assay.controls.add(bact3, negctrl)
   helico_assay.fluorescence.add(fam)
   helico_assay.reagents.add(water, helico_frprimer, helico_pprimer, i_taq)
+
+  hiv1_assay.controls.add(bact2, negctrl)
+  hiv1_assay.reagents.add(hiv1_primer_probe, oasig, water)
