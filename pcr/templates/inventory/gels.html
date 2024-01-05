@@ -34,7 +34,6 @@
       <thead>
         <tr>
           <th scope="col">Exp. Date</th>
-          <th scope="col">Date Added</th>
           <th scope="col">Last Updated</th>
           <th scope="col">Name</th>
           <th scope="col">Brand</th>
@@ -48,9 +47,8 @@
 
       <tbody>
         {% for gel in gels %}
-          <tr class="plate-row" data-href="{% url 'edit_gel' gel.pk %}">
-            <td>{{gel.exp_date}}</td>
-            <td>{{gel.date_created}}</td>
+          <tr class="plate-row {% if gel.is_expired %} table-danger {% endif %} {% if gel.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_gel' gel.pk %}">
+            <td>{{gel.exp_date}} {% if gel.is_expired %} (EXPIRED) {% endif %} {% if gel.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{gel.last_updated}}</td>
             <td>{{gel.name}}</td>
             <td>{{gel.brand}}</td>

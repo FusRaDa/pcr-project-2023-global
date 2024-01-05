@@ -409,6 +409,16 @@ def create_test_objects(user):
 
   rna_ext_fecal.tubes.add(tubes1, tubes2, tubes3)
   rna_ext_fecal.reagents.add(ethanol, aw1_buffer, aw2_buffer, ae_buffer, atl_buffer)
+
+  tn_ext_fecal = ExtractionProtocol.objects.create(
+    user = user, 
+    name = "Total-nucleic Extraction - Fecal",
+    type = ExtractionProtocol.Types.TOTAL_NUCLEIC,
+    doc_url = "",
+  )
+
+  tn_ext_fecal.tubes.add(tubes3)
+  tn_ext_fecal.reagents.add(ethanol)
   
   
   # **EXTRACTION SECTION** #
@@ -511,12 +521,12 @@ def create_test_objects(user):
   hantaan_assay.reagents.add(reaction_mix, brel_553, brel_554, water)
 
   cbovis_assay.controls.add(bact3, bact2, bact1, bact0, negctrl)
-  cbovis_assay.fluorescence.add(tex)
   cbovis_assay.reagents.add(water, cbov_frprimer, cbov_pprimer, i_taq)
 
   helico_assay.controls.add(bact3, negctrl)
-  helico_assay.fluorescence.add(fam)
+  helico_assay.fluorescence.add(tex, fam)
   helico_assay.reagents.add(water, helico_frprimer, helico_pprimer, i_taq)
 
   hiv1_assay.controls.add(bact2, negctrl)
+  hiv1_assay.fluorescence.add(tex)
   hiv1_assay.reagents.add(hiv1_primer_probe, oasig, water)

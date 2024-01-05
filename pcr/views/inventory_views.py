@@ -73,7 +73,7 @@ def edit_location(request, pk):
 # **GELS VIEWS** #
 @login_required(login_url='login')
 def gels(request):
-  gels = Gel.objects.filter(user=request.user).order_by(F('exp_date').desc(nulls_last=True))
+  gels = Gel.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
   context = {'gels': gels}
   return render(request, 'inventory/gels.html', context)
 
@@ -132,7 +132,7 @@ def edit_gel(request, pk):
 # **PLATES VIEWS** #
 @login_required(login_url='login')
 def plates(request):
-  plates = Plate.objects.filter(user=request.user).order_by(F('exp_date').desc(nulls_last=True))
+  plates = Plate.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
   context = {'plates': plates}
   return render(request, 'inventory/plates.html', context)
 
@@ -190,7 +190,7 @@ def edit_plate(request, pk):
 # **TUBES VIEWS** #
 @login_required(login_url='login')
 def tubes(request):
-  tubes = Tube.objects.filter(user=request.user).order_by(F('exp_date').desc(nulls_last=True))
+  tubes = Tube.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
 
   context = {'tubes': tubes}
   return render(request, 'inventory/tubes.html', context)

@@ -35,9 +35,10 @@
         
         <thead>
           <tr>
-            <th scope="col" class="col-sm-1">Tube</th>
-            <th scope="col" class="col-sm-1">Amount Per Sample</th>
-            <th scope="col" class="col-sm-1">Display Order</th>
+            <th scope="col" class="col-sm-4">Tube</th>
+            <th scope="col" class="col-sm-2">Exp. Date</th>
+            <th scope="col" class="col-sm-3">Amount Per Sample</th>
+            <th scope="col" class="col-sm-3">Display Order</th>
           </tr>
         </thead>
 
@@ -49,7 +50,8 @@
           {% for tubes, tubeformset in tubes_data %}
           {{tubeformset.id}}
           <tr>
-            <td>{{tubes}}</td>
+            <td>{{tubes}} {% if tubes.tube.is_expired %} (EXPIRED) {% endif %} {% if tubes.tube.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{tubes.tube.exp_date}}</td>
             <td>{{tubeformset.amount_per_sample}}</td>
             <td>{{tubeformset.order}}</td>
           </tr>
@@ -58,9 +60,10 @@
 
         <thead>
           <tr>
-            <th scope="col">Reagent</th>
-            <th scope="col">Volume Per Sample (&#181;l)</th>
-            <th scope="col">Display Order</th>
+            <th scope="col" class="col-sm-4">Reagent</th>
+            <th scope="col" class="col-sm-2">Exp. Date</th>
+            <th scope="col" class="col-sm-3">Volume Per Sample (&#181;l)</th>
+            <th scope="col" class="col-sm-3">Display Order</th>
           </tr>
         </thead>
         <tbody>
@@ -69,6 +72,7 @@
           {{reagentformset.id}}
           <tr {% if reagents.reagent.is_expired %} class="table-danger" {% endif %} {% if reagents.reagent.month_exp %} class="table-warning" {% endif %}>
             <td>{{reagents}} {% if reagents.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagents.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{reagents.reagent.exp_date}}</td>
             <td>{{reagentformset.amount_per_sample}}</td>
             <td>{{reagentformset.order}}</td>
           </tr>

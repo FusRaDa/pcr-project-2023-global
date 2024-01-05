@@ -90,19 +90,28 @@ class BatchForm(ModelForm):
           raise ValidationError(
             message=f"Assay: {assay.name} with type {assay.type} is not compatible with {extraction_protocol_dna}."
           )
-        
+    
     if extraction_protocol_rna != None:
       for assay in code.assays.all():
         if assay.type != Assay.Types.RNA:
           raise ValidationError(
             message=f"Assay: {assay.name} with type {assay.type} is not compatible with {extraction_protocol_rna}."
           )
+        
+    if extraction_protocol_dna != None and not extraction_protocol_dna.is_complete:
+      raise ValidationError(
+        message=f"{extraction_protocol_dna.name} is not complete."
+      )
     
-    # num = Batch.objects.filter(user=self.user).count() + 1
-    # if num > BATCH_LIMIT:
-    #   raise ValidationError(
-    #     message="You have reached the number of batches you can create.",
-    #   )
+    if extraction_protocol_rna != None and not extraction_protocol_rna.is_complete:
+      raise ValidationError(
+        message=f"{extraction_protocol_rna.name} is not complete."
+      )
+    
+    if extraction_protocol_tn != None and not extraction_protocol_tn.is_complete:
+      raise ValidationError(
+        message=f"{extraction_protocol_tn.name} is not complete."
+      )
     
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -120,24 +129,6 @@ class BatchForm(ModelForm):
   class Meta:
     model = Batch
     exclude = ['user', 'date_performed', 'extraction_protocol']
-
-
-class DeleteBatchForm(forms.Form):
-
-  confirm = forms.CharField()
-
-  def __init__(self, *args, **kwargs):
-    self.value = kwargs.pop('value')
-    super().__init__(*args, **kwargs) 
-    self.fields['confirm'].widget.attrs['class'] = 'form-control'
-    
-  def clean(self):
-    cleaned_data = super().clean()
-    confirm = cleaned_data.get('confirm')
-    if confirm != self.value:
-      raise ValidationError(
-        message="Invalid batch name entered, please try again."
-      )
 
 
 class SampleForm(ModelForm):

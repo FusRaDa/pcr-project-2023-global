@@ -176,8 +176,8 @@
         <tbody>
           {% for assay in qpcr_rna %}
             <tr 
-              class="batch-row {% if not assay.is_complete %} batch-row table-danger {% endif %}" 
-              class="batch-row" data-href="{% url 'edit_assay' assay.pk %}">
+              class="batch-row {% if not assay.is_complete %} table-danger {% endif %}" 
+              data-href="{% url 'edit_assay' assay.pk %}">
               <td>{{assay.name}} {% if not assay.is_complete %} (Not Complete) {% endif %}</td>
               <td>{{assay.sample_volume}}</td>
               <td>{{assay.reaction_volume}}</td>

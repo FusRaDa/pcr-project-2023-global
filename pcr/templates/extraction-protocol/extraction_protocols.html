@@ -36,8 +36,8 @@
 
       <tbody>
         {% for protocol in dna_extraction_protocols %}
-          <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
-            <td>{{protocol.name}}</td>
+          <tr class="batch-row {% if not protocol.is_complete %} table-danger {% endif %}" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
+            <td>{{protocol.name}} {% if not protocol.is_complete %} (Not Complete) {% endif %}</td>
             <td>
               {% for reagent in protocol.reagents.all %}
                 {% if protocol.reagents.all|length > 1 %}
@@ -72,8 +72,8 @@
 
       <tbody>
         {% for protocol in rna_extraction_protocols %}
-          <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
-            <td>{{protocol.name}}</td>
+          <tr class="batch-row {% if not protocol.is_complete %} table-danger {% endif %}" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
+            <td>{{protocol.name}} {% if not protocol.is_complete %} (Not Complete) {% endif %}</td>
             <td>
               {% for reagent in protocol.reagents.all %}
                 {% if protocol.reagents.all|length > 1 %}
@@ -108,8 +108,8 @@
 
       <tbody>
         {% for protocol in tn_extraction_protocols %}
-          <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
-            <td>{{protocol.name}}</td>
+          <tr class="batch-row {% if not protocol.is_complete %} table-danger {% endif %}" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
+            <td>{{protocol.name}} {% if not protocol.is_complete %} (Not Complete) {% endif %}</td>
             <td>
               {% for reagent in protocol.reagents.all %}
                 {% if protocol.reagents.all|length > 1 %}

@@ -60,9 +60,9 @@
           <tbody>
             {% for reagent in ext_reagents %}
               <tr class="reagent-row {% if reagent.is_expired %} table-danger {% endif %} {% if reagent.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_reagent' reagent.pk %}">
-                <td>{{reagent.exp_date}}</td>
+                <td>{{reagent.exp_date}} {% if reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
                 <td>{{reagent.last_updated}}</td>
-                <td>{{reagent.name}} {% if reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+                <td>{{reagent.name}}</td>
                 <td>{{reagent.brand}}</td>
                 <td>{{reagent.catalog_number}}</td>
                 <td>{{reagent.lot_number}}</td>

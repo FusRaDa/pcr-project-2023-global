@@ -51,8 +51,22 @@ class Plate(models.Model):
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
 
+  @property
+  def is_expired(self):
+    if self.exp_date != None and (self.exp_date <= timezone.now().date()):
+      return True
+    else:
+      return False
+    
+  @property
+  def month_exp(self):
+    if self.exp_date != None and (self.exp_date > timezone.now().date()) and (self.exp_date - timezone.now().date() <= datetime.timedelta(days=30)):
+      return True
+    else:
+      return False
+
   def __str__(self):
-    return self.name
+    return f"{self.name}-Lot#:{self.lot_number}"
   
 
 class Gel(models.Model):
@@ -73,8 +87,22 @@ class Gel(models.Model):
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
 
+  @property
+  def is_expired(self):
+    if self.exp_date != None and (self.exp_date <= timezone.now().date()):
+      return True
+    else:
+      return False
+    
+  @property
+  def month_exp(self):
+    if self.exp_date != None and (self.exp_date > timezone.now().date()) and (self.exp_date - timezone.now().date() <= datetime.timedelta(days=30)):
+      return True
+    else:
+      return False
+
   def __str__(self):
-    return self.name
+    return f"{self.name}-Lot#:{self.lot_number}"
 
 
 class Tube(models.Model):
@@ -93,8 +121,22 @@ class Tube(models.Model):
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
 
+  @property
+  def is_expired(self):
+    if self.exp_date != None and (self.exp_date <= timezone.now().date()):
+      return True
+    else:
+      return False
+    
+  @property
+  def month_exp(self):
+    if self.exp_date != None and (self.exp_date > timezone.now().date()) and (self.exp_date - timezone.now().date() <= datetime.timedelta(days=30)):
+      return True
+    else:
+      return False
+
   def __str__(self):
-    return self.name
+    return f"{self.name}-Lot#:{self.lot_number}"
 
 
 # reagents are exclusively meant to be for PCR
@@ -168,4 +210,4 @@ class Reagent(models.Model):
       return self.volume
 
   def __str__(self):
-    return f"{self.name}-{self.lot_number}"
+    return f"{self.name}-Lot#:{self.lot_number}"

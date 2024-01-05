@@ -28,7 +28,6 @@
         <thead>
           <tr>
             <th scope="col">Reagent</th>
-            <th scope="col">Lot #</th>
             <th scope="col">Exp. Date</th>
             <th scope="col">Stock Concentration</th>
             <th scope="col">Final Concentration</th>
@@ -46,7 +45,6 @@
 
           <tr class="{% if reagents.reagent.is_expired %} table-danger {% endif %} {% if reagents.reagent.month_exp %} table-warning {% endif %}">
             <td>{{reagents}} {% if reagents.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagents.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
-            <td>{{reagents.reagent.lot_number}}</td>
             <td>{{reagents.reagent.exp_date}}</td>
 
             <td>

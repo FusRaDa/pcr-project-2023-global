@@ -34,7 +34,6 @@
       <thead>
         <tr>
           <th scope="col">Exp. Date</th>
-          <th scope="col">Date Added</th>
           <th scope="col">Last Updated</th>
           <th scope="col">Name</th>
           <th scope="col">Brand</th>
@@ -48,9 +47,8 @@
 
       <tbody>
         {% for plate in plates %}
-          <tr class="plate-row" data-href="{% url 'edit_plate' plate.pk %}">
-            <td>{{plate.exp_date}}</td>
-            <td>{{plate.date_created}}</td>
+          <tr class="plate-row {% if plate.is_expired %} table-danger {% endif %} {% if plate.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.pk %}">
+            <td>{{plate.exp_date}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{plate.last_updated}}</td>
             <td>{{plate.name}}</td>
             <td>{{plate.brand}}</td>

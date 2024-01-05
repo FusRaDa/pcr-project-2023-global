@@ -34,7 +34,6 @@
       <thead>
         <tr>
           <th scope="col">Exp. Date</th>
-          <th scope="col">Date Added</th>
           <th scope="col">Last Updated</th>
           <th scope="col">Name</th>
           <th scope="col">Brand</th>
@@ -47,9 +46,8 @@
 
       <tbody>
         {% for tube in tubes %}
-          <tr class="tube-row" data-href="{% url 'edit_tube' tube.pk %}">
-            <td>{{tube.exp_date}}</td>
-            <td>{{tube.date_created}}</td>
+          <tr class="tube-row {% if tube.is_expired %} table-danger {% endif %} {% if tube.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_tube' tube.pk %}">
+            <td>{{tube.exp_date}} {% if tube.is_expired %} (EXPIRED) {% endif %} {% if tube.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %} </td>
             <td>{{tube.last_updated}}</td>
             <td>{{tube.name}}</td>
             <td>{{tube.brand}}</td>

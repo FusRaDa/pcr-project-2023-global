@@ -48,15 +48,13 @@ class Control(models.Model):
   def is_expired(self):
     if self.exp_date != None and (self.exp_date <= timezone.now().date()):
       return True
-    else:
-      return False
+    return False
     
   @property
   def month_exp(self):
     if self.exp_date != None and (self.exp_date > timezone.now().date()) and (self.exp_date - timezone.now().date() <= datetime.timedelta(days=30)):
       return True
-    else:
-      return False
+    return False
 
   class Meta:
     constraints = [
@@ -98,7 +96,7 @@ class Assay(models.Model):
   def is_complete(self):
     reagents = self.reagentassay_set.all()
     for reagent in reagents:
-      if reagent.reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.final_concentration == None:
+      if self.method != Reagent.PCRReagent.WATER and reagent.final_concentration == None:
         return False
     return True
   

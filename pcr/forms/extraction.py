@@ -39,6 +39,15 @@ class ExtractionProtocolForm(ModelForm):
 
 class TubeExtractionForm(ModelForm):
 
+  def clean(self):
+    cleaned_data = super().clean()
+    amount_per_sample = cleaned_data.get('amount_per_sample')
+
+    if amount_per_sample == None:
+      raise ValidationError(
+        message=f"{self.instance.tube.name} must be used at least once per sample"
+      )
+
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.fields['amount_per_sample'].widget.attrs['class'] = 'form-control'
@@ -46,9 +55,6 @@ class TubeExtractionForm(ModelForm):
 
     self.fields['amount_per_sample'].widget.attrs['min'] = 1
     self.fields['order'].widget.attrs['min'] = 0
-
-    self.fields['amount_per_sample'].error_messages = {'min_value': "Every tube should be used at least once per sample."}
-    self.fields['amount_per_sample'].error_messages = {'required': "Every tube should be used at least once per sample."}
 
   class Meta:
     model = TubeExtraction
@@ -57,6 +63,15 @@ class TubeExtractionForm(ModelForm):
 
 class ReagentExtractionForm(ModelForm):
 
+  def clean(self):
+    cleaned_data = super().clean()
+    amount_per_sample = cleaned_data.get('amount_per_sample')
+
+    if amount_per_sample == None:
+      raise ValidationError(
+        message=f"{self.instance.reagent.name} must have a volume per sample"
+      )
+
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.fields['amount_per_sample'].widget.attrs['class'] = 'form-control'
@@ -64,9 +79,6 @@ class ReagentExtractionForm(ModelForm):
 
     self.fields['amount_per_sample'].widget.attrs['min'] = 1
     self.fields['order'].widget.attrs['min'] = 0
-
-    self.fields['amount_per_sample'].error_messages = {'min_value': "Every reagent should have a volume per sample."}
-    self.fields['amount_per_sample'].error_messages = {'required': "Every reagent should have a volume per sample."}
 
   class Meta:
     model = ReagentExtraction
