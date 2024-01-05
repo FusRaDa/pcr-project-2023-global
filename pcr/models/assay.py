@@ -96,7 +96,7 @@ class Assay(models.Model):
   def is_complete(self):
     reagents = self.reagentassay_set.all()
     for reagent in reagents:
-      if self.method != Reagent.PCRReagent.WATER and reagent.final_concentration == None:
+      if reagent.reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.final_concentration == None:
         return False
     return True
   

@@ -15,7 +15,7 @@
     <p class="text-center">**Refresh page if styles are not applied when printing. Enable background graphics to view and print color.**</p>
   </div>
 
-  <div class="container m-3" id="printDiv">
+  <div class="container p-3" id="printDiv">
 
     <div class="row">
       <div class="col">
@@ -78,8 +78,8 @@
 
         <tbody>
           {% for reagent in protocol.reagentextraction_set.all|dictsort:"order" %}
-            <tr {% if reagent.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:reagent.reagent.volume_in_microliters < 0 %} class="table-danger" {% endif %}>
-              <td>{{reagent}}</td>
+            <tr {% if reagent.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:reagent.reagent.volume_in_microliters < 0 %} class="table-danger" {% endif %} {% if reagent.reagent.is_expired %} class="table-danger" {% endif %} {% if reagent.reagent.month_exp %} class="table-warning" {% endif %}>
+              <td>{{reagent}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
               <td>{{reagent.amount_per_sample}}</td>
               <td>{{reagent.amount_per_sample|dec_mult:batch.total_samples}}</td>
               <td>{{reagent.reagent.volume_in_microliters}}</td>
@@ -103,8 +103,8 @@
 
         <tbody>
           {% for tube in protocol.tubeextraction_set.all|dictsort:"order" %}
-            <tr {% if tube.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:tube.tube.amounts < 0 %} class="table-danger" {% endif %}>
-              <td>{{tube}}</td>
+            <tr {% if tube.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:tube.tube.amounts < 0 %} class="table-danger" {% endif %} {% if tube.tube.is_expired %} class="table-danger" {% endif %} {% if tube.tube.month_exp %} class="table-warning" {% endif %}>
+              <td>{{tube}} {% if tube.tube.is_expired %} (EXPIRED) {% endif %} {% if tube.tube.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
               <td>{{tube.amount_per_sample}}</td>
               <td>{{tube.amount_per_sample|dec_mult:batch.total_samples}}</td>
               <td>{{tube.tube.amount}}</td>
