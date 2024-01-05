@@ -29,6 +29,7 @@ def create_samples(number_of_samples, lab_id, user):
   control.assays.add(*assays)
 
 
+# order ALL samples by assay
 def samples_by_assay(samples):
   all_assays = []
   for sample in samples:
@@ -46,26 +47,8 @@ def samples_by_assay(samples):
   return assay_samples
 
 
-def process_dna_pcr_samples(assay_samples, process): 
-  full_data = []
-
-  protocol = dict(protocol=dict(
-    name = process.pcr_dna_protocol.name,
-    denature = process.pcr_dna_protocol.denature_duration,
-    denature_temp = process.pcr_dna_protocol.denature_temp,
-    denature_duration = process.pcr_dna_protocol.denature_duration,
-    anneal_temp = process.pcr_dna_protocol.anneal_temp,
-    anneal_duration = process.pcr_dna_protocol.anneal_duration,
-    extension_temp = process.pcr_dna_protocol.extension_temp,
-    extension_duration = process.pcr_dna_protocol.extension_duration,
-    number_of_cycles = process.pcr_dna_protocol.number_of_cycles,
-  ))
-
-  plates_sizes = []
-  for plate in process.plate.all():
-    plates_sizes.append({'size': plate.size, 'amount': plate.amount, 'lot_number': plate.lot_number})
-  plates = sorted(plates_sizes, key=lambda d: d['size'], reverse=True)
-
+# order samples by DNA PCR
+def dna_pcr_samples_by_assay(assay_samples): 
   colors = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark']
 
   # collect all samples that are for DNA in PCR by assay
@@ -82,6 +65,7 @@ def process_dna_pcr_samples(assay_samples, process):
             'color': colors[color],
             'lab_id': sample.lab_id_num,
             'sample_id': sample.sample_id,
+            'assay': assay
           }
           data.append(sample_data)
      
@@ -91,21 +75,96 @@ def process_dna_pcr_samples(assay_samples, process):
             'color': colors[color],
             'lab_id': control.name,
             'sample_id': control.lot_number,
+            'assay': assay
           }
           data.append(control_data)
 
         color += 1
         if color > 7:
           color = 0
-
-        assay_data = {assay.name: data}
+        assay_data = {assay: data}
         dna_pcr_samples.append(assay_data)
-        
+  return dna_pcr_samples
 
+
+# compact plate method
+def json_dna_pcr(dna_pcr_samples, process):
+  # list plates from smallest to greatest size
+  plates = []
+  for plate in process.plate.all().order_by('size'):
+    plates.append(plate)
+
+  # determine total wells used for samples and controls
   total_wells_used = 0
   for assay_group in dna_pcr_samples:
     for key in assay_group:
       total_wells_used += len(assay_group[key])
+
+  # determine optimal plate size to use
+  for plate in plates:
+    if plate.size > total_wells_used:
+      remaining_wells = plate.size
+
+      plate_data = {'plate': plate}
+      protocol_data = {'protocol': process.pcr_dna_protocol}
+      samples_data = {'samples': []}
+      
+      position = 1
+      for data in dna_pcr_samples:
+        for assay, samples in data.items():
+          color = samples[0]['color']
+       
+          for sample in samples:
+            sample['position'] = position
+            samples_data['samples'].append(sample)
+
+            position += 1
+            remaining_wells -= 1
+
+          for s in samples_data['samples']:
+            if s in samples:
+              samples.remove(s)
+          
+          if len(samples) > 0:
+            for control in assay.controls.all():
+              control_data = {
+                'position': None,
+                'color': color,
+                'lab_id': control.name,
+                'sample_id': control.lot_number,
+                'assay': assay
+              }
+              samples.append(control_data)
+
+            
+  
+      print(dna_pcr_samples)
+
+
+
+
+      
+
+
+      plate_dict = protocol_data | plate_data | samples_data
+   
+      break
+    else:
+      pass
+
+ 
+  
+ 
+ 
+
+
+
+  
+ 
+     
+
+  
+
   
   
       
@@ -164,16 +223,3 @@ def process_dna_pcr_samples(assay_samples, process):
       
   #   ]
   # }
-
-
-
-def process_rna_pcr_samples():
-  pass
-
-
-def process_dna_qpcr_samples():
-  pass
-
-
-def process_rna_qpcr_samples():
-  pass

@@ -12,7 +12,7 @@ from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
-from ..custom.functions import samples_by_assay, process_dna_pcr_samples
+from ..custom.functions import samples_by_assay, dna_pcr_samples_by_assay, json_dna_pcr
 
 
 @login_required(login_url='login')
@@ -194,7 +194,8 @@ def process_paperwork(request, pk):
           requires_rna_qpcr = True
     
     if requires_dna_pcr:
-      dna_pcr_data = process_dna_pcr_samples(assay_samples, process)
+      dna_pcr_samples = dna_pcr_samples_by_assay(assay_samples)
+      json = json_dna_pcr(dna_pcr_samples, process)
 
     # if requires_rna_pcr:
     #   print("RNA PCR")
