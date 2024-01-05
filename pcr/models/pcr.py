@@ -57,5 +57,7 @@ class Process(models.Model):
 
   date_processed = models.DateTimeField(blank=True, null=True, editable=False, default=None)
 
+  # data = models.JSONField()
+
   def __str__(self):
     return f"Process by {self.user}"

@@ -3,9 +3,7 @@ from ..models.assay import Assay
 
 
 def create_samples(number_of_samples, lab_id, user):
-
   batch = Batch.objects.get(user=user, lab_id=lab_id)
-
   assays = batch.code.assays.all()
   
   # create samples for the batch
@@ -49,7 +47,24 @@ def samples_by_assay(samples):
 
 
 def process_dna_pcr_samples(assay_samples, process): 
-  data = [] # each plate goes in data 
+  full_data = []
+
+  protocol = dict(protocol=dict(
+    name = process.pcr_dna_protocol.name,
+    denature = process.pcr_dna_protocol.denature_duration,
+    denature_temp = process.pcr_dna_protocol.denature_temp,
+    denature_duration = process.pcr_dna_protocol.denature_duration,
+    anneal_temp = process.pcr_dna_protocol.anneal_temp,
+    anneal_duration = process.pcr_dna_protocol.anneal_duration,
+    extension_temp = process.pcr_dna_protocol.extension_temp,
+    extension_duration = process.pcr_dna_protocol.extension_duration,
+    number_of_cycles = process.pcr_dna_protocol.number_of_cycles,
+  ))
+
+  plates_sizes = []
+  for plate in process.plate.all():
+    plates_sizes.append({'size': plate.size, 'amount': plate.amount, 'lot_number': plate.lot_number})
+  plates = sorted(plates_sizes, key=lambda d: d['size'], reverse=True)
 
   colors = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark']
 
@@ -85,13 +100,20 @@ def process_dna_pcr_samples(assay_samples, process):
 
         assay_data = {assay.name: data}
         dna_pcr_samples.append(assay_data)
-        print(dna_pcr_samples)
-    
+        
 
-  plates_sizes = []
-  for plate in process.plate.all():
-    plates_sizes.append({'size': plate.size, 'amount': plate.amount, 'lot_number': plate.lot_number})
-  plates = sorted(plates_sizes, key=lambda d: d['size'], reverse=True)
+  total_wells_used = 0
+  for assay_group in dna_pcr_samples:
+    for key in assay_group:
+      total_wells_used += len(assay_group[key])
+  
+  
+      
+    
+  
+
+
+
 
 
 

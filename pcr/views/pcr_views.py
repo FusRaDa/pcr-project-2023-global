@@ -177,7 +177,33 @@ def process_paperwork(request, pk):
     samples = process.samples.all().order_by('lab_id_num')
     assay_samples = samples_by_assay(samples)
 
-    dna_pcr_data = process_dna_pcr_samples(assay_samples, process)
+    requires_dna_pcr = False
+    requires_rna_pcr = False
+    requires_dna_qpcr = False
+    requires_rna_qpcr = False
+
+    for assay in assay_samples:
+      for a in assay.keys():
+        if a.type == Assay.Types.DNA and a.method == Assay.Methods.PCR:
+          requires_dna_pcr = True
+        if a.type == Assay.Types.RNA and a.method == Assay.Methods.PCR: 
+          requires_rna_pcr = True
+        if a.type == Assay.Types.DNA and a.method == Assay.Methods.qPCR:
+          requires_dna_qpcr = True
+        if a.type == Assay.Types.RNA and a.method == Assay.Methods.qPCR:
+          requires_rna_qpcr = True
+    
+    if requires_dna_pcr:
+      dna_pcr_data = process_dna_pcr_samples(assay_samples, process)
+
+    # if requires_rna_pcr:
+    #   print("RNA PCR")
+
+    # if requires_dna_qpcr:
+    #   print("DNA qPCR")
+    
+    # if requires_rna_qpcr:
+    #   print("RNA qPCR")
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no process to review.")
