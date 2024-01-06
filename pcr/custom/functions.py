@@ -69,21 +69,12 @@ def dna_pcr_samples_by_assay(assay_samples):
           }
           data.append(sample_data)
      
-        for control in assay.controls.all():
-          control_data = {
-            'position': None,
-            'color': colors[color],
-            'lab_id': control.name,
-            'sample_id': control.lot_number,
-            'assay': assay
-          }
-          data.append(control_data)
-
         color += 1
         if color > 7:
           color = 0
         assay_data = {assay: data}
         dna_pcr_samples.append(assay_data)
+
   return dna_pcr_samples
 
 
@@ -112,7 +103,7 @@ def json_dna_pcr(dna_pcr_samples, process):
       position = 1
       for data in dna_pcr_samples:
         for assay, samples in data.items():
-          color = samples[0]['color']
+          control_color = samples[0]['color']
        
           for sample in samples:
             sample['position'] = position
@@ -125,26 +116,16 @@ def json_dna_pcr(dna_pcr_samples, process):
             if s in samples:
               samples.remove(s)
           
-          if len(samples) > 0:
-            for control in assay.controls.all():
-              control_data = {
-                'position': None,
-                'color': color,
-                'lab_id': control.name,
-                'sample_id': control.lot_number,
-                'assay': assay
-              }
-              samples.append(control_data)
-
-            
-  
-      print(dna_pcr_samples)
-
-
-
-
-      
-
+          # if len(samples) > 0:
+          #   for control in assay.controls.all():
+          #     control_data = {
+          #       'position': None,
+          #       'color': control_color,
+          #       'lab_id': control.name,
+          #       'sample_id': control.lot_number,
+          #       'assay': assay
+          #     }
+          #     samples.append(control_data)
 
       plate_dict = protocol_data | plate_data | samples_data
    
