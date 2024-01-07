@@ -75,7 +75,6 @@ def dna_pcr_samples(assay_samples):
           color = 0
         assay_data = {assay: data}
         all_samples.append(assay_data)
-
   return all_samples
 
 
@@ -120,22 +119,26 @@ def compact_organized_horizontal(dna_pcr_samples, process):
       plate_data = {'plate': plate}
       protocol_data = {'protocol': process.pcr_dna_protocol}
       samples_data = {'samples': {}}
+      assays_data = {'assays': []}
       
+      loaded_samples = [] # collect keys to delete later after samples have been added to the json file
       position = 0
       for data in dna_pcr_samples:
         for assay, samples in data.items():
+          assays_data['assays'].append(assay)
           control_color = samples[1][None]['color']
  
           sample_wells = len(samples)
           control_wells = assay.controls.count()
           total_wells = sample_wells + control_wells
 
-          if total_wells < remaining_wells:
+          if total_wells < remaining_wells: # LOGIC HELP
               
             for sample in samples:
               position += 1
               sample[f"well{position}"] = sample[None]
               del sample[None]
+              loaded_samples.append(sample)
               samples_data['samples'].update(sample)
               
             # add validation if plate size is insufficient to even hold only one assay w/ controls
@@ -151,8 +154,9 @@ def compact_organized_horizontal(dna_pcr_samples, process):
             if plate.size == Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR:
               wells_in_row = 24
 
+            # find what row last sample is located in and how many available wells are in that row
             row = math.floor(position / wells_in_row) + 1
-            if position % wells_in_row == 0:
+            if position % wells_in_row == 0: # if position is the last on the row make sure it is assigned to the proper row
               row -= 1
             rem_wells = (row * wells_in_row) - position
 
@@ -174,24 +178,25 @@ def compact_organized_horizontal(dna_pcr_samples, process):
                   'assay': assay
                 }}
                 samples_data['samples'].update(control_data)
+
+              # position = block # end of row
             else:
               # go to next row and add controls there with positions reeee!
               pass
-  
-      # remove samples from list that have already been loaded into plate
-      for s in samples_data['samples']:
-        if s in samples:
-          samples.remove(s)
 
-      # create plate dictionary that contains plate, tcprotocol, and assay-samples
-      plate_dict = protocol_data | plate_data | samples_data
-      json_data.append(plate_dict)
+          # create plate dictionary that contains plate, tcprotocol, and assay-samples
+          plate_dict = protocol_data | plate_data | assays_data | samples_data
+          json_data.append(plate_dict)
+
+          # remove samples from list that have already been loaded into plate
+          for sample in loaded_samples:
+            samples.remove(sample)
+
       break # break for loop plate
     else:
       # what happens if not all samples can be in the largest plate provided?
       pass
+ 
 
-  
-  print(json_data)
   return json_data
 
