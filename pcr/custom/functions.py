@@ -66,7 +66,7 @@ def dna_pcr_samples(assay_samples):
             'color': colors[color],
             'lab_id': sample.lab_id_num,
             'sample_id': sample.sample_id,
-            'assay': assay
+            'assay': assay.name
           }}
           data.append(sample_data)
      
@@ -96,107 +96,128 @@ def rna_qpcr_samples(assay_samples):
 # 3 - fully compact horizontally
 # 4 - fully compact vertically
 
-# compact & organized plate method - horizontal
-def compact_organized_horizontal(dna_pcr_samples, process):
-  json_data = []
-  # list plates from smallest to greatest size
+def choose_plate(plate_samples, process):
+  # add amount validation for plates
   plates = []
   for plate in process.plate.all().order_by('size'):
     plates.append(plate)
-
-  # determine total wells used for samples and controls
   total_wells_used = 0
-  for assay_group in dna_pcr_samples:
-    for key in assay_group:
-      total_wells_used += len(assay_group[key])
-
-  # determine optimal plate size to use
+  for assay_group in plate_samples:
+    for assay, samples in assay_group.items():
+      total_wells_used += (len(samples) + assay.controls.count())
   for plate in plates:
     if plate.size > total_wells_used:
-      remaining_wells = plate.size
-
-      # create dictionaries
-      plate_data = {'plate': plate}
-      protocol_data = {'protocol': process.pcr_dna_protocol}
-      samples_data = {'samples': {}}
-      assays_data = {'assays': []}
-      
-      loaded_samples = [] # collect keys to delete later after samples have been added to the json file
-      position = 0
-      for data in dna_pcr_samples:
-        for assay, samples in data.items():
-          assays_data['assays'].append(assay)
-          control_color = samples[1][None]['color']
- 
-          sample_wells = len(samples)
-          control_wells = assay.controls.count()
-          total_wells = sample_wells + control_wells
-
-          if total_wells < remaining_wells: # LOGIC HELP
-              
-            for sample in samples:
-              position += 1
-              sample[f"well{position}"] = sample[None]
-              del sample[None]
-              loaded_samples.append(sample)
-              samples_data['samples'].update(sample)
-              
-            # add validation if plate size is insufficient to even hold only one assay w/ controls
-            if plate.size == Plate.Sizes.EIGHT:
-              wells_in_row = 1
-
-            if plate.size == Plate.Sizes.FOURTY_EIGHT:
-              wells_in_row = 6 
-
-            if plate.size == Plate.Sizes.NINETY_SIX:
-              wells_in_row = 12
-
-            if plate.size == Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR:
-              wells_in_row = 24
-
-            # find what row last sample is located in and how many available wells are in that row
-            row = math.floor(position / wells_in_row) + 1
-            if position % wells_in_row == 0: # if position is the last on the row make sure it is assigned to the proper row
-              row -= 1
-            rem_wells = (row * wells_in_row) - position
-
-            if control_wells < rem_wells:
-   
-              block = (row * wells_in_row)
-              cwells = []
-              for n in range(position + 1, block + 1):
-                cwells.append(n)
-              cwells.sort(reverse=True)
-
-              zip_data = zip(assay.controlassay_set.all().order_by('-order'), cwells)
-       
-              for control, well in zip_data:
-                control_data = {f"well{well}": {
-                  'color': control_color,
-                  'lab_id': control.control.name,
-                  'sample_id': control.control.lot_number,
-                  'assay': assay
-                }}
-                samples_data['samples'].update(control_data)
-
-              # position = block # end of row
-            else:
-              # go to next row and add controls there with positions reeee!
-              pass
-
-          # create plate dictionary that contains plate, tcprotocol, and assay-samples
-          plate_dict = protocol_data | plate_data | assays_data | samples_data
-          json_data.append(plate_dict)
-
-          # remove samples from list that have already been loaded into plate
-          for sample in loaded_samples:
-            samples.remove(sample)
-
-      break # break for loop plate
+      return plate
     else:
-      # what happens if not all samples can be in the largest plate provided?
-      pass
- 
+      return plates[-1]
+    
 
-  return json_data
+def choose_gel(qpcr_samples, process):
+  pass
+
+
+def organized_horizontal_plate(all_samples, process):
+  plate = choose_plate(all_samples, process)
+
+  plate_data = {'plate': choose_plate}
+  protocol_data = {'protocol': process.pcr_dna_protocol}
+  assays_data = {'assays': []}
+  samples_data = {'samples': {}}
+
+  loaded_samples = [] # collect keys to delete later after samples have been added to the json file
+  remaining_wells = plate.size
+  position = 0
+
+  for data in all_samples:
+    for assay, samples in data.items():
+      assays_data['assays'].append(assay)
+      control_color = samples[1][None]['color']
+
+      sample_wells = len(samples)
+      control_wells = assay.controls.count()
+      total_wells = sample_wells + control_wells
+
+      if total_wells < remaining_wells: # LOGIC HELP
+        for sample in samples:
+          position += 1
+          sample[f"well{position}"] = sample[None]
+          del sample[None]
+          loaded_samples.append(sample)
+          samples_data['samples'].update(sample)
+          
+        # add validation if plate size is insufficient to even hold only one assay w/ controls
+        if plate.size == Plate.Sizes.EIGHT:
+          wells_in_row = 1
+
+        if plate.size == Plate.Sizes.FOURTY_EIGHT:
+          wells_in_row = 6 
+
+        if plate.size == Plate.Sizes.NINETY_SIX:
+          wells_in_row = 12
+
+        if plate.size == Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR:
+          wells_in_row = 24
+
+        # find what row last sample is located in and how many available wells are in that row
+        row = math.floor(position / wells_in_row) + 1
+        if position % wells_in_row == 0: # if position is the last on the row make sure it is assigned to the proper row
+          row -= 1
+        rem_wells = (row * wells_in_row) - position
+
+        # if there is enough room in the same row add controls
+        if control_wells < rem_wells:
+
+          block = (row * wells_in_row)
+          start = block - control_wells
+          cwells = []
+          for n in range(start + 1, block + 1):
+            cwells.append(n)
+        
+          zip_data = zip(assay.controlassay_set.all().order_by('order'), cwells)
+    
+          for control, well in zip_data:
+            control_data = {f"well{well}": {
+              'color': control_color,
+              'lab_id': control.control.name,
+              'sample_id': control.control.lot_number,
+              'assay': assay
+            }}
+            samples_data['samples'].update(control_data)
+
+          remaining_wells = plate.size - block
+          # position = block # end of row
+        else:
+          # go to next row and add controls there with positions reeee!
+          pass
+
+      # create plate dictionary that contains plate, tcprotocol, assays, and samples
+      plate_dict = protocol_data | plate_data | assays_data | samples_data
+
+      # remove samples from list that have already been loaded into plate
+      for sample in loaded_samples:
+        samples.remove(sample)
+
+  return plate_dict, all_samples
+
+
+# compact & organized plate method - horizontal
+def json_organized_horizontal_plate(all_samples, process):
+  dna_pcr_data = []
+
+  is_empty = False
+  while not is_empty:
+
+    plate_dict, all_samples = organized_horizontal_plate(all_samples, process)
+    dna_pcr_data.append(plate_dict)
+
+    # check if all samples for each assay is empty if not continue the process of making plates
+    for data in all_samples:
+      for assay, samples in data.items():
+        if len(samples) == 0:
+          is_empty = True
+        else:
+          is_empty = False
+  
+  return dna_pcr_data
+  
 

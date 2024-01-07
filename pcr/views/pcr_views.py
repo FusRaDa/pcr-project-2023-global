@@ -12,7 +12,7 @@ from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
-from ..custom.functions import samples_by_assay, dna_pcr_samples, compact_organized_horizontal
+from ..custom.functions import samples_by_assay, dna_pcr_samples, json_organized_horizontal_plate
 
 
 @login_required(login_url='login')
@@ -195,7 +195,8 @@ def process_paperwork(request, pk):
     
     if requires_dna_pcr:
       all_samples = dna_pcr_samples(assay_samples)
-      dna_pcr_co = compact_organized_horizontal(all_samples, process)
+      dna_pcr_json = json_organized_horizontal_plate(all_samples, process)
+
 
     # if requires_rna_pcr:
     #   print("RNA PCR")
@@ -210,5 +211,5 @@ def process_paperwork(request, pk):
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
   
-  context = {'dna_pcr_co': dna_pcr_co}
+  context = {}
   return render(request, 'pcr/process_paperwork.html', context)
