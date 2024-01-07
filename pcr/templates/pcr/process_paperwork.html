@@ -7,7 +7,8 @@
 {% block content %}
 <div class="container">
 
-
+  {% for plate in dna_pcr_co %}
+  {{plate.samples.well1.color}}
   <div class="table-responsive">
     <table class="table table-bordered">
       <thead>
@@ -67,6 +68,7 @@
 
     </table>
   </div>
+  {% endfor %}
 
  
 

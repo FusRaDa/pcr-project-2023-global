@@ -195,7 +195,7 @@ def process_paperwork(request, pk):
     
     if requires_dna_pcr:
       all_samples = dna_pcr_samples(assay_samples)
-      json = compact_organized_horizontal(all_samples, process)
+      dna_pcr_co = compact_organized_horizontal(all_samples, process)
 
     # if requires_rna_pcr:
     #   print("RNA PCR")
@@ -210,5 +210,5 @@ def process_paperwork(request, pk):
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
   
-  context = {}
+  context = {'dna_pcr_co': dna_pcr_co}
   return render(request, 'pcr/process_paperwork.html', context)
