@@ -188,7 +188,7 @@ def organized_horizontal_plate(all_samples, process):
           # position = block # end of row
         else:
           # go to next row and add controls there with positions reeee!
-          pass
+          next_row = (row + 1 ) * wells_in_row
 
       # create plate dictionary that contains plate, tcprotocol, assays, and samples
       plate_dict = protocol_data | plate_data | assays_data | samples_data

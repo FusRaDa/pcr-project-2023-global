@@ -211,5 +211,5 @@ def process_paperwork(request, pk):
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
   
-  context = {}
+  context = {'dna_pcr_json': dna_pcr_json}
   return render(request, 'pcr/process_paperwork.html', context)
