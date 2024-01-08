@@ -205,7 +205,7 @@ def organized_horizontal_plate(all_samples, process):
           remaining_wells -= block
 
       else:
-        for sample in samples[:len(samples) - control_wells - 1]:
+        for sample in samples[:remaining_wells - control_wells]:
           position += 1
           sample[f"well{position}"] = sample[None]
           del sample[None]
@@ -246,7 +246,6 @@ def organized_horizontal_plate(all_samples, process):
             'assay': assay
           }}
           samples_data['samples'].update(control_data)
-        
           
       # create plate dictionary that contains plate, tcprotocol, assays, and samples
       plate_dict = protocol_data | plate_data | assays_data | samples_data
@@ -267,8 +266,6 @@ def json_organized_horizontal_plate(all_samples, process):
  
     plate_dict, all_samples = organized_horizontal_plate(all_samples, process)
     dna_pcr_data.append(plate_dict)
-
-    print(all_samples)
 
     # check if all samples for each assay is empty if not continue the process of making plates
     for data in all_samples:
