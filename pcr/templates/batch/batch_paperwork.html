@@ -106,7 +106,7 @@
 
         <tbody>
           {% for tube in protocol.tubeextraction_set.all|dictsort:"order" %}
-            <tr {% if tube.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:tube.tube.amounts < 0 %} class="table-danger" {% endif %} {% if tube.tube.is_expired %} class="table-danger" {% endif %} {% if tube.tube.month_exp %} class="table-warning" {% endif %}>
+            <tr {% if tube.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:tube.tube.amount < 0 %} class="table-danger" {% endif %} {% if tube.tube.is_expired %} class="table-danger" {% endif %} {% if tube.tube.month_exp %} class="table-warning" {% endif %}>
               <td>{{tube}} {% if tube.tube.is_expired %} (EXPIRED) {% endif %} {% if tube.tube.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
               <td>{{tube.tube.exp_date}}</td>
               <td>{{tube.amount_per_sample}}</td>
