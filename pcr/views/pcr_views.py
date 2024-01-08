@@ -145,7 +145,7 @@ def remove_sample_from_process(request, process_pk, sample_pk):
 def review_process(request, pk):
   try:
     process = Process.objects.get(user=request.user, is_processed=False, pk=pk)
-    samples = process.samples.all().order_by('lab_id_num')
+    samples = process.samples.all()
 
     if samples.count() < 1:
       messages.error(request, "Process must have at least one sample.")
@@ -174,7 +174,7 @@ def review_process(request, pk):
 def process_paperwork(request, pk):
   try:
     process = Process.objects.get(user=request.user, pk=pk)
-    samples = process.samples.all().order_by('lab_id_num')
+    samples = process.samples.all()
     assay_samples = samples_by_assay(samples)
 
     requires_dna_pcr = False

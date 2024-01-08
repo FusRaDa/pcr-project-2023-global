@@ -112,14 +112,14 @@ def choose_plate(plate_samples, process):
       return plates[-1]
     
 
-def choose_gel(qpcr_samples, process):
+def choose_gel(gel_samples, process):
   pass
 
 
 def organized_horizontal_plate(all_samples, process):
   plate = choose_plate(all_samples, process)
 
-  plate_data = {'plate': choose_plate}
+  plate_data = {'plate': plate}
   protocol_data = {'protocol': process.pcr_dna_protocol}
   assays_data = {'assays': []}
   samples_data = {'samples': {}}
@@ -162,11 +162,10 @@ def organized_horizontal_plate(all_samples, process):
         row = math.floor(position / wells_in_row) + 1
         if position % wells_in_row == 0: # if position is the last on the row make sure it is assigned to the proper row
           row -= 1
-        rem_wells = (row * wells_in_row) - position
+        rem_wells_in_row = (row * wells_in_row) - position
 
         # if there is enough room in the same row add controls
-        if control_wells < rem_wells:
-
+        if control_wells < rem_wells_in_row:
           block = (row * wells_in_row)
           start = block - control_wells
           cwells = []
@@ -184,12 +183,28 @@ def organized_horizontal_plate(all_samples, process):
             }}
             samples_data['samples'].update(control_data)
 
-          remaining_wells = plate.size - block
-          # position = block # end of row
+          remaining_wells -= block
         else:
-          # go to next row and add controls there with positions reeee!
-          next_row = (row + 1 ) * wells_in_row
+          row += 1
+          block = (row * wells_in_row)
+          start = block - control_wells
+          cwells = []
+          for n in range(start + 1, block + 1):
+            cwells.append(n)
 
+          zip_data = zip(assay.controlassay_set.all().order_by('order'), cwells)
+    
+          for control, well in zip_data:
+            control_data = {f"well{well}": {
+              'color': control_color,
+              'lab_id': control.control.name,
+              'sample_id': control.control.lot_number,
+              'assay': assay
+            }}
+            samples_data['samples'].update(control_data)
+
+          remaining_wells -= block
+          
       # create plate dictionary that contains plate, tcprotocol, assays, and samples
       plate_dict = protocol_data | plate_data | assays_data | samples_data
 
