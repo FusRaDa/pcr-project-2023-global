@@ -50,11 +50,10 @@ class Process(models.Model):
 
   plate = models.ManyToManyField(Plate)
   gel = models.ManyToManyField(Gel)
-
   samples = models.ManyToManyField(Sample)
 
   is_processed = models.BooleanField(default=False)
-
+  min_samples = models.IntegerField(default=0, validators=[MinValueValidator(0)])
   date_processed = models.DateTimeField(blank=True, null=True, editable=False, default=None)
 
   # data = models.JSONField()

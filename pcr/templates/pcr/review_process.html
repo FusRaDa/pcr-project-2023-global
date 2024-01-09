@@ -127,6 +127,11 @@
           </ul>
         </div>
 
+        <div class="input-group mb-2">
+          <div class="input-group-text">Min. Samples In Plate</div>
+          {{form.min_samples}}
+        </div>
+
         {% if form.errors %}
         <div class="row text-center mt-2">
           {% for key,value in form.errors.items %} 

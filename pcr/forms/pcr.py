@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.inventory import Plate, Gel
@@ -46,14 +47,25 @@ class ProcessForm(ModelForm):
     qpcr_rna_protocol = cleaned_data.get('qpcr_rna_protocol')
     plate = cleaned_data.get('plate')
     gel = cleaned_data.get('gel')
+    min_samples = cleaned_data.get('min_samples')
 
     array = []
     for sample in self.instance.samples.all():
       for assay in sample.assays.all():
         array.append(assay)
     assays = list(set(array))
+
+    plates = []
+    for p in plate.all().order_by('size'):
+      plates.append(p.size)
+    min_num = plates[0]
     
     for assay in assays:
+      if min_samples > min_num - assay.controls.count():
+        raise ValidationError(
+          message=f"Minimum samples per plate cannot exceed {min_num - assay.controls.count()}"
+        )
+    
       if assay.type == Assay.Types.DNA and assay.method == Assay.Methods.PCR and pcr_dna_protocol == None:
         raise ValidationError(
           message="This process requires a protocol for DNA in PCR."
@@ -94,7 +106,9 @@ class ProcessForm(ModelForm):
     self.fields['pcr_rna_protocol'].widget.attrs['class'] = 'form-select'
     self.fields['qpcr_dna_protocol'].widget.attrs['class'] = 'form-select'
     self.fields['qpcr_rna_protocol'].widget.attrs['class'] = 'form-select'
+    self.fields['min_samples'].widget.attrs['class'] = 'form-control'
 
+    self.fields['min_samples'].widget.attrs['min'] = 0
 
   class Meta:
     model = Process
