@@ -68,13 +68,14 @@ class AssayForm(ModelForm):
     controls = cleaned_data.get('controls')
     reagents = cleaned_data.get('reagents')
     fluorescence = cleaned_data.get('fluorescence')
+    method = cleaned_data.get('method')
 
-    if self.instance.method == Assay.Methods.qPCR and not fluorescence:
+    if method == Assay.Methods.qPCR and not fluorescence:
       raise ValidationError(
         message="qPCR assays require fluorescense."
       )
     
-    if self.instance.method == Assay.Methods.PCR and fluorescence:
+    if method == Assay.Methods.PCR and fluorescence:
       raise ValidationError(
         message="PCR assays do not require fluorescense."
       )

@@ -26,6 +26,7 @@
     <div class="col-sm-4">
       <div class="text-center">
         <h5>Samples In Process</h5>
+        <button type="button" class="btn btn-sm btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#clear-confirmation">Clear</button>
         <a href="{% url 'review_process' process.pk %}" class="btn btn-secondary btn-sm mb-2">Review Process</a>
       </div>
 
@@ -92,6 +93,35 @@
 
     </div>
 
+  </div>
+
+  <div class="modal fade" id="clear-confirmation" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Clearing samples from process...</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row justify-content-center">
+            <h5 class="text-center">Are you sure?</h5>
+          </div>
+
+          <div class="row justify-content-center">
+            <form method="POST" action="">
+              {% csrf_token %}
+        
+              <div class="text-center mt-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" name="clear">Confirm</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>

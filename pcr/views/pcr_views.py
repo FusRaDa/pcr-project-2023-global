@@ -12,7 +12,7 @@ from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
-from ..custom.functions import samples_by_assay, dna_pcr_samples, json_organized_horizontal_plate
+from ..custom.functions import samples_by_assay, dna_qpcr_samples, json_organized_horizontal_plate
 
 
 @login_required(login_url='login')
@@ -80,6 +80,10 @@ def extracted_batches(request):
     process = Process.objects.create(user=request.user)
   else:
     process = Process.objects.get(user=request.user, is_processed=False)
+
+  if 'clear' in request.POST:
+    process.samples.clear()
+    return redirect(request.path_info)
 
   context = {'batches': batches, 'process': process}
   return render(request, 'pcr/extracted_batches.html', context)
@@ -193,9 +197,10 @@ def process_paperwork(request, pk):
         if a.type == Assay.Types.RNA and a.method == Assay.Methods.qPCR:
           requires_rna_qpcr = True
     
-    if requires_dna_pcr:
-      all_samples = dna_pcr_samples(assay_samples)
-      dna_pcr_json = json_organized_horizontal_plate(all_samples, process)
+    dna_qpcr_json = None
+    if requires_dna_qpcr:
+      all_samples = dna_qpcr_samples(assay_samples)
+      dna_qpcr_json = json_organized_horizontal_plate(all_samples, process)
 
 
     # if requires_rna_pcr:
@@ -211,5 +216,5 @@ def process_paperwork(request, pk):
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
   
-  context = {'dna_pcr_json': dna_pcr_json}
+  context = {'dna_qpcr_json': dna_qpcr_json}
   return render(request, 'pcr/process_paperwork.html', context)
