@@ -124,12 +124,13 @@ def organized_horizontal_plate(all_samples, process):
   assays_data = {'assays': []}
   samples_data = {'samples': {}}
 
-  loaded_samples = [] # collect keys to delete later after samples have been added to the json file
   remaining_wells = plate.size
   position = 0
 
   for data in all_samples:
     for assay, samples in data.items():
+      loaded_samples = [] # collect keys to delete later after samples have been added to the json file
+
       assays_data['assays'].append(assay)
       control_color = samples[1][None]['color']
 
@@ -251,13 +252,12 @@ def organized_horizontal_plate(all_samples, process):
           }}
           samples_data['samples'].update(control_data)
           
-      # create plate dictionary that contains plate, tcprotocol, assays, and samples
-      plate_dict = protocol_data | plate_data | assays_data | samples_data
-
       # remove samples from list that have already been loaded into plate
-      # for sample in loaded_samples:
-      #   samples.remove(sample)
+      for sample in loaded_samples:
+        samples.remove(sample)
 
+  # create plate dictionary that contains plate, tcprotocol, assays, and samples
+  plate_dict = protocol_data | plate_data | assays_data | samples_data
   return plate_dict, all_samples
 
 
@@ -265,22 +265,19 @@ def organized_horizontal_plate(all_samples, process):
 def json_organized_horizontal_plate(all_samples, process):
   dna_pcr_data = []
 
-  plate_dict, all_samples = organized_horizontal_plate(all_samples, process)
-  dna_pcr_data.append(plate_dict)
-
-  # is_empty = False
-  # while not is_empty:
+  is_empty = False
+  while not is_empty:
  
-  #   plate_dict, all_samples = organized_horizontal_plate(all_samples, process)
-  #   dna_pcr_data.append(plate_dict)
+    plate_dict, all_samples = organized_horizontal_plate(all_samples, process)
+    dna_pcr_data.append(plate_dict)
 
-  #   # check if all samples for each assay is empty if not continue the process of making plates
-  #   for data in all_samples:
-  #     for assay, samples in data.items():
-  #       if len(samples) == 0:
-  #         is_empty = True
-  #       else:
-  #         is_empty = False
+    # check if all samples for each assay is empty if not continue the process of making plates
+    for data in all_samples:
+      for assay, samples in data.items():
+        if len(samples) == 0:
+          is_empty = True
+        else:
+          is_empty = False
   
   return dna_pcr_data
   
