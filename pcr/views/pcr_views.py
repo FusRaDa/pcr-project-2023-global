@@ -202,7 +202,6 @@ def process_paperwork(request, pk):
       all_samples = dna_qpcr_samples(assay_samples)
       dna_qpcr_json = json_organized_horizontal_plate(all_samples, process)
 
-
     # if requires_rna_pcr:
     #   print("RNA PCR")
 

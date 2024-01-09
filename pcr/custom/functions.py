@@ -128,66 +128,119 @@ def organized_horizontal_plate(all_samples, process):
   position = 0
 
   for data in all_samples:
+
+    if remaining_wells == 0:
+      break
+    
     for assay, samples in data.items():
-      loaded_samples = [] # collect keys to delete later after samples have been added to the json file
+      if len(samples) != 0:
 
-      assays_data['assays'].append(assay)
-      control_color = samples[1][None]['color']
-
-      sample_wells = len(samples)
-      control_wells = assay.controls.count()
-      total_wells = sample_wells + control_wells
-
-      if total_wells < remaining_wells: # LOGIC HELP
-        for sample in samples:
-          position += 1
-          sample[f"well{position}"] = sample[None]
-          del sample[None]
-          loaded_samples.append(sample)
-          samples_data['samples'].update(sample)
-          
-        # add validation if plate size is insufficient to even hold only one assay w/ controls
-        if plate.size == Plate.Sizes.EIGHT:
-          wells_in_row = 1
-
-        if plate.size == Plate.Sizes.FOURTY_EIGHT:
-          wells_in_row = 6 
-
-        if plate.size == Plate.Sizes.NINETY_SIX:
-          wells_in_row = 12
-
-        if plate.size == Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR:
-          wells_in_row = 24
-
-        # find what row last sample is located in and how many available wells are in that row
-        row = math.floor(position / wells_in_row) + 1
-        if position % wells_in_row == 0: # if position is the last on the row make sure it is assigned to the proper row
-          row -= 1
-        rem_wells_in_row = (row * wells_in_row) - position + 1
-
-        # if there is enough room in the same row add controls
-        if control_wells < rem_wells_in_row:
-          block = (row * wells_in_row)
-          start = block - control_wells
-          cwells = []
-          for n in range(start + 1, block + 1):
-            cwells.append(n)
+        loaded_samples = [] # collect keys to delete later after samples have been added to the json file
+        assays_data['assays'].append(assay)
+        control_color = samples[1][None]['color']
         
-          zip_data = zip(assay.controlassay_set.all().order_by('order'), cwells)
-    
-          for control, well in zip_data:
-            control_data = {f"well{well}": {
-              'color': control_color,
-              'lab_id': control.control.name,
-              'sample_id': control.control.lot_number,
-              'assay': assay
-            }}
-            samples_data['samples'].update(control_data)
+        sample_wells = len(samples)
+        control_wells = assay.controls.count()
+        total_wells = sample_wells + control_wells
 
-          remaining_wells -= block
-          position = block
+        if total_wells < remaining_wells: # LOGIC HELP
+          for sample in samples:
+            position += 1
+            sample[f"well{position}"] = sample[None]
+            del sample[None]
+            loaded_samples.append(sample)
+            samples_data['samples'].update(sample)
+            
+          # add validation if plate size is insufficient to even hold only one assay w/ controls
+          if plate.size == Plate.Sizes.EIGHT:
+            wells_in_row = 1
+
+          if plate.size == Plate.Sizes.FOURTY_EIGHT:
+            wells_in_row = 6 
+
+          if plate.size == Plate.Sizes.NINETY_SIX:
+            wells_in_row = 12
+
+          if plate.size == Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR:
+            wells_in_row = 24
+
+          # find what row last sample is located in and how many available wells are in that row
+          row = math.floor(position / wells_in_row) + 1
+          if position % wells_in_row == 0: # if position is the last on the row make sure it is assigned to the proper row
+            row -= 1
+          rem_wells_in_row = (row * wells_in_row) - position + 1
+
+          # if there is enough room in the same row add controls
+          if control_wells < rem_wells_in_row:
+            block = (row * wells_in_row)
+            start = block - control_wells
+            cwells = []
+            for n in range(start + 1, block + 1):
+              cwells.append(n)
+          
+            zip_data = zip(assay.controlassay_set.all().order_by('order'), cwells)
+      
+            for control, well in zip_data:
+              control_data = {f"well{well}": {
+                'color': control_color,
+                'lab_id': control.control.name,
+                'sample_id': control.control.lot_number,
+                'assay': assay
+              }}
+              samples_data['samples'].update(control_data)
+
+            remaining_wells -= block
+            position = block
+          else:
+            row += 1
+            block = (row * wells_in_row)
+            start = block - control_wells
+            cwells = []
+            for n in range(start + 1, block + 1):
+              cwells.append(n)
+
+            zip_data = zip(assay.controlassay_set.all().order_by('order'), cwells)
+      
+            for control, well in zip_data:
+              control_data = {f"well{well}": {
+                'color': control_color,
+                'lab_id': control.control.name,
+                'sample_id': control.control.lot_number,
+                'assay': assay
+              }}
+              samples_data['samples'].update(control_data)
+
+            remaining_wells -= block
+            position = block
+
+        # if assay samples wont fit in remaining wells...
         else:
-          row += 1
+          for sample in samples[:remaining_wells - control_wells]:
+            position += 1
+            sample[f"well{position}"] = sample[None]
+            del sample[None]
+            loaded_samples.append(sample)
+            samples_data['samples'].update(sample)
+
+          # add validation if plate size is insufficient to even hold only one assay w/ controls
+          if plate.size == Plate.Sizes.EIGHT:
+            wells_in_row = 1
+
+          if plate.size == Plate.Sizes.FOURTY_EIGHT:
+            wells_in_row = 6 
+
+          if plate.size == Plate.Sizes.NINETY_SIX:
+            wells_in_row = 12
+
+          if plate.size == Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR:
+            wells_in_row = 24
+
+          # find what row last sample is located in and how many available wells are in that row ???????????????
+          row = math.floor(position / wells_in_row) + 1
+          if position % wells_in_row == 0: # if position is the last on the row make sure it is assigned to the proper row ???????????????
+            row -= 1
+          rem_wells_in_row = (row * wells_in_row) - position + 1
+
           block = (row * wells_in_row)
           start = block - control_wells
           cwells = []
@@ -195,7 +248,6 @@ def organized_horizontal_plate(all_samples, process):
             cwells.append(n)
 
           zip_data = zip(assay.controlassay_set.all().order_by('order'), cwells)
-    
           for control, well in zip_data:
             control_data = {f"well{well}": {
               'color': control_color,
@@ -204,57 +256,11 @@ def organized_horizontal_plate(all_samples, process):
               'assay': assay
             }}
             samples_data['samples'].update(control_data)
-
-          remaining_wells -= block
-          position = block
-
-      # if assay samples wont fit in remaining wells...
-      else:
-        for sample in samples[:remaining_wells - control_wells]:
-          position += 1
-          sample[f"well{position}"] = sample[None]
-          del sample[None]
-          loaded_samples.append(sample)
-          samples_data['samples'].update(sample)
-
-        # add validation if plate size is insufficient to even hold only one assay w/ controls
-        if plate.size == Plate.Sizes.EIGHT:
-          wells_in_row = 1
-
-        if plate.size == Plate.Sizes.FOURTY_EIGHT:
-          wells_in_row = 6 
-
-        if plate.size == Plate.Sizes.NINETY_SIX:
-          wells_in_row = 12
-
-        if plate.size == Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR:
-          wells_in_row = 24
-
-        # find what row last sample is located in and how many available wells are in that row
-        row = math.floor(position / wells_in_row) + 1
-        if position % wells_in_row == 0: # if position is the last on the row make sure it is assigned to the proper row
-          row -= 1
-        rem_wells_in_row = (row * wells_in_row) - position + 1
-
-        block = (row * wells_in_row)
-        start = block - control_wells
-        cwells = []
-        for n in range(start + 1, block + 1):
-          cwells.append(n)
-
-        zip_data = zip(assay.controlassay_set.all().order_by('order'), cwells)
-        for control, well in zip_data:
-          control_data = {f"well{well}": {
-            'color': control_color,
-            'lab_id': control.control.name,
-            'sample_id': control.control.lot_number,
-            'assay': assay
-          }}
-          samples_data['samples'].update(control_data)
+          remaining_wells = 0
           
-      # remove samples from list that have already been loaded into plate
-      for sample in loaded_samples:
-        samples.remove(sample)
+        # remove samples from list that have already been loaded into plate
+        for sample in loaded_samples:
+          samples.remove(sample)
 
   # create plate dictionary that contains plate, tcprotocol, assays, and samples
   plate_dict = protocol_data | plate_data | assays_data | samples_data
@@ -264,6 +270,9 @@ def organized_horizontal_plate(all_samples, process):
 # compact & organized plate method - horizontal
 def json_organized_horizontal_plate(all_samples, process):
   dna_pcr_data = []
+
+  # plate_dict, all_samples = organized_horizontal_plate(all_samples, process)
+  # dna_pcr_data.append(plate_dict)
 
   is_empty = False
   while not is_empty:
