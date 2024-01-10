@@ -215,7 +215,7 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
       if len(samples) != 0:
 
         loaded_samples = [] # collect keys to delete later after samples have been added to the json file
-        control_color = samples[1][None]['color']
+        control_color = samples[0][None]['color']
         
         sample_wells = len(samples)
         control_wells = assay.controls.count()
@@ -236,6 +236,9 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
           # add validation if plate size is insufficient to even hold only one assay w/ controls
           if plate.size == Plate.Sizes.EIGHT:
             wells_in_row = 1
+
+          if plate.size == Plate.Sizes.TWENTY_FOUR:
+            wells_in_row = 3
 
           if plate.size == Plate.Sizes.FOURTY_EIGHT:
             wells_in_row = 6 
@@ -314,6 +317,9 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
             if plate.size == Plate.Sizes.EIGHT:
               wells_in_row = 1
 
+            if plate.size == Plate.Sizes.TWENTY_FOUR:
+              wells_in_row = 3
+
             if plate.size == Plate.Sizes.FOURTY_EIGHT:
               wells_in_row = 6 
 
@@ -380,7 +386,7 @@ def load_gel(all_samples, process, protocol, gel_per_assay):
 
         sample_wells = len(samples)
         control_wells = assay.controls.count()
-        total_wells = sample_wells + control_wells
+        total_wells = sample_wells + control_wells + 1
 
         if total_wells <= remaining_wells:
 
@@ -403,20 +409,32 @@ def load_gel(all_samples, process, protocol, gel_per_assay):
               'assay': assay
             }}
             samples_data['samples'].update(control_data)
+          
+          position += 1
+          ladder = {f"well{position}": {
+              'color': control_color,
+              'lab_id': 'LADDER LAB_ID',
+              'sample_id': 'LADDER SAMPLE_ID',
+              'assay': assay
+            }}
+          samples_data['samples'].update(ladder)
+
           remaining_wells -= position
         else:
-          num_samples = 0
-          for sample in samples[:remaining_wells - control_wells]:
-            num_samples += 1
-            position += 1
-            sample[f"well{position}"] = sample[None]
-            del sample[None]
-            loaded_samples.append(sample)
-            samples_data['samples'].update(sample)
-          assays_data['assays'].append({assay:num_samples + control_wells})
-          remaining_wells = 0
 
-
+          if gel_per_assay == False:
+            num_samples = 0
+            for sample in samples[:remaining_wells - control_wells]:
+              num_samples += 1
+              position += 1
+              sample[f"well{position}"] = sample[None]
+              del sample[None]
+              loaded_samples.append(sample)
+              samples_data['samples'].update(sample)
+            assays_data['assays'].append({assay:num_samples + control_wells})
+            remaining_wells = 0
+          else:
+            remaining_wells = 0
 
   gel_dict = protocol_data | gel_data | assays_data | samples_data
   return gel_dict, all_samples

@@ -53,7 +53,10 @@ class Process(models.Model):
   samples = models.ManyToManyField(Sample)
 
   is_processed = models.BooleanField(default=False)
+
   min_samples = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+  gel_per_assay = models.BooleanField(default=True)
+  
   date_processed = models.DateTimeField(blank=True, null=True, editable=False, default=None)
 
   # pcr_dna_json = models.JSONField()

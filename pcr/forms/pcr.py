@@ -55,46 +55,68 @@ class ProcessForm(ModelForm):
         array.append(assay)
     assays = list(set(array))
 
-    plates = []
-    for p in plate.all().order_by('size'):
-      plates.append(p.size)
-    min_num = plates[0]
-    
+    req_pcr_dna_protocol = False
+    req_pcr_rna_protocol = False
+    req_qpcr_dna_protocol = False
+    req_qpcr_rna_protocol = False
+    req_plates = False
+    req_gels = False
+
     for assay in assays:
-      if min_samples > min_num - assay.controls.count():
-        raise ValidationError(
-          message=f"Minimum samples per plate cannot exceed {min_num - assay.controls.count()}"
-        )
+      if assay.type == Assay.Types.DNA and assay.method == Assay.Methods.PCR:
+        req_pcr_dna_protocol = True
+      if assay.type == Assay.Types.RNA and assay.method == Assay.Methods.PCR:
+        req_pcr_rna_protocol = True
+      if assay.type == Assay.Types.DNA and assay.method == Assay.Methods.qPCR:
+        req_qpcr_dna_protocol = True
+      if assay.type == Assay.Types.RNA and assay.method == Assay.Methods.qPCR:
+        req_qpcr_rna_protocol = True
+      if assay.method == Assay.Methods.qPCR:
+        req_plates = True
+      if assay.method == Assay.Methods.PCR:
+        req_gels = True
+
+    if req_pcr_dna_protocol and not pcr_dna_protocol:
+      raise ValidationError(
+        message="This process requires a thermal cycler protocol for DNA in PCR."
+      )
     
-      if assay.type == Assay.Types.DNA and assay.method == Assay.Methods.PCR and pcr_dna_protocol == None:
-        raise ValidationError(
-          message="This process requires a protocol for DNA in PCR."
-        )
-      
-      if assay.type == Assay.Types.RNA and assay.method == Assay.Methods.PCR and pcr_rna_protocol == None:
-        raise ValidationError(
-          message="This process requires a protocol for RNA in PCR."
-        )
-      
-      if assay.type == Assay.Types.DNA and assay.method == Assay.Methods.qPCR and qpcr_dna_protocol == None:
-        raise ValidationError(
-          message="This process requires a protocol for DNA in qPCR."
-        )
-      
-      if assay.type == Assay.Types.RNA and assay.method == Assay.Methods.qPCR and qpcr_rna_protocol == None:
-        raise ValidationError(
-          message="This process requires a protocol for RNA in qPCR."
-        )
-      
-      if assay.method == Assay.Methods.PCR and not plate:
-        raise ValidationError(
-          message="This process requires plates for PCR"
-        )
-      
-      if assay.method == Assay.Methods.PCR and not gel:
-        raise ValidationError(
-          message="This process requires gels for qPCR"
-        )
+    if req_pcr_rna_protocol and not pcr_rna_protocol:
+      raise ValidationError(
+        message="This process requires a thermal cycler protocol for RNA in PCR."
+      )
+    
+    if req_qpcr_dna_protocol and not qpcr_dna_protocol:
+      raise ValidationError(
+        message="This process requires a thermal cycler protocol for DNA in qPCR."
+      )
+    
+    if req_qpcr_rna_protocol and not qpcr_rna_protocol:
+      raise ValidationError(
+        message="This process requires a thermal cycler protocol for RNA in qPCR."
+      )
+    
+    if req_plates and not plate:
+      raise ValidationError(
+        message="This process requires plates."
+      )
+    
+    if req_gels and not gel:
+      raise ValidationError(
+        message="This process requires gels."
+      )
+    
+    if req_plates and plate:
+      plates = []
+      for p in plate.all().order_by('size'):
+        plates.append(p.size)
+      min_num = plates[0]
+
+      for assay in assays:
+        if min_samples > min_num - assay.controls.count():
+          raise ValidationError(
+            message=f"Minimum samples per plate cannot exceed {min_num - assay.controls.count()}"
+          )
   
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')

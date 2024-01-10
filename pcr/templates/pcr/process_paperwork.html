@@ -2864,6 +2864,93 @@
       </div>
       {% endif %}
 
+      {% if plate.plate.size == 8 %}
+      {{plate.samples}}
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col" class="plate-col">1</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="plate-row">
+              <td class="fw-bold">A</td>
+              <td class="text-center border-1 {{plate.samples.well1.color}}">
+                <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
+                <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
+                <div class="plate-assay">{{plate.samples.well1.assay}}</div>
+              </td>
+            </tr>
+
+            <tr class="plate-row">
+              <td class="fw-bold">B</td>
+              <td class="text-center border-1 {{plate.samples.well2.color}}">
+                <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
+                <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
+                <div class="plate-assay">{{plate.samples.well2.assay}}</div>
+              </td>
+            </tr>
+
+            <tr class="plate-row">
+              <td class="fw-bold">C</td>
+              <td class="text-center border-1 {{plate.samples.well3.color}}">
+                <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
+                <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
+                <div class="plate-assay">{{plate.samples.well3.assay}}</div>
+              </td>
+            </tr>
+
+            <tr class="plate-row">
+              <td class="fw-bold">D</td>
+              <td class="text-center border-1 {{plate.samples.well4.color}}">
+                <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
+                <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
+                <div class="plate-assay">{{plate.samples.well4.assay}}</div>
+              </td>
+            </tr>
+            
+            <tr class="plate-row"> 
+              <td class="fw-bold">E</td>
+              <td class="text-center border-1 {{plate.samples.well5.color}}">
+                <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
+                <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
+                <div class="plate-assay">{{plate.samples.well5.assay}}</div>
+              </td>
+            </tr>
+
+            <tr class="plate-row">
+              <td class="fw-bold">F</td>
+              <td class="text-center border-1 {{plate.samples.well6.color}}">
+                <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
+                <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
+                <div class="plate-assay">{{plate.samples.well6.assay}}</div>
+              </td>
+            </tr>
+
+            <tr class="plate-row">
+              <td class="fw-bold">G</td>
+              <td class="text-center border-1 {{plate.samples.well7.color}}">
+                <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
+                <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
+                <div class="plate-assay">{{plate.samples.well7.assay}}</div>
+              </td>
+            </tr>
+
+            <tr class="plate-row">
+              <td class="fw-bold">H</td>
+              <td class="text-center border-1 {{plate.samples.well8.color}}">
+                <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
+                <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
+                <div class="plate-assay">{{plate.samples.well8.assay}}</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
       {% for value in plate.assays %}
         {% for assay, num in value.items %}
         <div class="table-responsive">
