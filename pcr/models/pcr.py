@@ -56,7 +56,10 @@ class Process(models.Model):
   min_samples = models.IntegerField(default=0, validators=[MinValueValidator(0)])
   date_processed = models.DateTimeField(blank=True, null=True, editable=False, default=None)
 
-  # data = models.JSONField()
+  # pcr_dna_json = models.JSONField()
+  # pcr_rna_json = models.JSONField()
+  # qpcr_dna_json = models.JSONField()
+  # qpcr_rna_json = models.JSONField()
 
   def __str__(self):
     return f"Process by {self.user}"

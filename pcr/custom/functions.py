@@ -49,7 +49,6 @@ def samples_by_assay(samples):
   return assay_samples
 
 
-# order samples by DNA PCR
 def dna_qpcr_samples(assay_samples): 
   colors = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark']
 
@@ -81,7 +80,6 @@ def dna_qpcr_samples(assay_samples):
 def rna_qpcr_samples(assay_samples):
   colors = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark']
 
-  # collect all samples that are for DNA in PCR by assay
   all_samples = []
   color = 0
   for index in assay_samples:
@@ -107,11 +105,57 @@ def rna_qpcr_samples(assay_samples):
 
 
 def dna_pcr_samples(assay_samples):
-  pass
+  colors = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark']
+
+  all_samples = []
+  color = 0
+  for index in assay_samples:
+    for assay, samples in index.items():
+      if assay.method == Assay.Methods.PCR and assay.type == Assay.Types.DNA:
+    
+        data = []
+        for sample in samples:
+          sample_data = {None:{
+            'color': colors[color],
+            'lab_id': sample.lab_id_num,
+            'sample_id': sample.sample_id,
+            'assay': assay.name
+          }}
+          data.append(sample_data)
+     
+        color += 1
+        if color > 7:
+          color = 0
+        assay_data = {assay: data}
+        all_samples.append(assay_data)
+  return all_samples
 
 
 def rna_pcr_samples(assay_samples):
-  pass
+  colors = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark']
+
+  all_samples = []
+  color = 0
+  for index in assay_samples:
+    for assay, samples in index.items():
+      if assay.method == Assay.Methods.PCR and assay.type == Assay.Types.RNA:
+    
+        data = []
+        for sample in samples:
+          sample_data = {None:{
+            'color': colors[color],
+            'lab_id': sample.lab_id_num,
+            'sample_id': sample.sample_id,
+            'assay': assay.name
+          }}
+          data.append(sample_data)
+     
+        color += 1
+        if color > 7:
+          color = 0
+        assay_data = {assay: data}
+        all_samples.append(assay_data)
+  return all_samples
 
 
 # 4 methods to load plate:
@@ -151,11 +195,11 @@ def choose_gel(all_samples, process):
       return gels[-1]
 
 
-def load_plate(all_samples, process, minimum_samples_in_plate):
+def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
   plate = choose_plate(all_samples, process)
 
   plate_data = {'plate': plate}
-  protocol_data = {'protocol': process.pcr_dna_protocol}
+  protocol_data = {'protocol': protocol}
   assays_data = {'assays': []}
   samples_data = {'samples': {}}
 
@@ -312,14 +356,82 @@ def load_plate(all_samples, process, minimum_samples_in_plate):
   return plate_dict, all_samples
 
 
+def load_gel(all_samples, process, protocol, gel_per_assay):
+  gel = choose_gel(all_samples, process)
+
+  gel_data = {'gel': gel}
+  protocol_data = {'protocol': protocol}
+  assays_data = {'assays': []}
+  samples_data = {'samples': {}}
+
+  remaining_wells = gel.size
+  position = 0
+
+  for data in all_samples:
+
+    if remaining_wells == 0:
+      break
+
+    for assay, samples in data.items():
+      if len(samples) != 0:
+
+        loaded_samples = [] # collect keys to delete later after samples have been added to the json file
+        control_color = samples[1][None]['color']
+
+        sample_wells = len(samples)
+        control_wells = assay.controls.count()
+        total_wells = sample_wells + control_wells
+
+        if total_wells <= remaining_wells:
+
+          num_samples = 0
+          for sample in samples:
+            num_samples += 1
+            position += 1
+            sample[f"well{position}"] = sample[None]
+            del sample[None]
+            loaded_samples.append(sample)
+            samples_data['samples'].update(sample)
+          assays_data['assays'].append({assay:num_samples + control_wells})
+
+          for control in assay.controls.all():
+            position += 1
+            control_data = {f"well{position}": {
+              'color': control_color,
+              'lab_id': control.name,
+              'sample_id':control.lot_number,
+              'assay': assay
+            }}
+            samples_data['samples'].update(control_data)
+          remaining_wells -= position
+        else:
+          num_samples = 0
+          for sample in samples[:remaining_wells - control_wells]:
+            num_samples += 1
+            position += 1
+            sample[f"well{position}"] = sample[None]
+            del sample[None]
+            loaded_samples.append(sample)
+            samples_data['samples'].update(sample)
+          assays_data['assays'].append({assay:num_samples + control_wells})
+          remaining_wells = 0
+
+
+
+  gel_dict = protocol_data | gel_data | assays_data | samples_data
+  return gel_dict, all_samples
+
+
+
+
 # compact & organized plate method - horizontal
-def process_qpcr_samples(all_samples, process, minimum_samples_in_plate=0):
+def process_qpcr_samples(all_samples, process, protocol, minimum_samples_in_plate):
   qpcr_data = []
 
   is_empty = False
   while not is_empty:
  
-    plate_dict, all_samples = load_plate(all_samples, process, minimum_samples_in_plate)
+    plate_dict, all_samples = load_plate(all_samples, process, protocol, minimum_samples_in_plate)
     qpcr_data.append(plate_dict)
 
     # check if all samples for each assay is empty if not continue the process of making plates
@@ -333,20 +445,20 @@ def process_qpcr_samples(all_samples, process, minimum_samples_in_plate=0):
   return qpcr_data
 
 
-def process_pcr_samples(all_samples, process, minimum_samples_in_plate=0):
+def process_pcr_samples(all_samples, process, gel_per_assay):
   pcr_data = []
 
-  is_empty = False
-  while not is_empty:
+  # is_empty = False
+  # while not is_empty:
 
-    # gel func
+  #   # gel func
 
-    for data in all_samples:
-      for assay, samples in data.items():
-        if len(samples) == 0:
-          is_empty = True
-        else:
-          is_empty = False
+  #   for data in all_samples:
+  #     for assay, samples in data.items():
+  #       if len(samples) == 0:
+  #         is_empty = True
+  #       else:
+  #         is_empty = False
     
   return pcr_data
 

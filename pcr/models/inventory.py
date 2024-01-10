@@ -79,7 +79,12 @@ class Gel(models.Model):
 
   location = models.ManyToManyField(Location)
 
-  wells = models.IntegerField(validators=[MinValueValidator(0)], default=12)
+  class Sizes(models.IntegerChoices):
+    TWELVE = 12, _('12')
+    TWENTY_FOUR = 24, _('24')
+    FOURTY_EIGHT = 48, _('48')
+
+  size = models.IntegerField(choices=Sizes.choices, default=Sizes.TWENTY_FOUR, blank=False)
 
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
   
