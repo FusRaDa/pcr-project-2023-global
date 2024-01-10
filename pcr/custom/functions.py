@@ -314,35 +314,36 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
             assays_data['assays'].append({assay:num_samples + control_wells})
 
             # add validation if plate size is insufficient to even hold only one assay w/ controls
-            if plate.size == Plate.Sizes.EIGHT:
-              wells_in_row = 1
+            # if plate.size == Plate.Sizes.EIGHT:
+            #   wells_in_row = 8
 
-            if plate.size == Plate.Sizes.TWENTY_FOUR:
-              wells_in_row = 3
+            # if plate.size == Plate.Sizes.TWENTY_FOUR:
+            #   wells_in_row = 3
 
-            if plate.size == Plate.Sizes.FOURTY_EIGHT:
-              wells_in_row = 6 
+            # if plate.size == Plate.Sizes.FOURTY_EIGHT:
+            #   wells_in_row = 6 
 
-            if plate.size == Plate.Sizes.NINETY_SIX:
-              wells_in_row = 12
+            # if plate.size == Plate.Sizes.NINETY_SIX:
+            #   wells_in_row = 12
 
-            if plate.size == Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR:
-              wells_in_row = 24
+            # if plate.size == Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR:
+            #   wells_in_row = 24
 
-            # find what row last sample is located in and how many available wells are in that row ???????????????
-            row = math.floor(position / wells_in_row) + 1
-            if position % wells_in_row == 0: # if position is the last on the row make sure it is assigned to the proper row ???????????????
-              row -= 1
+            # # find what row last sample is located in and how many available wells are in that row ???????????????
+            # row = math.floor(position / wells_in_row) + 1
+            # if position % wells_in_row == 0: # if position is the last on the row make sure it is assigned to the proper row ???????????????
+            #   row -= 1
     
-            block = (row * wells_in_row)
-            start = block - control_wells
-            cwells = []
-            for n in range(start + 1, block + 1):
-              cwells.append(n)
+            # block = (row * wells_in_row)
+            # start = block - control_wells
+            # cwells = []
+            # for n in range(start + 1, block + 1):
+            #   cwells.append(n)
 
-            zip_data = zip(assay.controlassay_set.all().order_by('order'), cwells)
-            for control, well in zip_data:
-              control_data = {f"well{well}": {
+            # zip_data = zip(assay.controlassay_set.all().order_by('order'), cwells)
+            for control in assay.controlassay_set.all().order_by('order'):
+              position += 1
+              control_data = {f"well{position}": {
                 'color': control_color,
                 'lab_id': control.control.name,
                 'sample_id': control.control.lot_number,
@@ -400,12 +401,12 @@ def load_gel(all_samples, process, protocol, gel_per_assay):
             samples_data['samples'].update(sample)
           assays_data['assays'].append({assay:num_samples + control_wells})
 
-          for control in assay.controls.all():
+          for control in assay.controlassay_set.all().order_by('order'):
             position += 1
             control_data = {f"well{position}": {
               'color': control_color,
-              'lab_id': control.name,
-              'sample_id':control.lot_number,
+              'lab_id': control.control.name,
+              'sample_id':control.control.lot_number,
               'assay': assay
             }}
             samples_data['samples'].update(control_data)
