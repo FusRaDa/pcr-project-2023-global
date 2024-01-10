@@ -79,7 +79,31 @@ def dna_qpcr_samples(assay_samples):
 
 
 def rna_qpcr_samples(assay_samples):
-  pass
+  colors = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark']
+
+  # collect all samples that are for DNA in PCR by assay
+  all_samples = []
+  color = 0
+  for index in assay_samples:
+    for assay, samples in index.items():
+      if assay.method == Assay.Methods.qPCR and assay.type == Assay.Types.RNA:
+    
+        data = []
+        for sample in samples:
+          sample_data = {None:{
+            'color': colors[color],
+            'lab_id': sample.lab_id_num,
+            'sample_id': sample.sample_id,
+            'assay': assay.name
+          }}
+          data.append(sample_data)
+     
+        color += 1
+        if color > 7:
+          color = 0
+        assay_data = {assay: data}
+        all_samples.append(assay_data)
+  return all_samples
 
 
 def dna_pcr_samples(assay_samples):
@@ -112,11 +136,22 @@ def choose_plate(all_samples, process):
       return plates[-1]
     
 
-def choose_gel(gel_samples, process):
-  pass
+def choose_gel(all_samples, process):
+  gels = []
+  for gel in process.gel.all().order_by('size'):
+    gels.append(gel)
+  total_wells_used = 0
+  for assay_group in all_samples:
+    for assay, samples in assay_group.items():
+      total_wells_used += (len(samples) + assay.controls.count())
+  for gel in gels:
+    if gel.size > total_wells_used:
+      return gel
+    else:
+      return gels[-1]
 
 
-def organized_horizontal_plate(all_samples, process, minimum_samples_in_plate):
+def load_plate(all_samples, process, minimum_samples_in_plate):
   plate = choose_plate(all_samples, process)
 
   plate_data = {'plate': plate}
@@ -278,17 +313,14 @@ def organized_horizontal_plate(all_samples, process, minimum_samples_in_plate):
 
 
 # compact & organized plate method - horizontal
-def json_organized_horizontal_plate(all_samples, process, minimum_samples_in_plate=0):
-  dna_pcr_data = []
-
-  # plate_dict, all_samples = organized_horizontal_plate(all_samples, process)
-  # dna_pcr_data.append(plate_dict)
+def process_qpcr_samples(all_samples, process, minimum_samples_in_plate=0):
+  qpcr_data = []
 
   is_empty = False
   while not is_empty:
  
-    plate_dict, all_samples = organized_horizontal_plate(all_samples, process, minimum_samples_in_plate)
-    dna_pcr_data.append(plate_dict)
+    plate_dict, all_samples = load_plate(all_samples, process, minimum_samples_in_plate)
+    qpcr_data.append(plate_dict)
 
     # check if all samples for each assay is empty if not continue the process of making plates
     for data in all_samples:
@@ -298,6 +330,23 @@ def json_organized_horizontal_plate(all_samples, process, minimum_samples_in_pla
         else:
           is_empty = False
   
-  return dna_pcr_data
-  
+  return qpcr_data
+
+
+def process_pcr_samples(all_samples, process, minimum_samples_in_plate=0):
+  pcr_data = []
+
+  is_empty = False
+  while not is_empty:
+
+    # gel func
+
+    for data in all_samples:
+      for assay, samples in data.items():
+        if len(samples) == 0:
+          is_empty = True
+        else:
+          is_empty = False
+    
+  return pcr_data
 
