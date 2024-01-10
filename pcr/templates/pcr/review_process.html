@@ -128,8 +128,13 @@
         </div>
 
         <div class="input-group mb-2">
-          <div class="input-group-text">Min. Samples In Plate</div>
+          <div class="input-group-text input-group-min">Min. Samples In Plate</div>
           {{form.min_samples_per_plate}}
+        </div>
+
+        <div class="input-group mb-2">
+          <div class="input-group-text input-group-min">Min. Samples In Gel</div>
+          {{form.min_samples_per_gel}}
         </div>
 
         {% if form.errors %}

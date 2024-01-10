@@ -348,7 +348,7 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
   return plate_dict, all_samples
 
 
-def load_gel(all_samples, process, protocol, gel_per_assay):
+def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
   gel = choose_gel(all_samples, process)
 
   gel_data = {'gel': gel}
@@ -368,7 +368,7 @@ def load_gel(all_samples, process, protocol, gel_per_assay):
       if len(samples) != 0:
 
         loaded_samples = [] # collect keys to delete later after samples have been added to the json file
-        control_color = samples[1][None]['color']
+        control_color = samples[0][None]['color']
 
         sample_wells = len(samples)
         control_wells = assay.controls.count()
@@ -408,27 +408,40 @@ def load_gel(all_samples, process, protocol, gel_per_assay):
           remaining_wells -= position
         else:
 
-          if gel_per_assay == False:
-            num_samples = 0
-            for sample in samples[:remaining_wells - control_wells]:
-              num_samples += 1
-              position += 1
-              sample[f"well{position}"] = sample[None]
-              del sample[None]
-              loaded_samples.append(sample)
-              samples_data['samples'].update(sample)
-            assays_data['assays'].append({assay:num_samples + control_wells})
-            remaining_wells = 0
-          else:
-            remaining_wells = 0
+          num_samples = 0
+          for sample in samples[:remaining_wells - control_wells - 1]:
+            num_samples += 1
+            position += 1
+            sample[f"well{position}"] = sample[None]
+            del sample[None]
+            loaded_samples.append(sample)
+            samples_data['samples'].update(sample)
+          assays_data['assays'].append({assay:num_samples + control_wells})
 
+          for control in assay.controlassay_set.all().order_by('order'):
+            position += 1
+            control_data = {f"well{position}": {
+              'color': control_color,
+              'lab_id': control.control.name,
+              'sample_id':control.control.lot_number,
+              'assay': assay
+            }}
+            samples_data['samples'].update(control_data)
+          
+          position += 1
+          ladder = {f"well{position}": {
+              'color': control_color,
+              'lab_id': 'LADDER LAB_ID',
+              'sample_id': 'LADDER SAMPLE_ID',
+              'assay': assay
+            }}
+          samples_data['samples'].update(ladder)
+          remaining_wells = 0
+     
   gel_dict = protocol_data | gel_data | assays_data | samples_data
   return gel_dict, all_samples
 
 
-
-
-# compact & organized plate method - horizontal
 def process_qpcr_samples(all_samples, process, protocol, minimum_samples_in_plate):
   qpcr_data = []
 
@@ -449,13 +462,17 @@ def process_qpcr_samples(all_samples, process, protocol, minimum_samples_in_plat
   return qpcr_data
 
 
-def process_pcr_samples(all_samples, process, gel_per_assay):
+def process_pcr_samples(all_samples, process, protocol, minimum_samples_in_gel):
   pcr_data = []
+  
+  gel_dict, all_samples = load_gel(all_samples, process, protocol, minimum_samples_in_gel)
+  pcr_data.append(gel_dict)
 
   # is_empty = False
   # while not is_empty:
 
-  #   # gel func
+  #   gel_dict, all_samples = load_gel(all_samples, process, protocol, minimum_samples_in_gel)
+  #   pcr_data.append(gel_dict)
 
   #   for data in all_samples:
   #     for assay, samples in data.items():

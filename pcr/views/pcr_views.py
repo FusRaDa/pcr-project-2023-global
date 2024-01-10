@@ -12,7 +12,7 @@ from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
-from ..custom.functions import samples_by_assay, dna_qpcr_samples, rna_qpcr_samples, process_qpcr_samples
+from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_qpcr_samples, process_pcr_samples
 
 
 @login_required(login_url='login')
@@ -197,25 +197,27 @@ def process_paperwork(request, pk):
         if a.type == Assay.Types.RNA and a.method == Assay.Methods.qPCR:
           requires_rna_qpcr = True
 
-    # if requires_dna_qpcr:
-    #   print("DNA qPCR")
-    
+    dna_pcr_json = None
+    if requires_dna_pcr:
+      samples_dna_pcr = dna_pcr_samples(assay_samples)
+      dna_pcr_json = process_pcr_samples(samples_dna_pcr, process, process.qpcr_dna_protocol, process.min_samples_per_gel)
+
     # if requires_rna_qpcr:
     #   print("RNA qPCR")
     
     dna_qpcr_json = None
     if requires_dna_qpcr:
       samples_dna_qpcr = dna_qpcr_samples(assay_samples)
-      dna_qpcr_json = process_qpcr_samples(samples_dna_qpcr, process, process.qpcr_dna_protocol, process.min_samples)
+      dna_qpcr_json = process_qpcr_samples(samples_dna_qpcr, process, process.qpcr_dna_protocol, process.min_samples_per_plate)
 
     rna_qpcr_json = None
     if requires_rna_qpcr:
       samples_rna_qpcr = rna_qpcr_samples(assay_samples)
-      rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, process, process.qpcr_rna_protocol, process.min_samples)
+      rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, process, process.qpcr_rna_protocol, process.min_samples_per_plate)
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
   
-  context = {'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json}
+  context = {'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 'dna_pcr_json': dna_pcr_json}
   return render(request, 'pcr/process_paperwork.html', context)

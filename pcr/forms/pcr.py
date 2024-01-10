@@ -128,9 +128,12 @@ class ProcessForm(ModelForm):
     self.fields['pcr_rna_protocol'].widget.attrs['class'] = 'form-select'
     self.fields['qpcr_dna_protocol'].widget.attrs['class'] = 'form-select'
     self.fields['qpcr_rna_protocol'].widget.attrs['class'] = 'form-select'
-    self.fields['min_samples'].widget.attrs['class'] = 'form-control'
 
-    self.fields['min_samples'].widget.attrs['min'] = 0
+    self.fields['min_samples_per_plate'].widget.attrs['class'] = 'form-control'
+    self.fields['min_samples_per_gel'].widget.attrs['class'] = 'form-control'
+
+    self.fields['min_samples_per_plate'].widget.attrs['min'] = 0
+    self.fields['min_samples_per_gel'].widget.attrs['min'] = 0
 
   class Meta:
     model = Process
