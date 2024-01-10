@@ -54,9 +54,9 @@ class Process(models.Model):
 
   is_processed = models.BooleanField(default=False)
 
-  min_samples = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-  gel_per_assay = models.BooleanField(default=True)
-  
+  min_samples_per_plate = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+  min_samples_per_gel = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+
   date_processed = models.DateTimeField(blank=True, null=True, editable=False, default=None)
 
   # pcr_dna_json = models.JSONField()
