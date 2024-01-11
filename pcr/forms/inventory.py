@@ -65,10 +65,6 @@ class EditLadderForm(ModelForm):
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
 
-    self.fields['name'].widget.attrs['class'] = 'form-control'
-    self.fields['brand'].widget.attrs['class'] = 'form-control'
-    self.fields['lot_number'].widget.attrs['class'] = 'form-control'
-    self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 

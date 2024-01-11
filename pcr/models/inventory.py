@@ -28,6 +28,8 @@ class Location(models.Model):
   
 
 class Ladder(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+
   name = models.CharField(blank=False, max_length=25)
   brand = models.CharField(blank=True, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
@@ -40,6 +42,20 @@ class Ladder(models.Model):
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
+
+  @property
+  def is_expired(self):
+    if self.exp_date != None and (self.exp_date <= timezone.now().date()):
+      return True
+    else:
+      return False
+    
+  @property
+  def month_exp(self):
+    if self.exp_date != None and (self.exp_date > timezone.now().date()) and (self.exp_date - timezone.now().date() <= datetime.timedelta(days=30)):
+      return True
+    else:
+      return False
 
   def __str__(self):
     return self.name

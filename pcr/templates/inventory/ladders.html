@@ -1,0 +1,88 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Ladders {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Ladders</h3>
+    </div>
+  </div>
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <a href="{% url 'create_ladder' %}">
+        <button type="button" class="btn btn-primary mb-2">Add New Ladder</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Exp. Date</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Catalog #</th>
+          <th scope="col">Lot #</th>
+          <th scope="col">Amount Stored</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for ladder in ladders %}
+          <tr class="ladder-row {% if ladder.is_expired %} table-danger {% endif %} {% if ladder.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_ladder' ladder.pk %}">
+            <td>{{ladder.exp_date}} {% if ladder.is_expired %} (EXPIRED) {% endif %} {% if ladder.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{ladder.last_updated}}</td>
+            <td>{{ladder.name}}</td>
+            <td>{{ladder.brand}}</td>
+            <td>{{ladder.catalog_number}}</td>
+            <td>{{ladder.lot_number}}</td>
+            <td>{{ladder.amount}}</td>
+            
+            <td>
+              {% for location in ladder.location.all %}
+                {% if ladder.location.all|length > 1 %}
+                <span>
+                  {{location}} |
+                </span>
+                {% else %}
+                <span>
+                  {{location}}
+                </span>
+                {% endif %}
+              {% endfor %}
+            </td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".ladder-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
+{% endblock %}
