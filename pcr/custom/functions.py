@@ -437,6 +437,9 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
             }}
           samples_data['samples'].update(ladder)
           remaining_wells = 0
+        
+        for sample in loaded_samples:
+          samples.remove(sample)
      
   gel_dict = protocol_data | gel_data | assays_data | samples_data
   return gel_dict, all_samples
@@ -465,21 +468,18 @@ def process_qpcr_samples(all_samples, process, protocol, minimum_samples_in_plat
 def process_pcr_samples(all_samples, process, protocol, minimum_samples_in_gel):
   pcr_data = []
   
-  gel_dict, all_samples = load_gel(all_samples, process, protocol, minimum_samples_in_gel)
-  pcr_data.append(gel_dict)
+  is_empty = False
+  while not is_empty:
 
-  # is_empty = False
-  # while not is_empty:
+    gel_dict, all_samples = load_gel(all_samples, process, protocol, minimum_samples_in_gel)
+    pcr_data.append(gel_dict)
 
-  #   gel_dict, all_samples = load_gel(all_samples, process, protocol, minimum_samples_in_gel)
-  #   pcr_data.append(gel_dict)
-
-  #   for data in all_samples:
-  #     for assay, samples in data.items():
-  #       if len(samples) == 0:
-  #         is_empty = True
-  #       else:
-  #         is_empty = False
+    for data in all_samples:
+      for assay, samples in data.items():
+        if len(samples) == 0:
+          is_empty = True
+        else:
+          is_empty = False
     
   return pcr_data
 

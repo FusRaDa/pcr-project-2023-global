@@ -25,6 +25,24 @@ class Location(models.Model):
   
   def __str__(self):
     return self.name
+  
+
+class Ladder(models.Model):
+  name = models.CharField(blank=False, max_length=25)
+  brand = models.CharField(blank=True, max_length=25)
+  lot_number = models.CharField(blank=False, max_length=25)
+  catalog_number = models.CharField(blank=False, max_length=25)
+
+  location = models.ManyToManyField(Location)
+
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  
+  last_updated = models.DateTimeField(auto_now=True)
+  date_created = models.DateTimeField(default=now, editable=False)
+  exp_date = models.DateField(blank=True, null=True, default=None)
+
+  def __str__(self):
+    return self.name
 
 
 class Plate(models.Model):

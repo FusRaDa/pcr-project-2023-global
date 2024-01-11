@@ -3,7 +3,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from ..models.inventory import Gel, Plate, Tube, Reagent, Location
+from ..models.inventory import Ladder, Gel, Plate, Tube, Reagent, Location
 
 
 class LocationForm(ModelForm):
@@ -19,6 +19,63 @@ class LocationForm(ModelForm):
   class Meta:
     model = Location
     exclude = ['user']
+
+
+class LadderForm(ModelForm):
+  location = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=False)
+  
+  exp_date = forms.DateField(
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
+  
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['brand'].widget.attrs['class'] = 'form-control'
+    self.fields['lot_number'].widget.attrs['class'] = 'form-control'
+    self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
+    self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+  class Meta:
+    model = Ladder
+    exclude = ['user', 'last_updated']
+
+
+class EditLadderForm(ModelForm):
+  location = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=False)
+  
+  exp_date = forms.DateField(
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
+  
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['brand'].widget.attrs['class'] = 'form-control'
+    self.fields['lot_number'].widget.attrs['class'] = 'form-control'
+    self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
+    self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+  class Meta:
+    model = Ladder
+    fields = ['amount', 'exp_date', 'location']
+    exclude = ['user', 'last_updated']
 
 
 class GelForm(ModelForm):
@@ -42,7 +99,7 @@ class GelForm(ModelForm):
     self.fields['brand'].widget.attrs['class'] = 'form-control'
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
-    self.fields['wells'].widget.attrs['class'] = 'form-control'
+    self.fields['size'].widget.attrs['class'] = 'form-select'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 

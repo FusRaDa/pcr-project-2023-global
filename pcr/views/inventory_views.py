@@ -5,8 +5,8 @@ from django.db.models import F
 from django.contrib import messages
 from users.models import User
 
-from ..models.inventory import Location, Reagent, Tube, Plate, Gel
-from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, EditGelForm, EditTubeForm, EditPlateForm, EditReagentForm
+from ..models.inventory import Location, Reagent, Tube, Plate, Gel, Ladder
+from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, EditGelForm, EditTubeForm, EditPlateForm, EditReagentForm, LadderForm, EditLadderForm
 from ..forms.general import DeletionForm
 
 
@@ -69,6 +69,63 @@ def edit_location(request, pk):
   return render(request, 'inventory/edit_location.html', context)
 # **LOCATIONS VIEWS** #
 
+
+# **LADDER VIEWS** #
+@login_required(login_url='login')
+def ladders(request):
+  ladders = Ladder.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+  context = {'ladders': ladders}
+  return render(request, 'inventory/ladders.html', context)
+
+
+@login_required(login_url='login')
+def create_ladder(request):
+  form = LadderForm(user=request.user)
+
+  if request.method == "POST":
+    form = LadderForm(request.POST, user=request.user)
+    if form.is_valid():
+      ladder = form.save(commit=False)
+      ladder.user = request.user
+      ladder = form.save()
+      return redirect('ladders')
+    else:
+      print(form.errors)
+
+  context = {'form': form}
+  return render(request, 'inventory/create_ladder.html', context)
+
+
+@login_required(login_url='login')
+def edit_ladder(request, pk):
+  try:
+    ladder = Ladder.objects.get(user=request.user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no ladder to edit.")
+    return redirect('ladders')
+  
+  form = EditLadderForm(user=request.user, instance=ladder)
+  del_form = DeletionForm(value=ladder.name)
+
+  if 'update' in request.POST:
+    form = EditLadderForm(request.POST, user=request.user, instance=ladder)
+    if form.is_valid():
+      form.save()
+      return redirect('ladders')
+    else:
+      print(form.errors)
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=ladder.name)
+    if del_form.is_valid():
+      ladder.delete()
+      return redirect('ladders')
+    else:
+      print(del_form.errors)
+
+  context = {'form': form, 'ladder': ladder, 'del_form': del_form}
+  return render(request, 'inventory/edit_ladder.html', context)
+# **LADDER VIEWS** #
 
 # **GELS VIEWS** #
 @login_required(login_url='login')
