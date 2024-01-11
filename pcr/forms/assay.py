@@ -69,6 +69,17 @@ class AssayForm(ModelForm):
     reagents = cleaned_data.get('reagents')
     fluorescence = cleaned_data.get('fluorescence')
     method = cleaned_data.get('method')
+    ladder = cleaned_data.get('ladder')
+
+    if ladder == None and method == Assay.Methods.PCR:
+      raise ValidationError(
+        message="PCR assays must contain a ladder."
+      )
+    
+    if ladder != None and method == Assay.Methods.qPCR:
+      raise ValidationError(
+        message="qPCR assays do not require a ladder."
+      )
 
     if method == Assay.Methods.qPCR and not fluorescence:
       raise ValidationError(
@@ -121,6 +132,7 @@ class AssayForm(ModelForm):
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['method'].widget.attrs['class'] = 'form-select'
     self.fields['type'].widget.attrs['class'] = 'form-select'
+    self.fields['ladder'].widget.attrs['class'] = 'form-select'
     self.fields['sample_volume'].widget.attrs['class'] = 'form-control'
     self.fields['reaction_volume'].widget.attrs['class'] = 'form-control'
     

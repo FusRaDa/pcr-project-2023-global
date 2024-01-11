@@ -431,8 +431,8 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
           position += 1
           ladder = {f"well{position}": {
               'color': control_color,
-              'lab_id': 'LADDER LAB_ID',
-              'sample_id': 'LADDER SAMPLE_ID',
+              'lab_id': assay.ladder.name,
+              'sample_id': assay.ladder.lot_number,
               'assay': assay
             }}
           samples_data['samples'].update(ladder)

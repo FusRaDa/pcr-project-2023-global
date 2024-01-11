@@ -39,7 +39,7 @@ def create_assay(request):
         reagent.final_concentration_unit = reagent.reagent.unit_concentration
         reagent.save()
 
-      return redirect('assay_through', assay.pk)
+      return redirect('assays')
     else:
       print(form.errors)
 
@@ -70,6 +70,14 @@ def edit_assay(request, pk):
         reagent.save()
       
       return redirect('assay_through', pk)
+    else:
+      print(form.errors)
+
+  if 'update' in request.POST:
+    form = AssayForm(request.POST, user=request.user, instance=assay)
+    if form.is_valid():
+      form.save()
+      return redirect('assays')
     else:
       print(form.errors)
 

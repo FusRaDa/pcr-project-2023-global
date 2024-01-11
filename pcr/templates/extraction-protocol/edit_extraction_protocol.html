@@ -101,20 +101,19 @@
       <div class="row justify-content-center">
         <div class="text-center mt-2"> 
           <a class="btn btn-secondary" href="{% url 'extraction_protocols' %}">Cancel</a>
-          <button class="btn btn-primary" type="submit" name='update'>Update &amp; Edit Quantity</button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete Protocol</button>
+          <button class="btn btn-primary" type="submit" name='update'>Update Protocol</button>
         </div>
       </div>
-  
+      
+      <div class="row justify-content-center">
+        <div class="text-center mt-2"> 
+          <button class="btn btn-success" type="submit" name='update-reagents'>Protocol Tubes &amp; Reagents</button>
+        </div>
+      </div>
+
     </div>
   </form>
-
-  <div class="justify-content-center">
-    <div class="col d-flex justify-content-center">
-      <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Protocol
-      </button>
-    </div>
-  </div>
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

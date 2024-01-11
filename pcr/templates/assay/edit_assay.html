@@ -25,6 +25,11 @@
             <label class="form-label">Method</label>
             {{form.method}}
           </div>
+
+          <div class="text-center">
+            <label class="form-label">Ladder (PCR)</label>
+            {{form.ladder}}
+          </div>
   
           <div class="text-center">
             <label class="form-label">Type</label>
@@ -127,20 +132,18 @@
       <div class="row justify-content-center">
         <div class="text-center mt-2"> 
           <a class="btn btn-secondary" href="{% url 'assays' %}">Cancel</a>
-          <button class="btn btn-primary" type="submit" name="update_control">Control Quantities</button>
-          <button class="btn btn-primary" type="submit" name="update_reagent">Reagent Quantities</button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete Assay</button>
+          <button class="btn btn-primary" type="submit" name="update">Update Assay</button>
         </div>
       </div>
-    
-  </form>
 
-  <div class="justify-content-center">
-    <div class="col d-flex justify-content-center">
-      <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Assay
-      </button>
-    </div>
-  </div>
+      <div class="row justify-content-center">
+        <div class="text-center mt-2">       
+          <button class="btn btn-success" type="submit" name="update_control">Control Quantities</button>
+          <button class="btn btn-warning" type="submit" name="update_reagent">Reagent Quantities</button>
+        </div>
+      </div>
+  </form>
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
