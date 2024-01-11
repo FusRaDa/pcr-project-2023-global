@@ -406,37 +406,40 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
           samples_data['samples'].update(ladder)
 
           remaining_wells -= position
-        else:
+        else: 
 
-          num_samples = 0
-          for sample in samples[:remaining_wells - control_wells - 1]:
-            num_samples += 1
-            position += 1
-            sample[f"well{position}"] = sample[None]
-            del sample[None]
-            loaded_samples.append(sample)
-            samples_data['samples'].update(sample)
-          assays_data['assays'].append({assay:num_samples + control_wells})
+          if minimum_samples_in_gel + control_wells + 1 <= remaining_wells:
+            num_samples = 0
+            for sample in samples[:remaining_wells - control_wells - 1]:
+              num_samples += 1
+              position += 1
+              sample[f"well{position}"] = sample[None]
+              del sample[None]
+              loaded_samples.append(sample)
+              samples_data['samples'].update(sample)
+            assays_data['assays'].append({assay:num_samples + control_wells})
 
-          for control in assay.controlassay_set.all().order_by('order'):
+            for control in assay.controlassay_set.all().order_by('order'):
+              position += 1
+              control_data = {f"well{position}": {
+                'color': control_color,
+                'lab_id': control.control.name,
+                'sample_id':control.control.lot_number,
+                'assay': assay
+              }}
+              samples_data['samples'].update(control_data)
+            
             position += 1
-            control_data = {f"well{position}": {
-              'color': control_color,
-              'lab_id': control.control.name,
-              'sample_id':control.control.lot_number,
-              'assay': assay
-            }}
-            samples_data['samples'].update(control_data)
-          
-          position += 1
-          ladder = {f"well{position}": {
-              'color': control_color,
-              'lab_id': assay.ladder.name,
-              'sample_id': assay.ladder.lot_number,
-              'assay': assay
-            }}
-          samples_data['samples'].update(ladder)
-          remaining_wells = 0
+            ladder = {f"well{position}": {
+                'color': control_color,
+                'lab_id': assay.ladder.name,
+                'sample_id': assay.ladder.lot_number,
+                'assay': assay
+              }}
+            samples_data['samples'].update(ladder)
+            remaining_wells = 0
+          else:
+            remaining_wells = 0
         
         for sample in loaded_samples:
           samples.remove(sample)

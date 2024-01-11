@@ -200,24 +200,26 @@ def process_paperwork(request, pk):
     dna_pcr_json = None
     if requires_dna_pcr:
       samples_dna_pcr = dna_pcr_samples(assay_samples)
-      dna_pcr_json = process_pcr_samples(samples_dna_pcr, process, process.qpcr_dna_protocol, process.min_samples_per_gel)
+      dna_pcr_json = process_pcr_samples(samples_dna_pcr, process, process.pcr_dna_protocol, process.min_samples_per_gel_dna)
 
-    # if requires_rna_qpcr:
-    #   print("RNA qPCR")
+    rna_pcr_json = None
+    if requires_rna_pcr:
+      samples_rna_pcr = rna_pcr_samples(assay_samples)
+      rna_pcr_json = process_pcr_samples(samples_rna_pcr, process, process.pcr_rna_protocol, process.min_samples_per_gel_rna)
     
     dna_qpcr_json = None
     if requires_dna_qpcr:
       samples_dna_qpcr = dna_qpcr_samples(assay_samples)
-      dna_qpcr_json = process_qpcr_samples(samples_dna_qpcr, process, process.qpcr_dna_protocol, process.min_samples_per_plate)
+      dna_qpcr_json = process_qpcr_samples(samples_dna_qpcr, process, process.qpcr_dna_protocol, process.min_samples_per_plate_dna)
 
     rna_qpcr_json = None
     if requires_rna_qpcr:
       samples_rna_qpcr = rna_qpcr_samples(assay_samples)
-      rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, process, process.qpcr_rna_protocol, process.min_samples_per_plate)
+      rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, process, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
   
-  context = {'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 'dna_pcr_json': dna_pcr_json}
+  context = {'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json}
   return render(request, 'pcr/process_paperwork.html', context)

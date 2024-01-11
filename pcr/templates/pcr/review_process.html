@@ -128,13 +128,23 @@
         </div>
 
         <div class="input-group mb-2">
-          <div class="input-group-text input-group-min">Min. Samples In Plate</div>
-          {{form.min_samples_per_plate}}
+          <div class="input-group-text input-group-min">Min. Samples In Plate (DNA)</div>
+          {{form.min_samples_per_plate_dna}}
         </div>
 
         <div class="input-group mb-2">
-          <div class="input-group-text input-group-min">Min. Samples In Gel</div>
-          {{form.min_samples_per_gel}}
+          <div class="input-group-text input-group-min">Min. Samples In Plate (RNA)</div>
+          {{form.min_samples_per_plate_rna}}
+        </div>
+
+        <div class="input-group mb-2">
+          <div class="input-group-text input-group-min">Min. Samples In Gel (DNA)</div>
+          {{form.min_samples_per_gel_dna}}
+        </div>
+
+        <div class="input-group mb-2">
+          <div class="input-group-text input-group-min">Min. Samples In Plate (RNA)</div>
+          {{form.min_samples_per_gel_rna}}
         </div>
 
         {% if form.errors %}
