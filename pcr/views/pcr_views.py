@@ -179,47 +179,66 @@ def process_paperwork(request, pk):
   try:
     process = Process.objects.get(user=request.user, pk=pk)
     samples = process.samples.all()
-    assay_samples = samples_by_assay(samples)
-
-    requires_dna_pcr = False
-    requires_rna_pcr = False
-    requires_dna_qpcr = False
-    requires_rna_qpcr = False
-
-    for assay in assay_samples:
-      for a in assay.keys():
-        if a.type == Assay.Types.DNA and a.method == Assay.Methods.PCR:
-          requires_dna_pcr = True
-        if a.type == Assay.Types.RNA and a.method == Assay.Methods.PCR: 
-          requires_rna_pcr = True
-        if a.type == Assay.Types.DNA and a.method == Assay.Methods.qPCR:
-          requires_dna_qpcr = True
-        if a.type == Assay.Types.RNA and a.method == Assay.Methods.qPCR:
-          requires_rna_qpcr = True
-
-    dna_pcr_json = None
-    if requires_dna_pcr:
-      samples_dna_pcr = dna_pcr_samples(assay_samples)
-      dna_pcr_json = process_pcr_samples(samples_dna_pcr, process, process.pcr_dna_protocol, process.min_samples_per_gel_dna)
-
-    rna_pcr_json = None
-    if requires_rna_pcr:
-      samples_rna_pcr = rna_pcr_samples(assay_samples)
-      rna_pcr_json = process_pcr_samples(samples_rna_pcr, process, process.pcr_rna_protocol, process.min_samples_per_gel_rna)
-    
-    dna_qpcr_json = None
-    if requires_dna_qpcr:
-      samples_dna_qpcr = dna_qpcr_samples(assay_samples)
-      dna_qpcr_json = process_qpcr_samples(samples_dna_qpcr, process, process.qpcr_dna_protocol, process.min_samples_per_plate_dna)
-
-    rna_qpcr_json = None
-    if requires_rna_qpcr:
-      samples_rna_qpcr = rna_qpcr_samples(assay_samples)
-      rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, process, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
-
+  
   except ObjectDoesNotExist:
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
   
+  assay_samples = samples_by_assay(samples)
+
+  requires_dna_pcr = False
+  requires_rna_pcr = False
+  requires_dna_qpcr = False
+  requires_rna_qpcr = False
+
+  for assay in assay_samples:
+    for a in assay.keys():
+      if a.type == Assay.Types.DNA and a.method == Assay.Methods.PCR:
+        requires_dna_pcr = True
+      if a.type == Assay.Types.RNA and a.method == Assay.Methods.PCR: 
+        requires_rna_pcr = True
+      if a.type == Assay.Types.DNA and a.method == Assay.Methods.qPCR:
+        requires_dna_qpcr = True
+      if a.type == Assay.Types.RNA and a.method == Assay.Methods.qPCR:
+        requires_rna_qpcr = True
+
+  dna_pcr_json = None
+  if requires_dna_pcr:
+    samples_dna_pcr = dna_pcr_samples(assay_samples)
+    dna_pcr_json = process_pcr_samples(samples_dna_pcr, process, process.pcr_dna_protocol, process.min_samples_per_gel_dna)
+
+  rna_pcr_json = None
+  if requires_rna_pcr:
+    samples_rna_pcr = rna_pcr_samples(assay_samples)
+    rna_pcr_json = process_pcr_samples(samples_rna_pcr, process, process.pcr_rna_protocol, process.min_samples_per_gel_rna)
+  
+  dna_qpcr_json = None
+  if requires_dna_qpcr:
+    samples_dna_qpcr = dna_qpcr_samples(assay_samples)
+    dna_qpcr_json = process_qpcr_samples(samples_dna_qpcr, process, process.qpcr_dna_protocol, process.min_samples_per_plate_dna)
+
+  rna_qpcr_json = None
+  if requires_rna_qpcr:
+    samples_rna_qpcr = rna_qpcr_samples(assay_samples)
+    rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, process, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
+
+  if request.method == 'POST':
+    process.is_processed = True
+    process.date_processed = timezone.now()
+
+    process.pcr_dna_json = dna_pcr_json
+    process.pcr_rna_json = rna_pcr_json
+    process.qpcr_dna_json = dna_qpcr_json
+    process.qpcr_rna_json = rna_qpcr_json
+    process.save()
+    return redirect('processes')
+
   context = {'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json}
   return render(request, 'pcr/process_paperwork.html', context)
+
+
+@login_required(login_url='login')
+def processes(request):
+  processes = Process.objects.filter(user=request.user, is_processed=True).order_by('-date_processed')
+  context = {'processes': processes}
+  return render(request, 'pcr/processes.html', context)

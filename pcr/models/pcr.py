@@ -62,10 +62,10 @@ class Process(models.Model):
 
   date_processed = models.DateTimeField(blank=True, null=True, editable=False, default=None)
 
-  # pcr_dna_json = models.JSONField()
-  # pcr_rna_json = models.JSONField()
-  # qpcr_dna_json = models.JSONField()
-  # qpcr_rna_json = models.JSONField()
+  pcr_dna_json = models.JSONField(blank=True, null=True, default=None)
+  pcr_rna_json = models.JSONField(blank=True, null=True, default=None)
+  qpcr_dna_json = models.JSONField(blank=True, null=True, default=None)
+  qpcr_rna_json = models.JSONField(blank=True, null=True, default=None)
 
   def __str__(self):
     return f"Process by {self.user}"

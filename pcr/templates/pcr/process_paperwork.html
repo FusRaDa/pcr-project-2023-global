@@ -9,8 +9,12 @@
 <div class="container">
 
   <div class="row">
-    <h5 class="text-center">PCR Paperwork</h5>
+    <h5 class="text-center">Review PCR Paperwork</h5>
   </div>
+
+  <form method="POST", action="">
+    <button type="button" class="btn btn-primary">Primary</button>
+  </form>
 
   {% for plate in dna_qpcr_json %}
     {% if plate.plate.size == 384 %}
@@ -3156,6 +3160,7 @@
       {% endfor %}
     {% endfor %}
   {% endfor %}
+
 
   {% for plate in rna_qpcr_json %}
     {% if plate.plate.size == 384 %}
@@ -6904,6 +6909,7 @@
     {% endfor %}
   {% endfor %}
 
+
   {% for gel in rna_pcr_json %}
     {% if gel.gel.size == 12 %}
       <div class="table-responsive">
@@ -7504,6 +7510,7 @@
       {% endfor %}
     {% endfor %}
   {% endfor %}
+
 
 </div>
 {% endblock %}

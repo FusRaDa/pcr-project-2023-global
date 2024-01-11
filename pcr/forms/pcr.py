@@ -176,4 +176,4 @@ class ProcessForm(ModelForm):
 
   class Meta:
     model = Process
-    exclude = ['user', 'samples', 'is_processed', 'date_processed']
+    exclude = ['user', 'samples', 'is_processed', 'date_processed', 'pcr_dna_json', 'pcr_rna_json', 'qpcr_dna_json', 'qpcr_rna_json']

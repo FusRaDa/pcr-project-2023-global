@@ -66,4 +66,6 @@ urlpatterns = [
   path("remove-sample-from-process/<int:process_pk>/<int:sample_pk>/", pcr_views.remove_sample_from_process, name='remove_sample_from_process'),
   path("review-process/<int:pk>/", pcr_views.review_process, name='review_process'),
   path("process_paperwork/<int:pk>/", pcr_views.process_paperwork, name='process_paperwork'),
+
+  path('processes/', pcr_views.processes, name='processes')
 ]
