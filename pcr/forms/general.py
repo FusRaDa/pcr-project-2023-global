@@ -2,6 +2,23 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+from ..models.assay import AssayCode
+
+
+class SearchProcessForm(forms.Form):
+  panels = forms.ModelChoiceField(queryset=None, required=False)
+  start_date = forms.DateField(required=False)
+  end_date = forms.DateField(required=False)
+
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['panels'].queryset = AssayCode.objects.filter(user=self.user)
+
+    self.fields['panels'].widget.attrs['class'] = 'form-select'
+    self.fields['year'].widget.attrs['class'] = 'form-control'
+    self.fields['month'].widget.attrs['class'] = 'form-control'
+
 
 class DeletionForm(forms.Form):
 

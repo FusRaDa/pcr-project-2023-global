@@ -67,5 +67,12 @@ class Process(models.Model):
   qpcr_dna_json = models.JSONField(blank=True, null=True, default=None)
   qpcr_rna_json = models.JSONField(blank=True, null=True, default=None)
 
+  @property
+  def panel(self):
+    panels = []
+    for sample in self.samples:
+      panels.append(sample.batch.code.name)
+    return list(set(panels))
+
   def __str__(self):
     return f"Process by {self.user}"

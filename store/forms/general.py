@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from ..models.affiliates import Brand
 from ..models.items import Tag
 
-
+# combine all 4 forms into one for store
 class ItemLotNumberForm(forms.Form):
   lot_number = forms.CharField(required=False)
 
@@ -43,7 +43,6 @@ class SearchBrandTagForm(forms.Form):
   
 
 class DeletionForm(forms.Form):
-
   confirm = forms.CharField()
 
   def __init__(self, *args, **kwargs):

@@ -5,9 +5,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
 from django.http import HttpResponse
 from django.contrib import messages
+from django.core.paginator import Paginator
 from users.models import User
 
-from ..forms.general import DeletionForm
+from ..forms.general import DeletionForm, SearchProcessForm
 from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
@@ -240,5 +241,26 @@ def process_paperwork(request, pk):
 @login_required(login_url='login')
 def processes(request):
   processes = Process.objects.filter(user=request.user, is_processed=True).order_by('-date_processed')
-  context = {'processes': processes}
+
+  form = SearchProcessForm(user=request.user)
+  if request.method == "POST":
+    form = SearchProcessForm(request.POST, user=request.user)
+    if form.is_valid():
+      panel = form.cleaned_data['panel']
+      start_date = form.cleaned_data['start_date']
+      end_date = form.cleaned_data['end_date']
+
+      if start_date and end_date and not panel:
+        processes = Process.objects.filter(user=request.user, is_processed=True, date_processed__range=[start_date, end_date]).order_by('-date_processed')
+      
+      if start_date and end_date and panel:
+        processes = Process.objects.filter(user=request.user, is_processed=True, date_processed__range=[start_date, end_date], panel=panel).order_by('-date_processed')
+    else:
+      print(form.errors)
+
+  paginator = Paginator(processes, 25)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
+  
+  context = {'page_obj': page_obj}
   return render(request, 'pcr/processes.html', context)
