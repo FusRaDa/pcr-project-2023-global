@@ -199,7 +199,16 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
   plate = choose_plate(all_samples, process)
 
   plate_data = {'plate': plate}
-  protocol_data = {'protocol': protocol}
+  protocol_data = {'protocol': {
+    'name': protocol.name,
+    'denature_temp': float(protocol.denature_temp),
+    'denature_duration': protocol.denature_duration,
+    'anneal_temp': float(protocol.anneal_temp),
+    'anneal_duration': protocol.anneal_duration,
+    'extension_temp': float(protocol.extension_temp),
+    'extension_duration': protocol.extension_duration,
+    'number_of_cycles': protocol.number_of_cycles
+  }}
   assays_data = {'assays': []}
   samples_data = {'samples': {}}
 
@@ -351,8 +360,17 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
 def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
   gel = choose_gel(all_samples, process)
 
-  gel_data = {'gel': gel}
-  protocol_data = {'protocol': protocol}
+  gel_data = {'gel': gel.size}
+  protocol_data = {'protocol': {
+    'name': protocol.name,
+    'denature_temp': float(protocol.denature_temp),
+    'denature_duration': protocol.denature_duration,
+    'anneal_temp': float(protocol.anneal_temp),
+    'anneal_duration': protocol.anneal_duration,
+    'extension_temp': float(protocol.extension_temp),
+    'extension_duration': protocol.extension_duration,
+    'number_of_cycles': protocol.number_of_cycles
+  }}
   assays_data = {'assays': []}
   samples_data = {'samples': {}}
 

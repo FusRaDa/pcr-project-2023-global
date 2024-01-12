@@ -223,7 +223,7 @@ def process_paperwork(request, pk):
     samples_rna_qpcr = rna_qpcr_samples(assay_samples)
     rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, process, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
 
-  if request.method == 'POST':
+  if 'process' in request.POST:
     process.is_processed = True
     process.date_processed = timezone.now()
 

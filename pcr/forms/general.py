@@ -16,8 +16,8 @@ class SearchProcessForm(forms.Form):
     self.fields['panels'].queryset = AssayCode.objects.filter(user=self.user)
 
     self.fields['panels'].widget.attrs['class'] = 'form-select'
-    self.fields['year'].widget.attrs['class'] = 'form-control'
-    self.fields['month'].widget.attrs['class'] = 'form-control'
+    self.fields['start_date'].widget.attrs['class'] = 'form-control'
+    self.fields['end_date'].widget.attrs['class'] = 'form-control'
 
 
 class DeletionForm(forms.Form):

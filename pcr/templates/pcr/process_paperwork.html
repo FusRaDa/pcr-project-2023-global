@@ -12,9 +12,46 @@
     <h5 class="text-center">Review PCR Paperwork</h5>
   </div>
 
-  <form method="POST", action="">
-    <button type="button" class="btn btn-primary">Primary</button>
-  </form>
+  <div class="justify-content-center">
+    <div class="col d-flex justify-content-center">
+      <button type="button" class="btn btn-success mb-2" data-bs-toggle="modal" data-bs-target="#process-modal">
+        Confirm PCR Paperwork
+      </button>
+    </div>
+  </div>
+
+  <div class="modal fade" id="process-modal" tabindex="-1" role="dialog" aria-labelledby="populate-modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="populate-modalLabel">Processing PCR Paperwork</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row justify-content-center"> 
+
+            <div class="col">
+              <ol>
+                <li>Once you confirm this process, you will no longer be able to make further edits.</li>
+                <li>Samples, plate loadout, and mastermixes will be saved.</li>
+              </ol>
+            </div>
+            
+          </div>
+
+        </div>
+        <form method="POST" action="">
+          {% csrf_token %}
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" name="process">Confirm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
 
   {% for plate in dna_qpcr_json %}
     {% if plate.plate.size == 384 %}
@@ -2577,588 +2614,620 @@
     {% endif %}
 
     {% if plate.plate.size == 48%}
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col" class="plate-col">1</th>
+            <th scope="col" class="plate-col">2</th>
+            <th scope="col" class="plate-col">3</th>
+            <th scope="col" class="plate-col">4</th>
+            <th scope="col" class="plate-col">5</th>
+            <th scope="col" class="plate-col">6</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="plate-row">
+            <td class="fw-bold">A</td>
+            <td class="text-center border-1 {{plate.samples.well1.color}}">
+              <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well1.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well2.color}}">
+              <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well2.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well3.color}}">
+              <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well3.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well4.color}}">
+              <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well4.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well5.color}}">
+              <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well5.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well6.color}}">
+              <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well6.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">B</td>
+            <td class="text-center border-1 {{plate.samples.well7.color}}">
+              <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well7.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well8.color}}">
+              <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well8.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well9.color}}">
+              <div class="plate-lab-id">{{plate.samples.well9.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well9.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well9.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well10.color}}">
+              <div class="plate-lab-id">{{plate.samples.well10.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well10.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well10.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well11.color}}">
+              <div class="plate-lab-id">{{plate.samples.well11.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well11.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well11.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well12.color}}">
+              <div class="plate-lab-id">{{plate.samples.well12.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well12.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well12.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">C</td>
+            <td class="text-center border-1 {{plate.samples.well13.color}}">
+              <div class="plate-lab-id">{{plate.samples.well13.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well13.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well13.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well14.color}}">
+              <div class="plate-lab-id">{{plate.samples.well14.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well14.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well14.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well15.color}}">
+              <div class="plate-lab-id">{{plate.samples.well15.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well15.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well15.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well16.color}}">
+              <div class="plate-lab-id">{{plate.samples.well16.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well16.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well16.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well17.color}}">
+              <div class="plate-lab-id">{{plate.samples.well17.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well17.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well17.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well18.color}}">
+              <div class="plate-lab-id">{{plate.samples.well18.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well18.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well18.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">D</td>
+            <td class="text-center border-1 {{plate.samples.well19.color}}">
+              <div class="plate-lab-id">{{plate.samples.well19.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well19.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well19.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well20.color}}">
+              <div class="plate-lab-id">{{plate.samples.well20.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well20.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well20.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well21.color}}">
+              <div class="plate-lab-id">{{plate.samples.well21.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well21.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well21.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well22.color}}">
+              <div class="plate-lab-id">{{plate.samples.well22.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well22.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well22.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well23.color}}">
+              <div class="plate-lab-id">{{plate.samples.well23.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well23.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well23.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well24.color}}">
+              <div class="plate-lab-id">{{plate.samples.well24.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well24.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well24.assay}}</div>
+            </td>
+          </tr>
+          
+          <tr class="plate-row"> 
+            <td class="fw-bold">E</td>
+            <td class="text-center border-1 {{plate.samples.well25.color}}">
+              <div class="plate-lab-id">{{plate.samples.well25.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well25.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well25.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well26.color}}">
+              <div class="plate-lab-id">{{plate.samples.well26.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well26.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well26.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well27.color}}">
+              <div class="plate-lab-id">{{plate.samples.well27.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well27.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well27.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well28.color}}">
+              <div class="plate-lab-id">{{plate.samples.well28.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well28.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well28.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well29.color}}">
+              <div class="plate-lab-id">{{plate.samples.well29.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well29.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well29.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well30.color}}">
+              <div class="plate-lab-id">{{plate.samples.well30.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well30.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well30.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">F</td>
+            <td class="text-center border-1 {{plate.samples.well31.color}}">
+              <div class="plate-lab-id">{{plate.samples.well31.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well31.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well31.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well32.color}}">
+              <div class="plate-lab-id">{{plate.samples.well32.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well32.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well32.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well33.color}}">
+              <div class="plate-lab-id">{{plate.samples.well33.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well33.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well33.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well34.color}}">
+              <div class="plate-lab-id">{{plate.samples.well34.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well34.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well34.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well35.color}}">
+              <div class="plate-lab-id">{{plate.samples.well35.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well35.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well35.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well36.color}}">
+              <div class="plate-lab-id">{{plate.samples.well36.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well36.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well36.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">G</td>
+            <td class="text-center border-1 {{plate.samples.well37.color}}">
+              <div class="plate-lab-id">{{plate.samples.well37.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well37.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well37.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well38.color}}">
+              <div class="plate-lab-id">{{plate.samples.well38.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well38.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well38.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well39.color}}">
+              <div class="plate-lab-id">{{plate.samples.well39.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well39.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well39.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well40.color}}">
+              <div class="plate-lab-id">{{plate.samples.well40.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well40.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well40.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well41.color}}">
+              <div class="plate-lab-id">{{plate.samples.well41.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well41.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well41.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well42.color}}">
+              <div class="plate-lab-id">{{plate.samples.well42.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well42.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well42.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">H</td>
+            <td class="text-center border-1 {{plate.samples.well43.color}}">
+              <div class="plate-lab-id">{{plate.samples.well43.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well43.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well43.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well44.color}}">
+              <div class="plate-lab-id">{{plate.samples.well44.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well44.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well44.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well45.color}}">
+              <div class="plate-lab-id">{{plate.samples.well45.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well45.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well45.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well46.color}}">
+              <div class="plate-lab-id">{{plate.samples.well46.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well46.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well46.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well47.color}}">
+              <div class="plate-lab-id">{{plate.samples.well47.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well47.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well47.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well48.color}}">
+              <div class="plate-lab-id">{{plate.samples.well48.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well48.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well48.assay}}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    {% if plate.plate.size == 24 %}
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col" class="plate-col">1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="plate-row">
+            <td class="fw-bold">A</td>
+            <td class="text-center border-1 {{plate.samples.well1.color}}">
+              <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well1.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well2.color}}">
+              <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well2.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well3.color}}">
+              <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well3.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">B</td>
+            <td class="text-center border-1 {{plate.samples.well4.color}}">
+              <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well4.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well5.color}}">
+              <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well5.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well6.color}}">
+              <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well6.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">C</td>
+            <td class="text-center border-1 {{plate.samples.well7.color}}">
+              <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well7.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well8.color}}">
+              <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well8.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well9.color}}">
+              <div class="plate-lab-id">{{plate.samples.well9.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well9.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well9.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">D</td>
+            <td class="text-center border-1 {{plate.samples.well10.color}}">
+              <div class="plate-lab-id">{{plate.samples.well10.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well10.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well10.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well11.color}}">
+              <div class="plate-lab-id">{{plate.samples.well11.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well11.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well11.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well12.color}}">
+              <div class="plate-lab-id">{{plate.samples.well12.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well12.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well12.assay}}</div>
+            </td>
+          </tr>
+          
+          <tr class="plate-row"> 
+            <td class="fw-bold">E</td>
+            <td class="text-center border-1 {{plate.samples.well13.color}}">
+              <div class="plate-lab-id">{{plate.samples.well13.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well13.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well13.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well14.color}}">
+              <div class="plate-lab-id">{{plate.samples.well14.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well14.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well14.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well15.color}}">
+              <div class="plate-lab-id">{{plate.samples.well15.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well15.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well15.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">F</td>
+            <td class="text-center border-1 {{plate.samples.well16.color}}">
+              <div class="plate-lab-id">{{plate.samples.well16.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well16.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well16.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well17.color}}">
+              <div class="plate-lab-id">{{plate.samples.well17.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well17.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well17.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well18.color}}">
+              <div class="plate-lab-id">{{plate.samples.well18.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well18.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well18.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">G</td>
+            <td class="text-center border-1 {{plate.samples.well19.color}}">
+              <div class="plate-lab-id">{{plate.samples.well19.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well19.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well19.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well20.color}}">
+              <div class="plate-lab-id">{{plate.samples.well20.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well20.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well20.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well21.color}}">
+              <div class="plate-lab-id">{{plate.samples.well21.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well21.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well21.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">H</td>
+            <td class="text-center border-1 {{plate.samples.well22.color}}">
+              <div class="plate-lab-id">{{plate.samples.well22.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well22.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well22.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well23.color}}">
+              <div class="plate-lab-id">{{plate.samples.well23.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well23.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well23.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well24.color}}">
+              <div class="plate-lab-id">{{plate.samples.well24.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well24.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well24.assay}}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    {% if plate.plate.size == 8 %}
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col" class="plate-col">1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="plate-row">
+            <td class="fw-bold">A</td>
+            <td class="text-center border-1 {{plate.samples.well1.color}}">
+              <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well1.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">B</td>
+            <td class="text-center border-1 {{plate.samples.well2.color}}">
+              <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well2.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">C</td>
+            <td class="text-center border-1 {{plate.samples.well3.color}}">
+              <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well3.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">D</td>
+            <td class="text-center border-1 {{plate.samples.well4.color}}">
+              <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well4.assay}}</div>
+            </td>
+          </tr>
+          
+          <tr class="plate-row"> 
+            <td class="fw-bold">E</td>
+            <td class="text-center border-1 {{plate.samples.well5.color}}">
+              <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well5.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">F</td>
+            <td class="text-center border-1 {{plate.samples.well6.color}}">
+              <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well6.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">G</td>
+            <td class="text-center border-1 {{plate.samples.well7.color}}">
+              <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well7.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">H</td>
+            <td class="text-center border-1 {{plate.samples.well8.color}}">
+              <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well8.assay}}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
+            <th scope="col">Temperature (°C)</th>
+            <th scope="col">Duration (sec.)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Denature</td>
+            <td>{{plate.protocol.denature_temp}}</td>
+            <td>{{plate.protocol.denature_duration}}</td>
+          </tr>
+          <tr>
+            <td>Anneal</td>
+            <td>{{plate.protocol.anneal_temp}}</td>
+            <td>{{plate.protocol.anneal_duration}}</td>
+          </tr>
+          <tr>
+            <td>Extend</td>
+            <td>{{plate.protocol.extension_temp}}</td>
+            <td>{{plate.protocol.extension_duration}}</td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+    {% for value in plate.assays %}
+      {% for assay, num in value.items %}
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th scope="col"></th>
-              <th scope="col" class="plate-col">1</th>
-              <th scope="col" class="plate-col">2</th>
-              <th scope="col" class="plate-col">3</th>
-              <th scope="col" class="plate-col">4</th>
-              <th scope="col" class="plate-col">5</th>
-              <th scope="col" class="plate-col">6</th>
+              <th scope="col">{{assay}} × {{num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
+              <th scope="col">Total Master Mix (μL)</th>
+              <th scope="col">Per Sample (μL) × {{num}}</th>
+              <th scope="col">Stock Conc.</th>
+              <th scope="col">Final Conc.</th>
+              <th scope="col">DF</th>
             </tr>
           </thead>
+
           <tbody>
-            <tr class="plate-row">
-              <td class="fw-bold">A</td>
-              <td class="text-center border-1 {{plate.samples.well1.color}}">
-                <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well1.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well2.color}}">
-                <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well2.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well3.color}}">
-                <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well3.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well4.color}}">
-                <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well4.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well5.color}}">
-                <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well5.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well6.color}}">
-                <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well6.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">B</td>
-              <td class="text-center border-1 {{plate.samples.well7.color}}">
-                <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well7.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well8.color}}">
-                <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well8.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well9.color}}">
-                <div class="plate-lab-id">{{plate.samples.well9.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well9.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well9.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well10.color}}">
-                <div class="plate-lab-id">{{plate.samples.well10.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well10.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well10.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well11.color}}">
-                <div class="plate-lab-id">{{plate.samples.well11.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well11.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well11.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well12.color}}">
-                <div class="plate-lab-id">{{plate.samples.well12.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well12.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well12.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">C</td>
-              <td class="text-center border-1 {{plate.samples.well13.color}}">
-                <div class="plate-lab-id">{{plate.samples.well13.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well13.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well13.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well14.color}}">
-                <div class="plate-lab-id">{{plate.samples.well14.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well14.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well14.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well15.color}}">
-                <div class="plate-lab-id">{{plate.samples.well15.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well15.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well15.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well16.color}}">
-                <div class="plate-lab-id">{{plate.samples.well16.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well16.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well16.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well17.color}}">
-                <div class="plate-lab-id">{{plate.samples.well17.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well17.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well17.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well18.color}}">
-                <div class="plate-lab-id">{{plate.samples.well18.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well18.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well18.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">D</td>
-              <td class="text-center border-1 {{plate.samples.well19.color}}">
-                <div class="plate-lab-id">{{plate.samples.well19.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well19.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well19.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well20.color}}">
-                <div class="plate-lab-id">{{plate.samples.well20.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well20.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well20.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well21.color}}">
-                <div class="plate-lab-id">{{plate.samples.well21.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well21.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well21.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well22.color}}">
-                <div class="plate-lab-id">{{plate.samples.well22.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well22.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well22.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well23.color}}">
-                <div class="plate-lab-id">{{plate.samples.well23.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well23.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well23.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well24.color}}">
-                <div class="plate-lab-id">{{plate.samples.well24.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well24.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well24.assay}}</div>
-              </td>
-            </tr>
-            
-            <tr class="plate-row"> 
-              <td class="fw-bold">E</td>
-              <td class="text-center border-1 {{plate.samples.well25.color}}">
-                <div class="plate-lab-id">{{plate.samples.well25.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well25.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well25.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well26.color}}">
-                <div class="plate-lab-id">{{plate.samples.well26.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well26.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well26.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well27.color}}">
-                <div class="plate-lab-id">{{plate.samples.well27.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well27.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well27.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well28.color}}">
-                <div class="plate-lab-id">{{plate.samples.well28.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well28.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well28.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well29.color}}">
-                <div class="plate-lab-id">{{plate.samples.well29.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well29.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well29.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well30.color}}">
-                <div class="plate-lab-id">{{plate.samples.well30.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well30.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well30.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">F</td>
-              <td class="text-center border-1 {{plate.samples.well31.color}}">
-                <div class="plate-lab-id">{{plate.samples.well31.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well31.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well31.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well32.color}}">
-                <div class="plate-lab-id">{{plate.samples.well32.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well32.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well32.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well33.color}}">
-                <div class="plate-lab-id">{{plate.samples.well33.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well33.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well33.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well34.color}}">
-                <div class="plate-lab-id">{{plate.samples.well34.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well34.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well34.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well35.color}}">
-                <div class="plate-lab-id">{{plate.samples.well35.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well35.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well35.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well36.color}}">
-                <div class="plate-lab-id">{{plate.samples.well36.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well36.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well36.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">G</td>
-              <td class="text-center border-1 {{plate.samples.well37.color}}">
-                <div class="plate-lab-id">{{plate.samples.well37.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well37.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well37.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well38.color}}">
-                <div class="plate-lab-id">{{plate.samples.well38.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well38.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well38.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well39.color}}">
-                <div class="plate-lab-id">{{plate.samples.well39.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well39.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well39.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well40.color}}">
-                <div class="plate-lab-id">{{plate.samples.well40.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well40.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well40.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well41.color}}">
-                <div class="plate-lab-id">{{plate.samples.well41.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well41.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well41.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well42.color}}">
-                <div class="plate-lab-id">{{plate.samples.well42.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well42.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well42.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">H</td>
-              <td class="text-center border-1 {{plate.samples.well43.color}}">
-                <div class="plate-lab-id">{{plate.samples.well43.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well43.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well43.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well44.color}}">
-                <div class="plate-lab-id">{{plate.samples.well44.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well44.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well44.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well45.color}}">
-                <div class="plate-lab-id">{{plate.samples.well45.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well45.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well45.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well46.color}}">
-                <div class="plate-lab-id">{{plate.samples.well46.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well46.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well46.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well47.color}}">
-                <div class="plate-lab-id">{{plate.samples.well47.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well47.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well47.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well48.color}}">
-                <div class="plate-lab-id">{{plate.samples.well48.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well48.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well48.assay}}</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      {% endif %}
-
-      {% if plate.plate.size == 24 %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col" class="plate-col">1</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="plate-row">
-              <td class="fw-bold">A</td>
-              <td class="text-center border-1 {{plate.samples.well1.color}}">
-                <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well1.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well2.color}}">
-                <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well2.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well3.color}}">
-                <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well3.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">B</td>
-              <td class="text-center border-1 {{plate.samples.well4.color}}">
-                <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well4.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well5.color}}">
-                <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well5.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well6.color}}">
-                <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well6.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">C</td>
-              <td class="text-center border-1 {{plate.samples.well7.color}}">
-                <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well7.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well8.color}}">
-                <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well8.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well9.color}}">
-                <div class="plate-lab-id">{{plate.samples.well9.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well9.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well9.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">D</td>
-              <td class="text-center border-1 {{plate.samples.well10.color}}">
-                <div class="plate-lab-id">{{plate.samples.well10.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well10.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well10.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well11.color}}">
-                <div class="plate-lab-id">{{plate.samples.well11.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well11.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well11.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well12.color}}">
-                <div class="plate-lab-id">{{plate.samples.well12.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well12.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well12.assay}}</div>
-              </td>
-            </tr>
-            
-            <tr class="plate-row"> 
-              <td class="fw-bold">E</td>
-              <td class="text-center border-1 {{plate.samples.well13.color}}">
-                <div class="plate-lab-id">{{plate.samples.well13.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well13.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well13.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well14.color}}">
-                <div class="plate-lab-id">{{plate.samples.well14.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well14.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well14.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well15.color}}">
-                <div class="plate-lab-id">{{plate.samples.well15.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well15.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well15.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">F</td>
-              <td class="text-center border-1 {{plate.samples.well16.color}}">
-                <div class="plate-lab-id">{{plate.samples.well16.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well16.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well16.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well17.color}}">
-                <div class="plate-lab-id">{{plate.samples.well17.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well17.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well17.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well18.color}}">
-                <div class="plate-lab-id">{{plate.samples.well18.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well18.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well18.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">G</td>
-              <td class="text-center border-1 {{plate.samples.well19.color}}">
-                <div class="plate-lab-id">{{plate.samples.well19.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well19.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well19.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well20.color}}">
-                <div class="plate-lab-id">{{plate.samples.well20.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well20.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well20.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well21.color}}">
-                <div class="plate-lab-id">{{plate.samples.well21.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well21.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well21.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">H</td>
-              <td class="text-center border-1 {{plate.samples.well22.color}}">
-                <div class="plate-lab-id">{{plate.samples.well22.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well22.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well22.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well23.color}}">
-                <div class="plate-lab-id">{{plate.samples.well23.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well23.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well23.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well24.color}}">
-                <div class="plate-lab-id">{{plate.samples.well24.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well24.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well24.assay}}</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      {% endif %}
-
-      {% if plate.plate.size == 8 %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col" class="plate-col">1</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="plate-row">
-              <td class="fw-bold">A</td>
-              <td class="text-center border-1 {{plate.samples.well1.color}}">
-                <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well1.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">B</td>
-              <td class="text-center border-1 {{plate.samples.well2.color}}">
-                <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well2.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">C</td>
-              <td class="text-center border-1 {{plate.samples.well3.color}}">
-                <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well3.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">D</td>
-              <td class="text-center border-1 {{plate.samples.well4.color}}">
-                <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well4.assay}}</div>
-              </td>
-            </tr>
-            
-            <tr class="plate-row"> 
-              <td class="fw-bold">E</td>
-              <td class="text-center border-1 {{plate.samples.well5.color}}">
-                <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well5.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">F</td>
-              <td class="text-center border-1 {{plate.samples.well6.color}}">
-                <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well6.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">G</td>
-              <td class="text-center border-1 {{plate.samples.well7.color}}">
-                <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well7.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">H</td>
-              <td class="text-center border-1 {{plate.samples.well8.color}}">
-                <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well8.assay}}</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      {% endif %}
-
-      {% for value in plate.assays %}
-        {% for assay, num in value.items %}
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">{{assay}} × {{num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
-                <th scope="col">Total Master Mix (μL)</th>
-                <th scope="col">Per Sample (μL) × {{num}}</th>
-                <th scope="col">Stock Conc.</th>
-                <th scope="col">Final Conc.</th>
-                <th scope="col">DF</th>
+            {% for reagent in assay.reagentassay_set.all|dictsort:"order"%}
+              <tr class="table-light">
+                <td>{{reagent.reagent}}</td>
+                <td class="table-success">{{reagent.volume_per_sample|dec_mult:num}}</td>
+                <td>{{reagent.volume_per_sample}}</td>
+                <td>{% if reagent.reagent.stock_concentration %} {{reagent.reagent.stock_concentration}} {{reagent.reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
+                <td>{% if reagent.final_concentration %} {{reagent.final_concentration}} {{reagent.final_concentration_unit}} {% else %} ------ {% endif %}</td>
+                <td>{{reagent.dilution_factor}}</td>
               </tr>
-            </thead>
+            {% endfor %}
+            <tr class="table-dark">
+              <td>Total</td>
+              <td>{{assay.mm_volume|dec_mult:num}}</td>
+              <td>{{assay.mm_volume}}</td>
+              <td>------</td>
+              <td>------</td>
+              <td>------</td>
+            </tr>
+          </tbody>
 
-            <tbody>
-              {% for reagent in assay.reagentassay_set.all|dictsort:"order"%}
-                <tr class="table-light">
-                  <td>{{reagent.reagent}}</td>
-                  <td class="table-success">{{reagent.volume_per_sample|dec_mult:num}}</td>
-                  <td>{{reagent.volume_per_sample}}</td>
-                  <td>{% if reagent.reagent.stock_concentration %} {{reagent.reagent.stock_concentration}} {{reagent.reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
-                  <td>{% if reagent.final_concentration %} {{reagent.final_concentration}} {{reagent.final_concentration_unit}} {% else %} ------ {% endif %}</td>
-                  <td>{{reagent.dilution_factor}}</td>
-                </tr>
-              {% endfor %}
-              <tr class="table-dark">
-                <td>Total</td>
-                <td>{{assay.mm_volume|dec_mult:num}}</td>
-                <td>{{assay.mm_volume}}</td>
-                <td>------</td>
-                <td>------</td>
-                <td>------</td>
-              </tr>
-            </tbody>
-
-          </table>
-        </div>
+        </table>
+      </div>
       {% endfor %}
     {% endfor %}
+
   {% endfor %}
 
 
@@ -5723,588 +5792,621 @@
     {% endif %}
 
     {% if plate.plate.size == 48%}
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col" class="plate-col">1</th>
+            <th scope="col" class="plate-col">2</th>
+            <th scope="col" class="plate-col">3</th>
+            <th scope="col" class="plate-col">4</th>
+            <th scope="col" class="plate-col">5</th>
+            <th scope="col" class="plate-col">6</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="plate-row">
+            <td class="fw-bold">A</td>
+            <td class="text-center border-1 {{plate.samples.well1.color}}">
+              <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well1.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well2.color}}">
+              <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well2.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well3.color}}">
+              <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well3.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well4.color}}">
+              <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well4.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well5.color}}">
+              <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well5.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well6.color}}">
+              <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well6.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">B</td>
+            <td class="text-center border-1 {{plate.samples.well7.color}}">
+              <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well7.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well8.color}}">
+              <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well8.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well9.color}}">
+              <div class="plate-lab-id">{{plate.samples.well9.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well9.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well9.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well10.color}}">
+              <div class="plate-lab-id">{{plate.samples.well10.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well10.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well10.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well11.color}}">
+              <div class="plate-lab-id">{{plate.samples.well11.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well11.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well11.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well12.color}}">
+              <div class="plate-lab-id">{{plate.samples.well12.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well12.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well12.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">C</td>
+            <td class="text-center border-1 {{plate.samples.well13.color}}">
+              <div class="plate-lab-id">{{plate.samples.well13.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well13.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well13.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well14.color}}">
+              <div class="plate-lab-id">{{plate.samples.well14.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well14.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well14.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well15.color}}">
+              <div class="plate-lab-id">{{plate.samples.well15.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well15.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well15.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well16.color}}">
+              <div class="plate-lab-id">{{plate.samples.well16.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well16.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well16.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well17.color}}">
+              <div class="plate-lab-id">{{plate.samples.well17.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well17.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well17.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well18.color}}">
+              <div class="plate-lab-id">{{plate.samples.well18.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well18.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well18.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">D</td>
+            <td class="text-center border-1 {{plate.samples.well19.color}}">
+              <div class="plate-lab-id">{{plate.samples.well19.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well19.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well19.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well20.color}}">
+              <div class="plate-lab-id">{{plate.samples.well20.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well20.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well20.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well21.color}}">
+              <div class="plate-lab-id">{{plate.samples.well21.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well21.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well21.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well22.color}}">
+              <div class="plate-lab-id">{{plate.samples.well22.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well22.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well22.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well23.color}}">
+              <div class="plate-lab-id">{{plate.samples.well23.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well23.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well23.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well24.color}}">
+              <div class="plate-lab-id">{{plate.samples.well24.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well24.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well24.assay}}</div>
+            </td>
+          </tr>
+          
+          <tr class="plate-row"> 
+            <td class="fw-bold">E</td>
+            <td class="text-center border-1 {{plate.samples.well25.color}}">
+              <div class="plate-lab-id">{{plate.samples.well25.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well25.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well25.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well26.color}}">
+              <div class="plate-lab-id">{{plate.samples.well26.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well26.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well26.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well27.color}}">
+              <div class="plate-lab-id">{{plate.samples.well27.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well27.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well27.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well28.color}}">
+              <div class="plate-lab-id">{{plate.samples.well28.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well28.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well28.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well29.color}}">
+              <div class="plate-lab-id">{{plate.samples.well29.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well29.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well29.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well30.color}}">
+              <div class="plate-lab-id">{{plate.samples.well30.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well30.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well30.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">F</td>
+            <td class="text-center border-1 {{plate.samples.well31.color}}">
+              <div class="plate-lab-id">{{plate.samples.well31.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well31.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well31.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well32.color}}">
+              <div class="plate-lab-id">{{plate.samples.well32.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well32.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well32.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well33.color}}">
+              <div class="plate-lab-id">{{plate.samples.well33.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well33.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well33.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well34.color}}">
+              <div class="plate-lab-id">{{plate.samples.well34.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well34.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well34.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well35.color}}">
+              <div class="plate-lab-id">{{plate.samples.well35.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well35.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well35.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well36.color}}">
+              <div class="plate-lab-id">{{plate.samples.well36.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well36.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well36.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">G</td>
+            <td class="text-center border-1 {{plate.samples.well37.color}}">
+              <div class="plate-lab-id">{{plate.samples.well37.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well37.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well37.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well38.color}}">
+              <div class="plate-lab-id">{{plate.samples.well38.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well38.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well38.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well39.color}}">
+              <div class="plate-lab-id">{{plate.samples.well39.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well39.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well39.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well40.color}}">
+              <div class="plate-lab-id">{{plate.samples.well40.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well40.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well40.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well41.color}}">
+              <div class="plate-lab-id">{{plate.samples.well41.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well41.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well41.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well42.color}}">
+              <div class="plate-lab-id">{{plate.samples.well42.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well42.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well42.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">H</td>
+            <td class="text-center border-1 {{plate.samples.well43.color}}">
+              <div class="plate-lab-id">{{plate.samples.well43.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well43.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well43.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well44.color}}">
+              <div class="plate-lab-id">{{plate.samples.well44.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well44.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well44.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well45.color}}">
+              <div class="plate-lab-id">{{plate.samples.well45.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well45.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well45.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well46.color}}">
+              <div class="plate-lab-id">{{plate.samples.well46.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well46.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well46.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well47.color}}">
+              <div class="plate-lab-id">{{plate.samples.well47.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well47.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well47.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well48.color}}">
+              <div class="plate-lab-id">{{plate.samples.well48.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well48.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well48.assay}}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    {% if plate.plate.size == 24 %}
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col" class="plate-col">1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="plate-row">
+            <td class="fw-bold">A</td>
+            <td class="text-center border-1 {{plate.samples.well1.color}}">
+              <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well1.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well2.color}}">
+              <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well2.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well3.color}}">
+              <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well3.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">B</td>
+            <td class="text-center border-1 {{plate.samples.well4.color}}">
+              <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well4.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well5.color}}">
+              <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well5.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well6.color}}">
+              <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well6.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">C</td>
+            <td class="text-center border-1 {{plate.samples.well7.color}}">
+              <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well7.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well8.color}}">
+              <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well8.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well9.color}}">
+              <div class="plate-lab-id">{{plate.samples.well9.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well9.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well9.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">D</td>
+            <td class="text-center border-1 {{plate.samples.well10.color}}">
+              <div class="plate-lab-id">{{plate.samples.well10.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well10.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well10.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well11.color}}">
+              <div class="plate-lab-id">{{plate.samples.well11.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well11.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well11.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well12.color}}">
+              <div class="plate-lab-id">{{plate.samples.well12.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well12.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well12.assay}}</div>
+            </td>
+          </tr>
+          
+          <tr class="plate-row"> 
+            <td class="fw-bold">E</td>
+            <td class="text-center border-1 {{plate.samples.well13.color}}">
+              <div class="plate-lab-id">{{plate.samples.well13.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well13.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well13.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well14.color}}">
+              <div class="plate-lab-id">{{plate.samples.well14.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well14.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well14.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well15.color}}">
+              <div class="plate-lab-id">{{plate.samples.well15.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well15.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well15.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">F</td>
+            <td class="text-center border-1 {{plate.samples.well16.color}}">
+              <div class="plate-lab-id">{{plate.samples.well16.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well16.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well16.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well17.color}}">
+              <div class="plate-lab-id">{{plate.samples.well17.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well17.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well17.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well18.color}}">
+              <div class="plate-lab-id">{{plate.samples.well18.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well18.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well18.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">G</td>
+            <td class="text-center border-1 {{plate.samples.well19.color}}">
+              <div class="plate-lab-id">{{plate.samples.well19.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well19.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well19.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well20.color}}">
+              <div class="plate-lab-id">{{plate.samples.well20.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well20.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well20.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well21.color}}">
+              <div class="plate-lab-id">{{plate.samples.well21.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well21.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well21.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">H</td>
+            <td class="text-center border-1 {{plate.samples.well22.color}}">
+              <div class="plate-lab-id">{{plate.samples.well22.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well22.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well22.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well23.color}}">
+              <div class="plate-lab-id">{{plate.samples.well23.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well23.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well23.assay}}</div>
+            </td>
+            <td class="text-center border-1 {{plate.samples.well24.color}}">
+              <div class="plate-lab-id">{{plate.samples.well24.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well24.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well24.assay}}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    {% if plate.plate.size == 8 %}
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col" class="plate-col">1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="plate-row">
+            <td class="fw-bold">A</td>
+            <td class="text-center border-1 {{plate.samples.well1.color}}">
+              <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well1.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">B</td>
+            <td class="text-center border-1 {{plate.samples.well2.color}}">
+              <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well2.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">C</td>
+            <td class="text-center border-1 {{plate.samples.well3.color}}">
+              <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well3.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">D</td>
+            <td class="text-center border-1 {{plate.samples.well4.color}}">
+              <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well4.assay}}</div>
+            </td>
+          </tr>
+          
+          <tr class="plate-row"> 
+            <td class="fw-bold">E</td>
+            <td class="text-center border-1 {{plate.samples.well5.color}}">
+              <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well5.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">F</td>
+            <td class="text-center border-1 {{plate.samples.well6.color}}">
+              <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well6.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">G</td>
+            <td class="text-center border-1 {{plate.samples.well7.color}}">
+              <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well7.assay}}</div>
+            </td>
+          </tr>
+
+          <tr class="plate-row">
+            <td class="fw-bold">H</td>
+            <td class="text-center border-1 {{plate.samples.well8.color}}">
+              <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
+              <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
+              <div class="plate-assay">{{plate.samples.well8.assay}}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
+            <th scope="col">Temperature (°C)</th>
+            <th scope="col">Duration (sec.)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Denature</td>
+            <td>{{plate.protocol.denature_temp}}</td>
+            <td>{{plate.protocol.denature_duration}}</td>
+          </tr>
+          <tr>
+            <td>Anneal</td>
+            <td>{{plate.protocol.anneal_temp}}</td>
+            <td>{{plate.protocol.anneal_duration}}</td>
+          </tr>
+          <tr>
+            <td>Extend</td>
+            <td>{{plate.protocol.extension_temp}}</td>
+            <td>{{plate.protocol.extension_duration}}</td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+    {% for value in plate.assays %}
+      {% for assay, num in value.items %}
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th scope="col"></th>
-              <th scope="col" class="plate-col">1</th>
-              <th scope="col" class="plate-col">2</th>
-              <th scope="col" class="plate-col">3</th>
-              <th scope="col" class="plate-col">4</th>
-              <th scope="col" class="plate-col">5</th>
-              <th scope="col" class="plate-col">6</th>
+              <th scope="col">{{assay}} × {{num}} Samples @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
+              <th scope="col">Total Master Mix (μL)</th>
+              <th scope="col">Per Sample (μL) × {{num}}</th>
+              <th scope="col">Stock Conc.</th>
+              <th scope="col">Final Conc.</th>
+              <th scope="col">DF</th>
             </tr>
           </thead>
+
           <tbody>
-            <tr class="plate-row">
-              <td class="fw-bold">A</td>
-              <td class="text-center border-1 {{plate.samples.well1.color}}">
-                <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well1.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well2.color}}">
-                <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well2.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well3.color}}">
-                <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well3.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well4.color}}">
-                <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well4.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well5.color}}">
-                <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well5.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well6.color}}">
-                <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well6.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">B</td>
-              <td class="text-center border-1 {{plate.samples.well7.color}}">
-                <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well7.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well8.color}}">
-                <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well8.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well9.color}}">
-                <div class="plate-lab-id">{{plate.samples.well9.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well9.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well9.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well10.color}}">
-                <div class="plate-lab-id">{{plate.samples.well10.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well10.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well10.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well11.color}}">
-                <div class="plate-lab-id">{{plate.samples.well11.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well11.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well11.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well12.color}}">
-                <div class="plate-lab-id">{{plate.samples.well12.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well12.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well12.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">C</td>
-              <td class="text-center border-1 {{plate.samples.well13.color}}">
-                <div class="plate-lab-id">{{plate.samples.well13.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well13.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well13.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well14.color}}">
-                <div class="plate-lab-id">{{plate.samples.well14.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well14.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well14.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well15.color}}">
-                <div class="plate-lab-id">{{plate.samples.well15.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well15.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well15.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well16.color}}">
-                <div class="plate-lab-id">{{plate.samples.well16.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well16.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well16.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well17.color}}">
-                <div class="plate-lab-id">{{plate.samples.well17.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well17.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well17.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well18.color}}">
-                <div class="plate-lab-id">{{plate.samples.well18.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well18.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well18.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">D</td>
-              <td class="text-center border-1 {{plate.samples.well19.color}}">
-                <div class="plate-lab-id">{{plate.samples.well19.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well19.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well19.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well20.color}}">
-                <div class="plate-lab-id">{{plate.samples.well20.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well20.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well20.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well21.color}}">
-                <div class="plate-lab-id">{{plate.samples.well21.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well21.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well21.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well22.color}}">
-                <div class="plate-lab-id">{{plate.samples.well22.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well22.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well22.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well23.color}}">
-                <div class="plate-lab-id">{{plate.samples.well23.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well23.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well23.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well24.color}}">
-                <div class="plate-lab-id">{{plate.samples.well24.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well24.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well24.assay}}</div>
-              </td>
-            </tr>
-            
-            <tr class="plate-row"> 
-              <td class="fw-bold">E</td>
-              <td class="text-center border-1 {{plate.samples.well25.color}}">
-                <div class="plate-lab-id">{{plate.samples.well25.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well25.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well25.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well26.color}}">
-                <div class="plate-lab-id">{{plate.samples.well26.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well26.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well26.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well27.color}}">
-                <div class="plate-lab-id">{{plate.samples.well27.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well27.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well27.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well28.color}}">
-                <div class="plate-lab-id">{{plate.samples.well28.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well28.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well28.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well29.color}}">
-                <div class="plate-lab-id">{{plate.samples.well29.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well29.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well29.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well30.color}}">
-                <div class="plate-lab-id">{{plate.samples.well30.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well30.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well30.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">F</td>
-              <td class="text-center border-1 {{plate.samples.well31.color}}">
-                <div class="plate-lab-id">{{plate.samples.well31.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well31.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well31.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well32.color}}">
-                <div class="plate-lab-id">{{plate.samples.well32.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well32.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well32.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well33.color}}">
-                <div class="plate-lab-id">{{plate.samples.well33.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well33.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well33.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well34.color}}">
-                <div class="plate-lab-id">{{plate.samples.well34.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well34.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well34.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well35.color}}">
-                <div class="plate-lab-id">{{plate.samples.well35.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well35.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well35.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well36.color}}">
-                <div class="plate-lab-id">{{plate.samples.well36.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well36.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well36.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">G</td>
-              <td class="text-center border-1 {{plate.samples.well37.color}}">
-                <div class="plate-lab-id">{{plate.samples.well37.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well37.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well37.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well38.color}}">
-                <div class="plate-lab-id">{{plate.samples.well38.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well38.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well38.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well39.color}}">
-                <div class="plate-lab-id">{{plate.samples.well39.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well39.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well39.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well40.color}}">
-                <div class="plate-lab-id">{{plate.samples.well40.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well40.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well40.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well41.color}}">
-                <div class="plate-lab-id">{{plate.samples.well41.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well41.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well41.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well42.color}}">
-                <div class="plate-lab-id">{{plate.samples.well42.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well42.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well42.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">H</td>
-              <td class="text-center border-1 {{plate.samples.well43.color}}">
-                <div class="plate-lab-id">{{plate.samples.well43.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well43.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well43.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well44.color}}">
-                <div class="plate-lab-id">{{plate.samples.well44.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well44.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well44.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well45.color}}">
-                <div class="plate-lab-id">{{plate.samples.well45.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well45.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well45.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well46.color}}">
-                <div class="plate-lab-id">{{plate.samples.well46.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well46.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well46.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well47.color}}">
-                <div class="plate-lab-id">{{plate.samples.well47.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well47.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well47.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well48.color}}">
-                <div class="plate-lab-id">{{plate.samples.well48.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well48.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well48.assay}}</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      {% endif %}
-
-      {% if plate.plate.size == 24 %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col" class="plate-col">1</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="plate-row">
-              <td class="fw-bold">A</td>
-              <td class="text-center border-1 {{plate.samples.well1.color}}">
-                <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well1.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well2.color}}">
-                <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well2.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well3.color}}">
-                <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well3.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">B</td>
-              <td class="text-center border-1 {{plate.samples.well4.color}}">
-                <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well4.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well5.color}}">
-                <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well5.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well6.color}}">
-                <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well6.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">C</td>
-              <td class="text-center border-1 {{plate.samples.well7.color}}">
-                <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well7.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well8.color}}">
-                <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well8.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well9.color}}">
-                <div class="plate-lab-id">{{plate.samples.well9.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well9.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well9.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">D</td>
-              <td class="text-center border-1 {{plate.samples.well10.color}}">
-                <div class="plate-lab-id">{{plate.samples.well10.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well10.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well10.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well11.color}}">
-                <div class="plate-lab-id">{{plate.samples.well11.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well11.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well11.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well12.color}}">
-                <div class="plate-lab-id">{{plate.samples.well12.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well12.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well12.assay}}</div>
-              </td>
-            </tr>
-            
-            <tr class="plate-row"> 
-              <td class="fw-bold">E</td>
-              <td class="text-center border-1 {{plate.samples.well13.color}}">
-                <div class="plate-lab-id">{{plate.samples.well13.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well13.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well13.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well14.color}}">
-                <div class="plate-lab-id">{{plate.samples.well14.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well14.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well14.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well15.color}}">
-                <div class="plate-lab-id">{{plate.samples.well15.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well15.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well15.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">F</td>
-              <td class="text-center border-1 {{plate.samples.well16.color}}">
-                <div class="plate-lab-id">{{plate.samples.well16.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well16.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well16.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well17.color}}">
-                <div class="plate-lab-id">{{plate.samples.well17.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well17.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well17.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well18.color}}">
-                <div class="plate-lab-id">{{plate.samples.well18.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well18.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well18.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">G</td>
-              <td class="text-center border-1 {{plate.samples.well19.color}}">
-                <div class="plate-lab-id">{{plate.samples.well19.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well19.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well19.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well20.color}}">
-                <div class="plate-lab-id">{{plate.samples.well20.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well20.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well20.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well21.color}}">
-                <div class="plate-lab-id">{{plate.samples.well21.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well21.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well21.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">H</td>
-              <td class="text-center border-1 {{plate.samples.well22.color}}">
-                <div class="plate-lab-id">{{plate.samples.well22.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well22.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well22.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well23.color}}">
-                <div class="plate-lab-id">{{plate.samples.well23.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well23.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well23.assay}}</div>
-              </td>
-              <td class="text-center border-1 {{plate.samples.well24.color}}">
-                <div class="plate-lab-id">{{plate.samples.well24.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well24.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well24.assay}}</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      {% endif %}
-
-      {% if plate.plate.size == 8 %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col" class="plate-col">1</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="plate-row">
-              <td class="fw-bold">A</td>
-              <td class="text-center border-1 {{plate.samples.well1.color}}">
-                <div class="plate-lab-id">{{plate.samples.well1.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well1.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well1.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">B</td>
-              <td class="text-center border-1 {{plate.samples.well2.color}}">
-                <div class="plate-lab-id">{{plate.samples.well2.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well2.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well2.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">C</td>
-              <td class="text-center border-1 {{plate.samples.well3.color}}">
-                <div class="plate-lab-id">{{plate.samples.well3.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well3.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well3.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">D</td>
-              <td class="text-center border-1 {{plate.samples.well4.color}}">
-                <div class="plate-lab-id">{{plate.samples.well4.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well4.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well4.assay}}</div>
-              </td>
-            </tr>
-            
-            <tr class="plate-row"> 
-              <td class="fw-bold">E</td>
-              <td class="text-center border-1 {{plate.samples.well5.color}}">
-                <div class="plate-lab-id">{{plate.samples.well5.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well5.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well5.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">F</td>
-              <td class="text-center border-1 {{plate.samples.well6.color}}">
-                <div class="plate-lab-id">{{plate.samples.well6.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well6.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well6.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">G</td>
-              <td class="text-center border-1 {{plate.samples.well7.color}}">
-                <div class="plate-lab-id">{{plate.samples.well7.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well7.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well7.assay}}</div>
-              </td>
-            </tr>
-
-            <tr class="plate-row">
-              <td class="fw-bold">H</td>
-              <td class="text-center border-1 {{plate.samples.well8.color}}">
-                <div class="plate-lab-id">{{plate.samples.well8.lab_id}}</div>
-                <div class="plate-sample-id">{{plate.samples.well8.sample_id}}</div>
-                <div class="plate-assay">{{plate.samples.well8.assay}}</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      {% endif %}
-
-      {% for value in plate.assays %}
-        {% for assay, num in value.items %}
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">{{assay}} × {{num}} Samples @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
-                <th scope="col">Total Master Mix (μL)</th>
-                <th scope="col">Per Sample (μL) × {{num}}</th>
-                <th scope="col">Stock Conc.</th>
-                <th scope="col">Final Conc.</th>
-                <th scope="col">DF</th>
+            {% for reagent in assay.reagentassay_set.all|dictsort:"order"%}
+              <tr class="table-light">
+                <td>{{reagent.reagent}}</td>
+                <td class="table-success">{{reagent.volume_per_sample|dec_mult:num}}</td>
+                <td>{{reagent.volume_per_sample}}</td>
+                <td>{% if reagent.reagent.stock_concentration %} {{reagent.reagent.stock_concentration}} {{reagent.reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
+                <td>{% if reagent.final_concentration %} {{reagent.final_concentration}} {{reagent.final_concentration_unit}} {% else %} ------ {% endif %}</td>
+                <td>{{reagent.dilution_factor}}</td>
               </tr>
-            </thead>
+            {% endfor %}
+            <tr class="table-dark">
+              <td>Total</td>
+              <td>{{assay.mm_volume|dec_mult:num}}</td>
+              <td>{{assay.mm_volume}}</td>
+              <td>------</td>
+              <td>------</td>
+              <td>------</td>
+            </tr>
+          </tbody>
 
-            <tbody>
-              {% for reagent in assay.reagentassay_set.all|dictsort:"order"%}
-                <tr class="table-light">
-                  <td>{{reagent.reagent}}</td>
-                  <td class="table-success">{{reagent.volume_per_sample|dec_mult:num}}</td>
-                  <td>{{reagent.volume_per_sample}}</td>
-                  <td>{% if reagent.reagent.stock_concentration %} {{reagent.reagent.stock_concentration}} {{reagent.reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
-                  <td>{% if reagent.final_concentration %} {{reagent.final_concentration}} {{reagent.final_concentration_unit}} {% else %} ------ {% endif %}</td>
-                  <td>{{reagent.dilution_factor}}</td>
-                </tr>
-              {% endfor %}
-              <tr class="table-dark">
-                <td>Total</td>
-                <td>{{assay.mm_volume|dec_mult:num}}</td>
-                <td>{{assay.mm_volume}}</td>
-                <td>------</td>
-                <td>------</td>
-                <td>------</td>
-              </tr>
-            </tbody>
-
-          </table>
-        </div>
+        </table>
+      </div>
       {% endfor %}
+
     {% endfor %}
+
   {% endfor %}
 
 
@@ -6867,8 +6969,39 @@
       </div>
     {% endif %}
 
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">{{gel.protocol.name}} for {{gel.protocol.number_of_cycles}} Cycles</th>
+            <th scope="col">Temperature (°C)</th>
+            <th scope="col">Duration (sec.)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Denature</td>
+            <td>{{gel.protocol.denature_temp}}</td>
+            <td>{{gel.protocol.denature_duration}}</td>
+          </tr>
+          <tr>
+            <td>Anneal</td>
+            <td>{{gel.protocol.anneal_temp}}</td>
+            <td>{{gel.protocol.anneal_duration}}</td>
+          </tr>
+          <tr>
+            <td>Extend</td>
+            <td>{{gel.protocol.extension_temp}}</td>
+            <td>{{gel.protocol.extension_duration}}</td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+
     {% for value in gel.assays %}
-        {% for assay, num in value.items %}
+      {% for assay, num in value.items %}
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
@@ -7469,6 +7602,37 @@
       </div>
     {% endif %}
 
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">{{gel.protocol.name}} for {{gel.protocol.number_of_cycles}} Cycles</th>
+            <th scope="col">Temperature (°C)</th>
+            <th scope="col">Duration (sec.)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Denature</td>
+            <td>{{gel.protocol.denature_temp}}</td>
+            <td>{{gel.protocol.denature_duration}}</td>
+          </tr>
+          <tr>
+            <td>Anneal</td>
+            <td>{{gel.protocol.anneal_temp}}</td>
+            <td>{{gel.protocol.anneal_duration}}</td>
+          </tr>
+          <tr>
+            <td>Extend</td>
+            <td>{{gel.protocol.extension_temp}}</td>
+            <td>{{gel.protocol.extension_duration}}</td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+
     {% for value in gel.assays %}
         {% for assay, num in value.items %}
         <div class="table-responsive">
@@ -7509,8 +7673,8 @@
         </div>
       {% endfor %}
     {% endfor %}
-  {% endfor %}
 
+  {% endfor %}
 
 </div>
 {% endblock %}
