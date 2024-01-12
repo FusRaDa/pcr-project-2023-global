@@ -198,7 +198,7 @@ def choose_gel(all_samples, process):
 def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
   plate = choose_plate(all_samples, process)
 
-  plate_data = {'plate': plate}
+  plate_data = {'size': plate.size}
   protocol_data = {'protocol': {
     'name': protocol.name,
     'denature_temp': float(protocol.denature_temp),
@@ -240,7 +240,27 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
             del sample[None]
             loaded_samples.append(sample)
             samples_data['samples'].update(sample)
-          assays_data['assays'].append({assay:num_samples + control_wells})
+
+          assay_dict = {
+            'name': assay.name,
+            'sample_num': num_samples + control_wells,
+            'sample_volume': assay.sample_volume,
+            'reaction_volume': assay.reaction_volume,
+            'reagents': [],
+          }
+
+          for reagent in assay.reagentassay_set.all().order_by('order'):
+            assay_dict['reagents'].append({
+              'name:': reagent.reagent.name,
+              'volume_per_sample': reagent.volume_per_sample,
+              'reagent_stock_concentration': reagent.reagent.stock_concentration,
+              'reagent_unit_concentration': reagent.reagent.unit_concentration,
+              'stock_concentration': reagent.final_concentration,
+              'unit_concentration': reagent.final_concentration_unit,
+              'dilution_factor': reagent.dilution_factor,
+            })
+            
+          assays_data['assays'].append(assay)
 
           # add validation if plate size is insufficient to even hold only one assay w/ controls
           if plate.size == Plate.Sizes.EIGHT:
@@ -360,7 +380,7 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
 def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
   gel = choose_gel(all_samples, process)
 
-  gel_data = {'gel': gel.size}
+  gel_data = {'size': gel.size}
   protocol_data = {'protocol': {
     'name': protocol.name,
     'denature_temp': float(protocol.denature_temp),
