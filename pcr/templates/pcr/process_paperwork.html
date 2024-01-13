@@ -52,8 +52,6 @@
     </div>
   </div>
 
-  {{dna_qpcr_json}}
-
 
   {% for plate in dna_qpcr_json %}
     {% if plate.size == 384 %}
@@ -3228,47 +3226,6 @@
       </div>
     {% endfor %}
 
-    {% comment %} {% for value in plate.assays %}
-      {% for assay, num in value.items %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">{{assay}} × {{num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
-              <th scope="col">Total Master Mix (μL)</th>
-              <th scope="col">Per Sample (μL) × {{num}}</th>
-              <th scope="col">Stock Conc.</th>
-              <th scope="col">Final Conc.</th>
-              <th scope="col">DF</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {% for reagent in assay.reagentassay_set.all|dictsort:"order"%}
-              <tr class="table-light">
-                <td>{{reagent.reagent}}</td>
-                <td class="table-success">{{reagent.volume_per_sample|dec_mult:num}}</td>
-                <td>{{reagent.volume_per_sample}}</td>
-                <td>{% if reagent.reagent.stock_concentration %} {{reagent.reagent.stock_concentration}} {{reagent.reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
-                <td>{% if reagent.final_concentration %} {{reagent.final_concentration}} {{reagent.final_concentration_unit}} {% else %} ------ {% endif %}</td>
-                <td>{{reagent.dilution_factor}}</td>
-              </tr>
-            {% endfor %}
-            <tr class="table-dark">
-              <td>Total</td>
-              <td>{{assay.mm_volume|dec_mult:num}}</td>
-              <td>{{assay.mm_volume}}</td>
-              <td>------</td>
-              <td>------</td>
-              <td>------</td>
-            </tr>
-          </tbody>
-
-        </table>
-      </div>
-      {% endfor %}
-    {% endfor %} {% endcomment %}
-
   {% endfor %}
 
 
@@ -6406,13 +6363,12 @@
       </table>
     </div>
 
-    {% for value in plate.assays %}
-      {% for assay, num in value.items %}
+    {% for assay in plate.assays %}
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th scope="col">{{assay}} × {{num}} Samples @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
+              <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
               <th scope="col">Total Master Mix (μL)</th>
               <th scope="col">Per Sample (μL) × {{num}}</th>
               <th scope="col">Stock Conc.</th>
@@ -6422,19 +6378,19 @@
           </thead>
 
           <tbody>
-            {% for reagent in assay.reagentassay_set.all|dictsort:"order"%}
+            {% for reagent in assay.reagents %}
               <tr class="table-light">
-                <td>{{reagent.reagent}}</td>
-                <td class="table-success">{{reagent.volume_per_sample|dec_mult:num}}</td>
+                <td>{{reagent.name}}</td>
+                <td class="table-success">{{reagent.volume_per_sample|dec_mult:assay.sample_num}}</td>
                 <td>{{reagent.volume_per_sample}}</td>
-                <td>{% if reagent.reagent.stock_concentration %} {{reagent.reagent.stock_concentration}} {{reagent.reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
-                <td>{% if reagent.final_concentration %} {{reagent.final_concentration}} {{reagent.final_concentration_unit}} {% else %} ------ {% endif %}</td>
-                <td>{{reagent.dilution_factor}}</td>
+                <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
+                <td>{% if reagent.final_stock_concentration %} {{reagent.final_stock_concentration}} {{reagent.final_unit_concentration}} {% else %} ------ {% endif %}</td>
+                <td>{% if reagent.dilution_factor %} {{reagent.dilution_factor}} {% else %} ------ {% endif %}</td>
               </tr>
             {% endfor %}
             <tr class="table-dark">
               <td>Total</td>
-              <td>{{assay.mm_volume|dec_mult:num}}</td>
+              <td>{{assay.mm_volume|dec_mult:assay.sample_num}}</td>
               <td>{{assay.mm_volume}}</td>
               <td>------</td>
               <td>------</td>
@@ -6444,8 +6400,6 @@
 
         </table>
       </div>
-      {% endfor %}
-
     {% endfor %}
 
   {% endfor %}
@@ -7041,46 +6995,45 @@
       </table>
     </div>
 
-    {% for value in gel.assays %}
-      {% for assay, num in value.items %}
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">{{assay}} × {{num}} Samples @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
-                <th scope="col">Total Master Mix (μL)</th>
-                <th scope="col">Per Sample (μL) × {{num}}</th>
-                <th scope="col">Stock Conc.</th>
-                <th scope="col">Final Conc.</th>
-                <th scope="col">DF</th>
-              </tr>
-            </thead>
+    {% for assay in gel.assays %}
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
+              <th scope="col">Total Master Mix (μL)</th>
+              <th scope="col">Per Sample (μL) × {{num}}</th>
+              <th scope="col">Stock Conc.</th>
+              <th scope="col">Final Conc.</th>
+              <th scope="col">DF</th>
+            </tr>
+          </thead>
 
-            <tbody>
-              {% for reagent in assay.reagentassay_set.all|dictsort:"order"%}
-                <tr class="table-light">
-                  <td>{{reagent.reagent}}</td>
-                  <td class="table-success">{{reagent.volume_per_sample|dec_mult:num}}</td>
-                  <td>{{reagent.volume_per_sample}}</td>
-                  <td>{% if reagent.reagent.stock_concentration %} {{reagent.reagent.stock_concentration}} {{reagent.reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
-                  <td>{% if reagent.final_concentration %} {{reagent.final_concentration}} {{reagent.final_concentration_unit}} {% else %} ------ {% endif %}</td>
-                  <td>{{reagent.dilution_factor}}</td>
-                </tr>
-              {% endfor %}
-              <tr class="table-dark">
-                <td>Total</td>
-                <td>{{assay.mm_volume|dec_mult:num}}</td>
-                <td>{{assay.mm_volume}}</td>
-                <td>------</td>
-                <td>------</td>
-                <td>------</td>
+          <tbody>
+            {% for reagent in assay.reagents %}
+              <tr class="table-light">
+                <td>{{reagent.name}}</td>
+                <td class="table-success">{{reagent.volume_per_sample|dec_mult:assay.sample_num}}</td>
+                <td>{{reagent.volume_per_sample}}</td>
+                <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
+                <td>{% if reagent.final_stock_concentration %} {{reagent.final_stock_concentration}} {{reagent.final_unit_concentration}} {% else %} ------ {% endif %}</td>
+                <td>{% if reagent.dilution_factor %} {{reagent.dilution_factor}} {% else %} ------ {% endif %}</td>
               </tr>
-            </tbody>
+            {% endfor %}
+            <tr class="table-dark">
+              <td>Total</td>
+              <td>{{assay.mm_volume|dec_mult:assay.sample_num}}</td>
+              <td>{{assay.mm_volume}}</td>
+              <td>------</td>
+              <td>------</td>
+              <td>------</td>
+            </tr>
+          </tbody>
 
-          </table>
-        </div>
-      {% endfor %}
+        </table>
+      </div>
     {% endfor %}
+
   {% endfor %}
 
 
@@ -7674,45 +7627,43 @@
       </table>
     </div>
 
-    {% for value in gel.assays %}
-        {% for assay, num in value.items %}
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">{{assay}} × {{num}} Samples @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
-                <th scope="col">Total Master Mix (μL)</th>
-                <th scope="col">Per Sample (μL) × {{num}}</th>
-                <th scope="col">Stock Conc.</th>
-                <th scope="col">Final Conc.</th>
-                <th scope="col">DF</th>
-              </tr>
-            </thead>
+    {% for assay in gel.assays %}
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
+              <th scope="col">Total Master Mix (μL)</th>
+              <th scope="col">Per Sample (μL) × {{num}}</th>
+              <th scope="col">Stock Conc.</th>
+              <th scope="col">Final Conc.</th>
+              <th scope="col">DF</th>
+            </tr>
+          </thead>
 
-            <tbody>
-              {% for reagent in assay.reagentassay_set.all|dictsort:"order"%}
-                <tr class="table-light">
-                  <td>{{reagent.reagent}}</td>
-                  <td class="table-success">{{reagent.volume_per_sample|dec_mult:num}}</td>
-                  <td>{{reagent.volume_per_sample}}</td>
-                  <td>{% if reagent.reagent.stock_concentration %} {{reagent.reagent.stock_concentration}} {{reagent.reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
-                  <td>{% if reagent.final_concentration %} {{reagent.final_concentration}} {{reagent.final_concentration_unit}} {% else %} ------ {% endif %}</td>
-                  <td>{{reagent.dilution_factor}}</td>
-                </tr>
-              {% endfor %}
-              <tr class="table-dark">
-                <td>Total</td>
-                <td>{{assay.mm_volume|dec_mult:num}}</td>
-                <td>{{assay.mm_volume}}</td>
-                <td>------</td>
-                <td>------</td>
-                <td>------</td>
+          <tbody>
+            {% for reagent in assay.reagents %}
+              <tr class="table-light">
+                <td>{{reagent.name}}</td>
+                <td class="table-success">{{reagent.volume_per_sample|dec_mult:assay.sample_num}}</td>
+                <td>{{reagent.volume_per_sample}}</td>
+                <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
+                <td>{% if reagent.final_stock_concentration %} {{reagent.final_stock_concentration}} {{reagent.final_unit_concentration}} {% else %} ------ {% endif %}</td>
+                <td>{% if reagent.dilution_factor %} {{reagent.dilution_factor}} {% else %} ------ {% endif %}</td>
               </tr>
-            </tbody>
+            {% endfor %}
+            <tr class="table-dark">
+              <td>Total</td>
+              <td>{{assay.mm_volume|dec_mult:assay.sample_num}}</td>
+              <td>{{assay.mm_volume}}</td>
+              <td>------</td>
+              <td>------</td>
+              <td>------</td>
+            </tr>
+          </tbody>
 
-          </table>
-        </div>
-      {% endfor %}
+        </table>
+      </div>
     {% endfor %}
 
   {% endfor %}

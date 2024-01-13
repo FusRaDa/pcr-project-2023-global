@@ -42,6 +42,8 @@ class ThermalCyclerProtocol(models.Model):
 class Process(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+  name = models.CharField(blank=True, null=True, default=None, max_length=100)
+
   pcr_dna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='pcr_dna', blank=True, null=True, default=None)
   pcr_rna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='pcr_rna', blank=True, null=True, default=None)
 
