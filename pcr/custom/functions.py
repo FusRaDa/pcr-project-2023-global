@@ -244,23 +244,35 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
           assay_dict = {
             'name': assay.name,
             'sample_num': num_samples + control_wells,
-            'sample_volume': assay.sample_volume,
-            'reaction_volume': assay.reaction_volume,
+            'sample_volume': float(assay.sample_volume),
+            'reaction_volume': float(assay.reaction_volume),
+            'mm_volume': float(assay.mm_volume),
             'reagents': [],
           }
-
+          
           for reagent in assay.reagentassay_set.all().order_by('order'):
+            stock_concentration = None
+            if reagent.reagent.stock_concentration:
+              stock_concentration = float(reagent.reagent.stock_concentration)
+
+            final_stock_concentration = None
+            if reagent.final_concentration:
+              final_stock_concentration = float(reagent.final_concentration)
+
+            dilution_factor = None
+            if reagent.dilution_factor:
+              dilution_factor = float(reagent.dilution_factor)
+
             assay_dict['reagents'].append({
-              'name:': reagent.reagent.name,
-              'volume_per_sample': reagent.volume_per_sample,
-              'reagent_stock_concentration': reagent.reagent.stock_concentration,
-              'reagent_unit_concentration': reagent.reagent.unit_concentration,
-              'stock_concentration': reagent.final_concentration,
-              'unit_concentration': reagent.final_concentration_unit,
-              'dilution_factor': reagent.dilution_factor,
+              'name': reagent.reagent.name,
+              'volume_per_sample': float(reagent.volume_per_sample),
+              'stock_concentration': stock_concentration,
+              'unit_concentration': reagent.reagent.unit_concentration,
+              'final_stock_concentration': final_stock_concentration,
+              'final_unit_concentration': reagent.final_concentration_unit,
+              'dilution_factor': dilution_factor,
             })
-            
-          assays_data['assays'].append(assay)
+          assays_data['assays'].append(assay_dict)
 
           # add validation if plate size is insufficient to even hold only one assay w/ controls
           if plate.size == Plate.Sizes.EIGHT:
@@ -299,7 +311,7 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
                 'color': control_color,
                 'lab_id': control.control.name,
                 'sample_id': control.control.lot_number,
-                'assay': assay
+                'assay': assay.name
               }}
               samples_data['samples'].update(control_data)
 
@@ -323,7 +335,7 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
                   'color': control_color,
                   'lab_id': control.control.name,
                   'sample_id': control.control.lot_number,
-                  'assay': assay
+                  'assay': assay.name
                 }}
                 samples_data['samples'].update(control_data)
 
@@ -336,7 +348,7 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
                   'color': control_color,
                   'lab_id': control.control.name,
                   'sample_id': control.control.lot_number,
-                  'assay': assay
+                  'assay': assay.name
                 }}
                 samples_data['samples'].update(control_data)
               remaining_wells -= position
@@ -353,7 +365,39 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
               del sample[None]
               loaded_samples.append(sample)
               samples_data['samples'].update(sample)
-            assays_data['assays'].append({assay:num_samples + control_wells})
+            
+            assay_dict = {
+              'name': assay.name,
+              'sample_num': num_samples + control_wells,
+              'sample_volume': float(assay.sample_volume),
+              'reaction_volume': float(assay.reaction_volume),
+              'mm_volume': float(assay.mm_volume),
+              'reagents': [],
+            }
+            
+            for reagent in assay.reagentassay_set.all().order_by('order'):
+              stock_concentration = None
+              if reagent.reagent.stock_concentration:
+                stock_concentration = float(reagent.reagent.stock_concentration)
+
+              final_stock_concentration = None
+              if reagent.final_concentration:
+                final_stock_concentration = float(reagent.final_concentration)
+
+              dilution_factor = None
+              if reagent.dilution_factor:
+                dilution_factor = float(reagent.dilution_factor)
+
+              assay_dict['reagents'].append({
+                'name': reagent.reagent.name,
+                'volume_per_sample': float(reagent.volume_per_sample),
+                'stock_concentration': stock_concentration,
+                'unit_concentration': reagent.reagent.unit_concentration,
+                'final_stock_concentration': final_stock_concentration,
+                'final_unit_concentration': reagent.final_concentration_unit,
+                'dilution_factor': dilution_factor,
+              })
+            assays_data['assays'].append(assay_dict)
 
             for control in assay.controlassay_set.all().order_by('order'):
               position += 1
@@ -361,7 +405,7 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
                 'color': control_color,
                 'lab_id': control.control.name,
                 'sample_id': control.control.lot_number,
-                'assay': assay
+                'assay': assay.name
               }}
               samples_data['samples'].update(control_data)
             remaining_wells = 0
@@ -422,7 +466,39 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
             del sample[None]
             loaded_samples.append(sample)
             samples_data['samples'].update(sample)
-          assays_data['assays'].append({assay:num_samples + control_wells})
+          
+          assay_dict = {
+            'name': assay.name,
+            'sample_num': num_samples + control_wells,
+            'sample_volume': float(assay.sample_volume),
+            'reaction_volume': float(assay.reaction_volume),
+            'mm_volume': float(assay.mm_volume),
+            'reagents': [],
+          }
+          
+          for reagent in assay.reagentassay_set.all().order_by('order'):
+            stock_concentration = None
+            if reagent.reagent.stock_concentration:
+              stock_concentration = float(reagent.reagent.stock_concentration)
+
+            final_stock_concentration = None
+            if reagent.final_concentration:
+              final_stock_concentration = float(reagent.final_concentration)
+
+            dilution_factor = None
+            if reagent.dilution_factor:
+              dilution_factor = float(reagent.dilution_factor)
+
+            assay_dict['reagents'].append({
+              'name': reagent.reagent.name,
+              'volume_per_sample': float(reagent.volume_per_sample),
+              'stock_concentration': stock_concentration,
+              'unit_concentration': reagent.reagent.unit_concentration,
+              'final_stock_concentration': final_stock_concentration,
+              'final_unit_concentration': reagent.final_concentration_unit,
+              'dilution_factor': dilution_factor,
+            })
+            assays_data['assays'].append(assay_dict)
 
           for control in assay.controlassay_set.all().order_by('order'):
             position += 1
@@ -430,7 +506,7 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
               'color': control_color,
               'lab_id': control.control.name,
               'sample_id':control.control.lot_number,
-              'assay': assay
+              'assay': assay.name
             }}
             samples_data['samples'].update(control_data)
           
@@ -439,13 +515,12 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
               'color': control_color,
               'lab_id': 'LADDER LAB_ID',
               'sample_id': 'LADDER SAMPLE_ID',
-              'assay': assay
+              'assay': assay.name
             }}
           samples_data['samples'].update(ladder)
-
           remaining_wells -= position
-        else: 
 
+        else: 
           if minimum_samples_in_gel + control_wells + 1 <= remaining_wells:
             num_samples = 0
             for sample in samples[:remaining_wells - control_wells - 1]:
@@ -455,7 +530,39 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
               del sample[None]
               loaded_samples.append(sample)
               samples_data['samples'].update(sample)
-            assays_data['assays'].append({assay:num_samples + control_wells})
+            
+            assay_dict = {
+              'name': assay.name,
+              'sample_num': num_samples + control_wells,
+              'sample_volume': float(assay.sample_volume),
+              'reaction_volume': float(assay.reaction_volume),
+              'mm_volume': float(assay.mm_volume),
+              'reagents': [],
+            }
+          
+            for reagent in assay.reagentassay_set.all().order_by('order'):
+              stock_concentration = None
+              if reagent.reagent.stock_concentration:
+                stock_concentration = float(reagent.reagent.stock_concentration)
+
+              final_stock_concentration = None
+              if reagent.final_concentration:
+                final_stock_concentration = float(reagent.final_concentration)
+
+              dilution_factor = None
+              if reagent.dilution_factor:
+                dilution_factor = float(reagent.dilution_factor)
+
+              assay_dict['reagents'].append({
+                'name': reagent.reagent.name,
+                'volume_per_sample': float(reagent.volume_per_sample),
+                'stock_concentration': stock_concentration,
+                'unit_concentration': reagent.reagent.unit_concentration,
+                'final_stock_concentration': final_stock_concentration,
+                'final_unit_concentration': reagent.final_concentration_unit,
+                'dilution_factor': dilution_factor,
+              })
+              assays_data['assays'].append(assay_dict)
 
             for control in assay.controlassay_set.all().order_by('order'):
               position += 1
@@ -463,7 +570,7 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
                 'color': control_color,
                 'lab_id': control.control.name,
                 'sample_id':control.control.lot_number,
-                'assay': assay
+                'assay': assay.name
               }}
               samples_data['samples'].update(control_data)
             
@@ -472,7 +579,7 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
                 'color': control_color,
                 'lab_id': assay.ladder.name,
                 'sample_id': assay.ladder.lot_number,
-                'assay': assay
+                'assay': assay.name
               }}
             samples_data['samples'].update(ladder)
             remaining_wells = 0
