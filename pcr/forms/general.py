@@ -6,6 +6,8 @@ from ..models.assay import AssayCode
 
 
 class SearchProcessForm(forms.Form):
+  name = forms.CharField(max_length=100, required=False)
+
   panel = forms.ModelChoiceField(queryset=None, required=False)
 
   lab_id = forms.CharField(max_length=4, required=False)
@@ -26,13 +28,13 @@ class SearchProcessForm(forms.Form):
     self.fields['panel'].queryset = AssayCode.objects.filter(user=self.user)
 
     self.fields['panel'].widget.attrs['class'] = 'form-select'
+    self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['lab_id'].widget.attrs['class'] = 'form-control'
     self.fields['start_date'].widget.attrs['class'] = 'form-control'
     self.fields['end_date'].widget.attrs['class'] = 'form-control'
 
 
 class DeletionForm(forms.Form):
-
   confirm = forms.CharField()
 
   def __init__(self, *args, **kwargs):

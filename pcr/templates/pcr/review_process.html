@@ -59,6 +59,12 @@
     <div class="col-sm-4">
       <form method="POST" action="">
         {% csrf_token %}
+
+        <div class="input-group mb-2">
+          <div class="input-group-text input-group-process">Name</div>
+          {{form.name}}
+        </div>
+
         <h6 class="text-center">Thermal Cyler Protocols</h6>
 
         <div class="input-group mb-2">

@@ -150,16 +150,16 @@ def remove_sample_from_process(request, process_pk, sample_pk):
 def review_process(request, pk):
   try:
     process = Process.objects.get(user=request.user, is_processed=False, pk=pk)
-    samples = process.samples.all()
-
-    if samples.count() < 1:
-      messages.error(request, "Process must have at least one sample.")
-      return redirect('extracted_batches')
-  
-    assay_samples = samples_by_assay(samples)
   except ObjectDoesNotExist:
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
+  
+  samples = process.samples.all()
+  if samples.count() < 1:
+    messages.error(request, "Process must have at least one sample.")
+    return redirect('extracted_batches')
+
+  assay_samples = samples_by_assay(samples)
   
   form = ProcessForm(instance=process, user=request.user)
 
@@ -236,8 +236,11 @@ def process_paperwork(request, pk):
     for sample in process.samples.all():
       array.append(sample.batch)
     batches = list(set(array))
-    process.batches = batches
 
+    process.batches.clear()
+    for batch in batches:
+      process.batches.add(batch)
+    
     process.save()
     return redirect('processes')
 
@@ -253,12 +256,19 @@ def processes(request):
   if request.method == "POST":
     form = SearchProcessForm(request.POST, user=request.user)
     if form.is_valid():
+      name = form.cleaned_data['name']
       panel = form.cleaned_data['panel']
       lab_id = form.cleaned_data['lab_id']
       start_date = form.cleaned_data['start_date']
       end_date = form.cleaned_data['end_date']
 
-      processes = Process.objects.filter(user=request.user, is_processed=True, date_processed__range=[start_date, end_date], batches__lab_id=lab_id, batch__code=panel).order_by('-date_processed')
+      if name:
+        processes = Process.objects.filter(user=request.user, is_processed=True, name=name).order_by('-date_processed')
+
+      if panel:
+        processes = Process.objects.filter(user=request.user, is_processed=True, batches__code=panel).order_by('-date_processed')
+
+      # processes = Process.objects.filter(user=request.user, is_processed=True, date_processed__range=[start_date, end_date], batches__lab_id=lab_id, batches__code=panel).order_by('-date_processed')
     else:
       print(form.errors)
 

@@ -28,6 +28,7 @@ class ThermalCyclerProtocolForm(ModelForm):
 
 
 class ProcessForm(ModelForm):
+  name = forms.CharField(required=False)
 
   plate = forms.ModelMultipleChoiceField(
     queryset=None,
@@ -159,6 +160,8 @@ class ProcessForm(ModelForm):
     self.fields['plate'].queryset = Plate.objects.filter(user=self.user)
     self.fields['gel'].queryset = Gel.objects.filter(user=self.user)
 
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+
     self.fields['pcr_dna_protocol'].widget.attrs['class'] = 'form-select'
     self.fields['pcr_rna_protocol'].widget.attrs['class'] = 'form-select'
     self.fields['qpcr_dna_protocol'].widget.attrs['class'] = 'form-select'
@@ -176,4 +179,4 @@ class ProcessForm(ModelForm):
 
   class Meta:
     model = Process
-    exclude = ['user', 'samples', 'is_processed', 'date_processed', 'pcr_dna_json', 'pcr_rna_json', 'qpcr_dna_json', 'qpcr_rna_json']
+    exclude = ['user', 'samples', 'is_processed', 'date_processed', 'pcr_dna_json', 'pcr_rna_json', 'qpcr_dna_json', 'qpcr_rna_json', 'batches']

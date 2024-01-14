@@ -5,7 +5,7 @@ register = template.Library()
 
 def dec_mult(value, arg):
   product = Decimal(value*arg)
-  return product
+  return "{:.2f}".format(product)
 
 def remaining_amounts(value, arg):
   return arg - value

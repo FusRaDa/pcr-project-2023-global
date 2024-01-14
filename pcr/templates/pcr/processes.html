@@ -9,6 +9,13 @@
 
   <form class="row gx-3 gy-2 align-items-center" method="POST" action="">
     {% csrf_token %}
+
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Name</div>
+        {{form.name}}
+      </div>
+    </div>
     <div class="col-sm-3">
       <div class="input-group">
         <div class="input-group-text">Start Date</div>
@@ -33,9 +40,12 @@
         {{form.panel}}
       </div>
     </div>
+
     <div class="col-auto">
-      <button type="submit" class="btn btn-primary">Search</button>
+      <a class="btn btn-secondary me-1" href="{% url 'processes' %}" role="button">Clear</a>
+      <button type="submit" class="btn btn-primary" name="search">Search</button>
     </div>
+    
   </form>
 
   <div class="table-responsive mt-2">
