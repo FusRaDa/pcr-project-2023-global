@@ -61,7 +61,7 @@
 
       <tbody>
         {% for process in page_obj %}
-          <tr>
+          <tr data-href="{% url 'pcr_paperwork' process.pk %}">
             <td>{{process.name}}</td>
             <td>{{process.date_processed}}</td>
             <td>

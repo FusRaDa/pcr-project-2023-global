@@ -67,5 +67,6 @@ urlpatterns = [
   path("review-process/<int:pk>/", pcr_views.review_process, name='review_process'),
   path("process_paperwork/<int:pk>/", pcr_views.process_paperwork, name='process_paperwork'),
 
-  path('processes/', pcr_views.processes, name='processes')
+  path('processes/', pcr_views.processes, name='processes'),
+  path('pcr_paperwork/<int:pk>/', pcr_views.pcr_paperwork, name='pcr_paperwork'),
 ]

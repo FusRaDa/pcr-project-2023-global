@@ -181,12 +181,11 @@ def review_process(request, pk):
 def process_paperwork(request, pk):
   try:
     process = Process.objects.get(user=request.user, pk=pk)
-    samples = process.samples.all()
-  
   except ObjectDoesNotExist:
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
   
+  samples = process.samples.all()
   assay_samples = samples_by_assay(samples)
 
   requires_dna_pcr = False
@@ -294,3 +293,20 @@ def processes(request):
   
   context = {'page_obj': page_obj, 'form': form}
   return render(request, 'pcr/processes.html', context)
+
+
+@login_required(login_url='login')
+def pcr_paperwork(request, pk):
+  try:
+    process = Process.objects.get(user=request.user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no process to review.")
+    return redirect('processes')
+  
+  context = {'dna_qpcr_json': process.qpcr_dna_json, 'rna_qpcr_json': process.qpcr_rna_json, 'dna_pcr_json': process.pcr_dna_json, 'rna_pcr_json': process.pcr_rna_json}
+  return render(request, 'pcr/pcr_paperwork.html', context)
+  
+
+  
+
+  
