@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+import datetime
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
 from django.http import HttpResponse
@@ -262,13 +264,27 @@ def processes(request):
       start_date = form.cleaned_data['start_date']
       end_date = form.cleaned_data['end_date']
 
+      filters = {}
       if name:
-        processes = Process.objects.filter(user=request.user, is_processed=True, name=name).order_by('-date_processed')
-
+        filters['name'] = name
       if panel:
-        processes = Process.objects.filter(user=request.user, is_processed=True, batches__code=panel).order_by('-date_processed')
+        filters['batches__code'] = panel
+      if lab_id:
+        filters['batches__lab_id'] = lab_id
 
-      # processes = Process.objects.filter(user=request.user, is_processed=True, date_processed__range=[start_date, end_date], batches__lab_id=lab_id, batches__code=panel).order_by('-date_processed')
+      if start_date and not end_date:
+        day = start_date + datetime.timedelta(days=1)
+        filters['date_processed__range'] = [start_date, day]
+
+      if end_date and not start_date:
+        day = end_date + datetime.timedelta(days=1)
+        filters['date_processed__range'] = [end_date, day]
+      
+      if start_date and end_date:
+        end_date += datetime.timedelta(days=1)
+        filters['date_processed__range'] = [start_date, end_date]
+
+      processes = Process.objects.filter(**filters).order_by('-date_processed')
     else:
       print(form.errors)
 

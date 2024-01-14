@@ -12,12 +12,12 @@ class SearchProcessForm(forms.Form):
 
   lab_id = forms.CharField(max_length=4, required=False)
 
-  start_date = forms.DateField(
+  start_date = forms.DateTimeField(
     widget=forms.DateInput(attrs={'type': 'date'}),
     label='Date Start',
     required=False)
   
-  end_date = forms.DateField(
+  end_date = forms.DateTimeField(
     widget=forms.DateInput(attrs={'type': 'date'}),
     label='Date End',
     required=False)
