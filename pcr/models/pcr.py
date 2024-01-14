@@ -4,7 +4,7 @@ from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from users.models import User
 
-from .batch import Sample
+from .batch import Sample, Batch
 from .inventory import Plate, Gel
 
 
@@ -69,12 +69,21 @@ class Process(models.Model):
   qpcr_dna_json = models.JSONField(blank=True, null=True, default=None)
   qpcr_rna_json = models.JSONField(blank=True, null=True, default=None)
 
+  batches = models.ManyToManyField(Batch)
+
   @property
-  def panel(self):
-    panels = []
-    for sample in self.samples:
-      panels.append(sample.batch.code.name)
-    return list(set(panels))
+  def lab_ids(self):
+    lab_ids_array = []
+    for batch in self.batches.all():
+      lab_ids_array.append(batch.lab_id)
+    return lab_ids_array
+
+  @property
+  def panels(self):
+    panels_array = []
+    for batch in self.batches.all():
+      panels_array.append(batch.code)
+    return panels_array
 
   def __str__(self):
     return f"Process by {self.user}"

@@ -7,28 +7,86 @@
 {% block content %}
 <div class="container">
 
-  {% for process in page_obj %}
-    {# Each "contact" is a Contact model object. #}
-    {{ process.is_processed}}<br>
-      ...
-  {% endfor %}
+  <form class="row gx-3 gy-2 align-items-center" method="POST" action="">
+    {% csrf_token %}
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Start Date</div>
+        {{form.start_date}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">End Date</div>
+        {{form.end_date}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Lab ID</div>
+        {{form.lab_id}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Panel</div>
+        {{form.panel}}
+      </div>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+
+  <div class="table-responsive mt-2">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Date Processed</th>
+          <th scope="col">Lab ID's</th>
+          <th scope="col">Panels</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for process in page_obj %}
+          <tr>
+            <td>{{process.name}}</td>
+            <td>{{process.date_processed}}</td>
+            <td>
+              {% for id in process.lab_ids %}
+              <span class="badge text-bg-primary">{{id}}</span>
+              {% endfor %}
+            </td>
+            <td>
+              {% for code in process.panels %}
+              <span class="badge text-bg-success">{{code}}</span>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
 
   <div class="pagination">
-      <span class="step-links">
-          {% if page_obj.has_previous %}
-              <a href="?page=1">&laquo; first</a>
-              <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-          {% endif %}
+    <span class="step-links">
+      {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
 
-          <span class="current">
-              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-          </span>
-
-          {% if page_obj.has_next %}
-              <a href="?page={{ page_obj.next_page_number }}">next</a>
-              <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-          {% endif %}
+      <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
       </span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+    </span>
   </div>
 
 </div>
@@ -37,6 +95,12 @@
   $('.btn-arrow').click(function(){
     $(this).text(function(i,old){
       return old=='⮝' ?  '⮟' : '⮝';
+    });
+  });
+
+  jQuery(document).ready(function($) {
+    $(".plate-row").click(function() {
+        window.location = $(this).data("href");
     });
   });
 </script>

@@ -6,16 +6,27 @@ from ..models.assay import AssayCode
 
 
 class SearchProcessForm(forms.Form):
-  panels = forms.ModelChoiceField(queryset=None, required=False)
-  start_date = forms.DateField(required=False)
-  end_date = forms.DateField(required=False)
+  panel = forms.ModelChoiceField(queryset=None, required=False)
+
+  lab_id = forms.CharField(max_length=4, required=False)
+
+  start_date = forms.DateField(
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
+  
+  end_date = forms.DateField(
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date End',
+    required=False)
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
-    self.fields['panels'].queryset = AssayCode.objects.filter(user=self.user)
+    self.fields['panel'].queryset = AssayCode.objects.filter(user=self.user)
 
-    self.fields['panels'].widget.attrs['class'] = 'form-select'
+    self.fields['panel'].widget.attrs['class'] = 'form-select'
+    self.fields['lab_id'].widget.attrs['class'] = 'form-control'
     self.fields['start_date'].widget.attrs['class'] = 'form-control'
     self.fields['end_date'].widget.attrs['class'] = 'form-control'
 

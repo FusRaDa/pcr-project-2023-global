@@ -231,6 +231,13 @@ def process_paperwork(request, pk):
     process.pcr_rna_json = rna_pcr_json
     process.qpcr_dna_json = dna_qpcr_json
     process.qpcr_rna_json = rna_qpcr_json
+
+    array = []
+    for sample in process.samples.all():
+      array.append(sample.batch)
+    batches = list(set(array))
+    process.batches = batches
+
     process.save()
     return redirect('processes')
 
@@ -247,14 +254,11 @@ def processes(request):
     form = SearchProcessForm(request.POST, user=request.user)
     if form.is_valid():
       panel = form.cleaned_data['panel']
+      lab_id = form.cleaned_data['lab_id']
       start_date = form.cleaned_data['start_date']
       end_date = form.cleaned_data['end_date']
 
-      if start_date and end_date and not panel:
-        processes = Process.objects.filter(user=request.user, is_processed=True, date_processed__range=[start_date, end_date]).order_by('-date_processed')
-      
-      if start_date and end_date and panel:
-        processes = Process.objects.filter(user=request.user, is_processed=True, date_processed__range=[start_date, end_date], panel=panel).order_by('-date_processed')
+      processes = Process.objects.filter(user=request.user, is_processed=True, date_processed__range=[start_date, end_date], batches__lab_id=lab_id, batch__code=panel).order_by('-date_processed')
     else:
       print(form.errors)
 
@@ -262,5 +266,5 @@ def processes(request):
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
   
-  context = {'page_obj': page_obj}
+  context = {'page_obj': page_obj, 'form': form}
   return render(request, 'pcr/processes.html', context)
