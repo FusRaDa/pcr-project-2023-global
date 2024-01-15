@@ -9,7 +9,6 @@
 
   <form class="row gx-3 gy-2 align-items-center" method="POST" action="">
     {% csrf_token %}
-
     <div class="col-sm-3">
       <div class="input-group">
         <div class="input-group-text">Name</div>
@@ -45,7 +44,6 @@
       <a class="btn btn-secondary me-1" href="{% url 'processes' %}" role="button">Clear</a>
       <button type="submit" class="btn btn-primary" name="search">Search</button>
     </div>
-    
   </form>
 
   <div class="table-responsive mt-2">
@@ -81,22 +79,24 @@
     </table>
   </div>
 
-  <div class="pagination">
-    <span class="step-links">
-      {% if page_obj.has_previous %}
-        <a href="?page=1">&laquo; first</a>
-        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-      {% endif %}
+  <div class="d-flex justify-content-center">
+    <div class="pagination">
+      <span class="step-links">
+        {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
 
-      <span class="current">
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        <span class="current">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
       </span>
-
-      {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">next</a>
-        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-      {% endif %}
-    </span>
+    </div>
   </div>
 
 </div>

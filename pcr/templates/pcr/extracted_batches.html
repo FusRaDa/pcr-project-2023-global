@@ -38,8 +38,58 @@
     </div>
 
     <div class="col-sm-8">
+
+      <form class="row gx-3 gy-2 align-items-center" method="POST" action="">
+        {% csrf_token %}
+        <div class="col-sm-3">
+          <div class="input-group">
+            <div class="input-group-text">Name</div>
+            {{form.name}}
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="input-group">
+            <div class="input-group-text">Lab ID</div>
+            {{form.lab_id}}
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="input-group">
+            <div class="input-group-text">Panel</div>
+            {{form.panel}}
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="input-group">
+            <div class="input-group-text">Protocol</div>
+            {{form.extraction_protocol}}
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="input-group">
+            <div class="input-group-text">Start Date</div>
+            {{form.start_date}}
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="input-group">
+            <div class="input-group-text">End Date</div>
+            {{form.end_date}}
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="float-end">
+            <a class="btn btn-secondary me-1" href="{% url 'extracted_batches' %}" role="button">Clear</a>
+            <button type="submit" class="btn btn-primary" name="search">Search</button>
+          </div>
+        </div>
+
+      </form>
+
       <h5 class="text-center">Batches For Process</h5>
-      {% for batch in batches %}
+      {% for batch in page_obj %}
         
         <div class="card mb-2">
           <div class="card-header">
@@ -90,6 +140,26 @@
         </div>
 
       {% endfor %}
+
+      <div class="d-flex justify-content-center">
+        <div class="pagination">
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+              <a href="?page=1">⮜⮜ First</a>
+              <a href="?page={{ page_obj.previous_page_number }}">⮜</a>
+            {% endif %}
+    
+            <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+    
+            {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">⮞</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}">Last ⮞⮞</a>
+            {% endif %}
+          </span>
+        </div>
+      </div>
 
     </div>
 

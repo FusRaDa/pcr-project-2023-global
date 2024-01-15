@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from users.models import User
 
-from ..forms.general import DeletionForm, SearchProcessForm
+from ..forms.general import DeletionForm, SearchProcessForm, SearchBatchForm
 from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
@@ -87,8 +87,49 @@ def extracted_batches(request):
   if 'clear' in request.POST:
     process.samples.clear()
     return redirect(request.path_info)
+  
+  form = SearchBatchForm(user=request.user)
+  if 'search' in request.POST:
+    form = SearchBatchForm(request.POST, user=request.user)
+    if form.is_valid():
+      name = form.cleaned_data['name']
+      lab_id = form.cleaned_data['lab_id']
+      panel = form.cleaned_data['panel']
+      protocol = form.cleaned_data['extraction_protocol']
+      start_date = form.cleaned_data['start_date']
+      end_date = form.cleaned_data['end_date']
 
-  context = {'batches': batches, 'process': process}
+      filters = {}
+      if name:
+        filters['name__icontains'] = name
+      if panel:
+        filters['code'] = panel
+      if lab_id:
+        filters['lab_id'] = lab_id
+      if protocol:
+        filters['extraction_protocol'] = protocol
+      
+      if start_date and not end_date:
+        day = start_date + datetime.timedelta(days=1)
+        filters['date_created__range'] = [start_date, day]
+
+      if end_date and not start_date:
+        day = end_date + datetime.timedelta(days=1)
+        filters['date_created__range'] = [end_date, day]
+      
+      if start_date and end_date:
+        end_date += datetime.timedelta(days=1)
+        filters['date_created__range'] = [start_date, end_date]
+
+      batches = Batch.objects.filter(**filters, is_extracted=True).order_by('-date_created')
+    else:
+      print(form.errors)
+
+  paginator = Paginator(batches, 10)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
+
+  context = {'page_obj': page_obj, 'process': process, 'form': form}
   return render(request, 'pcr/extracted_batches.html', context)
 
 
@@ -265,7 +306,7 @@ def processes(request):
 
       filters = {}
       if name:
-        filters['name'] = name
+        filters['name__icontains'] = name
       if panel:
         filters['batches__code'] = panel
       if lab_id:
@@ -305,8 +346,3 @@ def pcr_paperwork(request, pk):
   
   context = {'dna_qpcr_json': process.qpcr_dna_json, 'rna_qpcr_json': process.qpcr_rna_json, 'dna_pcr_json': process.pcr_dna_json, 'rna_pcr_json': process.pcr_rna_json, 'process': process}
   return render(request, 'pcr/pcr_paperwork.html', context)
-  
-
-  
-
-  

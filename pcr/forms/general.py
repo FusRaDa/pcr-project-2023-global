@@ -3,6 +3,38 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from ..models.assay import AssayCode
+from ..models.batch import ExtractionProtocol
+
+
+class SearchBatchForm(forms.Form):
+  name = forms.CharField(max_length=100, required=False)
+  lab_id = forms.CharField(max_length=4, required=False)
+
+  panel = forms.ModelChoiceField(queryset=None, required=False)
+  extraction_protocol = forms.ModelChoiceField(queryset=None, required=False)
+
+  start_date = forms.DateTimeField(
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
+  
+  end_date = forms.DateTimeField(
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date End',
+    required=False)
+  
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['panel'].queryset = AssayCode.objects.filter(user=self.user)
+    self.fields['extraction_protocol'].queryset = ExtractionProtocol.objects.filter(user=self.user)
+
+    self.fields['panel'].widget.attrs['class'] = 'form-select'
+    self.fields['extraction_protocol'].widget.attrs['class'] = 'form-select'
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['lab_id'].widget.attrs['class'] = 'form-control'
+    self.fields['start_date'].widget.attrs['class'] = 'form-control'
+    self.fields['end_date'].widget.attrs['class'] = 'form-control'
 
 
 class SearchProcessForm(forms.Form):
