@@ -498,7 +498,7 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
               'final_unit_concentration': reagent.final_concentration_unit,
               'dilution_factor': dilution_factor,
             })
-            assays_data['assays'].append(assay_dict)
+          assays_data['assays'].append(assay_dict)
 
           for control in assay.controlassay_set.all().order_by('order'):
             position += 1
@@ -562,7 +562,7 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
                 'final_unit_concentration': reagent.final_concentration_unit,
                 'dilution_factor': dilution_factor,
               })
-              assays_data['assays'].append(assay_dict)
+            assays_data['assays'].append(assay_dict)
 
             for control in assay.controlassay_set.all().order_by('order'):
               position += 1

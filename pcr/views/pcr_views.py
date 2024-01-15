@@ -283,7 +283,7 @@ def processes(request):
         end_date += datetime.timedelta(days=1)
         filters['date_processed__range'] = [start_date, end_date]
 
-      processes = Process.objects.filter(**filters).order_by('-date_processed')
+      processes = Process.objects.filter(**filters, is_processed=True).order_by('-date_processed')
     else:
       print(form.errors)
 
@@ -303,7 +303,7 @@ def pcr_paperwork(request, pk):
     messages.error(request, "There is no process to review.")
     return redirect('processes')
   
-  context = {'dna_qpcr_json': process.qpcr_dna_json, 'rna_qpcr_json': process.qpcr_rna_json, 'dna_pcr_json': process.pcr_dna_json, 'rna_pcr_json': process.pcr_rna_json}
+  context = {'dna_qpcr_json': process.qpcr_dna_json, 'rna_qpcr_json': process.qpcr_rna_json, 'dna_pcr_json': process.pcr_dna_json, 'rna_pcr_json': process.pcr_rna_json, 'process': process}
   return render(request, 'pcr/pcr_paperwork.html', context)
   
 

@@ -61,7 +61,7 @@
 
       <tbody>
         {% for process in page_obj %}
-          <tr data-href="{% url 'pcr_paperwork' process.pk %}">
+          <tr class="process-row" data-href="{% url 'pcr_paperwork' process.pk %}">
             <td>{{process.name}}</td>
             <td>{{process.date_processed}}</td>
             <td>
@@ -109,7 +109,7 @@
   });
 
   jQuery(document).ready(function($) {
-    $(".plate-row").click(function() {
+    $(".process-row").click(function() {
         window.location = $(this).data("href");
     });
   });

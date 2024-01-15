@@ -3205,7 +3205,7 @@
             {% for reagent in assay.reagents %}
               <tr class="table-light">
                 <td>{{reagent.name}}</td>
-                <td class="table-success">{{reagent.volume_per_sample|dec_mult:assay.sample_num}}</td>
+                <td class="table-success">{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
                 <td>{{reagent.volume_per_sample}}</td>
                 <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
                 <td>{% if reagent.final_stock_concentration %} {{reagent.final_stock_concentration}} {{reagent.final_unit_concentration}} {% else %} ------ {% endif %}</td>
@@ -3214,7 +3214,7 @@
             {% endfor %}
             <tr class="table-dark">
               <td>Total</td>
-              <td>{{assay.mm_volume|dec_mult:assay.sample_num}}</td>
+              <td>{{assay.mm_volume|dec_mult_string:assay.sample_num}}</td>
               <td>{{assay.mm_volume}}</td>
               <td>------</td>
               <td>------</td>
@@ -3225,6 +3225,8 @@
         </table>
       </div>
     {% endfor %}
+
+    <hr class="mt-5">
 
   {% endfor %}
 
@@ -6381,7 +6383,7 @@
             {% for reagent in assay.reagents %}
               <tr class="table-light">
                 <td>{{reagent.name}}</td>
-                <td class="table-success">{{reagent.volume_per_sample|dec_mult:assay.sample_num}}</td>
+                <td class="table-success">{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
                 <td>{{reagent.volume_per_sample}}</td>
                 <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
                 <td>{% if reagent.final_stock_concentration %} {{reagent.final_stock_concentration}} {{reagent.final_unit_concentration}} {% else %} ------ {% endif %}</td>
@@ -6390,7 +6392,7 @@
             {% endfor %}
             <tr class="table-dark">
               <td>Total</td>
-              <td>{{assay.mm_volume|dec_mult:assay.sample_num}}</td>
+              <td>{{assay.mm_volume|dec_mult_string:assay.sample_num}}</td>
               <td>{{assay.mm_volume}}</td>
               <td>------</td>
               <td>------</td>
@@ -6401,6 +6403,8 @@
         </table>
       </div>
     {% endfor %}
+
+    <hr class="mt-5">
 
   {% endfor %}
 
@@ -7013,7 +7017,7 @@
             {% for reagent in assay.reagents %}
               <tr class="table-light">
                 <td>{{reagent.name}}</td>
-                <td class="table-success">{{reagent.volume_per_sample|dec_mult:assay.sample_num}}</td>
+                <td class="table-success">{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
                 <td>{{reagent.volume_per_sample}}</td>
                 <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
                 <td>{% if reagent.final_stock_concentration %} {{reagent.final_stock_concentration}} {{reagent.final_unit_concentration}} {% else %} ------ {% endif %}</td>
@@ -7022,7 +7026,7 @@
             {% endfor %}
             <tr class="table-dark">
               <td>Total</td>
-              <td>{{assay.mm_volume|dec_mult:assay.sample_num}}</td>
+              <td>{{assay.mm_volume|dec_mult_string:assay.sample_num}}</td>
               <td>{{assay.mm_volume}}</td>
               <td>------</td>
               <td>------</td>
@@ -7033,6 +7037,8 @@
         </table>
       </div>
     {% endfor %}
+
+    <hr class="mt-5">
 
   {% endfor %}
 
@@ -7645,7 +7651,7 @@
             {% for reagent in assay.reagents %}
               <tr class="table-light">
                 <td>{{reagent.name}}</td>
-                <td class="table-success">{{reagent.volume_per_sample|dec_mult:assay.sample_num}}</td>
+                <td class="table-success">{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
                 <td>{{reagent.volume_per_sample}}</td>
                 <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
                 <td>{% if reagent.final_stock_concentration %} {{reagent.final_stock_concentration}} {{reagent.final_unit_concentration}} {% else %} ------ {% endif %}</td>
@@ -7654,7 +7660,7 @@
             {% endfor %}
             <tr class="table-dark">
               <td>Total</td>
-              <td>{{assay.mm_volume|dec_mult:assay.sample_num}}</td>
+              <td>{{assay.mm_volume|dec_mult_string:assay.sample_num}}</td>
               <td>{{assay.mm_volume}}</td>
               <td>------</td>
               <td>------</td>
@@ -7665,6 +7671,8 @@
         </table>
       </div>
     {% endfor %}
+
+    <hr class="mt-5">
 
   {% endfor %}
 
