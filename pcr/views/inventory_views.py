@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator
 from django.db.models import F
 from django.contrib import messages
 from users.models import User
 
 from ..models.inventory import Location, Reagent, Tube, Plate, Gel, Ladder
 from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, EditGelForm, EditTubeForm, EditPlateForm, EditReagentForm, LadderForm, EditLadderForm
-from ..forms.general import DeletionForm
+from ..forms.general import DeletionForm, SearchGelForm, SearchLadderForm, SearchPlateForm, SearchReagentForm, SearchTubeForm
 
 
 # **LOCATIONS VIEWS** #
@@ -74,6 +75,30 @@ def edit_location(request, pk):
 @login_required(login_url='login')
 def ladders(request):
   ladders = Ladder.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+
+  form = SearchLadderForm(user=request.user)
+  if request.method == 'POST':
+    form = SearchLadderForm(request.POST, user=request.user)
+    if form.is_valid():
+      text_search = form.cleaned_data['text_search']
+      location = form.cleaned_data['location']
+
+      filters = {}
+      if text_search:
+        filters['name__icontains'] = text_search
+        filters['brand__icontains'] = text_search
+        filters['lot_number__icontains'] = text_search
+        filters['catalog_number__icontains'] = text_search
+      if location:
+        filters['location'] = location
+      ladders = Ladder.objects.filter(**filters, user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+    else:
+      print(form.errors)
+
+  paginator = Paginator(ladders, 10)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
+
   context = {'ladders': ladders}
   return render(request, 'inventory/ladders.html', context)
 
@@ -131,6 +156,29 @@ def edit_ladder(request, pk):
 @login_required(login_url='login')
 def gels(request):
   gels = Gel.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+
+  form = SearchGelForm(user=request.user)
+  if request.method == 'POST':
+    form = SearchGelForm(request.POST, user=request.user)
+    if form.is_valid():
+      text_search = form.cleaned_data['text_search']
+      location = form.cleaned_data['location']
+      size = form.cleaned_data['size']
+
+      filters = {}
+      if text_search:
+        filters['name__icontains'] = text_search
+        filters['brand__icontains'] = text_search
+        filters['lot_number__icontains'] = text_search
+        filters['catalog_number__icontains'] = text_search
+      if location:
+        filters['location'] = location
+      if size:
+        filters['size'] = size
+      gels = Gel.objects.filter(**filters, user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+    else:
+      print(form.errors)
+
   context = {'gels': gels}
   return render(request, 'inventory/gels.html', context)
 
@@ -190,6 +238,29 @@ def edit_gel(request, pk):
 @login_required(login_url='login')
 def plates(request):
   plates = Plate.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+
+  form = SearchPlateForm(user=request.user)
+  if request.method == 'POST':
+    form = SearchPlateForm(request.POST, user=request.user)
+    if form.is_valid():
+      text_search = form.cleaned_data['text_search']
+      location = form.cleaned_data['location']
+      size = form.cleaned_data['size']
+
+      filters = {}
+      if text_search:
+        filters['name__icontains'] = text_search
+        filters['brand__icontains'] = text_search
+        filters['lot_number__icontains'] = text_search
+        filters['catalog_number__icontains'] = text_search
+      if location:
+        filters['location'] = location
+      if size:
+        filters['size'] = size
+      plates = Plate.objects.filter(**filters, user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+    else:
+      print(form.errors)
+
   context = {'plates': plates}
   return render(request, 'inventory/plates.html', context)
 
