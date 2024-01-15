@@ -179,6 +179,10 @@ def gels(request):
     else:
       print(form.errors)
 
+  paginator = Paginator(gels, 10)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
+
   context = {'gels': gels}
   return render(request, 'inventory/gels.html', context)
 
@@ -230,7 +234,6 @@ def edit_gel(request, pk):
 
   context = {'form': form, 'gel': gel, 'del_form': del_form}
   return render(request, 'inventory/edit_gel.html', context)
-
 # **GELS VIEWS** #
 
 
@@ -260,6 +263,10 @@ def plates(request):
       plates = Plate.objects.filter(**filters, user=request.user).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(form.errors)
+
+  paginator = Paginator(plates, 10)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
 
   context = {'plates': plates}
   return render(request, 'inventory/plates.html', context)
@@ -320,6 +327,29 @@ def edit_plate(request, pk):
 def tubes(request):
   tubes = Tube.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
 
+  form = SearchTubeForm(user=request.user)
+  if request.method == 'POST':
+    form = SearchTubeForm(request.POST, user=request.user)
+    if form.is_valid():
+      text_search = form.cleaned_data['text_search']
+      location = form.cleaned_data['location']
+
+      filters = {}
+      if text_search:
+        filters['name__icontains'] = text_search
+        filters['brand__icontains'] = text_search
+        filters['lot_number__icontains'] = text_search
+        filters['catalog_number__icontains'] = text_search
+      if location:
+        filters['location'] = location
+      tubes = Tube.objects.filter(**filters, user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+    else:
+      print(form.errors)
+
+  paginator = Paginator(tubes, 10)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
+
   context = {'tubes': tubes}
   return render(request, 'inventory/tubes.html', context)
 
@@ -378,10 +408,38 @@ def edit_tube(request, pk):
 # **REAGENTS VIEWS** #
 @login_required(login_url='login')
 def reagents(request):
-  pcr_reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR).order_by(F('exp_date').asc(nulls_last=True))
-  ext_reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.EXTRACTION).order_by(F('exp_date').asc(nulls_last=True))
+  reagents = Reagent.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
 
-  context = {'pcr_reagents': pcr_reagents, 'ext_reagents': ext_reagents}
+  form = SearchReagentForm(user=request.user)
+  if request.method == 'POST':
+    form = SearchReagentForm(request.POST, user=request.user)
+    if form.is_valid():
+      text_search = form.cleaned_data['text_search']
+      location = form.cleaned_data['location']
+      usage = form.cleaned_data['usage']
+      pcr_reagent = form.cleaned_data['pcr_reagent']
+
+      filters = {}
+      if text_search:
+        filters['name__icontains'] = text_search
+        filters['brand__icontains'] = text_search
+        filters['lot_number__icontains'] = text_search
+        filters['catalog_number__icontains'] = text_search
+      if location:
+        filters['location'] = location
+      if usage:
+        filters['usage'] = usage
+      if pcr_reagent:
+        filters['pcr_reagent'] = pcr_reagent
+      reagents = Reagent.objects.filter(**filters, user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+    else:
+      print(form.errors)
+
+  paginator = Paginator(reagents, 10)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
+
+  context = {'reagents': reagents}
   return render(request, 'inventory/reagents.html', context)
 
 
