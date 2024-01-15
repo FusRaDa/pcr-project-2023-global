@@ -29,6 +29,32 @@
     </div>
   </div>
 
+  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="POST" action="">
+    {% csrf_token %}
+    <div class="col-sm-4">
+      <div class="input-group">
+        <div class="input-group-text">Name/Brand/Catalog#/Lot#</div>
+        {{form.text_search}}
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <div class="input-group-text">Usage</div>
+        {{form.usage}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Location</div>
+        {{form.location}}
+      </div>
+    </div>
+    <div class="col-auto">
+      <a class="btn btn-secondary me-1" href="{% url 'gels' %}" role="button">Clear</a>
+      <button type="submit" class="btn btn-primary" name="search">Search</button>
+    </div>
+  </form>
+
   <div class="table-responsive">
     <table class="table table-bordered table-hover">
       <thead>
@@ -46,7 +72,7 @@
       </thead>
 
       <tbody>
-        {% for gel in gels %}
+        {% for gel in page_obj %}
           <tr class="plate-row {% if gel.is_expired %} table-danger {% endif %} {% if gel.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_gel' gel.pk %}">
             <td>{{gel.exp_date}} {% if gel.is_expired %} (EXPIRED) {% endif %} {% if gel.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{gel.last_updated}}</td>
@@ -54,7 +80,7 @@
             <td>{{gel.brand}}</td>
             <td>{{gel.catalog_number}}</td>
             <td>{{gel.lot_number}}</td>
-            <td>{{gel.wells}}</td>
+            <td>{{gel.size}}</td>
             <td>{{gel.amount}}</td>
             
             <td>
@@ -76,6 +102,27 @@
       </tbody>
 
     </table>
+
+    <div class="d-flex justify-content-center">
+      <div class="pagination">
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+          {% endif %}
+  
+          <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+  
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+    
   </div>
 
 </div>

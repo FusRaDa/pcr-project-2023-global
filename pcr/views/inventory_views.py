@@ -3,8 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.db.models import F
+from django.db.models import Q
 from django.contrib import messages
 from users.models import User
+
 
 from ..models.inventory import Location, Reagent, Tube, Plate, Gel, Ladder
 from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, EditGelForm, EditTubeForm, EditPlateForm, EditReagentForm, LadderForm, EditLadderForm
@@ -84,14 +86,9 @@ def ladders(request):
       location = form.cleaned_data['location']
 
       filters = {}
-      if text_search:
-        filters['name__icontains'] = text_search
-        filters['brand__icontains'] = text_search
-        filters['lot_number__icontains'] = text_search
-        filters['catalog_number__icontains'] = text_search
       if location:
         filters['location'] = location
-      ladders = Ladder.objects.filter(**filters, user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+      ladders = Ladder.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -99,7 +96,7 @@ def ladders(request):
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
-  context = {'ladders': ladders}
+  context = {'page_obj': page_obj, 'form': form}
   return render(request, 'inventory/ladders.html', context)
 
 
@@ -166,16 +163,11 @@ def gels(request):
       size = form.cleaned_data['size']
 
       filters = {}
-      if text_search:
-        filters['name__icontains'] = text_search
-        filters['brand__icontains'] = text_search
-        filters['lot_number__icontains'] = text_search
-        filters['catalog_number__icontains'] = text_search
       if location:
         filters['location'] = location
       if size:
         filters['size'] = size
-      gels = Gel.objects.filter(**filters, user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+      gels = Gel.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -183,7 +175,7 @@ def gels(request):
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
-  context = {'gels': gels}
+  context = {'page_obj': page_obj, 'form': form}
   return render(request, 'inventory/gels.html', context)
 
 
@@ -251,16 +243,12 @@ def plates(request):
       size = form.cleaned_data['size']
 
       filters = {}
-      if text_search:
-        filters['name__icontains'] = text_search
-        filters['brand__icontains'] = text_search
-        filters['lot_number__icontains'] = text_search
-        filters['catalog_number__icontains'] = text_search
       if location:
         filters['location'] = location
       if size:
         filters['size'] = size
-      plates = Plate.objects.filter(**filters, user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+
+      plates = Plate.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -268,7 +256,7 @@ def plates(request):
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
-  context = {'plates': plates}
+  context = {'page_obj': page_obj, 'form': form}
   return render(request, 'inventory/plates.html', context)
 
 
@@ -335,14 +323,9 @@ def tubes(request):
       location = form.cleaned_data['location']
 
       filters = {}
-      if text_search:
-        filters['name__icontains'] = text_search
-        filters['brand__icontains'] = text_search
-        filters['lot_number__icontains'] = text_search
-        filters['catalog_number__icontains'] = text_search
       if location:
         filters['location'] = location
-      tubes = Tube.objects.filter(**filters, user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+      tubes = Tube.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -350,7 +333,7 @@ def tubes(request):
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
-  context = {'tubes': tubes}
+  context = {'page_obj': page_obj, 'form': form}
   return render(request, 'inventory/tubes.html', context)
 
 
@@ -420,18 +403,13 @@ def reagents(request):
       pcr_reagent = form.cleaned_data['pcr_reagent']
 
       filters = {}
-      if text_search:
-        filters['name__icontains'] = text_search
-        filters['brand__icontains'] = text_search
-        filters['lot_number__icontains'] = text_search
-        filters['catalog_number__icontains'] = text_search
       if location:
         filters['location'] = location
       if usage:
         filters['usage'] = usage
       if pcr_reagent:
         filters['pcr_reagent'] = pcr_reagent
-      reagents = Reagent.objects.filter(**filters, user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+      reagents = Reagent.objects.filter(**filters, user=request.user).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -439,7 +417,7 @@ def reagents(request):
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
-  context = {'reagents': reagents}
+  context = {'page_obj': page_obj, 'form': form}
   return render(request, 'inventory/reagents.html', context)
 
 

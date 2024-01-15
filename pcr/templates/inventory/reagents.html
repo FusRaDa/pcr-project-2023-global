@@ -29,129 +29,112 @@
     </div>
   </div>
 
-  <ul class="nav nav-pills mb-3 d-flex justify-content-center" id="pills-tab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#extraction" type="button" role="tab" aria-controls="extraction" aria-selected="true">Extraction</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pcr" type="button" role="tab" aria-controls="pcr" aria-selected="false">PCR</button>
-    </li>
-  </ul>
+  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="POST" action="">
+    {% csrf_token %}
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Usage</div>
+        {{form.usage}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">PCR Reagent</div>
+        {{form.pcr_reagent}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Location</div>
+        {{form.location}}
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="input-group">
+        <div class="input-group-text">Name/Brand/Catalog#/Lot#</div>
+        {{form.text_search}}
+      </div>
+    </div>
+    <div class="col-auto">
+      <a class="btn btn-secondary me-1" href="{% url 'reagents' %}" role="button">Clear</a>
+      <button type="submit" class="btn btn-primary" name="search">Search</button>
+    </div>
+  </form>
 
-  <div class="tab-content" id="myTabContent">
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Exp. Date</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Catalog #</th>
+          <th scope="col">Lot #</th>
+          <th scope="col">Volume</th>
+          <th scope="col">Concentration</th>
+          <th scope="col">Location(s)</th>
+        </tr>
+      </thead>
 
-    <div class="tab-pane fade show active" id="extraction" role="tabpanel" aria-labelledby="extraction-tab">
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Exp. Date</th>
-              <th scope="col">Last Updated</th>
-              <th scope="col">Name</th>
-              <th scope="col">Brand</th>
-              <th scope="col">Catalog #</th>
-              <th scope="col">Lot #</th>
-              <th scope="col">Volume</th>
-              <th scope="col">Concentration</th>
-              <th scope="col">Location(s)</th>
-            </tr>
-          </thead>
+      <tbody>
+        {% for reagent in page_obj %}
+          <tr class="reagent-row {% if reagent.is_expired %} table-danger {% endif %} {% if reagent.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_reagent' reagent.pk %}">
+            <td>{{reagent.exp_date}} {% if reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{reagent.last_updated}}</td>
+            <td>{{reagent.name}}</td>
+            <td>{{reagent.brand}}</td>
+            <td>{{reagent.catalog_number}}</td>
+            <td>{{reagent.lot_number}}</td>
+            <td>{{reagent.volume}} {{reagent.unit_volume}}</td>
+            <td>
+              {% if reagent.stock_concentration %}
+              {{reagent.stock_concentration}} {{reagent.unit_concentration}}
+              {% endif %}
+            </td>
 
-          <tbody>
-            {% for reagent in ext_reagents %}
-              <tr class="reagent-row {% if reagent.is_expired %} table-danger {% endif %} {% if reagent.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_reagent' reagent.pk %}">
-                <td>{{reagent.exp_date}} {% if reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
-                <td>{{reagent.last_updated}}</td>
-                <td>{{reagent.name}}</td>
-                <td>{{reagent.brand}}</td>
-                <td>{{reagent.catalog_number}}</td>
-                <td>{{reagent.lot_number}}</td>
-                <td>{{reagent.volume}} {{reagent.unit_volume}}</td>
-                <td>
-                  {% if reagent.stock_concentration %}
-                  {{reagent.stock_concentration}} {{reagent.unit_concentration}}
-                  {% endif %}
-                </td>
+            <td>
+              {% for location in reagent.location.all %}
+                {% if reagent.location.all|length > 1 %}
+                <span>
+                  {{location}} |
+                </span>
+                {% else %}
+                <span>
+                  {{location}}
+                </span>
+                {% endif %}
+              {% endfor %}
+            </td>
 
-                <td>
-                  {% for location in reagent.location.all %}
-                    {% if reagent.location.all|length > 1 %}
-                    <span>
-                      {{location}} |
-                    </span>
-                    {% else %}
-                    <span>
-                      {{location}}
-                    </span>
-                    {% endif %}
-                  {% endfor %}
-                </td>
+          </tr>
+        {% endfor %}
+      </tbody>
 
-              </tr>
-            {% endfor %}
-          </tbody>
+    </table>
 
-        </table>
+    <div class="d-flex justify-content-center">
+      <div class="pagination">
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+          {% endif %}
+  
+          <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+  
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+        </span>
       </div>
     </div>
     
-    <div class="tab-pane fade" id="pcr" role="tabpanel" aria-labelledby="pcr-tab">
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Exp. Date</th>
-              <th scope="col">Last Updated</th>
-              <th scope="col">Name</th>
-              <th scope="col">Brand</th>
-              <th scope="col">Catalog #</th>
-              <th scope="col">Lot #</th>
-              <th scope="col">Volume</th>
-              <th scope="col">Concentration</th>
-              <th scope="col">Location(s)</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {% for reagent in pcr_reagents %}
-              <tr class="reagent-row {% if reagent.is_expired %} table-danger {% endif %}" data-href="{% url 'edit_reagent' reagent.pk %}">
-                <td>{{reagent.exp_date}}</td>
-                <td>{{reagent.last_updated}}</td>
-                <td>{{reagent.name}}</td>
-                <td>{{reagent.brand}}</td>
-                <td>{{reagent.catalog_number}}</td>
-                <td>{{reagent.lot_number}}</td>
-                <td>{{reagent.volume}} {{reagent.unit_volume}}</td>
-                <td>
-                  {% if reagent.stock_concentration %}
-                  {{reagent.stock_concentration}} {{reagent.unit_concentration}}
-                  {% endif %}
-                </td>
-
-                <td>
-                  {% for location in reagent.location.all %}
-                    {% if reagent.location.all|length > 1 %}
-                    <span>
-                      {{location}} |
-                    </span>
-                    {% else %}
-                    <span>
-                      {{location}}
-                    </span>
-                    {% endif %}
-                  {% endfor %}
-                </td>
-
-              </tr>
-            {% endfor %}
-          </tbody>
-
-        </table>
-      </div>
-    </div>
-
   </div>
-
+ 
 </div>
 
 <script>

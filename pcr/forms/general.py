@@ -16,6 +16,10 @@ class SearchTubeForm(forms.Form):
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
 
+    self.fields['text_search'].widget.attrs['class'] = 'form-control'
+    self.fields['location'].widget.attrs['class'] = 'form-select'
+
+
 class SearchLadderForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
@@ -25,25 +29,32 @@ class SearchLadderForm(forms.Form):
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
 
+    self.fields['text_search'].widget.attrs['class'] = 'form-control'
+    self.fields['location'].widget.attrs['class'] = 'form-select'
+
 
 class SearchPlateForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
-  CHOICES = [Plate.Sizes.choices, ('', '------')]
+  CHOICES = [(None, '------'), ('8', '8'), ('24', '24'), ('48', '48'), ('96', '96'), ('384', '384')]
   size = forms.ChoiceField(choices=CHOICES, required=False)
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['text_search'].widget.attrs['class'] = 'form-control'
+    self.fields['location'].widget.attrs['class'] = 'form-select'
+    self.fields['size'].widget.attrs['class'] = 'form-select'
 
 
 class SearchGelForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
-  CHOICES = [(None, '------'), Gel.Sizes.choices]
+  CHOICES = [(None, '------'), ('12', '12'), ('24', '24'), ('48', '48')]
   size = forms.ChoiceField(choices=CHOICES, required=False)
 
   def __init__(self, *args, **kwargs):
@@ -51,20 +62,32 @@ class SearchGelForm(forms.Form):
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
 
+    self.fields['text_search'].widget.attrs['class'] = 'form-control'
+    self.fields['location'].widget.attrs['class'] = 'form-select'
+    self.fields['size'].widget.attrs['class'] = 'form-select'
+
 
 class SearchReagentForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
-  usage = forms.ChoiceField(choices=Reagent.Usages.choices)
+  USAGE_CHOICES = [(None, '------'), ('EXTRACTION', 'EXTRACTION'), ('PCR', 'PCR')]
+  usage = forms.ChoiceField(choices=USAGE_CHOICES, required=False)
 
-  CHOICES = [(None, '------'), Reagent.PCRReagent.choices]
-  pcr_reagent = forms.ChoiceField(choices=CHOICES)
+  PCR_REAGENT_CHOICES = [(None, '------'), ('GENERAL', 'GENERAL'), ('POLYMERASE', 'POLYMERASE'), ('WATER', 'WATER')]
+  pcr_reagent = forms.ChoiceField(choices=PCR_REAGENT_CHOICES, required=False)
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['text_search'].widget.attrs['class'] = 'form-control'
+    self.fields['usage'].widget.attrs['class'] = 'form-select'
+    self.fields['location'].widget.attrs['class'] = 'form-select'
+    self.fields['pcr_reagent'].widget.attrs['class'] = 'form-select'
+
+    
 
 
 class SearchBatchForm(forms.Form):
