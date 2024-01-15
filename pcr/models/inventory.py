@@ -182,8 +182,6 @@ class Tube(models.Model):
 class Reagent(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  # kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
-
   class Usages(models.TextChoices):
     EXTRACTION = 'EXTRACTION', _('EXTRACTION')
     PCR = 'PCR', _('PCR')

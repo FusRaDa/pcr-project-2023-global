@@ -4,6 +4,67 @@ from django.utils.translation import gettext_lazy as _
 
 from ..models.assay import AssayCode
 from ..models.batch import ExtractionProtocol
+from ..models.inventory import Location, Plate, Gel, Reagent
+
+
+class SearchTubeForm(forms.Form):
+  text_search = forms.CharField(max_length=100, required=False)
+  location = forms.ModelChoiceField(queryset=None, required=False)
+
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+class SearchLadderForm(forms.Form):
+  text_search = forms.CharField(max_length=100, required=False)
+  location = forms.ModelChoiceField(queryset=None, required=False)
+
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+
+class SearchPlateForm(forms.Form):
+  text_search = forms.CharField(max_length=100, required=False)
+  location = forms.ModelChoiceField(queryset=None, required=False)
+
+  CHOICES = [Plate.Sizes.choices, ('', '------')]
+  size = forms.ChoiceField(choices=CHOICES, required=False)
+
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+
+class SearchGelForm(forms.Form):
+  text_search = forms.CharField(max_length=100, required=False)
+  location = forms.ModelChoiceField(queryset=None, required=False)
+
+  CHOICES = [(None, '------'), Gel.Sizes.choices]
+  size = forms.ChoiceField(choices=CHOICES, required=False)
+
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+
+class SearchReagentForm(forms.Form):
+  text_search = forms.CharField(max_length=100, required=False)
+  location = forms.ModelChoiceField(queryset=None, required=False)
+
+  usage = forms.ChoiceField(choices=Reagent.Usages.choices)
+
+  CHOICES = [(None, '------'), Reagent.PCRReagent.choices]
+  pcr_reagent = forms.ChoiceField(choices=CHOICES)
+
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
 
 
 class SearchBatchForm(forms.Form):
