@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory, formset_factory
 
+from django.core.paginator import Paginator
 from datetime import datetime
 from django.utils import timezone
 
@@ -19,13 +20,12 @@ from users.models import User
 from ..models.items import Kit
 from ..models.orders import Order, KitOrder
 from ..forms.orders import KitOrderForm
-from ..forms.general import SearchBrandTagForm, SearchCatalogForm, SearchNameForm, ItemLotNumberForm
+from ..forms.general import SearchStoreForm, ItemLotNumberForm
 from pcr.models.inventory import Plate, Tube, Reagent
 
 
 @login_required(login_url='login')
 def store(request):
-
   orders = Order.objects.filter(user=request.user, has_ordered=False)
   if not orders.exists():
     order = Order.objects.create(user=request.user, has_ordered=False)
@@ -34,40 +34,30 @@ def store(request):
 
   kits = Kit.objects.all().order_by('name')
 
-  brand_tag_form = SearchBrandTagForm(prefix='brand-tag-form')
-  if 'search-brand-tag' in request.POST:
-    brand_tag_form = SearchBrandTagForm(request.POST, prefix='brand-tag-form')
-    if brand_tag_form.is_valid():
-      brands = brand_tag_form.cleaned_data['brands']
-      tags = brand_tag_form.cleaned_data['tags']
-      if tags or brands:
-        kits = Kit.objects.filter((Q(brand__in=brands) | Q(tags__in=tags)))
-      if tags and brands:
-        kits = Kit.objects.filter((Q(brand__in=brands) & Q(tags__in=tags)))
-    else:
-      print(brand_tag_form.errors)
+  form = SearchStoreForm()
+  if request.method == 'POST':
+    form = SearchStoreForm(request.POST)
+    if form.is_valid():
+      text_search = form.cleaned_data['text_search']
+      brands = form.cleaned_data['brands']
+      tags = form.cleaned_data['tags']
+      price = form.cleaned_data['price']
 
-  kit_name_form = SearchNameForm(prefix='kit-name-form')
-  if 'search-kit-name' in request.POST:
-    kit_name_form = SearchNameForm(request.POST, prefix='kit-name-form')
-    if kit_name_form.is_valid():
-      name = kit_name_form.cleaned_data['kit_name']
-      kits = Kit.objects.filter(name__icontains=name)
-      # use in production with postgresql
-      # kits = Kit.objects.annotate(similarity=TrigramSimilarity('name', kit_name)).filter(similarity__gt=0.3).order_by('-similarity')
-    else:
-      print(kit_name_form.errors)
+      filters = {}
+      if brands:
+        filters['brand__in'] = brands
+      if tags:
+        filters['tags__in'] = tags
 
-  catalog_number_form = SearchCatalogForm(prefix='catalog-number-form')
-  if 'search-catalog-number' in request.POST:
-    catalog_number_form = SearchCatalogForm(request.POST, prefix='catalog-number-form')
-    if catalog_number_form.is_valid():
-      catalog_number = catalog_number_form.cleaned_data['cat_num']
-      kits = Kit.objects.filter(catalog_number__icontains=catalog_number)
+      kits = Kit.objects.filter(**filters).filter(Q(name__icontains=text_search) | Q(description__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(price)
     else:
-      print(catalog_number_form.errors)
+      print(form.errors)
 
-  context = {'order': order, 'kits': kits, 'brand_tag_form': brand_tag_form, 'kit_name_form': kit_name_form, 'catalog_number_form': catalog_number_form}
+  paginator = Paginator(kits, 25)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
+
+  context = {'order': order, 'page_obj': page_obj, 'form': form}
   return render(request, 'orders/store.html', context)
 
 

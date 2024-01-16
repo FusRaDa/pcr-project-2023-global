@@ -6,31 +6,11 @@ from ..models.affiliates import Brand
 from ..models.items import Tag
 
 # combine all 4 forms into one for store
-class ItemLotNumberForm(forms.Form):
-  lot_number = forms.CharField(required=False)
+class SearchStoreForm(forms.Form):
+  text_search = forms.CharField(required=False)
 
-  def __init__(self, *args, **kwargs):
-    super().__init__(*args, **kwargs) 
-    self.fields['lot_number'].widget.attrs['class'] = 'form-control'
+  price = forms.ChoiceField(choices=[('price', 'Ascending'), ('-price', 'Descending')], initial='Descending', required=True)
 
-
-class SearchCatalogForm(forms.Form):
-  cat_num = forms.CharField(required=False)
-
-  def __init__(self, *args, **kwargs):
-    super().__init__(*args, **kwargs) 
-    self.fields['cat_num'].widget.attrs['class'] = 'form-control'
-
-
-class SearchNameForm(forms.Form):
-  kit_name = forms.CharField(required=False)
-
-  def __init__(self, *args, **kwargs):
-    super().__init__(*args, **kwargs) 
-    self.fields['kit_name'].widget.attrs['class'] = 'form-control'
-
-
-class SearchBrandTagForm(forms.Form):
   brands = forms.ModelMultipleChoiceField(
     queryset=Brand.objects.all(),
     widget=forms.CheckboxSelectMultiple,
@@ -40,7 +20,20 @@ class SearchBrandTagForm(forms.Form):
     queryset=Tag.objects.all(),
     widget=forms.CheckboxSelectMultiple,
     required=False)
-  
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs) 
+    self.fields['text_search'].widget.attrs['class'] = 'form-control'
+    self.fields['price'].widget.attrs['class'] = 'form-select'
+
+
+class ItemLotNumberForm(forms.Form):
+  lot_number = forms.CharField(required=False)
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs) 
+    self.fields['lot_number'].widget.attrs['class'] = 'form-control'
+
 
 class DeletionForm(forms.Form):
   confirm = forms.CharField()

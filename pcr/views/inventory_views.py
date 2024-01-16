@@ -7,7 +7,6 @@ from django.db.models import Q
 from django.contrib import messages
 from users.models import User
 
-
 from ..models.inventory import Location, Reagent, Tube, Plate, Gel, Ladder
 from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, EditGelForm, EditTubeForm, EditPlateForm, EditReagentForm, LadderForm, EditLadderForm
 from ..forms.general import DeletionForm, SearchGelForm, SearchLadderForm, SearchPlateForm, SearchReagentForm, SearchTubeForm
@@ -92,7 +91,7 @@ def ladders(request):
     else:
       print(form.errors)
 
-  paginator = Paginator(ladders, 10)
+  paginator = Paginator(ladders, 25)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -171,7 +170,7 @@ def gels(request):
     else:
       print(form.errors)
 
-  paginator = Paginator(gels, 10)
+  paginator = Paginator(gels, 25)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -252,7 +251,7 @@ def plates(request):
     else:
       print(form.errors)
 
-  paginator = Paginator(plates, 10)
+  paginator = Paginator(plates, 25)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -329,7 +328,7 @@ def tubes(request):
     else:
       print(form.errors)
 
-  paginator = Paginator(tubes, 10)
+  paginator = Paginator(tubes, 25)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -413,7 +412,7 @@ def reagents(request):
     else:
       print(form.errors)
 
-  paginator = Paginator(reagents, 10)
+  paginator = Paginator(reagents, 25)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 

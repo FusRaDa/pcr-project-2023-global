@@ -21,7 +21,7 @@
 
   <div class="row mt-2 justify-content-center">
 
-    <div class="col-sm-3 px-4 mb-2">
+    <div class="col-sm-4 mb-2">
       <div class="card">
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -48,57 +48,76 @@
       </div>
     </div>
 
-    <div class="col-sm-9">
+    <div class="col-sm-8">
       <div class="container">
-        <form method="POST" action="">
+
+        <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="POST" action="">
           {% csrf_token %}
-          <div class="row">
-
-            <div class="col-sm-6">
-              <div class="input-group mb-3">
-                {{kit_name_form.kit_name}}
-                <button type="submit" class="btn btn-primary" name="search-kit-name">🔎 Kit</button>
-              </div>
+          <div class="col-sm-4">
+            <div class="input-group">
+              <div class="input-group-text">Text Search</div>
+              {{form.text_search}}
             </div>
-
-            <div class="col-sm-6">
-              <div class="input-group mb-3">
-                {{catalog_number_form.cat_num}}
-                <button type="submit" class="btn btn-primary" name="search-catalog-number">🔎 Catalog</button>
-              </div>
-            </div>
-
           </div>
+          <div class="col-sm-4">
+            <div class="input-group">
+              <div class="input-group-text">Price</div>
+              {{form.price}}
+            </div>
+          </div>
+          <div class="col-auto">
+            <a class="btn btn-secondary me-1" href="{% url 'store' %}" role="button">Clear</a>
+            <button type="submit" class="btn btn-primary" name="search">Search</button>
+          </div>
+
+          <div class="col-sm-12">
+            <h6 class="text-center">Brands</h6>
+            <div class="d-flex justify-content-center">
+              {% for brand in form.brands %}
+                <div class="p-2 mx-1 border border-success border-4 rounded">
+                  {{brand}}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <h6 class="text-center">Tags</h6>
+            <div class="d-flex justify-content-center">
+              {% for tag in form.tags %}
+              <div class="p-2 mx-1 border border-warning border-4 rounded">
+                {{tag}}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          
         </form>
-
-        <form method="POST" action="">
-          {% csrf_token %}
-          <div class="d-flex gap-1 flex-wrap justify-content-start">
-            {% for brand in brand_tag_form.brands %}
-              <div class="p-2 border border-success border-4 rounded">
-                {{brand}}
-              </div>
-            {% endfor %}
-          </div>
-      
-          <div class="d-flex gap-1 flex-wrap justify-content-start mt-2">
-            {% for tag in brand_tag_form.tags %}
-            <div class="p-2 border border-warning border-4 rounded">
-              {{tag}}
-            </div>
-            {% endfor %}
-          </div>
-      
-          <div class="text-center mt-2">
-            <button type="submit" class="btn btn-primary" name="search-brand-tag">Search By Brands/Tags</button>
-          </div>
-
-        </form>
-
-        <div class="d-flex gap-3 flex-wrap justify-content-center mt-2">
-          {% for kit in kits %}
+       
+        <div class="d-flex gap-3 flex-wrap justify-content-start mt-2">
+          {% for kit in page_obj %}
             {% include 'partials/kit_display.html' %}
           {% endfor %}
+        </div>
+
+        <div class="d-flex justify-content-center me-5">
+          <div class="pagination">
+            <span class="step-links">
+              {% if page_obj.has_previous %}
+                <a href="?page=1">⮜⮜ First</a>
+                <a href="?page={{ page_obj.previous_page_number }}">⮜</a>
+              {% endif %}
+      
+              <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+              </span>
+      
+              {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">⮞</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last ⮞⮞</a>
+              {% endif %}
+            </span>
+          </div>
         </div>
 
       </div>

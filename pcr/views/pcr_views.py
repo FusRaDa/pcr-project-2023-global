@@ -76,13 +76,13 @@ def edit_tcprotocol(request, pk):
 
 @login_required(login_url='login')
 def extracted_batches(request):
-  batches = Batch.objects.filter(user=request.user, is_extracted=True).order_by('-date_created')
-
   process = Process.objects.filter(user=request.user, is_processed=False)
   if not process.exists():
     process = Process.objects.create(user=request.user)
   else:
     process = Process.objects.get(user=request.user, is_processed=False)
+
+  batches = Batch.objects.filter(user=request.user, is_extracted=True).order_by('-date_created')
 
   if 'clear' in request.POST:
     process.samples.clear()
