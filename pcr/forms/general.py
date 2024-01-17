@@ -7,6 +7,26 @@ from ..models.batch import ExtractionProtocol
 from ..models.inventory import Location, Plate, Gel, Reagent
 
 
+class SearchExtractionProtocolForm(forms.Form):
+  text_search = forms.CharField(max_length=100, required=False)
+
+  TYPE_CHOICES = [(None, "------"), (ExtractionProtocol.Types.DNA, "DNA"), (ExtractionProtocol.Types.RNA, "RNA"), (ExtractionProtocol.Types.TOTAL_NUCLEIC, "Total-nucleic")]
+  type = forms.ChoiceField(choices=TYPE_CHOICES, required=False)
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['text_search'].widget.attrs['class'] = 'form-control'
+    self.fields['type'].widget.attrs['class'] = 'form-select'
+
+
+class SearchAssayCodeForm(forms.Form):
+  text_search = forms.CharField(max_length=100, required=False)
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['text_search'].widget.attrs['class'] = 'form-control'
+
+
 class SearchFluorescenseForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
 

@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <div class="justify-content-center">
+  <div class="justify-content-center mb-2">
     <div class="col d-flex justify-content-center">
       <a href="{% url 'create_extraction_protocol' %}">
         <button type="button" class="btn btn-primary">
@@ -23,113 +23,105 @@
     </div>
   </div>
 
-  {% if dna_extraction_protocols %}
-  <h6>DNA Extractions</h6>
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th scope="col" class="col-2">Name</th>
-          <th scope="col" class="col-10">Reagents</th>
-        </tr>
-      </thead>
+  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="POST" action="">
+    {% csrf_token %}
+    <div class="col-sm-5">
+      <div class="input-group">
+        <div class="input-group-text">Name/Tubes/Reagents</div>
+        {{form.text_search}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Extraction Type</div>
+        {{form.type}}
+      </div>
+    </div>
+    <div class="col-auto">
+      <a class="btn btn-secondary me-1" href="{% url 'extraction_protocols' %}" role="button">Clear</a>
+      <button type="submit" class="btn btn-primary" name="search">Search</button>
+    </div>
+  </form>
 
-      <tbody>
-        {% for protocol in dna_extraction_protocols %}
-          <tr class="batch-row {% if not protocol.is_complete %} table-danger {% endif %}" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
-            <td>{{protocol.name}} {% if not protocol.is_complete %} (Not Complete) {% endif %}</td>
-            <td>
-              {% for reagent in protocol.reagents.all %}
-                {% if protocol.reagents.all|length > 1 %}
-                <span>
-                  {{reagent}} &#9614;
-                </span>
-                {% else %}
-                <span>
-                  {{reagent}}
-                </span>
-                {% endif %}
-              {% endfor %}
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
+  <div class="row justify-content-center mt-2">
+    {% for protocol in page_obj %}
 
-    </table>
+      <div class="col-sm-3 form-width-18 mb-2">
+        <div class="card">
+          <div class="card-header">
+            {{protocol.name}}
+          </div>
+          
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Extracting: {{protocol.type}}
+            </li>
+            {% if protocol.tubes.all %}
+            <li class="list-group-item"> Tubes
+              <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#tubes-collapse-{{protocol.pk}}" aria-expanded="false" aria-controls="tubes-collapse-{{protocol.pk}}">
+                ⮟
+              </button>
+
+              <div class="collapse" id="tubes-collapse-{{protocol.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for tube in protocol.tubes.all %}
+                    <li class="list-group-item">{{tube}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </li>
+            {% endif %}
+
+            {% if protocol.reagents.all %}
+            <li class="list-group-item"> Reagents
+              <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#reagents-collapse-{{protocol.pk}}" aria-expanded="false" aria-controls="reagents-collapse-{{protocol.pk}}">
+                ⮟
+              </button>
+
+              <div class="collapse" id="reagents-collapse-{{protocol.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for reagent in protocol.reagents.all %}
+                    <li class="list-group-item">{{reagent}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+
+            </li>
+            {% endif %}
+          </ul>
+          <div class="card-body">
+            <a href="{% url 'edit_extraction_protocol' protocol.pk %}" class="card-link">Edit Protocol</a>
+          </div>
+        </div>
+      </div>
+
+    {% endfor %}
+
+    <div class="d-flex justify-content-center">
+      <div class="pagination">
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+            <a href="?page=1">⮜⮜ First</a>
+            <a href="?page={{ page_obj.previous_page_number }}">⮜</a>
+          {% endif %}
+  
+          <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+  
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">⮞</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Last ⮞⮞</a>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+
   </div>
-  {% endif %}
-
-  {% if rna_extraction_protocols %}
-  <h6>RNA Extractions</h6>
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th scope="col" class="col-2">Name</th>
-          <th scope="col" class="col-10">Reagents</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {% for protocol in rna_extraction_protocols %}
-          <tr class="batch-row {% if not protocol.is_complete %} table-danger {% endif %}" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
-            <td>{{protocol.name}} {% if not protocol.is_complete %} (Not Complete) {% endif %}</td>
-            <td>
-              {% for reagent in protocol.reagents.all %}
-                {% if protocol.reagents.all|length > 1 %}
-                <span>
-                  {{reagent}} &#9614;
-                </span>
-                {% else %}
-                <span>
-                  {{reagent}}
-                </span>
-                {% endif %}
-              {% endfor %}
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-
-    </table>
-  </div>
-  {% endif %}
-
-  {% if tn_extraction_protocols %}
-  <h6>Total-nucleic Extractions</h6>
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th scope="col" class="col-2">Name</th>
-          <th scope="col" class="col-10">Reagents</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {% for protocol in tn_extraction_protocols %}
-          <tr class="batch-row {% if not protocol.is_complete %} table-danger {% endif %}" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
-            <td>{{protocol.name}} {% if not protocol.is_complete %} (Not Complete) {% endif %}</td>
-            <td>
-              {% for reagent in protocol.reagents.all %}
-                {% if protocol.reagents.all|length > 1 %}
-                <span>
-                  {{reagent}} &#9614;
-                </span>
-                {% else %}
-                <span>
-                  {{reagent}}
-                </span>
-                {% endif %}
-              {% endfor %}
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-
-    </table>
-  </div>
-  {% endif %}
 
 </div>
 

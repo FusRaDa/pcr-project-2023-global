@@ -21,7 +21,7 @@
   </div>
   {% endif %}
 
-  <div class="row justify-content-center">
+  <div class="row justify-content-center mb-2">
     <div class="col d-flex justify-content-center">
       <a href="{% url 'create_assay_code' %}">
         <button type="button" class="btn btn-primary">
@@ -30,6 +30,20 @@
       </a>
     </div>
   </div>
+
+  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="POST" action="">
+    {% csrf_token %}
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Name/Assays</div>
+        {{form.text_search}}
+      </div>
+    </div>
+    <div class="col-auto">
+      <a class="btn btn-secondary me-1" href="{% url 'assay_codes' %}" role="button">Clear</a>
+      <button type="submit" class="btn btn-primary" name="search">Search</button>
+    </div>
+  </form>
 
   <div class="row mt-2">
     <div class="col justify-content-center">
@@ -44,7 +58,7 @@
           </thead>
 
           <tbody>
-            {% for assay_code in assay_codes %}
+            {% for assay_code in page_obj %}
               <tr class="batch-row" data-href="{% url 'edit_assay_code' assay_code.pk %}">
                 <td>{{assay_code.name}}</td>
                 <td>
@@ -60,6 +74,27 @@
         </table>
 
       </div>
+
+      <div class="d-flex justify-content-center">
+        <div class="pagination">
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+              <a href="?page=1">⮜⮜ First</a>
+              <a href="?page={{ page_obj.previous_page_number }}">⮜</a>
+            {% endif %}
+    
+            <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+    
+            {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">⮞</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}">Last ⮞⮞</a>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+
     </div>
   </div>
  
