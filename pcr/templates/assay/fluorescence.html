@@ -31,41 +31,69 @@
     </div>
   </div>
 
+  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="POST" action="">
+    {% csrf_token %}
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Name/Assays</div>
+        {{form.text_search}}
+      </div>
+    </div>
+    <div class="col-auto">
+      <a class="btn btn-secondary me-1" href="{% url 'fluorescence' %}" role="button">Clear</a>
+      <button type="submit" class="btn btn-primary" name="search">Search</button>
+    </div>
+  </form>
+
   <div class="row">
     <div class="col justify-content-center">
-      <div class="table-responsive">
 
+      <div class="table-responsive">
         <table class="table table-bordered table-hover">
           <thead>
             <tr>
               <th scope="col" class="col-sm-1">Name</th>
-              <th scope="col" class="col-sm-11">Assays</th>
+              <th scope="col" class="col-sm-11">Corresponding Assays</th>
             </tr>
           </thead>
 
           <tbody>
-            {% for fluor in fluorescence %}
+            {% for fluor in page_obj %}
               <tr class="batch-row" data-href="{% url 'edit_fluorescence' fluor.pk %}">
                 <td>{{fluor.name}}</td>
                 <td>
                   {% for assay in fluor.assay_set.all %}
-                    {% if fluor.assay_set.all|length > 1 %}
-                    <span>
-                      {{assay}} &#9614;
-                    </span>
-                    {% else %}
-                    <span>
+                    <span class="badge text-bg-success">
                       {{assay}}
                     </span>
-                    {% endif %}
                   {% endfor %}
                 </td>
               </tr>
             {% endfor %}
           </tbody>
         </table>
-
       </div>
+
+      <div class="d-flex justify-content-center">
+        <div class="pagination">
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+              <a href="?page=1">⮜⮜ First</a>
+              <a href="?page={{ page_obj.previous_page_number }}">⮜</a>
+            {% endif %}
+    
+            <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+    
+            {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">⮞</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}">Last ⮞⮞</a>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+
     </div>
   </div>
 

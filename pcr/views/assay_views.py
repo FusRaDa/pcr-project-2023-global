@@ -10,7 +10,7 @@ from django.contrib import messages
 from users.models import User
 from ..models.assay import Assay, Fluorescence, Control, ControlAssay, ReagentAssay
 from ..forms.assay import AssayForm, ReagentAssayForm, FluorescenceForm, ControlForm, ControlAssayForm
-from ..forms.general import DeletionForm, SearchAssayForm, SearchControlForm
+from ..forms.general import DeletionForm, SearchAssayForm, SearchControlForm, SearchFluorescenseForm
 
 
 @login_required(login_url='login')
@@ -159,7 +159,18 @@ def assay_through(request, pk):
 def fluorescence(request):
   fluorescence = Fluorescence.objects.filter(user=request.user).order_by('name')
 
-  context = {'fluorescence': fluorescence}
+  form = SearchFluorescenseForm()
+  if request.method == "POST":
+    form = SearchFluorescenseForm(request.POST)
+    if form.is_valid():
+      text_search = form.cleaned_data['text_search']
+      fluorescence  = Fluorescence.objects.filter(Q(name__icontains=text_search) | Q(assay__name__icontains=text_search)).distinct().order_by('name')
+
+  paginator = Paginator(fluorescence, 25)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
+
+  context = {'page_obj': page_obj, 'form': form}
   return render(request, 'assay/fluorescence.html', context)
 
 

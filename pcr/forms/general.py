@@ -7,6 +7,14 @@ from ..models.batch import ExtractionProtocol
 from ..models.inventory import Location, Plate, Gel, Reagent
 
 
+class SearchFluorescenseForm(forms.Form):
+  text_search = forms.CharField(max_length=100, required=False)
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['text_search'].widget.attrs['class'] = 'form-control'
+
+
 class SearchControlForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
