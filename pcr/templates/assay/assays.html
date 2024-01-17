@@ -21,7 +21,7 @@
   </div>
   {% endif %}
 
-  <div class="justify-content-center">
+  <div class="justify-content-center mb-2">
     <div class="col d-flex justify-content-center">
       <a href="{% url 'create_assay' %}">
         <button type="button" class="btn btn-primary">
@@ -31,16 +31,42 @@
     </div>
   </div>
 
+  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="POST" action="">
+    {% csrf_token %}
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Name</div>
+        {{form.name}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Type</div>
+        {{form.type}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Method</div>
+        {{form.method}}
+      </div>
+    </div>
+    <div class="col-auto">
+      <a class="btn btn-secondary me-1" href="{% url 'assays' %}" role="button">Clear</a>
+      <button type="submit" class="btn btn-primary" name="search">Search</button>
+    </div>
+  </form>
+
   <div class="row">
     <div class="col">
 
-    {% if pcr_dna %}
-    <h6>PCR Assays - DNA</h6>
     <div class="table-responsive">
       <table class="table table-bordered table-hover">
         <thead>
           <tr>
             <th scope="col" class="col-sm-2">Name</th>
+            <th scope="col" class="col-sm-2">Type</th>
+            <th scope="col" class="col-sm-2">Method</th>
             <th scope="col" class="col-sm-2">Sample Volume</th>
             <th scope="col" class="col-sm-2">Reaction Volume</th>
             <th scope="col" class="col-sm-2">Fluorescence</th>
@@ -48,24 +74,23 @@
         </thead>
 
         <tbody>
-          {% for assay in pcr_dna %}
+          {% for assay in page_obj %}
             <tr 
               class="batch-row {% if not assay.is_complete %} batch-row table-danger {% endif %}" 
               data-href="{% url 'edit_assay' assay.pk %}">
               <td>{{assay.name}}{% if not assay.is_complete %} (Not Complete) {% endif %}</td>
+              <td>{{assay.type}}</td>
+              <td>{{assay.method}}</td>
               <td>{{assay.sample_volume}}</td>
               <td>{{assay.reaction_volume}}</td>
               <td>
+                {% if assay.fluorescence.all|length == 0 %}
+                  <span>------</span>
+                {% endif %}
                 {% for fluor in assay.fluorescence.all %}
-                  {% if assay.location.all|length > 1 %}
-                  <span>
-                    {{fluor}} |
-                  </span>
-                  {% else %}
-                  <span>
+                  <span class="badge text-bg-info">
                     {{fluor}}
                   </span>
-                  {% endif %}
                 {% endfor %}
               </td>
             </tr>
@@ -74,134 +99,27 @@
 
       </table>
     </div>
-    {% endif %}
 
-    {% if pcr_rna %}
-    <h6>PCR Assays - RNA</h6>
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col" class="col-sm-2">Name</th>
-            <th scope="col" class="col-sm-2">Sample Volume</th>
-            <th scope="col" class="col-sm-2">Reaction Volume</th>
-            <th scope="col" class="col-sm-2">Fluorescence</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {% for assay in pcr_rna %}
-            <tr 
-              class="batch-row {% if not assay.is_complete %} batch-row table-danger {% endif %}" 
-              class="batch-row" data-href="{% url 'edit_assay' assay.pk %}">
-              <td>{{assay.name}}{% if not assay.is_complete %} (Not Complete) {% endif %}</td>
-              <td>{{assay.sample_volume}}</td>
-              <td>{{assay.reaction_volume}}</td>
-              <td>
-                {% for fluor in assay.fluorescence.all %}
-                  {% if assay.location.all|length > 1 %}
-                  <span>
-                    {{fluor}} |
-                  </span>
-                  {% else %}
-                  <span>
-                    {{fluor}}
-                  </span>
-                  {% endif %}
-                {% endfor %}
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-
-      </table>
+    <div class="d-flex justify-content-center">
+      <div class="pagination">
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+            <a href="?page=1">⮜⮜ First</a>
+            <a href="?page={{ page_obj.previous_page_number }}">⮜</a>
+          {% endif %}
+  
+          <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+  
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">⮞</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Last ⮞⮞</a>
+          {% endif %}
+        </span>
+      </div>
     </div>
-    {% endif %}
-
-    {% if qpcr_dna %}
-    <h6>qPCR Assays - DNA</h6>
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col" class="col-sm-2">Name</th>
-            <th scope="col" class="col-sm-2">Sample Volume</th>
-            <th scope="col" class="col-sm-2">Reaction Volume</th>
-            <th scope="col" class="col-sm-2">Fluorescence</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {% for assay in qpcr_dna %}
-            <tr 
-              class="batch-row {% if not assay.is_complete %} batch-row table-danger {% endif %}" 
-              class="batch-row" data-href="{% url 'edit_assay' assay.pk %}">
-              <td>{{assay.name}}{% if not assay.is_complete %} (Not Complete) {% endif %}</td>
-              <td>{{assay.sample_volume}}</td>
-              <td>{{assay.reaction_volume}}</td>
-              <td>
-                {% for fluor in assay.fluorescence.all %}
-                  {% if assay.location.all|length > 1 %}
-                  <span>
-                    {{fluor}} |
-                  </span>
-                  {% else %}
-                  <span>
-                    {{fluor}}
-                  </span>
-                  {% endif %}
-                {% endfor %}
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-
-      </table>
-    </div>
-    {% endif %}
-
-    {% if qpcr_rna %}
-    <h6>qPCR Assays - RNA</h6>
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col" class="col-sm-2">Name</th>
-            <th scope="col" class="col-sm-2">Sample Volume</th>
-            <th scope="col" class="col-sm-2">Reaction Volume</th>
-            <th scope="col" class="col-sm-2">Fluorescence</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {% for assay in qpcr_rna %}
-            <tr 
-              class="batch-row {% if not assay.is_complete %} table-danger {% endif %}" 
-              data-href="{% url 'edit_assay' assay.pk %}">
-              <td>{{assay.name}} {% if not assay.is_complete %} (Not Complete) {% endif %}</td>
-              <td>{{assay.sample_volume}}</td>
-              <td>{{assay.reaction_volume}}</td>
-              <td>
-                {% for fluor in assay.fluorescence.all %}
-                  {% if assay.location.all|length > 1 %}
-                  <span>
-                    {{fluor}} |
-                  </span>
-                  {% else %}
-                  <span>
-                    {{fluor}}
-                  </span>
-                  {% endif %}
-                {% endfor %}
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-
-      </table>
-    </div>
-    {% endif %}
-
+ 
     </div>
   </div>
 

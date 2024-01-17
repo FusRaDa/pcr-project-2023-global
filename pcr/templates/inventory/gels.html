@@ -85,15 +85,9 @@
             
             <td>
               {% for location in gel.location.all %}
-                {% if gel.location.all|length > 1 %}
-                <span>
-                  {{location}} |
-                </span>
-                {% else %}
-                <span>
+                <span class="badge text-bg-info">
                   {{location}}
                 </span>
-                {% endif %}
               {% endfor %}
             </td>
 

@@ -3,22 +3,42 @@ from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
+from django.db.models import Q
+from django.core.paginator import Paginator
 from django.contrib import messages
-from users.models import User
 
+from users.models import User
 from ..models.assay import Assay, Fluorescence, Control, ControlAssay, ReagentAssay
 from ..forms.assay import AssayForm, ReagentAssayForm, FluorescenceForm, ControlForm, ControlAssayForm
-from ..forms.general import DeletionForm
+from ..forms.general import DeletionForm, SearchAssayForm, SearchControlForm
 
 
 @login_required(login_url='login')
 def assays(request):
-  pcr_dna = Assay.objects.filter(user=request.user, method=Assay.Methods.PCR, type=Assay.Types.DNA).order_by('name')
-  pcr_rna = Assay.objects.filter(user=request.user, method=Assay.Methods.PCR, type=Assay.Types.RNA).order_by('name')
-  qpcr_dna = Assay.objects.filter(user=request.user, method=Assay.Methods.qPCR, type=Assay.Types.DNA).order_by('name')
-  qpcr_rna = Assay.objects.filter(user=request.user, method=Assay.Methods.qPCR, type=Assay.Types.RNA).order_by('name')
+  assays = Assay.objects.filter(user=request.user).order_by('name')
 
-  context = {'pcr_dna': pcr_dna, 'pcr_rna': pcr_rna, 'qpcr_dna': qpcr_dna, 'qpcr_rna': qpcr_rna}
+  form = SearchAssayForm()
+  if request.method == "POST":
+    form = SearchAssayForm(request.POST)
+    if form.is_valid():
+      name = form.cleaned_data['name']
+      method = form.cleaned_data['method']
+      type = form.cleaned_data['type']
+
+      filters = {}
+      if name:
+        filters['name__icontains'] = name
+      if method:
+        filters['method'] = method
+      if type:
+        filters['type'] = type
+      assays = Assay.objects.filter(**filters, user=request.user).order_by('name')
+
+  paginator = Paginator(assays, 25)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
+
+  context = {'page_obj': page_obj, 'form': form}
   return render(request, 'assay/assays.html', context)
 
 
@@ -197,7 +217,23 @@ def edit_fluorescence(request, pk):
 def controls(request):
   controls = Control.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
 
-  context = {'controls': controls}
+  form = SearchControlForm(user=request.user)
+  if request.method == "POST":
+    form = SearchControlForm(request.POST, user=request.user)
+    if form.is_valid():
+      text_search = form.cleaned_data['text_search']
+      location = form.cleaned_data['location']
+
+      filters = {}
+      if location:
+        filters['location'] = location
+      controls = Control.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(lot_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+  
+  paginator = Paginator(controls, 25)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
+
+  context = {'page_obj': page_obj, 'form': form}
   return render(request, 'assay/controls.html', context)
 
 

@@ -2,9 +2,38 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from ..models.assay import AssayCode
+from ..models.assay import AssayCode, Assay
 from ..models.batch import ExtractionProtocol
 from ..models.inventory import Location, Plate, Gel, Reagent
+
+
+class SearchControlForm(forms.Form):
+  text_search = forms.CharField(max_length=100, required=False)
+  location = forms.ModelChoiceField(queryset=None, required=False)
+
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['location'].widget.attrs['class'] = 'form-select'
+    self.fields['text_search'].widget.attrs['class'] = 'form-control'
+
+
+class SearchAssayForm(forms.Form):
+  name = forms.CharField(max_length=100, required=False)
+
+  METHOD_CHOICES = [(None, "------"), (Assay.Methods.PCR, "PCR"), (Assay.Methods.qPCR, "qPCR")]
+  method = forms.ChoiceField(choices=METHOD_CHOICES, required=False)
+
+  TYPE_CHOICES = [(None, "------"), (Assay.Types.DNA, "DNA"), (Assay.Types.RNA, "RNA")]
+  type = forms.ChoiceField(choices=TYPE_CHOICES, required=False)
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs) 
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['method'].widget.attrs['class'] = 'form-select'
+    self.fields['type'].widget.attrs['class'] = 'form-select'
 
 
 class SearchTubeForm(forms.Form):
@@ -37,7 +66,7 @@ class SearchPlateForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
-  CHOICES = [(None, '------'), ('8', '8'), ('24', '24'), ('48', '48'), ('96', '96'), ('384', '384')]
+  CHOICES = [(None, '------'), (Plate.Sizes.EIGHT, '8'), (Plate.Sizes.TWENTY_FOUR, '24'), (Plate.Sizes.FOURTY_EIGHT, '48'), (Plate.Sizes.NINETY_SIX, '96'), (Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR, '384')]
   size = forms.ChoiceField(choices=CHOICES, required=False)
 
   def __init__(self, *args, **kwargs):
@@ -54,7 +83,7 @@ class SearchGelForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
-  CHOICES = [(None, '------'), ('12', '12'), ('24', '24'), ('48', '48')]
+  CHOICES = [(None, '------'), (Gel.Sizes.TWELVE, '12'), (Gel.Sizes.TWENTY_FOUR, '24'), (Gel.Sizes.FOURTY_EIGHT, '48')]
   size = forms.ChoiceField(choices=CHOICES, required=False)
 
   def __init__(self, *args, **kwargs):
@@ -71,10 +100,10 @@ class SearchReagentForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
-  USAGE_CHOICES = [(None, '------'), ('EXTRACTION', 'EXTRACTION'), ('PCR', 'PCR')]
+  USAGE_CHOICES = [(None, '------'), (Reagent.Usages.EXTRACTION, 'EXTRACTION'), (Reagent.Usages.PCR, 'PCR')]
   usage = forms.ChoiceField(choices=USAGE_CHOICES, required=False)
 
-  PCR_REAGENT_CHOICES = [(None, '------'), ('GENERAL', 'GENERAL'), ('POLYMERASE', 'POLYMERASE'), ('WATER', 'WATER')]
+  PCR_REAGENT_CHOICES = [(None, '------'), (Reagent.PCRReagent.GENERAL, 'GENERAL'), (Reagent.PCRReagent.POLYMERASE, 'POLYMERASE'), (Reagent.PCRReagent.WATER, 'WATER')]
   pcr_reagent = forms.ChoiceField(choices=PCR_REAGENT_CHOICES, required=False)
 
   def __init__(self, *args, **kwargs):

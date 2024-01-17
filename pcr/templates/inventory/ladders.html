@@ -77,15 +77,9 @@
             
             <td>
               {% for location in ladder.location.all %}
-                {% if ladder.location.all|length > 1 %}
-                <span>
-                  {{location}} |
-                </span>
-                {% else %}
-                <span>
+                <span class="badge text-bg-info">
                   {{location}}
                 </span>
-                {% endif %}
               {% endfor %}
             </td>
 

@@ -29,6 +29,26 @@
     </div>
   </div>
 
+  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="POST" action="">
+    {% csrf_token %}
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Name/Lot#</div>
+        {{form.text_search}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Location</div>
+        {{form.location}}
+      </div>
+    </div>
+    <div class="col-auto">
+      <a class="btn btn-secondary me-1" href="{% url 'controls' %}" role="button">Clear</a>
+      <button type="submit" class="btn btn-primary" name="search">Search</button>
+    </div>
+  </form>
+
   <div class="table-responsive">
     <table class="table table-bordered table-hover">
       <thead>
@@ -42,7 +62,7 @@
       </thead>
 
       <tbody>
-        {% for control in controls %}
+        {% for control in page_obj %}
           <tr class="tube-row {% if control.is_expired %} table-danger {% endif %} {% if control.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_control' control.pk %}">
             <td>{{control.exp_date}}</td>
             <td>{{control.name}} {% if control.is_expired %} (EXPIRED) {% endif %} {% if control.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
@@ -51,15 +71,9 @@
 
             <td>
               {% for location in control.location.all %}
-                {% if control.location.all|length > 1 %}
-                <span>
-                  {{location}} |
-                </span>
-                {% else %}
-                <span>
+                <span class="badge text-bg-info">
                   {{location}}
                 </span>
-                {% endif %}
               {% endfor %}
             </td>
 
@@ -68,6 +82,26 @@
       </tbody>
 
     </table>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <div class="pagination">
+      <span class="step-links">
+        {% if page_obj.has_previous %}
+          <a href="?page=1">⮜⮜ First</a>
+          <a href="?page={{ page_obj.previous_page_number }}">⮜</a>
+        {% endif %}
+
+        <span class="current">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">⮞</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">Last ⮞⮞</a>
+        {% endif %}
+      </span>
+    </div>
   </div>
 
 </div>
