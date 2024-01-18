@@ -8,56 +8,76 @@
 <div class="container">
 
   <div class="row pt-3">
-    <h1 class="text-center">Manage PCR Inventory &amp; Paperwork</h1>
-    <h2 class="text-center">Get started for free!</h2>
+    <h1 class="text-center display-1">Manage PCR Inventory &amp; Paperwork</h1>
   </div>
 
   <div class="row justify-content-center pt-2 pb-3">
 
-    <div class="col-sm-9">
-      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/videoseries?si=AWCv0GVXgFhtzpPz&amp;list=PLuAHgng30TgY10S0-apKQfLwjirjtssgy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <div class="col-sm-3">
+      <div class="card">
+        <img src="{% static 'images/free-tier-img.png' %}"class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title text-center">Free Tier</h5>
+        </div>
+      </div>
     </div>
 
     <div class="col-sm-3">
-
-      <img src="{% static 'images/pcr-prep-logo.png' %}" class="img-thumbnail" alt="...">
-
-      <form method="POST" action="">
-        {% csrf_token %}
-        <h5 class="text-center">LOGIN</h5>
-
-        <div class="form-floating mb-3">
-          <input type="text" name="username" id="floatingEmail" placeholder="Username/Email" class="form-control">
-          <label for="floatingEmail">Username/Email</label>
+      <div class="card">
+        <img src="{% static 'images/lab-tier-img.png' %}"class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title text-center">Lab Tier</h5>
         </div>
+      </div>
+    </div>
 
-        <div class="form-floating mb-3">
-          <input type="password" name="password" id="floatingPassword" placeholder="Password" class="form-control">
-          <label for="floatingPassword">Password</label>
+    <div class="col-sm-3">
+      <div class="card">
+        <img src="{% static 'images/latest-updates-img.png' %}"class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title text-center">Latest Updates</h5>
         </div>
+      </div>
+    </div>
 
-        {% for message in messages %}
-        <div class="row">
-          <div class="col d-flex justify-content-center"> 
-            <p class="messages text-center">{{ message }}</p>
-          </div>
+    <div class="col-sm-3">
+      <div class="card">
+        <img src="{% static 'images/pcr-prep-logo.png' %}"class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title text-center">Login</h5>
+          <form method="POST" action="">
+            {% csrf_token %}
+            <div class="form-floating mb-2">
+              <input type="text" name="username" id="floatingEmail" placeholder="Username/Email" class="form-control">
+              <label for="floatingEmail">Username/Email</label>
+            </div>
+    
+            <div class="form-floating mb-2">
+              <input type="password" name="password" id="floatingPassword" placeholder="Password" class="form-control">
+              <label for="floatingPassword">Password</label>
+            </div>
+    
+            {% for message in messages %}
+            <div class="row">
+              <div class="col d-flex justify-content-center"> 
+                <p class="messages text-center">{{ message }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          
+            <div class="text-center mb-3"> 
+              <button class="btn btn-primary" type="submit">Login</button>
+            </div>
+    
+            <div class="text-center">
+              <p class="m-0">Don't have an account?&nbsp;<a href="{% url 'register' %}">Sign Up</a></p>
+              <p class="m-0">Forgot password?&nbsp;<a href="{% url 'reset_password' %}">Reset Password</a></p>
+            </div>
+          </form>
         </div>
-        {% endfor %}
-      
-        <div class="text-center mt-2"> 
-          <button class="btn btn-primary" type="submit">Login</button>
-        </div>
-
-        <div class="text-center mt-2">
-          Don't have an account?&nbsp;<a href="{% url 'register' %}" class="ml-2">Sign Up</a>
-          Forgot password?&nbsp;<a href="{% url 'reset_password' %}" class="ml-2">Reset</a>
-        </div>
-
-      </form>
-
+      </div>
     </div>
 
   </div>
-
 </div>
 {% endblock %}
