@@ -34,11 +34,22 @@ class CreateUserForm(UserCreationForm):
     self.fields['last_name'].required = True
 
     self.fields['username'].widget.attrs['class'] = 'form-control'
+    self.fields['username'].widget.attrs['id'] = 'username'
+
     self.fields['first_name'].widget.attrs['class'] = 'form-control'
+    self.fields['first_name'].widget.attrs['id'] = 'first_name'
+
     self.fields['last_name'].widget.attrs['class'] = 'form-control'
+    self.fields['last_name'].widget.attrs['id'] = 'last_name'
+
     self.fields['email'].widget.attrs['class'] = 'form-control'
+    self.fields['email'].widget.attrs['id'] = 'email'
+
     self.fields['password1'].widget.attrs['class'] = 'form-control'
+    self.fields['password1'].widget.attrs['id'] = 'password1'
+
     self.fields['password2'].widget.attrs['class'] = 'form-control'
+    self.fields['password2'].widget.attrs['id'] = 'password2'
 
     self.fields['username'].widget.attrs['placeholder'] = 'Your unique username...'
     self.fields['first_name'].widget.attrs['placeholder'] = 'Your first name...'

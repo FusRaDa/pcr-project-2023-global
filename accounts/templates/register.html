@@ -1,4 +1,4 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 
 {% load static %}
 
@@ -7,67 +7,81 @@
 {% block content %}
 <div class="container">
 
-  <h3 class="text-center">Try PCRPrep Today</h3>
+  <div class="row pt-3">
+    <h1 class="text-center display-1">Get Started For Free</h1>
+  </div>
 
-    <div class="row justify-content-center mb-2">
+  <div class="row justify-content-center mb-2">
 
-      <div class="col-sm-9">
-        Create basic diagram of workflow using PCR Prep
-      </div>
+    <div class="col-sm-9">
+      <img src="{% static 'images/test-diagram.jpg' %}"class="card-img-top" alt="...">
+    </div>
 
-      <div class="col-sm-3 form-width-18">
-        <h3 class="text-center">Register Account</h3>
-        <form method="POST" action="">
-          {% csrf_token %}
+    <div class="col-sm-3">
+      <h3 class="text-center">Register Account</h3>
+      <form method="POST" action="">
+        {% csrf_token %}
 
-          <label class="form-label">Username</label>
+        <div class="form-floating mb-2">
           {{form.username}}
-      
-          <label class="form-label">Email</label>
-          {{form.email}}
-    
-          <label class="form-label">First Name</label>
-          {{form.first_name}}
-    
-          <label class="form-label">Last Name</label>
-          {{form.last_name}}
-    
-          <label class="form-label">Password</label>
-          {{form.password1}}
-
-          <label class="form-label">Confirm Password</label>
-          {{form.password2}}
-
-          {% if form.errors %}
-          <div class="row text-center mt-2">
-            {% for key,value in form.errors.items %} 
-              {{ value|escape }}
-            {% endfor %}
-          </div>
-          {% endif %}
-
-          {% for message in messages %}
-          <div class="row">
-            <div class="col d-flex justify-content-center"> 
-              <h5 class="messages">{{ message }}</h5>
-            </div>
-          </div>
-          {% endfor %}
-
-          <div class="text-center mt-2"> 
-            <button class="btn btn-primary" type="submit">Register Account</button>
-          </div>
-
-        </form>
-
-        <div class="d-flex justify-content-center mt-2">
-          Already have an account?&nbsp;<a href="{% url 'login' %}" class="ml-2">Login</a>
+          <label for="username">Username</label>
         </div>
 
+        <div class="form-floating mb-2">
+          {{form.email}}
+          <label for="email">Email</label>
+        </div>
+        
+        <div class="form-floating mb-2">
+          {{form.first_name}}
+          <label for="first_name">First Name</label>
+        </div>
+        
+        <div class="form-floating mb-2">
+          {{form.last_name}}
+          <label for="last_name">Last Name</label>
+        </div>
+        
+        <div class="form-floating mb-2">
+          {{form.password1}}
+          <label for="password1">Password</label>
+        </div>
 
+        <div class="form-floating mb-2">
+          {{form.password2}}
+          <label for="password2">Confirm Password</label>
+        </div>
+
+        {% if form.errors %}
+        <div class="row text-center mt-2">
+          {% for key,value in form.errors.items %} 
+            {{ value|escape }}
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        {% for message in messages %}
+        <div class="row">
+          <div class="col d-flex justify-content-center"> 
+            <h5 class="messages">{{ message }}</h5>
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="text-center mt-2"> 
+          <button class="btn btn-primary" type="submit">Register Account</button>
+        </div>
+
+      </form>
+
+      <div class="d-flex justify-content-center mt-2">
+        Already have an account?&nbsp;<a href="{% url 'login' %}" class="ml-2">Login</a>
       </div>
 
+
     </div>
+
+  </div>
       
   
 
