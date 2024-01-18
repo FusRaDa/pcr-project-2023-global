@@ -5,23 +5,26 @@
 {% block title %} Login - LabPrep {% endblock %} 
 
 {% block content %}
-
-<link rel="stylesheet" href="{% static 'css/login.css' %}">
-
 <div class="container">
 
-  <h3 class="text-center">Welcome to PCRPrep</h3>
+  <div class="row pt-3">
+    <h1 class="text-center">Manage PCR Inventory &amp; Paperwork</h1>
+    <h2 class="text-center">Get started for free!</h2>
+  </div>
 
-  <div class="row justify-content-center mb-2">
+  <div class="row justify-content-center pt-2 pb-3">
 
     <div class="col-sm-9">
-      Introduce what PCRPrep is about!
+      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/videoseries?si=AWCv0GVXgFhtzpPz&amp;list=PLuAHgng30TgY10S0-apKQfLwjirjtssgy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
 
-    <div class="col-sm-3 form-width-18">
+    <div class="col-sm-3">
+
+      <img src="{% static 'images/pcr-prep-logo.png' %}" class="img-thumbnail" alt="...">
+
       <form method="POST" action="">
         {% csrf_token %}
-        <h3 class="text-center">LOGIN</h3>
+        <h5 class="text-center">LOGIN</h5>
 
         <div class="form-floating mb-3">
           <input type="text" name="username" id="floatingEmail" placeholder="Username/Email" class="form-control">
