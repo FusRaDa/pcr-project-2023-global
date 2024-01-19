@@ -15,6 +15,7 @@ from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
+from ..models.inventory import Gel, Plate
 from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_qpcr_samples, process_pcr_samples
 
 
@@ -266,13 +267,29 @@ def process_paperwork(request, pk):
     rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, process, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
 
   if 'process' in request.POST:
-    process.is_processed = True
+    inventory = []
+    
+    for gel_dna in dna_pcr_json[1]:
+      inventory.append(gel_dna)
+
+    for gel_rna in rna_pcr_json[1]:
+      inventory.append(gel_rna)
+
+    for plate_dna in dna_qpcr_json[1]:
+      inventory.append(plate_dna)
+
+    for plate_rna in rna_qpcr_json[1]:
+      inventory.append(plate_rna)
+
+    print(inventory)
+
+    # process.is_processed = True
     process.date_processed = timezone.now()
 
-    process.pcr_dna_json = dna_pcr_json
-    process.pcr_rna_json = rna_pcr_json
-    process.qpcr_dna_json = dna_qpcr_json
-    process.qpcr_rna_json = rna_qpcr_json
+    process.pcr_dna_json = dna_pcr_json[0]
+    process.pcr_rna_json = rna_pcr_json[0]
+    process.qpcr_dna_json = dna_qpcr_json[0]
+    process.qpcr_rna_json = rna_qpcr_json[0]
 
     array = []
     for sample in process.samples.all():
@@ -286,7 +303,7 @@ def process_paperwork(request, pk):
     process.save()
     return redirect('processes')
 
-  context = {'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json}
+  context = {'dna_qpcr_json': dna_qpcr_json[0], 'rna_qpcr_json': rna_qpcr_json[0], 'dna_pcr_json': dna_pcr_json[0], 'rna_pcr_json': rna_pcr_json[0]}
   return render(request, 'pcr/process_paperwork.html', context)
 
 

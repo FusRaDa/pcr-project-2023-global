@@ -418,7 +418,7 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
 
   # create plate dictionary that contains plate, tcprotocol, assays, and samples
   plate_dict = protocol_data | plate_data | assays_data | samples_data
-  return plate_dict, all_samples
+  return plate_dict, all_samples, plate
 
 
 def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
@@ -590,17 +590,20 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
           samples.remove(sample)
      
   gel_dict = protocol_data | gel_data | assays_data | samples_data
-  return gel_dict, all_samples
+  return gel_dict, all_samples, gel
 
 
 def process_qpcr_samples(all_samples, process, protocol, minimum_samples_in_plate):
   qpcr_data = []
+  inventory = []
 
   is_empty = False
   while not is_empty:
  
-    plate_dict, all_samples = load_plate(all_samples, process, protocol, minimum_samples_in_plate)
+    plate_dict, all_samples, plate = load_plate(all_samples, process, protocol, minimum_samples_in_plate)
     qpcr_data.append(plate_dict)
+    inventory.append(plate)
+
 
     # check if all samples for each assay is empty if not continue the process of making plates
     for data in all_samples:
@@ -610,17 +613,19 @@ def process_qpcr_samples(all_samples, process, protocol, minimum_samples_in_plat
         else:
           is_empty = False
   
-  return qpcr_data
+  return qpcr_data, inventory
 
 
 def process_pcr_samples(all_samples, process, protocol, minimum_samples_in_gel):
   pcr_data = []
+  inventory = []
   
   is_empty = False
   while not is_empty:
 
-    gel_dict, all_samples = load_gel(all_samples, process, protocol, minimum_samples_in_gel)
+    gel_dict, all_samples, gel = load_gel(all_samples, process, protocol, minimum_samples_in_gel)
     pcr_data.append(gel_dict)
+    inventory.append(gel)
 
     for data in all_samples:
       for assay, samples in data.items():
@@ -629,5 +634,5 @@ def process_pcr_samples(all_samples, process, protocol, minimum_samples_in_gel):
         else:
           is_empty = False
     
-  return pcr_data
+  return pcr_data, inventory
 
