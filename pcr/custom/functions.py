@@ -158,26 +158,27 @@ def rna_pcr_samples(assay_samples):
   return all_samples
 
 
-# 4 methods to load plate:
-# 1 - compact & organized horizontally
-# 2 - compact & organized vertically
-# 3 - fully compact horizontally
-# 4 - fully compact vertically
-
-def choose_plate(all_samples, process):
-  # add amount validation for plates
-  plates = []
-  for plate in process.plate.all().order_by('size'):
-    plates.append(plate)
-  total_wells_used = 0
+def choose_plate(all_samples, plates):
+  total_wells_used= 0
   for assay_group in all_samples:
     for assay, samples in assay_group.items():
       total_wells_used += (len(samples) + assay.controls.count())
+
+  chosen_plate = None     
   for plate in plates:
-    if plate.size > total_wells_used:
-      return plate
-    else:
-      return plates[-1]
+    if plate[0].size >= total_wells_used and plate[1] > 0:
+      plate[1] -= 1
+      chosen_plate = plate[0]
+
+  if chosen_plate == None:
+    for plate in plates.reverse():
+      if plate[1] > 0:
+        plate[1] -= 1
+        chosen_plate = plate[0]
+
+  plates.reverse()
+  return chosen_plate, plates
+ 
     
 
 def choose_gel(all_samples, process):
@@ -595,15 +596,17 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
 
 def process_qpcr_samples(all_samples, process, protocol, minimum_samples_in_plate):
   qpcr_data = []
-  inventory = []
+
+  #### MANAGE INVENTORY HERE ####
+  plates = []
+  for plate in process.plate.all().order_by('size'):
+    plates.append([plate, plate.amount])
 
   is_empty = False
   while not is_empty:
  
     plate_dict, all_samples, plate = load_plate(all_samples, process, protocol, minimum_samples_in_plate)
     qpcr_data.append(plate_dict)
-    inventory.append(plate)
-
 
     # check if all samples for each assay is empty if not continue the process of making plates
     for data in all_samples:
@@ -613,12 +616,14 @@ def process_qpcr_samples(all_samples, process, protocol, minimum_samples_in_plat
         else:
           is_empty = False
   
-  return qpcr_data, inventory
+  return qpcr_data, plates
 
 
 def process_pcr_samples(all_samples, process, protocol, minimum_samples_in_gel):
   pcr_data = []
   inventory = []
+
+  #### MANAGE INVENTORY HERE ####
   
   is_empty = False
   while not is_empty:
