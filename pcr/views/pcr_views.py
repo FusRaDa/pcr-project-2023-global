@@ -250,15 +250,19 @@ def process_paperwork(request, pk):
   for plate in process.plate.all().order_by('size'):
     plates.append({'plate': plate, 'name': plate.name, 'catalog_number': plate.catalog_number, 'lot_number': plate.lot_number, 'size': plate.size, 'amount': plate.amount, 'used': 0})
 
+  gels = []
+  for gel in gels:
+    gels.append({'gel': gel, 'name': gel.name, 'catalog_number': gel.catalog_number, 'lot_number': gel.lot_number, 'size': gel.size, 'amount': gel.amount, 'used': 0})
+
   dna_pcr_json = None
   if requires_dna_pcr:
     samples_dna_pcr = dna_pcr_samples(assay_samples)
-    dna_pcr_json = process_pcr_samples(samples_dna_pcr, process, process.pcr_dna_protocol, process.min_samples_per_gel_dna)
+    dna_pcr_json = process_pcr_samples(samples_dna_pcr, gels, process.pcr_dna_protocol, process.min_samples_per_gel_dna)
 
   rna_pcr_json = None
   if requires_rna_pcr:
     samples_rna_pcr = rna_pcr_samples(assay_samples)
-    rna_pcr_json = process_pcr_samples(samples_rna_pcr, process, process.pcr_rna_protocol, process.min_samples_per_gel_rna)
+    rna_pcr_json = process_pcr_samples(samples_rna_pcr, gels, process.pcr_rna_protocol, process.min_samples_per_gel_rna)
   
   dna_qpcr_json = None
   if requires_dna_qpcr:
@@ -274,9 +278,11 @@ def process_paperwork(request, pk):
   for plate in plates:
     if plate['amount'] < 0:
       is_insufficient = True
+  for gel in gels:
+    if gel['amount'] < 0:
+      is_insufficient = True
 
   if 'process' in request.POST:
-
     if is_insufficient:
       messages.error(request, "Your plate inventory is insufficent for this process. Please update and try again.")
       return redirect(request.path_info)

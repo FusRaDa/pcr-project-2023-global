@@ -189,26 +189,39 @@ def choose_plate(all_samples, plates):
   return chosen_plate, plates
  
 
-def choose_gel(all_samples, process):
-  gels = []
-  for gel in process.gel.all().order_by('size'):
-    gels.append(gel)
+def choose_gel(all_samples, gels):
   total_wells_used = 0
   for assay_group in all_samples:
     for assay, samples in assay_group.items():
       total_wells_used += (len(samples) + assay.controls.count())
+
+  chosen_gel = None
   for gel in gels:
-    if gel.size > total_wells_used:
-      return gel
-    else:
-      return gels[-1]
+    if gel['gel'].size >= total_wells_used and gel['amount'] > 0:
+      gel['amount'] -= 1
+      gel['used'] += 1
+      chosen_gel = gel['gel']
+      break
+  
+  if chosen_gel == None:
+    rev_list = sorted(gels, key=lambda x: x['size'])
+    for plate in rev_list:
+      if plate['amount'] > 0:
+        plate['amount'] -= 1
+        plate['used'] += 1
+        chosen_gel = plate['gel']
+        break
+  
+  if chosen_gel == None:
+    rev_list[0]['amount'] -= 1
+    rev_list[0]['used'] += 1
+    chosen_gel = rev_list[0]['gel']
+  
+  return chosen_gel, gels
+  
 
-
-def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
-  plate, list = choose_plate(all_samples, process)
-
-  if plate == None:
-    return None
+def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
+  plate, list = choose_plate(all_samples, plates)
 
   plate_data = {'size': plate.size}
   protocol_data = {'protocol': {
@@ -433,8 +446,8 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
   return plate_dict, all_samples
 
 
-def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
-  gel = choose_gel(all_samples, process)
+def load_gel(all_samples, gels, protocol, minimum_samples_in_gel):
+  gel = choose_gel(all_samples, gels)
 
   gel_data = {'size': gel.size}
   protocol_data = {'protocol': {
@@ -625,15 +638,13 @@ def process_qpcr_samples(all_samples, plates, protocol, minimum_samples_in_plate
   return qpcr_data
 
 
-def process_pcr_samples(all_samples, process, protocol, minimum_samples_in_gel):
+def process_pcr_samples(all_samples, gels, protocol, minimum_samples_in_gel):
   pcr_data = []
 
-  #### MANAGE INVENTORY HERE ####
-  
   is_empty = False
   while not is_empty:
 
-    gel_dict, all_samples = load_gel(all_samples, process, protocol, minimum_samples_in_gel)
+    gel_dict, all_samples = load_gel(all_samples, gels, protocol, minimum_samples_in_gel)
     pcr_data.append(gel_dict)
 
 
