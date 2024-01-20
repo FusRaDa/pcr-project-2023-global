@@ -166,20 +166,28 @@ def choose_plate(all_samples, plates):
 
   chosen_plate = None     
   for plate in plates:
-    if plate[0].size >= total_wells_used and plate[1] > 0:
-      plate[1] -= 1
-      chosen_plate = plate[0]
+    if plate['plate'].size >= total_wells_used and plate['amount'] > 0:
+      plate['amount'] -= 1
+      plate['used'] += 1
+      chosen_plate = plate['plate']
+      break
 
   if chosen_plate == None:
-    for plate in plates.reverse():
-      if plate[1] > 0:
-        plate[1] -= 1
-        chosen_plate = plate[0]
+    rev_list = sorted(plates, key=lambda x: x['size'])
+    for plate in rev_list:
+      if plate['amount'] > 0:
+        plate['amount'] -= 1
+        plate['used'] += 1
+        chosen_plate = plate['plate']
+        break
+  
+  if chosen_plate == None:
+    rev_list[0]['amount'] -= 1
+    rev_list[0]['used'] += 1
+    chosen_plate = rev_list[0]['plate']
 
-  plates.reverse()
   return chosen_plate, plates
  
-    
 
 def choose_gel(all_samples, process):
   gels = []
@@ -197,7 +205,10 @@ def choose_gel(all_samples, process):
 
 
 def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
-  plate = choose_plate(all_samples, process)
+  plate, list = choose_plate(all_samples, process)
+
+  if plate == None:
+    return None
 
   plate_data = {'size': plate.size}
   protocol_data = {'protocol': {
@@ -419,7 +430,7 @@ def load_plate(all_samples, process, protocol, minimum_samples_in_plate):
 
   # create plate dictionary that contains plate, tcprotocol, assays, and samples
   plate_dict = protocol_data | plate_data | assays_data | samples_data
-  return plate_dict, all_samples, plate
+  return plate_dict, all_samples
 
 
 def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
@@ -591,21 +602,16 @@ def load_gel(all_samples, process, protocol, minimum_samples_in_gel):
           samples.remove(sample)
      
   gel_dict = protocol_data | gel_data | assays_data | samples_data
-  return gel_dict, all_samples, gel
+  return gel_dict, all_samples
 
 
-def process_qpcr_samples(all_samples, process, protocol, minimum_samples_in_plate):
+def process_qpcr_samples(all_samples, plates, protocol, minimum_samples_in_plate):
   qpcr_data = []
-
-  #### MANAGE INVENTORY HERE ####
-  plates = []
-  for plate in process.plate.all().order_by('size'):
-    plates.append([plate, plate.amount])
 
   is_empty = False
   while not is_empty:
  
-    plate_dict, all_samples, plate = load_plate(all_samples, process, protocol, minimum_samples_in_plate)
+    plate_dict, all_samples = load_plate(all_samples, plates, protocol, minimum_samples_in_plate)
     qpcr_data.append(plate_dict)
 
     # check if all samples for each assay is empty if not continue the process of making plates
@@ -616,21 +622,20 @@ def process_qpcr_samples(all_samples, process, protocol, minimum_samples_in_plat
         else:
           is_empty = False
   
-  return qpcr_data, plates
+  return qpcr_data
 
 
 def process_pcr_samples(all_samples, process, protocol, minimum_samples_in_gel):
   pcr_data = []
-  inventory = []
 
   #### MANAGE INVENTORY HERE ####
   
   is_empty = False
   while not is_empty:
 
-    gel_dict, all_samples, gel = load_gel(all_samples, process, protocol, minimum_samples_in_gel)
+    gel_dict, all_samples = load_gel(all_samples, process, protocol, minimum_samples_in_gel)
     pcr_data.append(gel_dict)
-    inventory.append(gel)
+
 
     for data in all_samples:
       for assay, samples in data.items():
@@ -639,5 +644,5 @@ def process_pcr_samples(all_samples, process, protocol, minimum_samples_in_gel):
         else:
           is_empty = False
     
-  return pcr_data, inventory
+  return pcr_data
 

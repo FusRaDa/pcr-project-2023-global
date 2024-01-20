@@ -246,6 +246,10 @@ def process_paperwork(request, pk):
       if a.type == Assay.Types.RNA and a.method == Assay.Methods.qPCR:
         requires_rna_qpcr = True
 
+  plates = []
+  for plate in process.plate.all().order_by('size'):
+    plates.append({'plate': plate, 'name': plate.name, 'catalog_number': plate.catalog_number, 'lot_number': plate.lot_number, 'size': plate.size, 'amount': plate.amount, 'used': 0})
+
   dna_pcr_json = None
   if requires_dna_pcr:
     samples_dna_pcr = dna_pcr_samples(assay_samples)
@@ -259,37 +263,31 @@ def process_paperwork(request, pk):
   dna_qpcr_json = None
   if requires_dna_qpcr:
     samples_dna_qpcr = dna_qpcr_samples(assay_samples)
-    dna_qpcr_json = process_qpcr_samples(samples_dna_qpcr, process, process.qpcr_dna_protocol, process.min_samples_per_plate_dna)
+    dna_qpcr_json = process_qpcr_samples(samples_dna_qpcr, plates, process.qpcr_dna_protocol, process.min_samples_per_plate_dna)
 
   rna_qpcr_json = None
   if requires_rna_qpcr:
     samples_rna_qpcr = rna_qpcr_samples(assay_samples)
-    rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, process, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
+    rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, plates, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
+
+  is_insufficient = False
+  for plate in plates:
+    if plate['amount'] < 0:
+      is_insufficient = True
 
   if 'process' in request.POST:
-    inventory = []
-    
-    for gel_dna in dna_pcr_json[1]:
-      inventory.append(gel_dna)
 
-    for gel_rna in rna_pcr_json[1]:
-      inventory.append(gel_rna)
-
-    for plate_dna in dna_qpcr_json[1]:
-      inventory.append(plate_dna)
-
-    for plate_rna in rna_qpcr_json[1]:
-      inventory.append(plate_rna)
-
-    print(inventory)
+    if is_insufficient:
+      messages.error(request, "Your plate inventory is insufficent for this process. Please update and try again.")
+      return redirect(request.path_info)
 
     # process.is_processed = True
     process.date_processed = timezone.now()
 
-    process.pcr_dna_json = dna_pcr_json[0]
-    process.pcr_rna_json = rna_pcr_json[0]
-    process.qpcr_dna_json = dna_qpcr_json[0]
-    process.qpcr_rna_json = rna_qpcr_json[0]
+    process.pcr_dna_json = dna_pcr_json
+    process.pcr_rna_json = rna_pcr_json
+    process.qpcr_dna_json = dna_qpcr_json
+    process.qpcr_rna_json = rna_qpcr_json
 
     array = []
     for sample in process.samples.all():
@@ -303,7 +301,7 @@ def process_paperwork(request, pk):
     process.save()
     return redirect('processes')
 
-  context = {'dna_qpcr_json': dna_qpcr_json[0], 'rna_qpcr_json': rna_qpcr_json[0], 'dna_pcr_json': dna_pcr_json[0], 'rna_pcr_json': rna_pcr_json[0]}
+  context = {'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json, 'plates': plates}
   return render(request, 'pcr/process_paperwork.html', context)
 
 

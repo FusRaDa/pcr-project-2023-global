@@ -12,12 +12,48 @@
     <h5 class="text-center">Review PCR Paperwork</h5>
   </div>
 
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
   <div class="justify-content-center">
     <div class="col d-flex justify-content-center">
       <button type="button" class="btn btn-success mb-2" data-bs-toggle="modal" data-bs-target="#process-modal">
         Confirm PCR Paperwork
       </button>
     </div>
+  </div>
+
+  <h5>Estimated Plate Usage</h5>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Plate</th>
+          <th scope="col">Catalog Number</th>
+          <th scope="col">Lot Number</th>
+          <th scope="col">Amount Remaining</th>
+          <th scope="col">Amount Used</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for plate in plates %}
+          <tr {% if plate.amount < 0 %} class="table-danger" {% endif %}>
+            <td>{{plate.name}}</td>
+            <td>{{plate.catalog_number}}</td>
+            <td>{{plate.lot_number}}</td>
+            <td>{{plate.amount}}</td>
+            <td>{{plate.used}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
   </div>
 
   <div class="modal fade" id="process-modal" tabindex="-1" role="dialog" aria-labelledby="populate-modalLabel" aria-hidden="true">

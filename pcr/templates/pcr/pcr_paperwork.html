@@ -19,6 +19,29 @@
       </a>
     </div>
   {% endfor %}
+  
+  {% comment %} <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Plates Used</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Name</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for plate in plates %}
+          <tr class="ladder-row {% if ladder.is_expired %} table-danger {% endif %} {% if ladder.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_ladder' ladder.pk %}">
+            <td>{{plate.plate.name}}</td>
+            <td>{{plate.amount}}</td>
+            <td>{{plate.used}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div> {% endcomment %}
 
   <div class="row">
     <h5 class="text-center">PCR Paperwork</h5>

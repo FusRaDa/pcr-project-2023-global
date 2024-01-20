@@ -69,6 +69,8 @@ class Process(models.Model):
   qpcr_dna_json = models.JSONField(blank=True, null=True, default=None)
   qpcr_rna_json = models.JSONField(blank=True, null=True, default=None)
 
+  # plates = models.JSONField(blank=True, null=True, default=None)
+
   batches = models.ManyToManyField(Batch)
 
   @property
