@@ -447,7 +447,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
 
 
 def load_gel(all_samples, gels, protocol, minimum_samples_in_gel):
-  gel = choose_gel(all_samples, gels)
+  gel, list = choose_gel(all_samples, gels)
 
   gel_data = {'size': gel.size}
   protocol_data = {'protocol': {

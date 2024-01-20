@@ -251,7 +251,7 @@ def process_paperwork(request, pk):
     plates.append({'plate': plate, 'name': plate.name, 'catalog_number': plate.catalog_number, 'lot_number': plate.lot_number, 'size': plate.size, 'amount': plate.amount, 'used': 0})
 
   gels = []
-  for gel in gels:
+  for gel in process.gel.all().order_by('size'):
     gels.append({'gel': gel, 'name': gel.name, 'catalog_number': gel.catalog_number, 'lot_number': gel.lot_number, 'size': gel.size, 'amount': gel.amount, 'used': 0})
 
   dna_pcr_json = None
@@ -291,6 +291,11 @@ def process_paperwork(request, pk):
       plate['plate'].amount -= plate['used']
       plate['plate'].save()
       plate.pop('plate')
+
+    for gel in gels:
+      gel['gel'].amount -= gel['used']
+      gel['gel'].save()
+      gel.pop('gel')
     
     # process.is_processed = True
     process.date_processed = timezone.now()
@@ -314,7 +319,7 @@ def process_paperwork(request, pk):
     process.save()
     return redirect('processes')
 
-  context = {'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json, 'plates': plates}
+  context = {'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json, 'plates': plates, 'gels': gels}
   return render(request, 'pcr/process_paperwork.html', context)
 
 

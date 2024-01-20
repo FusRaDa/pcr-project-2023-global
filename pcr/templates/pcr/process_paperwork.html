@@ -56,6 +56,34 @@
     </table>
   </div>
 
+  <h6 class="text-center">Estimated Gel Usage</h6>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Gel</th>
+          <th scope="col">Catalog Number</th>
+          <th scope="col">Lot Number</th>
+          <th scope="col">Amount Remaining</th>
+          <th scope="col">Amount Used</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for gel in gels %}
+          <tr {% if gel.amount < 0 %} class="table-danger" {% endif %}>
+            <td>{{gel.name}}</td>
+            <td>{{gel.catalog_number}}</td>
+            <td>{{gel.lot_number}}</td>
+            <td>{{gel.amount}}</td>
+            <td>{{gel.used}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
   <div class="modal fade" id="process-modal" tabindex="-1" role="dialog" aria-labelledby="populate-modalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
