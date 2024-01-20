@@ -222,7 +222,7 @@ def review_process(request, pk):
 @login_required(login_url='login')
 def process_paperwork(request, pk):
   try:
-    process = Process.objects.get(user=request.user, pk=pk)
+    process = Process.objects.get(user=request.user, is_processed=False, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no process to review.")
     return redirect('extracted_batches')
@@ -280,7 +280,12 @@ def process_paperwork(request, pk):
     if is_insufficient:
       messages.error(request, "Your plate inventory is insufficent for this process. Please update and try again.")
       return redirect(request.path_info)
-
+    
+    for plate in plates:
+      plate['plate'].amount -= plate['used']
+      plate['plate'].save()
+      plate.pop('plate')
+    
     # process.is_processed = True
     process.date_processed = timezone.now()
 
@@ -288,6 +293,8 @@ def process_paperwork(request, pk):
     process.pcr_rna_json = rna_pcr_json
     process.qpcr_dna_json = dna_qpcr_json
     process.qpcr_rna_json = rna_qpcr_json
+
+    process.plates = plates
 
     array = []
     for sample in process.samples.all():
@@ -354,7 +361,7 @@ def processes(request):
 @login_required(login_url='login')
 def pcr_paperwork(request, pk):
   try:
-    process = Process.objects.get(user=request.user, pk=pk)
+    process = Process.objects.get(user=request.user, is_processed=True, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no process to review.")
     return redirect('processes')
