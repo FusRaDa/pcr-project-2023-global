@@ -274,19 +274,27 @@ def process_paperwork(request, pk):
     samples_rna_qpcr = rna_qpcr_samples(assay_samples)
     rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, plates, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
 
-  is_insufficient = False
-  for plate in plates:
-    if plate['amount'] < 0:
-      is_insufficient = True
-  for gel in gels:
-    if gel['amount'] < 0:
-      is_insufficient = True
-
   if 'process' in request.POST:
-    if is_insufficient:
-      messages.error(request, "Your plate inventory is insufficent for this process. Please update and try again.")
-      return redirect(request.path_info)
-    
+
+    # IMPROVE
+    is_insufficient_plates = False
+    for plate in plates:
+      if plate['amount'] < 0:
+        is_insufficient_plates = True
+
+    is_insufficient_gels = False
+    for gel in gels:
+      if gel['amount'] < 0:
+        is_insufficient_gels = True
+    # IMPROVE
+
+    for plate in dna_qpcr_json:
+      for assay in plate['assays']:
+        for reagent in assay['reagents']:
+          total_volume = round(reagent['volume_per_sample'] * assay['sample_num'], 2)
+          reagent['reagent'].amount -= total_volume
+          reagent['reagent'].save()
+
     for plate in plates:
       plate['plate'].amount -= plate['used']
       plate['plate'].save()
@@ -296,7 +304,7 @@ def process_paperwork(request, pk):
       gel['gel'].amount -= gel['used']
       gel['gel'].save()
       gel.pop('gel')
-    
+
     # process.is_processed = True
     process.date_processed = timezone.now()
 

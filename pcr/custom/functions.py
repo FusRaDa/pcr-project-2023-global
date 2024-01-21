@@ -289,6 +289,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
               dilution_factor = float(reagent.dilution_factor)
 
             assay_dict['reagents'].append({
+              'reagent': reagent,
               'name': reagent.reagent.name,
               'volume_per_sample': float(reagent.volume_per_sample),
               'stock_concentration': stock_concentration,
@@ -414,6 +415,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
                 dilution_factor = float(reagent.dilution_factor)
 
               assay_dict['reagents'].append({
+                'reagent': reagent,
                 'name': reagent.reagent.name,
                 'volume_per_sample': float(reagent.volume_per_sample),
                 'stock_concentration': stock_concentration,
@@ -515,6 +517,7 @@ def load_gel(all_samples, gels, protocol, minimum_samples_in_gel):
               dilution_factor = float(reagent.dilution_factor)
 
             assay_dict['reagents'].append({
+              'reagent': reagent,
               'name': reagent.reagent.name,
               'volume_per_sample': float(reagent.volume_per_sample),
               'stock_concentration': stock_concentration,
@@ -579,6 +582,7 @@ def load_gel(all_samples, gels, protocol, minimum_samples_in_gel):
                 dilution_factor = float(reagent.dilution_factor)
 
               assay_dict['reagents'].append({
+                'reagent': reagent,
                 'name': reagent.reagent.name,
                 'volume_per_sample': float(reagent.volume_per_sample),
                 'stock_concentration': stock_concentration,
