@@ -502,5 +502,5 @@ def pcr_paperwork(request, pk):
     messages.error(request, "There is no process to review.")
     return redirect('processes')
   
-  context = {'dna_qpcr_json': process.qpcr_dna_json, 'rna_qpcr_json': process.qpcr_rna_json, 'dna_pcr_json': process.pcr_dna_json, 'rna_pcr_json': process.pcr_rna_json, 'process': process}
+  context = {'dna_qpcr_json': process.qpcr_dna_json, 'rna_qpcr_json': process.qpcr_rna_json, 'dna_pcr_json': process.pcr_dna_json, 'rna_pcr_json': process.pcr_rna_json, 'process': process, 'plates': process.plates, 'gels': process.gels}
   return render(request, 'pcr/pcr_paperwork.html', context)
