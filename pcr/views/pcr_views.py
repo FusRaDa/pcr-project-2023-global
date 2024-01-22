@@ -8,6 +8,7 @@ from django.db.models import F
 from django.http import HttpResponse
 from django.contrib import messages
 from django.core.paginator import Paginator
+from decimal import Decimal
 from users.models import User
 
 from ..forms.general import DeletionForm, SearchProcessForm, SearchBatchForm
@@ -15,7 +16,7 @@ from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
-from ..models.inventory import Gel, Plate
+from ..models.inventory import Reagent
 from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_qpcr_samples, process_pcr_samples
 
 
@@ -276,25 +277,54 @@ def process_paperwork(request, pk):
 
   if 'process' in request.POST:
 
-    # IMPROVE
-    is_insufficient_plates = False
+    # **VALIDATION FOR PLATES, GELS AND REAGENTS
     for plate in plates:
       if plate['amount'] < 0:
-        is_insufficient_plates = True
+        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
+        return redirect(request.path_info)
 
-    is_insufficient_gels = False
     for gel in gels:
       if gel['amount'] < 0:
-        is_insufficient_gels = True
-    # IMPROVE
-
+        messages.error(request, f"Gel: {gel.name} lot#: {gel.lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
+        return redirect(request.path_info)
+      
     for plate in dna_qpcr_json:
       for assay in plate['assays']:
         for reagent in assay['reagents']:
-          total_volume = round(reagent['volume_per_sample'] * assay['sample_num'], 2)
-          reagent['reagent'].amount -= total_volume
-          reagent['reagent'].save()
-
+          reagent_obj = reagent['reagent']
+          total_volume = Decimal(round(reagent['volume_per_sample'] * assay['sample_num'], 2))
+          if reagent_obj.volume_in_microliters - total_volume < 0:
+            messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
+            return redirect(request.path_info)
+          
+    for plate in rna_qpcr_json:
+      for assay in plate['assays']:
+        for reagent in assay['reagents']:
+          reagent_obj = reagent['reagent']
+          total_volume = Decimal(round(reagent['volume_per_sample'] * assay['sample_num'], 2))
+          if reagent_obj.volume_in_microliters - total_volume < 0:
+            messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
+            return redirect(request.path_info)
+          
+    for plate in dna_pcr_json:
+      for assay in plate['assays']:
+        for reagent in assay['reagents']:
+          reagent_obj = reagent['reagent']
+          total_volume = Decimal(round(reagent['volume_per_sample'] * assay['sample_num'], 2))
+          if reagent_obj.volume_in_microliters - total_volume < 0:
+            messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
+            return redirect(request.path_info)
+          
+    for plate in rna_pcr_json:
+      for assay in plate['assays']:
+        for reagent in assay['reagents']:
+          reagent_obj = reagent['reagent']
+          total_volume = Decimal(round(reagent['volume_per_sample'] * assay['sample_num'], 2))
+          if reagent_obj.volume_in_microliters - total_volume < 0:
+            messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
+            return redirect(request.path_info)
+    # **VALIDATION FOR PLATES, GELS AND REAGENTS
+          
     for plate in plates:
       plate['plate'].amount -= plate['used']
       plate['plate'].save()
@@ -305,6 +335,91 @@ def process_paperwork(request, pk):
       gel['gel'].save()
       gel.pop('gel')
 
+    all_reagents = []
+    for plate in dna_qpcr_json:
+      for assay in plate['assays']:
+        for reagent in assay['reagents']:
+          reagent_obj = reagent['reagent']
+          total_volume = round(Decimal(reagent['volume_per_sample'] * assay['sample_num']), 2)
+
+          exists = False
+          for dict in all_reagents:
+            if dict['reagent'].pk == reagent_obj.pk:
+              exists = True
+          
+          if exists == False:
+            all_reagents.append({'reagent': reagent_obj, 'total' : total_volume})
+          else:
+            for dict in all_reagents:
+              if dict['reagent'].pk == reagent_obj.pk:
+                dict['total'] += total_volume
+                break
+          reagent.pop('reagent')
+
+    for plate in rna_qpcr_json:
+      for assay in plate['assays']:
+        for reagent in assay['reagents']:
+          reagent_obj = reagent['reagent']
+          total_volume = round(Decimal(reagent['volume_per_sample'] * assay['sample_num']), 2)
+
+          exists = False
+          for dict in all_reagents:
+            if dict['reagent'].pk == reagent_obj.pk:
+              exists = True
+          
+          if exists == False:
+            all_reagents.append({'reagent': reagent_obj, 'total' : total_volume})
+          else:
+            for dict in all_reagents:
+              if dict['reagent'].pk == reagent_obj.pk:
+                dict['total'] += total_volume
+                break
+          reagent.pop('reagent')
+      
+    for plate in dna_pcr_json:
+      for assay in plate['assays']:
+        for reagent in assay['reagents']:
+          reagent_obj = reagent['reagent']
+          total_volume = round(Decimal(reagent['volume_per_sample'] * assay['sample_num']), 2)
+
+          exists = False
+          for dict in all_reagents:
+            if dict['reagent'].pk == reagent_obj.pk:
+              exists = True
+          
+          if exists == False:
+            all_reagents.append({'reagent': reagent_obj, 'total' : total_volume})
+          else:
+            for dict in all_reagents:
+              if dict['reagent'].pk == reagent_obj.pk:
+                dict['total'] += total_volume
+                break
+          reagent.pop('reagent')
+
+    for plate in rna_pcr_json:
+      for assay in plate['assays']:
+        for reagent in assay['reagents']:
+          reagent_obj = reagent['reagent']
+          total_volume = round(Decimal(reagent['volume_per_sample'] * assay['sample_num']), 2)
+
+          exists = False
+          for dict in all_reagents:
+            if dict['reagent'].pk == reagent_obj.pk:
+              exists = True
+          
+          if exists == False:
+            all_reagents.append({'reagent': reagent_obj, 'total' : total_volume})
+          else:
+            for dict in all_reagents:
+              if dict['reagent'].pk == reagent_obj.pk:
+                dict['total'] += total_volume
+                break
+          reagent.pop('reagent')
+    
+    for reagent_dict in all_reagents:
+      reagent_dict['reagent'].volume -= reagent_dict['total']
+      reagent_dict['reagent'].save()
+      
     # process.is_processed = True
     process.date_processed = timezone.now()
 
@@ -314,6 +429,7 @@ def process_paperwork(request, pk):
     process.qpcr_rna_json = rna_qpcr_json
 
     process.plates = plates
+    process.gels = gels
 
     array = []
     for sample in process.samples.all():

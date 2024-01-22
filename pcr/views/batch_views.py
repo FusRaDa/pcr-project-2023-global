@@ -125,6 +125,7 @@ def batchSamples(request, pk):
     return redirect(request.path_info)
   
   if 'extracted' in request.POST:
+    # **VALIDATE** #
     invalid_samples = []
     for sample in samples:
       if not sample.sample_id:
@@ -134,50 +135,32 @@ def batchSamples(request, pk):
       messages.error(request, f"Samples {invalid_samples} have not been given a sample ID. Please update before proceeding.")
       return redirect(request.path_info)
     
-    batch.is_extracted = True
-
     for reagent in batch.extraction_protocol.reagentextraction_set.all():
       total_used_reagents = reagent.amount_per_sample * batch.sample_set.count()
-      volume_unit = reagent.reagent.unit_volume
-      if volume_unit == Reagent.VolumeUnits.LITER:
-        reagent_volume_ul = reagent.reagent.volume * 1000000
-      if volume_unit == Reagent.VolumeUnits.MILLILITER:
-        reagent_volume_ul = reagent.reagent.volume * 1000
-      if volume_unit == Reagent.VolumeUnits.MICROLITER:
-        reagent_volume_ul = reagent.reagent.volume 
-      rem_reagents = reagent_volume_ul - total_used_reagents
+      rem_reagents = reagent.reagent.volume_in_microliters - total_used_reagents
       if rem_reagents < 0:
         messages.error(request, f"The amount of {reagent.reagent.name} lot#{reagent.reagent.lot_number} is insufficent. Update the amount of reagents.")
         return redirect(request.path_info)
-    for reagent in batch.extraction_protocol.reagentextraction_set.all():
-      total_used_reagents = reagent.amount_per_sample * batch.sample_set.count()
-      volume_unit = reagent.reagent.unit_volume
-      if volume_unit == Reagent.VolumeUnits.LITER:
-        reagent_volume_ul = reagent.reagent.volume * 1000000
-        rem_reagents = (reagent_volume_ul - total_used_reagents)/1000000
-        reagent.reagent.volume = rem_reagents
-        reagent.reagent.save()
-      if volume_unit == Reagent.VolumeUnits.MILLILITER:
-        reagent_volume_ul = reagent.reagent.volume * 1000
-        rem_reagents = (reagent_volume_ul - total_used_reagents)/1000
-        reagent.reagent.volume = rem_reagents
-        reagent.reagent.save()
-      if volume_unit == Reagent.VolumeUnits.MICROLITER:
-        reagent_volume_ul = reagent.reagent.volume
-        rem_reagents = (reagent_volume_ul - total_used_reagents)
-        reagent.reagent.volume = rem_reagents
-        reagent.reagent.save()
-    
+      
     for tube in batch.extraction_protocol.tubeextraction_set.all():
       total_used_tubes = tube.amount_per_sample * batch.sample_set.count()
       rem_tubes = tube.tube.amount - total_used_tubes
       if rem_tubes < 0:
         messages.error(request, f"The amount of {tube.tube.name} lot#{tube.tube.lot_number} is insufficent. Update the amount of tubes.")
         return redirect(request.path_info)
+    # **VALIDATE** #
+      
+    batch.is_extracted = True
+
+    for reagent in batch.extraction_protocol.reagentextraction_set.all():
+      total_used_reagents = reagent.amount_per_sample * batch.sample_set.count()
+      reagent.reagent.volume = reagent.reagent.volume_in_microliters - total_used_reagents
+      reagent.reagent.unit_volume = Reagent.VolumeUnits.MICROLITER
+      reagent.reagent.save()
+    
     for tube in batch.extraction_protocol.tubeextraction_set.all():
       total_used_tubes = tube.amount_per_sample * batch.sample_set.count()
-      rem_tubes = tube.tube.amount - total_used_tubes
-      tube.tube.amount = rem_tubes
+      tube.tube.amount -= total_used_tubes
       tube.tube.save()
       
     batch.save()

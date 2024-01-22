@@ -15,7 +15,7 @@
   {% for message in messages %}
   <div class="row">
     <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
+      <h5 class="messages text-center">{{ message }}</h5>
     </div>
   </div>
   {% endfor %}
@@ -3259,7 +3259,7 @@
             <tr>
               <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
               <th scope="col">Total Master Mix (μL)</th>
-              <th scope="col">Per Sample (μL) × {{num}}</th>
+              <th scope="col">Per Sample (μL) × {{assay.sample_num}}</th>
               <th scope="col">Stock Conc.</th>
               <th scope="col">Final Conc.</th>
               <th scope="col">DF</th>
@@ -6437,7 +6437,7 @@
             <tr>
               <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
               <th scope="col">Total Master Mix (μL)</th>
-              <th scope="col">Per Sample (μL) × {{num}}</th>
+              <th scope="col">Per Sample (μL) × {{assay.sample_num}}</th>
               <th scope="col">Stock Conc.</th>
               <th scope="col">Final Conc.</th>
               <th scope="col">DF</th>
@@ -7071,7 +7071,7 @@
             <tr>
               <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
               <th scope="col">Total Master Mix (μL)</th>
-              <th scope="col">Per Sample (μL) × {{num}}</th>
+              <th scope="col">Per Sample (μL) × {{assay.sample_num}}</th>
               <th scope="col">Stock Conc.</th>
               <th scope="col">Final Conc.</th>
               <th scope="col">DF</th>
@@ -7705,7 +7705,7 @@
             <tr>
               <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
               <th scope="col">Total Master Mix (μL)</th>
-              <th scope="col">Per Sample (μL) × {{num}}</th>
+              <th scope="col">Per Sample (μL) × {{assay.sample_num}}</th>
               <th scope="col">Stock Conc.</th>
               <th scope="col">Final Conc.</th>
               <th scope="col">DF</th>
