@@ -417,10 +417,11 @@ def process_paperwork(request, pk):
           reagent.pop('reagent')
     
     for reagent_dict in all_reagents:
-      reagent_dict['reagent'].volume -= reagent_dict['total']
+      reagent_dict['reagent'].volume = reagent_dict['reagent'].volume_in_microliters - reagent_dict['total']
+      reagent_dict['reagent'].unit_volume == Reagent.VolumeUnits.MICROLITER
       reagent_dict['reagent'].save()
       
-    # process.is_processed = True
+    process.is_processed = True
     process.date_processed = timezone.now()
 
     process.pcr_dna_json = dna_pcr_json

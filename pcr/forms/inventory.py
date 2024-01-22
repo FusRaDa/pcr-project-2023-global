@@ -343,8 +343,9 @@ class EditReagentForm(ModelForm):
 
     self.fields['volume'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+    self.fields['unit_volume'].widget.attrs['class'] = 'form-select'
   
   class Meta:
     model = Reagent
-    fields = ['location', 'volume', 'exp_date']
+    fields = ['location', 'volume', 'exp_date', 'unit_volume']
     exclude = ['user', 'last_updated']
