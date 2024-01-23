@@ -123,7 +123,7 @@
   </div>
 
   {% for plate in dna_qpcr_json %}
-    <div class="container border border-5 border-secondary p-3 mb-2">
+    <div class="container border border-secondary p-3 mb-2">
    
       {% if plate.size == 384 %}
         <div class="table-responsive">
@@ -3306,38 +3306,38 @@
 
 
   {% for plate in rna_qpcr_json %}
-    <div class="container border border-5 border-secondary p-3 mb-2">
+    <div class="container border border-secondary p-3 mb-2">
     
       {% if plate.size == 384 %}
         <div class="table-responsive">
-          <table class="table table-bordered">
+          <table class="table table-bordered table-sm table-text-384">
             <thead>
               <tr>
                 <th scope="col"></th>
-                <th scope="col" class="plate-col">1</th>
-                <th scope="col" class="plate-col">2</th>
-                <th scope="col" class="plate-col">3</th>
-                <th scope="col" class="plate-col">4</th>
-                <th scope="col" class="plate-col">5</th>
-                <th scope="col" class="plate-col">6</th>
-                <th scope="col" class="plate-col">7</th>
-                <th scope="col" class="plate-col">8</th>
-                <th scope="col" class="plate-col">9</th>
-                <th scope="col" class="plate-col">10</th>
-                <th scope="col" class="plate-col">11</th>
-                <th scope="col" class="plate-col">12</th>
-                <th scope="col" class="plate-col">13</th>
-                <th scope="col" class="plate-col">14</th>
-                <th scope="col" class="plate-col">15</th>
-                <th scope="col" class="plate-col">16</th>
-                <th scope="col" class="plate-col">17</th>
-                <th scope="col" class="plate-col">18</th>
-                <th scope="col" class="plate-col">19</th>
-                <th scope="col" class="plate-col">20</th>
-                <th scope="col" class="plate-col">21</th>
-                <th scope="col" class="plate-col">22</th>
-                <th scope="col" class="plate-col">23</th>
-                <th scope="col" class="plate-col">24</th>
+                <th scope="col" class="plate-col-384">1</th>
+                <th scope="col" class="plate-col-384">2</th>
+                <th scope="col" class="plate-col-384">3</th>
+                <th scope="col" class="plate-col-384">4</th>
+                <th scope="col" class="plate-col-384">5</th>
+                <th scope="col" class="plate-col-384">6</th>
+                <th scope="col" class="plate-col-384">7</th>
+                <th scope="col" class="plate-col-384">8</th>
+                <th scope="col" class="plate-col-384">9</th>
+                <th scope="col" class="plate-col-384">10</th>
+                <th scope="col" class="plate-col-384">11</th>
+                <th scope="col" class="plate-col-384">12</th>
+                <th scope="col" class="plate-col-384">13</th>
+                <th scope="col" class="plate-col-384">14</th>
+                <th scope="col" class="plate-col-384">15</th>
+                <th scope="col" class="plate-col-384">16</th>
+                <th scope="col" class="plate-col-384">17</th>
+                <th scope="col" class="plate-col-384">18</th>
+                <th scope="col" class="plate-col-384">19</th>
+                <th scope="col" class="plate-col-384">20</th>
+                <th scope="col" class="plate-col-384">21</th>
+                <th scope="col" class="plate-col-384">22</th>
+                <th scope="col" class="plate-col-384">23</th>
+                <th scope="col" class="plate-col-384">24</th>
               </tr>
             </thead>
             <tbody>
@@ -5873,12 +5873,12 @@
             <thead>
               <tr>
                 <th scope="col"></th>
-                <th scope="col" class="plate-col">1</th>
-                <th scope="col" class="plate-col">2</th>
-                <th scope="col" class="plate-col">3</th>
-                <th scope="col" class="plate-col">4</th>
-                <th scope="col" class="plate-col">5</th>
-                <th scope="col" class="plate-col">6</th>
+                <th scope="col" class="col-sm-2">1</th>
+                <th scope="col" class="col-sm-2">2</th>
+                <th scope="col" class="col-sm-2">3</th>
+                <th scope="col" class="col-sm-2">4</th>
+                <th scope="col" class="col-sm-2">5</th>
+                <th scope="col" class="col-sm-2">6</th>
               </tr>
             </thead>
             <tbody>
@@ -6332,7 +6332,7 @@
             <thead>
               <tr>
                 <th scope="col"></th>
-                <th scope="col" class="plate-col">1</th>
+                <th scope="col" class="col-sm-12">1</th>
               </tr>
             </thead>
             <tbody>
@@ -6489,7 +6489,7 @@
 
 
   {% for gel in dna_pcr_json %}
-    <div class="container border border-5 border-secondary p-3 mb-2">
+    <div class="container border border-secondary p-3 mb-2">
       {% if gel.size == 12 %}
         <div class="table-responsive col-sm-6">
           <table class="table table-bordered">
@@ -7125,7 +7125,7 @@
 
 
   {% for gel in rna_pcr_json %}
-    <div class="container border border-5 border-secondary p-3 mb-2">
+    <div class="container border border-secondary p-3 mb-2">
       {% if gel.size == 12 %}
         <div class="table-responsive col-sm-6">
           <table class="table table-bordered">

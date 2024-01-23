@@ -93,11 +93,11 @@
   
   <div id="printDiv">
     {% for plate in dna_qpcr_json %}
-      <div class="container border border-5 border-secondary p-3 mb-2">
+      <div class="container border border-secondary p-3 mb-2">
     
         {% if plate.size == 384 %}
           <div class="table-responsive">
-            <table class="table table-bordered table-sm table-text-384">
+            <table class="table table-bordered table-sm table-text-384" style="break-inside: avoid">
               <thead>
                 <tr>
                   <th scope="col"></th>
@@ -2118,7 +2118,7 @@
 
         {% if plate.size == 96 %}
           <div class="table-responsive">
-            <table class="table table-bordered table-sm table-text">
+            <table class="table table-bordered table-sm table-text" style="break-inside: avoid">
               <thead>
                 <tr>
                   <th scope="col"></th>
@@ -2656,7 +2656,7 @@
 
         {% if plate.size == 48 %}
           <div class="table-responsive">
-            <table class="table table-bordered table-sm table-text table-width-48">
+            <table class="table table-bordered table-sm table-text table-width-48" style="break-inside: avoid">
               <thead>
                 <tr>
                   <th scope="col"></th>
@@ -2947,7 +2947,7 @@
 
         {% if plate.size == 24 %}
           <div class="table-responsive">
-            <table class="table table-bordered table-sm table-text table-width-24">
+            <table class="table table-bordered table-sm table-text table-width-24" style="break-inside: avoid">
               <thead>
                 <tr>
                   <th scope="col"></th>
@@ -3115,7 +3115,7 @@
 
         {% if plate.size == 8 %}
           <div class="table-responsive">
-            <table class="table table-bordered table-sm table-text table-width-8 ">
+            <table class="table table-bordered table-sm table-text table-width-8" style="break-inside: avoid">
               <thead>
                 <tr>
                   <th scope="col"></th>
@@ -3200,7 +3200,7 @@
         {% endif %}
 
         <div class="table-responsive col-sm-6">
-          <table class="table table-bordered">
+          <table class="table table-bordered table-text-tcp" style="break-inside: avoid">
             <thead>
               <tr>
                 <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
@@ -3233,7 +3233,7 @@
         <div class="row">
           {% for assay in plate.assays %}
             <div class="table-responsive col-sm-12">
-              <table class="table table-bordered">
+              <table class="table table-bordered" style="break-inside: avoid">
                 <thead>
                   <tr>
                     <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
@@ -3276,38 +3276,38 @@
 
 
     {% for plate in rna_qpcr_json %}
-      <div class="container border border-5 border-secondary p-3 mb-2">
+      <div class="container border border-secondary p-3 mb-2">
       
         {% if plate.size == 384 %}
           <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-sm table-text-384" style="break-inside: avoid">
               <thead>
                 <tr>
                   <th scope="col"></th>
-                  <th scope="col" class="plate-col">1</th>
-                  <th scope="col" class="plate-col">2</th>
-                  <th scope="col" class="plate-col">3</th>
-                  <th scope="col" class="plate-col">4</th>
-                  <th scope="col" class="plate-col">5</th>
-                  <th scope="col" class="plate-col">6</th>
-                  <th scope="col" class="plate-col">7</th>
-                  <th scope="col" class="plate-col">8</th>
-                  <th scope="col" class="plate-col">9</th>
-                  <th scope="col" class="plate-col">10</th>
-                  <th scope="col" class="plate-col">11</th>
-                  <th scope="col" class="plate-col">12</th>
-                  <th scope="col" class="plate-col">13</th>
-                  <th scope="col" class="plate-col">14</th>
-                  <th scope="col" class="plate-col">15</th>
-                  <th scope="col" class="plate-col">16</th>
-                  <th scope="col" class="plate-col">17</th>
-                  <th scope="col" class="plate-col">18</th>
-                  <th scope="col" class="plate-col">19</th>
-                  <th scope="col" class="plate-col">20</th>
-                  <th scope="col" class="plate-col">21</th>
-                  <th scope="col" class="plate-col">22</th>
-                  <th scope="col" class="plate-col">23</th>
-                  <th scope="col" class="plate-col">24</th>
+                  <th scope="col" class="plate-col-384">1</th>
+                  <th scope="col" class="plate-col-384">2</th>
+                  <th scope="col" class="plate-col-384">3</th>
+                  <th scope="col" class="plate-col-384">4</th>
+                  <th scope="col" class="plate-col-384">5</th>
+                  <th scope="col" class="plate-col-384">6</th>
+                  <th scope="col" class="plate-col-384">7</th>
+                  <th scope="col" class="plate-col-384">8</th>
+                  <th scope="col" class="plate-col-384">9</th>
+                  <th scope="col" class="plate-col-384">10</th>
+                  <th scope="col" class="plate-col-384">11</th>
+                  <th scope="col" class="plate-col-384">12</th>
+                  <th scope="col" class="plate-col-384">13</th>
+                  <th scope="col" class="plate-col-384">14</th>
+                  <th scope="col" class="plate-col-384">15</th>
+                  <th scope="col" class="plate-col-384">16</th>
+                  <th scope="col" class="plate-col-384">17</th>
+                  <th scope="col" class="plate-col-384">18</th>
+                  <th scope="col" class="plate-col-384">19</th>
+                  <th scope="col" class="plate-col-384">20</th>
+                  <th scope="col" class="plate-col-384">21</th>
+                  <th scope="col" class="plate-col-384">22</th>
+                  <th scope="col" class="plate-col-384">23</th>
+                  <th scope="col" class="plate-col-384">24</th>
                 </tr>
               </thead>
               <tbody>
@@ -5301,7 +5301,7 @@
 
         {% if plate.size == 96 %}
           <div class="table-responsive">
-            <table class="table table-bordered table-sm table-text">
+            <table class="table table-bordered table-sm table-text" style="break-inside: avoid">
               <thead>
                 <tr>
                   <th scope="col"></th>
@@ -5839,16 +5839,16 @@
 
         {% if plate.size == 48 %}
           <div class="table-responsive">
-            <table class="table table-bordered table-sm table-text table-width-48">
+            <table class="table table-bordered table-sm table-text table-width-48" style="break-inside: avoid">
               <thead>
                 <tr>
                   <th scope="col"></th>
-                  <th scope="col" class="plate-col">1</th>
-                  <th scope="col" class="plate-col">2</th>
-                  <th scope="col" class="plate-col">3</th>
-                  <th scope="col" class="plate-col">4</th>
-                  <th scope="col" class="plate-col">5</th>
-                  <th scope="col" class="plate-col">6</th>
+                  <th scope="col" class="col-sm-2">1</th>
+                  <th scope="col" class="col-sm-2">2</th>
+                  <th scope="col" class="col-sm-2">3</th>
+                  <th scope="col" class="col-sm-2">4</th>
+                  <th scope="col" class="col-sm-2">5</th>
+                  <th scope="col" class="col-sm-2">6</th>
                 </tr>
               </thead>
               <tbody>
@@ -6130,7 +6130,7 @@
 
         {% if plate.size == 24 %}
           <div class="table-responsive">
-            <table class="table table-bordered table-sm table-text table-width-24">
+            <table class="table table-bordered table-sm table-text table-width-24" style="break-inside: avoid">
               <thead>
                 <tr>
                   <th scope="col"></th>
@@ -6298,11 +6298,11 @@
 
         {% if plate.size == 8 %}
           <div class="table-responsive">
-            <table class="table table-bordered table-sm table-text table-width-8 ">
+            <table class="table table-bordered table-sm table-text table-width-8" style="break-inside: avoid">
               <thead>
                 <tr>
                   <th scope="col"></th>
-                  <th scope="col" class="plate-col">1</th>
+                  <th scope="col" class="col-sm-12">1</th>
                 </tr>
               </thead>
               <tbody>
@@ -6383,7 +6383,7 @@
         {% endif %}
 
         <div class="table-responsive col-sm-6">
-          <table class="table table-bordered">
+          <table class="table table-bordered table-text-tcp" style="break-inside: avoid">
             <thead>
               <tr>
                 <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
@@ -6416,7 +6416,7 @@
         <div class="row">
           {% for assay in plate.assays %}
             <div class="table-responsive col-sm-12">
-              <table class="table table-bordered">
+              <table class="table table-bordered" style="break-inside: avoid">
                 <thead>
                   <tr>
                     <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
@@ -6459,10 +6459,10 @@
 
 
     {% for gel in dna_pcr_json %}
-      <div class="container border border-5 border-secondary p-3 mb-2">
+      <div class="container border border-secondary p-3 mb-2">
         {% if gel.size == 12 %}
           <div class="table-responsive col-sm-6">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-text-gel">
               <thead>
                 <tr>
                   <th scope="col">Well #</th>
@@ -6552,7 +6552,7 @@
 
         {% if gel.size == 24 %}
           <div class="table-responsive col-sm-6">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-text-gel">
               <thead>
                 <tr>
                   <th scope="col">Well #</th>
@@ -6714,7 +6714,7 @@
 
         {% if gel.size == 48 %}
           <div class="table-responsive col-sm-6">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-text-gel">
               <thead>
                 <tr>
                   <th scope="col">Well #</th>
@@ -7019,7 +7019,7 @@
         {% endif %}
 
         <div class="table-responsive col-sm-6">
-          <table class="table table-bordered">
+          <table class="table table-bordered table-text-tcp" style="break-inside: avoid">
             <thead>
               <tr>
                 <th scope="col">{{gel.protocol.name}} for {{gel.protocol.number_of_cycles}} Cycles</th>
@@ -7052,7 +7052,7 @@
         <div class="row">
           {% for assay in gel.assays %}
             <div class="table-responsive col-sm-12">
-              <table class="table table-bordered">
+              <table class="table table-bordered table-text-tcp" style="break-inside: avoid">
                 <thead>
                   <tr>
                     <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
@@ -7095,9 +7095,9 @@
 
 
     {% for gel in rna_pcr_json %}
-      <div class="container border border-5 border-secondary p-3 mb-2">
+      <div class="container border border-secondary p-3 mb-2">
         {% if gel.size == 12 %}
-          <div class="table-responsive col-sm-6">
+          <div class="table-responsive col-sm-6 table-text-gel">
             <table class="table table-bordered">
               <thead>
                 <tr>
@@ -7188,7 +7188,7 @@
 
         {% if gel.size == 24 %}
           <div class="table-responsive col-sm-6">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-text-gel">
               <thead>
                 <tr>
                   <th scope="col">Well #</th>
@@ -7350,7 +7350,7 @@
 
         {% if gel.size == 48 %}
           <div class="table-responsive col-sm-6">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-text-gel">
               <thead>
                 <tr>
                   <th scope="col">Well #</th>
@@ -7655,7 +7655,7 @@
         {% endif %}
 
         <div class="table-responsive col-sm-6">
-          <table class="table table-bordered">
+          <table class="table table-bordered table-text-tcp" style="break-inside: avoid">
             <thead>
               <tr>
                 <th scope="col">{{gel.protocol.name}} for {{gel.protocol.number_of_cycles}} Cycles</th>
@@ -7688,7 +7688,7 @@
         <div class="row">
           {% for assay in gel.assays %}
             <div class="table-responsive col-sm-12">
-              <table class="table table-bordered">
+              <table class="table table-bordered table-text-tcp" style="break-inside: avoid">
                 <thead>
                   <tr>
                     <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
@@ -7738,7 +7738,7 @@
   function printDiv() {
     var divContents = document.getElementById("printDiv").innerHTML;
     var a = window.open('', '', 'height=1080', 'width=1920');
-    a.document.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"><html>');
+    a.document.write('<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"><link rel="stylesheet" href="{% static 'css/global.css' %}"><html>');
     a.document.write('<html>');
     a.document.write('<body >');
     a.document.write(divContents);
