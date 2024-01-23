@@ -19,7 +19,7 @@
     <p class="text-center">**Refresh page if styles are not applied when printing. Enable background graphics to view and print color.**</p>
   </div>
 
-  <div class="container p-3" id="printDiv">
+  <div class="container-fluid" id="printDiv">
 
     <div class="row">
       <div class="col">
@@ -57,7 +57,7 @@
               <td></td>
               <td>
                 {% for assay in sample.assays.all %}
-                <span class="text-decoration-underline">{{assay}}</span>
+                <span class="badge text-bg-success">{{assay}}</span>
                 {% endfor %}
               </td>
             </tr>
