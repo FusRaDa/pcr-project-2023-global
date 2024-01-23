@@ -6489,1270 +6489,1274 @@
 
 
   {% for gel in dna_pcr_json %}
-    {% if gel.size == 12 %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Well #</th>
-              <th scope="col">Lab ID</th>
-              <th scope="col">Sample ID</th>
-              <th scope="col">Assay</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td class="fw-bold">1</td>
-              <td>{{gel.samples.well1.lab_id}}</td>
-              <td>{{gel.samples.well1.sample_id}}</td>
-              <td>{{gel.samples.well1.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">2</td>
-              <td>{{gel.samples.well2.lab_id}}</td>
-              <td>{{gel.samples.well2.sample_id}}</td>
-              <td>{{gel.samples.well2.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">3</td>
-              <td>{{gel.samples.well3.lab_id}}</td>
-              <td>{{gel.samples.well3.sample_id}}</td>
-              <td>{{gel.samples.well3.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">4</td>
-              <td>{{gel.samples.well4.lab_id}}</td>
-              <td>{{gel.samples.well4.sample_id}}</td>
-              <td>{{gel.samples.well4.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">5</td>
-              <td>{{gel.samples.well5.lab_id}}</td>
-              <td>{{gel.samples.well5.sample_id}}</td>
-              <td>{{gel.samples.well5.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">6</td>
-              <td>{{gel.samples.well6.lab_id}}</td>
-              <td>{{gel.samples.well6.sample_id}}</td>
-              <td>{{gel.samples.well6.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">7</td>
-              <td>{{gel.samples.well7.lab_id}}</td>
-              <td>{{gel.samples.well7.sample_id}}</td>
-              <td>{{gel.samples.well7.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">8</td>
-              <td>{{gel.samples.well8.lab_id}}</td>
-              <td>{{gel.samples.well8.sample_id}}</td>
-              <td>{{gel.samples.well8.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">9</td>
-              <td>{{gel.samples.well9.lab_id}}</td>
-              <td>{{gel.samples.well9.sample_id}}</td>
-              <td>{{gel.samples.well9.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">10</td>
-              <td>{{gel.samples.well10.lab_id}}</td>
-              <td>{{gel.samples.well10.sample_id}}</td>
-              <td>{{gel.samples.well10.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">11</td>
-              <td>{{gel.samples.well11.lab_id}}</td>
-              <td>{{gel.samples.well11.sample_id}}</td>
-              <td>{{gel.samples.well11.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">12</td>
-              <td>{{gel.samples.well12.lab_id}}</td>
-              <td>{{gel.samples.well12.sample_id}}</td>
-              <td>{{gel.samples.well12.assay}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    {% endif %}
-
-    {% if gel.size == 24 %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Well #</th>
-              <th scope="col">Lab ID</th>
-              <th scope="col">Sample ID</th>
-              <th scope="col">Assay</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td class="fw-bold">1</td>
-              <td>{{gel.samples.well1.lab_id}}</td>
-              <td>{{gel.samples.well1.sample_id}}</td>
-              <td>{{gel.samples.well1.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">2</td>
-              <td>{{gel.samples.well2.lab_id}}</td>
-              <td>{{gel.samples.well2.sample_id}}</td>
-              <td>{{gel.samples.well2.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">3</td>
-              <td>{{gel.samples.well3.lab_id}}</td>
-              <td>{{gel.samples.well3.sample_id}}</td>
-              <td>{{gel.samples.well3.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">4</td>
-              <td>{{gel.samples.well4.lab_id}}</td>
-              <td>{{gel.samples.well4.sample_id}}</td>
-              <td>{{gel.samples.well4.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">5</td>
-              <td>{{gel.samples.well5.lab_id}}</td>
-              <td>{{gel.samples.well5.sample_id}}</td>
-              <td>{{gel.samples.well5.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">6</td>
-              <td>{{gel.samples.well6.lab_id}}</td>
-              <td>{{gel.samples.well6.sample_id}}</td>
-              <td>{{gel.samples.well6.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">7</td>
-              <td>{{gel.samples.well7.lab_id}}</td>
-              <td>{{gel.samples.well7.sample_id}}</td>
-              <td>{{gel.samples.well7.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">8</td>
-              <td>{{gel.samples.well8.lab_id}}</td>
-              <td>{{gel.samples.well8.sample_id}}</td>
-              <td>{{gel.samples.well8.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">9</td>
-              <td>{{gel.samples.well9.lab_id}}</td>
-              <td>{{gel.samples.well9.sample_id}}</td>
-              <td>{{gel.samples.well9.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">10</td>
-              <td>{{gel.samples.well10.lab_id}}</td>
-              <td>{{gel.samples.well10.sample_id}}</td>
-              <td>{{gel.samples.well10.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">11</td>
-              <td>{{gel.samples.well11.lab_id}}</td>
-              <td>{{gel.samples.well11.sample_id}}</td>
-              <td>{{gel.samples.well11.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">12</td>
-              <td>{{gel.samples.well12.lab_id}}</td>
-              <td>{{gel.samples.well12.sample_id}}</td>
-              <td>{{gel.samples.well12.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">13</td>
-              <td>{{gel.samples.well13.lab_id}}</td>
-              <td>{{gel.samples.well13.sample_id}}</td>
-              <td>{{gel.samples.well13.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">14</td>
-              <td>{{gel.samples.well14.lab_id}}</td>
-              <td>{{gel.samples.well14.sample_id}}</td>
-              <td>{{gel.samples.well14.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">15</td>
-              <td>{{gel.samples.well15.lab_id}}</td>
-              <td>{{gel.samples.well15.sample_id}}</td>
-              <td>{{gel.samples.well15.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">16</td>
-              <td>{{gel.samples.well16.lab_id}}</td>
-              <td>{{gel.samples.well16.sample_id}}</td>
-              <td>{{gel.samples.well16.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">17</td>
-              <td>{{gel.samples.well17.lab_id}}</td>
-              <td>{{gel.samples.well17.sample_id}}</td>
-              <td>{{gel.samples.well17.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">18</td>
-              <td>{{gel.samples.well18.lab_id}}</td>
-              <td>{{gel.samples.well18.sample_id}}</td>
-              <td>{{gel.samples.well18.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">19</td>
-              <td>{{gel.samples.well19.lab_id}}</td>
-              <td>{{gel.samples.well19.sample_id}}</td>
-              <td>{{gel.samples.well19.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">20</td>
-              <td>{{gel.samples.well20.lab_id}}</td>
-              <td>{{gel.samples.well20.sample_id}}</td>
-              <td>{{gel.samples.well20.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">21</td>
-              <td>{{gel.samples.well21.lab_id}}</td>
-              <td>{{gel.samples.well21.sample_id}}</td>
-              <td>{{gel.samples.well21.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">22</td>
-              <td>{{gel.samples.well22.lab_id}}</td>
-              <td>{{gel.samples.well22.sample_id}}</td>
-              <td>{{gel.samples.well22.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">23</td>
-              <td>{{gel.samples.well23.lab_id}}</td>
-              <td>{{gel.samples.well23.sample_id}}</td>
-              <td>{{gel.samples.well23.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">24</td>
-              <td>{{gel.samples.well24.lab_id}}</td>
-              <td>{{gel.samples.well24.sample_id}}</td>
-              <td>{{gel.samples.well24.assay}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    {% endif %}
-
-    {% if gel.size == 48 %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Well #</th>
-              <th scope="col">Lab ID</th>
-              <th scope="col">Sample ID</th>
-              <th scope="col">Assay</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td class="fw-bold">1</td>
-              <td>{{gel.samples.well1.lab_id}}</td>
-              <td>{{gel.samples.well1.sample_id}}</td>
-              <td>{{gel.samples.well1.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">2</td>
-              <td>{{gel.samples.well2.lab_id}}</td>
-              <td>{{gel.samples.well2.sample_id}}</td>
-              <td>{{gel.samples.well2.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">3</td>
-              <td>{{gel.samples.well3.lab_id}}</td>
-              <td>{{gel.samples.well3.sample_id}}</td>
-              <td>{{gel.samples.well3.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">4</td>
-              <td>{{gel.samples.well4.lab_id}}</td>
-              <td>{{gel.samples.well4.sample_id}}</td>
-              <td>{{gel.samples.well4.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">5</td>
-              <td>{{gel.samples.well5.lab_id}}</td>
-              <td>{{gel.samples.well5.sample_id}}</td>
-              <td>{{gel.samples.well5.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">6</td>
-              <td>{{gel.samples.well6.lab_id}}</td>
-              <td>{{gel.samples.well6.sample_id}}</td>
-              <td>{{gel.samples.well6.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">7</td>
-              <td>{{gel.samples.well7.lab_id}}</td>
-              <td>{{gel.samples.well7.sample_id}}</td>
-              <td>{{gel.samples.well7.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">8</td>
-              <td>{{gel.samples.well8.lab_id}}</td>
-              <td>{{gel.samples.well8.sample_id}}</td>
-              <td>{{gel.samples.well8.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">9</td>
-              <td>{{gel.samples.well9.lab_id}}</td>
-              <td>{{gel.samples.well9.sample_id}}</td>
-              <td>{{gel.samples.well9.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">10</td>
-              <td>{{gel.samples.well10.lab_id}}</td>
-              <td>{{gel.samples.well10.sample_id}}</td>
-              <td>{{gel.samples.well10.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">11</td>
-              <td>{{gel.samples.well11.lab_id}}</td>
-              <td>{{gel.samples.well11.sample_id}}</td>
-              <td>{{gel.samples.well11.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">12</td>
-              <td>{{gel.samples.well12.lab_id}}</td>
-              <td>{{gel.samples.well12.sample_id}}</td>
-              <td>{{gel.samples.well12.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">13</td>
-              <td>{{gel.samples.well13.lab_id}}</td>
-              <td>{{gel.samples.well13.sample_id}}</td>
-              <td>{{gel.samples.well13.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">14</td>
-              <td>{{gel.samples.well14.lab_id}}</td>
-              <td>{{gel.samples.well14.sample_id}}</td>
-              <td>{{gel.samples.well14.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">15</td>
-              <td>{{gel.samples.well15.lab_id}}</td>
-              <td>{{gel.samples.well15.sample_id}}</td>
-              <td>{{gel.samples.well15.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">16</td>
-              <td>{{gel.samples.well16.lab_id}}</td>
-              <td>{{gel.samples.well16.sample_id}}</td>
-              <td>{{gel.samples.well16.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">17</td>
-              <td>{{gel.samples.well17.lab_id}}</td>
-              <td>{{gel.samples.well17.sample_id}}</td>
-              <td>{{gel.samples.well17.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">18</td>
-              <td>{{gel.samples.well18.lab_id}}</td>
-              <td>{{gel.samples.well18.sample_id}}</td>
-              <td>{{gel.samples.well18.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">19</td>
-              <td>{{gel.samples.well19.lab_id}}</td>
-              <td>{{gel.samples.well19.sample_id}}</td>
-              <td>{{gel.samples.well19.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">20</td>
-              <td>{{gel.samples.well20.lab_id}}</td>
-              <td>{{gel.samples.well20.sample_id}}</td>
-              <td>{{gel.samples.well20.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">21</td>
-              <td>{{gel.samples.well21.lab_id}}</td>
-              <td>{{gel.samples.well21.sample_id}}</td>
-              <td>{{gel.samples.well21.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">22</td>
-              <td>{{gel.samples.well22.lab_id}}</td>
-              <td>{{gel.samples.well22.sample_id}}</td>
-              <td>{{gel.samples.well22.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">23</td>
-              <td>{{gel.samples.well23.lab_id}}</td>
-              <td>{{gel.samples.well23.sample_id}}</td>
-              <td>{{gel.samples.well23.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">24</td>
-              <td>{{gel.samples.well24.lab_id}}</td>
-              <td>{{gel.samples.well24.sample_id}}</td>
-              <td>{{gel.samples.well24.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">25</td>
-              <td>{{gel.samples.well25.lab_id}}</td>
-              <td>{{gel.samples.well25.sample_id}}</td>
-              <td>{{gel.samples.well25.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">26</td>
-              <td>{{gel.samples.well26.lab_id}}</td>
-              <td>{{gel.samples.well26.sample_id}}</td>
-              <td>{{gel.samples.well26.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">27</td>
-              <td>{{gel.samples.well27.lab_id}}</td>
-              <td>{{gel.samples.well27.sample_id}}</td>
-              <td>{{gel.samples.well27.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">28</td>
-              <td>{{gel.samples.well28.lab_id}}</td>
-              <td>{{gel.samples.well28.sample_id}}</td>
-              <td>{{gel.samples.well28.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">29</td>
-              <td>{{gel.samples.well29.lab_id}}</td>
-              <td>{{gel.samples.well29.sample_id}}</td>
-              <td>{{gel.samples.well29.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">30</td>
-              <td>{{gel.samples.well30.lab_id}}</td>
-              <td>{{gel.samples.well30.sample_id}}</td>
-              <td>{{gel.samples.well30.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">31</td>
-              <td>{{gel.samples.well31.lab_id}}</td>
-              <td>{{gel.samples.well31.sample_id}}</td>
-              <td>{{gel.samples.well31.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">32</td>
-              <td>{{gel.samples.well32.lab_id}}</td>
-              <td>{{gel.samples.well32.sample_id}}</td>
-              <td>{{gel.samples.well32.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">33</td>
-              <td>{{gel.samples.well33.lab_id}}</td>
-              <td>{{gel.samples.well33.sample_id}}</td>
-              <td>{{gel.samples.well33.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">34</td>
-              <td>{{gel.samples.well34.lab_id}}</td>
-              <td>{{gel.samples.well34.sample_id}}</td>
-              <td>{{gel.samples.well34.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">35</td>
-              <td>{{gel.samples.well35.lab_id}}</td>
-              <td>{{gel.samples.well35.sample_id}}</td>
-              <td>{{gel.samples.well35.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">36</td>
-              <td>{{gel.samples.well36.lab_id}}</td>
-              <td>{{gel.samples.well36.sample_id}}</td>
-              <td>{{gel.samples.well36.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">37</td>
-              <td>{{gel.samples.well37.lab_id}}</td>
-              <td>{{gel.samples.well37.sample_id}}</td>
-              <td>{{gel.samples.well37.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">38</td>
-              <td>{{gel.samples.well38.lab_id}}</td>
-              <td>{{gel.samples.well38.sample_id}}</td>
-              <td>{{gel.samples.well38.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">39</td>
-              <td>{{gel.samples.well39.lab_id}}</td>
-              <td>{{gel.samples.well39.sample_id}}</td>
-              <td>{{gel.samples.well39.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">40</td>
-              <td>{{gel.samples.well40.lab_id}}</td>
-              <td>{{gel.samples.well40.sample_id}}</td>
-              <td>{{gel.samples.well40.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">41</td>
-              <td>{{gel.samples.well41.lab_id}}</td>
-              <td>{{gel.samples.well41.sample_id}}</td>
-              <td>{{gel.samples.well41.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">42</td>
-              <td>{{gel.samples.well42.lab_id}}</td>
-              <td>{{gel.samples.well42.sample_id}}</td>
-              <td>{{gel.samples.well42.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">43</td>
-              <td>{{gel.samples.well43.lab_id}}</td>
-              <td>{{gel.samples.well43.sample_id}}</td>
-              <td>{{gel.samples.well43.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">44</td>
-              <td>{{gel.samples.well44.lab_id}}</td>
-              <td>{{gel.samples.well44.sample_id}}</td>
-              <td>{{gel.samples.well44.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">45</td>
-              <td>{{gel.samples.well45.lab_id}}</td>
-              <td>{{gel.samples.well45.sample_id}}</td>
-              <td>{{gel.samples.well45.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">46</td>
-              <td>{{gel.samples.well46.lab_id}}</td>
-              <td>{{gel.samples.well46.sample_id}}</td>
-              <td>{{gel.samples.well46.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">47</td>
-              <td>{{gel.samples.well47.lab_id}}</td>
-              <td>{{gel.samples.well47.sample_id}}</td>
-              <td>{{gel.samples.well47.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">48</td>
-              <td>{{gel.samples.well48.lab_id}}</td>
-              <td>{{gel.samples.well48.sample_id}}</td>
-              <td>{{gel.samples.well48.assay}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    {% endif %}
-
-    <div class="table-responsive">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">{{gel.protocol.name}} for {{gel.protocol.number_of_cycles}} Cycles</th>
-            <th scope="col">Temperature (°C)</th>
-            <th scope="col">Duration (sec.)</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>Denature</td>
-            <td>{{gel.protocol.denature_temp}}</td>
-            <td>{{gel.protocol.denature_duration}}</td>
-          </tr>
-          <tr>
-            <td>Anneal</td>
-            <td>{{gel.protocol.anneal_temp}}</td>
-            <td>{{gel.protocol.anneal_duration}}</td>
-          </tr>
-          <tr>
-            <td>Extend</td>
-            <td>{{gel.protocol.extension_temp}}</td>
-            <td>{{gel.protocol.extension_duration}}</td>
-          </tr>
-        </tbody>
-
-      </table>
-    </div>
-
-    {% for assay in gel.assays %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
-              <th scope="col">Total Master Mix (μL)</th>
-              <th scope="col">Per Sample (μL) × {{assay.sample_num}}</th>
-              <th scope="col">Stock Conc.</th>
-              <th scope="col">Final Conc.</th>
-              <th scope="col">DF</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {% for reagent in assay.reagents %}
-              <tr class="table-light">
-                <td>{{reagent.name}}</td>
-                <td class="table-success">{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
-                <td>{{reagent.volume_per_sample}}</td>
-                <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
-                <td>{% if reagent.final_stock_concentration %} {{reagent.final_stock_concentration}} {{reagent.final_unit_concentration}} {% else %} ------ {% endif %}</td>
-                <td>{% if reagent.dilution_factor %} {{reagent.dilution_factor}} {% else %} ------ {% endif %}</td>
+    <div class="container border border-5 border-secondary p-3 mb-2">
+      {% if gel.size == 12 %}
+        <div class="table-responsive col-sm-6">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Well #</th>
+                <th scope="col">Lab ID</th>
+                <th scope="col">Sample ID</th>
+                <th scope="col">Assay</th>
               </tr>
-            {% endfor %}
-            <tr class="table-dark">
-              <td>Total</td>
-              <td>{{assay.mm_volume|dec_mult_string:assay.sample_num}}</td>
-              <td>{{assay.mm_volume}}</td>
-              <td>------</td>
-              <td>------</td>
-              <td>------</td>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="fw-bold">1</td>
+                <td>{{gel.samples.well1.lab_id}}</td>
+                <td>{{gel.samples.well1.sample_id}}</td>
+                <td>{{gel.samples.well1.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">2</td>
+                <td>{{gel.samples.well2.lab_id}}</td>
+                <td>{{gel.samples.well2.sample_id}}</td>
+                <td>{{gel.samples.well2.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">3</td>
+                <td>{{gel.samples.well3.lab_id}}</td>
+                <td>{{gel.samples.well3.sample_id}}</td>
+                <td>{{gel.samples.well3.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">4</td>
+                <td>{{gel.samples.well4.lab_id}}</td>
+                <td>{{gel.samples.well4.sample_id}}</td>
+                <td>{{gel.samples.well4.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">5</td>
+                <td>{{gel.samples.well5.lab_id}}</td>
+                <td>{{gel.samples.well5.sample_id}}</td>
+                <td>{{gel.samples.well5.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">6</td>
+                <td>{{gel.samples.well6.lab_id}}</td>
+                <td>{{gel.samples.well6.sample_id}}</td>
+                <td>{{gel.samples.well6.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">7</td>
+                <td>{{gel.samples.well7.lab_id}}</td>
+                <td>{{gel.samples.well7.sample_id}}</td>
+                <td>{{gel.samples.well7.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">8</td>
+                <td>{{gel.samples.well8.lab_id}}</td>
+                <td>{{gel.samples.well8.sample_id}}</td>
+                <td>{{gel.samples.well8.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">9</td>
+                <td>{{gel.samples.well9.lab_id}}</td>
+                <td>{{gel.samples.well9.sample_id}}</td>
+                <td>{{gel.samples.well9.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">10</td>
+                <td>{{gel.samples.well10.lab_id}}</td>
+                <td>{{gel.samples.well10.sample_id}}</td>
+                <td>{{gel.samples.well10.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">11</td>
+                <td>{{gel.samples.well11.lab_id}}</td>
+                <td>{{gel.samples.well11.sample_id}}</td>
+                <td>{{gel.samples.well11.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">12</td>
+                <td>{{gel.samples.well12.lab_id}}</td>
+                <td>{{gel.samples.well12.sample_id}}</td>
+                <td>{{gel.samples.well12.assay}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+
+      {% if gel.size == 24 %}
+        <div class="table-responsive col-sm-6">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Well #</th>
+                <th scope="col">Lab ID</th>
+                <th scope="col">Sample ID</th>
+                <th scope="col">Assay</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="fw-bold">1</td>
+                <td>{{gel.samples.well1.lab_id}}</td>
+                <td>{{gel.samples.well1.sample_id}}</td>
+                <td>{{gel.samples.well1.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">2</td>
+                <td>{{gel.samples.well2.lab_id}}</td>
+                <td>{{gel.samples.well2.sample_id}}</td>
+                <td>{{gel.samples.well2.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">3</td>
+                <td>{{gel.samples.well3.lab_id}}</td>
+                <td>{{gel.samples.well3.sample_id}}</td>
+                <td>{{gel.samples.well3.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">4</td>
+                <td>{{gel.samples.well4.lab_id}}</td>
+                <td>{{gel.samples.well4.sample_id}}</td>
+                <td>{{gel.samples.well4.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">5</td>
+                <td>{{gel.samples.well5.lab_id}}</td>
+                <td>{{gel.samples.well5.sample_id}}</td>
+                <td>{{gel.samples.well5.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">6</td>
+                <td>{{gel.samples.well6.lab_id}}</td>
+                <td>{{gel.samples.well6.sample_id}}</td>
+                <td>{{gel.samples.well6.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">7</td>
+                <td>{{gel.samples.well7.lab_id}}</td>
+                <td>{{gel.samples.well7.sample_id}}</td>
+                <td>{{gel.samples.well7.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">8</td>
+                <td>{{gel.samples.well8.lab_id}}</td>
+                <td>{{gel.samples.well8.sample_id}}</td>
+                <td>{{gel.samples.well8.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">9</td>
+                <td>{{gel.samples.well9.lab_id}}</td>
+                <td>{{gel.samples.well9.sample_id}}</td>
+                <td>{{gel.samples.well9.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">10</td>
+                <td>{{gel.samples.well10.lab_id}}</td>
+                <td>{{gel.samples.well10.sample_id}}</td>
+                <td>{{gel.samples.well10.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">11</td>
+                <td>{{gel.samples.well11.lab_id}}</td>
+                <td>{{gel.samples.well11.sample_id}}</td>
+                <td>{{gel.samples.well11.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">12</td>
+                <td>{{gel.samples.well12.lab_id}}</td>
+                <td>{{gel.samples.well12.sample_id}}</td>
+                <td>{{gel.samples.well12.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">13</td>
+                <td>{{gel.samples.well13.lab_id}}</td>
+                <td>{{gel.samples.well13.sample_id}}</td>
+                <td>{{gel.samples.well13.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">14</td>
+                <td>{{gel.samples.well14.lab_id}}</td>
+                <td>{{gel.samples.well14.sample_id}}</td>
+                <td>{{gel.samples.well14.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">15</td>
+                <td>{{gel.samples.well15.lab_id}}</td>
+                <td>{{gel.samples.well15.sample_id}}</td>
+                <td>{{gel.samples.well15.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">16</td>
+                <td>{{gel.samples.well16.lab_id}}</td>
+                <td>{{gel.samples.well16.sample_id}}</td>
+                <td>{{gel.samples.well16.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">17</td>
+                <td>{{gel.samples.well17.lab_id}}</td>
+                <td>{{gel.samples.well17.sample_id}}</td>
+                <td>{{gel.samples.well17.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">18</td>
+                <td>{{gel.samples.well18.lab_id}}</td>
+                <td>{{gel.samples.well18.sample_id}}</td>
+                <td>{{gel.samples.well18.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">19</td>
+                <td>{{gel.samples.well19.lab_id}}</td>
+                <td>{{gel.samples.well19.sample_id}}</td>
+                <td>{{gel.samples.well19.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">20</td>
+                <td>{{gel.samples.well20.lab_id}}</td>
+                <td>{{gel.samples.well20.sample_id}}</td>
+                <td>{{gel.samples.well20.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">21</td>
+                <td>{{gel.samples.well21.lab_id}}</td>
+                <td>{{gel.samples.well21.sample_id}}</td>
+                <td>{{gel.samples.well21.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">22</td>
+                <td>{{gel.samples.well22.lab_id}}</td>
+                <td>{{gel.samples.well22.sample_id}}</td>
+                <td>{{gel.samples.well22.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">23</td>
+                <td>{{gel.samples.well23.lab_id}}</td>
+                <td>{{gel.samples.well23.sample_id}}</td>
+                <td>{{gel.samples.well23.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">24</td>
+                <td>{{gel.samples.well24.lab_id}}</td>
+                <td>{{gel.samples.well24.sample_id}}</td>
+                <td>{{gel.samples.well24.assay}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+
+      {% if gel.size == 48 %}
+        <div class="table-responsive col-sm-6">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Well #</th>
+                <th scope="col">Lab ID</th>
+                <th scope="col">Sample ID</th>
+                <th scope="col">Assay</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="fw-bold">1</td>
+                <td>{{gel.samples.well1.lab_id}}</td>
+                <td>{{gel.samples.well1.sample_id}}</td>
+                <td>{{gel.samples.well1.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">2</td>
+                <td>{{gel.samples.well2.lab_id}}</td>
+                <td>{{gel.samples.well2.sample_id}}</td>
+                <td>{{gel.samples.well2.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">3</td>
+                <td>{{gel.samples.well3.lab_id}}</td>
+                <td>{{gel.samples.well3.sample_id}}</td>
+                <td>{{gel.samples.well3.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">4</td>
+                <td>{{gel.samples.well4.lab_id}}</td>
+                <td>{{gel.samples.well4.sample_id}}</td>
+                <td>{{gel.samples.well4.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">5</td>
+                <td>{{gel.samples.well5.lab_id}}</td>
+                <td>{{gel.samples.well5.sample_id}}</td>
+                <td>{{gel.samples.well5.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">6</td>
+                <td>{{gel.samples.well6.lab_id}}</td>
+                <td>{{gel.samples.well6.sample_id}}</td>
+                <td>{{gel.samples.well6.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">7</td>
+                <td>{{gel.samples.well7.lab_id}}</td>
+                <td>{{gel.samples.well7.sample_id}}</td>
+                <td>{{gel.samples.well7.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">8</td>
+                <td>{{gel.samples.well8.lab_id}}</td>
+                <td>{{gel.samples.well8.sample_id}}</td>
+                <td>{{gel.samples.well8.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">9</td>
+                <td>{{gel.samples.well9.lab_id}}</td>
+                <td>{{gel.samples.well9.sample_id}}</td>
+                <td>{{gel.samples.well9.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">10</td>
+                <td>{{gel.samples.well10.lab_id}}</td>
+                <td>{{gel.samples.well10.sample_id}}</td>
+                <td>{{gel.samples.well10.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">11</td>
+                <td>{{gel.samples.well11.lab_id}}</td>
+                <td>{{gel.samples.well11.sample_id}}</td>
+                <td>{{gel.samples.well11.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">12</td>
+                <td>{{gel.samples.well12.lab_id}}</td>
+                <td>{{gel.samples.well12.sample_id}}</td>
+                <td>{{gel.samples.well12.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">13</td>
+                <td>{{gel.samples.well13.lab_id}}</td>
+                <td>{{gel.samples.well13.sample_id}}</td>
+                <td>{{gel.samples.well13.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">14</td>
+                <td>{{gel.samples.well14.lab_id}}</td>
+                <td>{{gel.samples.well14.sample_id}}</td>
+                <td>{{gel.samples.well14.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">15</td>
+                <td>{{gel.samples.well15.lab_id}}</td>
+                <td>{{gel.samples.well15.sample_id}}</td>
+                <td>{{gel.samples.well15.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">16</td>
+                <td>{{gel.samples.well16.lab_id}}</td>
+                <td>{{gel.samples.well16.sample_id}}</td>
+                <td>{{gel.samples.well16.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">17</td>
+                <td>{{gel.samples.well17.lab_id}}</td>
+                <td>{{gel.samples.well17.sample_id}}</td>
+                <td>{{gel.samples.well17.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">18</td>
+                <td>{{gel.samples.well18.lab_id}}</td>
+                <td>{{gel.samples.well18.sample_id}}</td>
+                <td>{{gel.samples.well18.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">19</td>
+                <td>{{gel.samples.well19.lab_id}}</td>
+                <td>{{gel.samples.well19.sample_id}}</td>
+                <td>{{gel.samples.well19.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">20</td>
+                <td>{{gel.samples.well20.lab_id}}</td>
+                <td>{{gel.samples.well20.sample_id}}</td>
+                <td>{{gel.samples.well20.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">21</td>
+                <td>{{gel.samples.well21.lab_id}}</td>
+                <td>{{gel.samples.well21.sample_id}}</td>
+                <td>{{gel.samples.well21.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">22</td>
+                <td>{{gel.samples.well22.lab_id}}</td>
+                <td>{{gel.samples.well22.sample_id}}</td>
+                <td>{{gel.samples.well22.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">23</td>
+                <td>{{gel.samples.well23.lab_id}}</td>
+                <td>{{gel.samples.well23.sample_id}}</td>
+                <td>{{gel.samples.well23.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">24</td>
+                <td>{{gel.samples.well24.lab_id}}</td>
+                <td>{{gel.samples.well24.sample_id}}</td>
+                <td>{{gel.samples.well24.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">25</td>
+                <td>{{gel.samples.well25.lab_id}}</td>
+                <td>{{gel.samples.well25.sample_id}}</td>
+                <td>{{gel.samples.well25.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">26</td>
+                <td>{{gel.samples.well26.lab_id}}</td>
+                <td>{{gel.samples.well26.sample_id}}</td>
+                <td>{{gel.samples.well26.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">27</td>
+                <td>{{gel.samples.well27.lab_id}}</td>
+                <td>{{gel.samples.well27.sample_id}}</td>
+                <td>{{gel.samples.well27.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">28</td>
+                <td>{{gel.samples.well28.lab_id}}</td>
+                <td>{{gel.samples.well28.sample_id}}</td>
+                <td>{{gel.samples.well28.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">29</td>
+                <td>{{gel.samples.well29.lab_id}}</td>
+                <td>{{gel.samples.well29.sample_id}}</td>
+                <td>{{gel.samples.well29.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">30</td>
+                <td>{{gel.samples.well30.lab_id}}</td>
+                <td>{{gel.samples.well30.sample_id}}</td>
+                <td>{{gel.samples.well30.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">31</td>
+                <td>{{gel.samples.well31.lab_id}}</td>
+                <td>{{gel.samples.well31.sample_id}}</td>
+                <td>{{gel.samples.well31.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">32</td>
+                <td>{{gel.samples.well32.lab_id}}</td>
+                <td>{{gel.samples.well32.sample_id}}</td>
+                <td>{{gel.samples.well32.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">33</td>
+                <td>{{gel.samples.well33.lab_id}}</td>
+                <td>{{gel.samples.well33.sample_id}}</td>
+                <td>{{gel.samples.well33.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">34</td>
+                <td>{{gel.samples.well34.lab_id}}</td>
+                <td>{{gel.samples.well34.sample_id}}</td>
+                <td>{{gel.samples.well34.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">35</td>
+                <td>{{gel.samples.well35.lab_id}}</td>
+                <td>{{gel.samples.well35.sample_id}}</td>
+                <td>{{gel.samples.well35.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">36</td>
+                <td>{{gel.samples.well36.lab_id}}</td>
+                <td>{{gel.samples.well36.sample_id}}</td>
+                <td>{{gel.samples.well36.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">37</td>
+                <td>{{gel.samples.well37.lab_id}}</td>
+                <td>{{gel.samples.well37.sample_id}}</td>
+                <td>{{gel.samples.well37.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">38</td>
+                <td>{{gel.samples.well38.lab_id}}</td>
+                <td>{{gel.samples.well38.sample_id}}</td>
+                <td>{{gel.samples.well38.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">39</td>
+                <td>{{gel.samples.well39.lab_id}}</td>
+                <td>{{gel.samples.well39.sample_id}}</td>
+                <td>{{gel.samples.well39.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">40</td>
+                <td>{{gel.samples.well40.lab_id}}</td>
+                <td>{{gel.samples.well40.sample_id}}</td>
+                <td>{{gel.samples.well40.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">41</td>
+                <td>{{gel.samples.well41.lab_id}}</td>
+                <td>{{gel.samples.well41.sample_id}}</td>
+                <td>{{gel.samples.well41.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">42</td>
+                <td>{{gel.samples.well42.lab_id}}</td>
+                <td>{{gel.samples.well42.sample_id}}</td>
+                <td>{{gel.samples.well42.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">43</td>
+                <td>{{gel.samples.well43.lab_id}}</td>
+                <td>{{gel.samples.well43.sample_id}}</td>
+                <td>{{gel.samples.well43.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">44</td>
+                <td>{{gel.samples.well44.lab_id}}</td>
+                <td>{{gel.samples.well44.sample_id}}</td>
+                <td>{{gel.samples.well44.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">45</td>
+                <td>{{gel.samples.well45.lab_id}}</td>
+                <td>{{gel.samples.well45.sample_id}}</td>
+                <td>{{gel.samples.well45.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">46</td>
+                <td>{{gel.samples.well46.lab_id}}</td>
+                <td>{{gel.samples.well46.sample_id}}</td>
+                <td>{{gel.samples.well46.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">47</td>
+                <td>{{gel.samples.well47.lab_id}}</td>
+                <td>{{gel.samples.well47.sample_id}}</td>
+                <td>{{gel.samples.well47.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">48</td>
+                <td>{{gel.samples.well48.lab_id}}</td>
+                <td>{{gel.samples.well48.sample_id}}</td>
+                <td>{{gel.samples.well48.assay}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+
+      <div class="table-responsive col-sm-6">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">{{gel.protocol.name}} for {{gel.protocol.number_of_cycles}} Cycles</th>
+              <th scope="col">Temperature (°C)</th>
+              <th scope="col">Duration (sec.)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Denature</td>
+              <td>{{gel.protocol.denature_temp}}</td>
+              <td>{{gel.protocol.denature_duration}}</td>
+            </tr>
+            <tr>
+              <td>Anneal</td>
+              <td>{{gel.protocol.anneal_temp}}</td>
+              <td>{{gel.protocol.anneal_duration}}</td>
+            </tr>
+            <tr>
+              <td>Extend</td>
+              <td>{{gel.protocol.extension_temp}}</td>
+              <td>{{gel.protocol.extension_duration}}</td>
             </tr>
           </tbody>
 
         </table>
       </div>
-    {% endfor %}
+        
+      <div class="row">
+        {% for assay in gel.assays %}
+          <div class="table-responsive col-sm-12">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
+                  <th scope="col">Total Master Mix (μL)</th>
+                  <th scope="col">Per Sample (μL) × {{assay.sample_num}}</th>
+                  <th scope="col">Stock Conc.</th>
+                  <th scope="col">Final Conc.</th>
+                  <th scope="col">DF</th>
+                </tr>
+              </thead>
 
-    <hr class="mt-5">
+              <tbody>
+                {% for reagent in assay.reagents %}
+                  <tr class="table-light">
+                    <td>{{reagent.name}}</td>
+                    <td class="table-success">{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
+                    <td>{{reagent.volume_per_sample}}</td>
+                    <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
+                    <td>{% if reagent.final_stock_concentration %} {{reagent.final_stock_concentration}} {{reagent.final_unit_concentration}} {% else %} ------ {% endif %}</td>
+                    <td>{% if reagent.dilution_factor %} {{reagent.dilution_factor}} {% else %} ------ {% endif %}</td>
+                  </tr>
+                {% endfor %}
+                <tr class="table-dark">
+                  <td>Total</td>
+                  <td>{{assay.mm_volume|dec_mult_string:assay.sample_num}}</td>
+                  <td>{{assay.mm_volume}}</td>
+                  <td>------</td>
+                  <td>------</td>
+                  <td>------</td>
+                </tr>
+              </tbody>
 
+            </table>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
   {% endfor %}
 
 
   {% for gel in rna_pcr_json %}
-    {% if gel.size == 12 %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Well #</th>
-              <th scope="col">Lab ID</th>
-              <th scope="col">Sample ID</th>
-              <th scope="col">Assay</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td class="fw-bold">1</td>
-              <td>{{gel.samples.well1.lab_id}}</td>
-              <td>{{gel.samples.well1.sample_id}}</td>
-              <td>{{gel.samples.well1.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">2</td>
-              <td>{{gel.samples.well2.lab_id}}</td>
-              <td>{{gel.samples.well2.sample_id}}</td>
-              <td>{{gel.samples.well2.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">3</td>
-              <td>{{gel.samples.well3.lab_id}}</td>
-              <td>{{gel.samples.well3.sample_id}}</td>
-              <td>{{gel.samples.well3.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">4</td>
-              <td>{{gel.samples.well4.lab_id}}</td>
-              <td>{{gel.samples.well4.sample_id}}</td>
-              <td>{{gel.samples.well4.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">5</td>
-              <td>{{gel.samples.well5.lab_id}}</td>
-              <td>{{gel.samples.well5.sample_id}}</td>
-              <td>{{gel.samples.well5.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">6</td>
-              <td>{{gel.samples.well6.lab_id}}</td>
-              <td>{{gel.samples.well6.sample_id}}</td>
-              <td>{{gel.samples.well6.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">7</td>
-              <td>{{gel.samples.well7.lab_id}}</td>
-              <td>{{gel.samples.well7.sample_id}}</td>
-              <td>{{gel.samples.well7.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">8</td>
-              <td>{{gel.samples.well8.lab_id}}</td>
-              <td>{{gel.samples.well8.sample_id}}</td>
-              <td>{{gel.samples.well8.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">9</td>
-              <td>{{gel.samples.well9.lab_id}}</td>
-              <td>{{gel.samples.well9.sample_id}}</td>
-              <td>{{gel.samples.well9.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">10</td>
-              <td>{{gel.samples.well10.lab_id}}</td>
-              <td>{{gel.samples.well10.sample_id}}</td>
-              <td>{{gel.samples.well10.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">11</td>
-              <td>{{gel.samples.well11.lab_id}}</td>
-              <td>{{gel.samples.well11.sample_id}}</td>
-              <td>{{gel.samples.well11.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">12</td>
-              <td>{{gel.samples.well12.lab_id}}</td>
-              <td>{{gel.samples.well12.sample_id}}</td>
-              <td>{{gel.samples.well12.assay}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    {% endif %}
-
-    {% if gel.size == 24 %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Well #</th>
-              <th scope="col">Lab ID</th>
-              <th scope="col">Sample ID</th>
-              <th scope="col">Assay</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td class="fw-bold">1</td>
-              <td>{{gel.samples.well1.lab_id}}</td>
-              <td>{{gel.samples.well1.sample_id}}</td>
-              <td>{{gel.samples.well1.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">2</td>
-              <td>{{gel.samples.well2.lab_id}}</td>
-              <td>{{gel.samples.well2.sample_id}}</td>
-              <td>{{gel.samples.well2.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">3</td>
-              <td>{{gel.samples.well3.lab_id}}</td>
-              <td>{{gel.samples.well3.sample_id}}</td>
-              <td>{{gel.samples.well3.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">4</td>
-              <td>{{gel.samples.well4.lab_id}}</td>
-              <td>{{gel.samples.well4.sample_id}}</td>
-              <td>{{gel.samples.well4.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">5</td>
-              <td>{{gel.samples.well5.lab_id}}</td>
-              <td>{{gel.samples.well5.sample_id}}</td>
-              <td>{{gel.samples.well5.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">6</td>
-              <td>{{gel.samples.well6.lab_id}}</td>
-              <td>{{gel.samples.well6.sample_id}}</td>
-              <td>{{gel.samples.well6.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">7</td>
-              <td>{{gel.samples.well7.lab_id}}</td>
-              <td>{{gel.samples.well7.sample_id}}</td>
-              <td>{{gel.samples.well7.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">8</td>
-              <td>{{gel.samples.well8.lab_id}}</td>
-              <td>{{gel.samples.well8.sample_id}}</td>
-              <td>{{gel.samples.well8.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">9</td>
-              <td>{{gel.samples.well9.lab_id}}</td>
-              <td>{{gel.samples.well9.sample_id}}</td>
-              <td>{{gel.samples.well9.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">10</td>
-              <td>{{gel.samples.well10.lab_id}}</td>
-              <td>{{gel.samples.well10.sample_id}}</td>
-              <td>{{gel.samples.well10.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">11</td>
-              <td>{{gel.samples.well11.lab_id}}</td>
-              <td>{{gel.samples.well11.sample_id}}</td>
-              <td>{{gel.samples.well11.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">12</td>
-              <td>{{gel.samples.well12.lab_id}}</td>
-              <td>{{gel.samples.well12.sample_id}}</td>
-              <td>{{gel.samples.well12.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">13</td>
-              <td>{{gel.samples.well13.lab_id}}</td>
-              <td>{{gel.samples.well13.sample_id}}</td>
-              <td>{{gel.samples.well13.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">14</td>
-              <td>{{gel.samples.well14.lab_id}}</td>
-              <td>{{gel.samples.well14.sample_id}}</td>
-              <td>{{gel.samples.well14.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">15</td>
-              <td>{{gel.samples.well15.lab_id}}</td>
-              <td>{{gel.samples.well15.sample_id}}</td>
-              <td>{{gel.samples.well15.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">16</td>
-              <td>{{gel.samples.well16.lab_id}}</td>
-              <td>{{gel.samples.well16.sample_id}}</td>
-              <td>{{gel.samples.well16.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">17</td>
-              <td>{{gel.samples.well17.lab_id}}</td>
-              <td>{{gel.samples.well17.sample_id}}</td>
-              <td>{{gel.samples.well17.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">18</td>
-              <td>{{gel.samples.well18.lab_id}}</td>
-              <td>{{gel.samples.well18.sample_id}}</td>
-              <td>{{gel.samples.well18.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">19</td>
-              <td>{{gel.samples.well19.lab_id}}</td>
-              <td>{{gel.samples.well19.sample_id}}</td>
-              <td>{{gel.samples.well19.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">20</td>
-              <td>{{gel.samples.well20.lab_id}}</td>
-              <td>{{gel.samples.well20.sample_id}}</td>
-              <td>{{gel.samples.well20.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">21</td>
-              <td>{{gel.samples.well21.lab_id}}</td>
-              <td>{{gel.samples.well21.sample_id}}</td>
-              <td>{{gel.samples.well21.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">22</td>
-              <td>{{gel.samples.well22.lab_id}}</td>
-              <td>{{gel.samples.well22.sample_id}}</td>
-              <td>{{gel.samples.well22.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">23</td>
-              <td>{{gel.samples.well23.lab_id}}</td>
-              <td>{{gel.samples.well23.sample_id}}</td>
-              <td>{{gel.samples.well23.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">24</td>
-              <td>{{gel.samples.well24.lab_id}}</td>
-              <td>{{gel.samples.well24.sample_id}}</td>
-              <td>{{gel.samples.well24.assay}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    {% endif %}
-
-    {% if gel.size == 48 %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Well #</th>
-              <th scope="col">Lab ID</th>
-              <th scope="col">Sample ID</th>
-              <th scope="col">Assay</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td class="fw-bold">1</td>
-              <td>{{gel.samples.well1.lab_id}}</td>
-              <td>{{gel.samples.well1.sample_id}}</td>
-              <td>{{gel.samples.well1.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">2</td>
-              <td>{{gel.samples.well2.lab_id}}</td>
-              <td>{{gel.samples.well2.sample_id}}</td>
-              <td>{{gel.samples.well2.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">3</td>
-              <td>{{gel.samples.well3.lab_id}}</td>
-              <td>{{gel.samples.well3.sample_id}}</td>
-              <td>{{gel.samples.well3.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">4</td>
-              <td>{{gel.samples.well4.lab_id}}</td>
-              <td>{{gel.samples.well4.sample_id}}</td>
-              <td>{{gel.samples.well4.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">5</td>
-              <td>{{gel.samples.well5.lab_id}}</td>
-              <td>{{gel.samples.well5.sample_id}}</td>
-              <td>{{gel.samples.well5.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">6</td>
-              <td>{{gel.samples.well6.lab_id}}</td>
-              <td>{{gel.samples.well6.sample_id}}</td>
-              <td>{{gel.samples.well6.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">7</td>
-              <td>{{gel.samples.well7.lab_id}}</td>
-              <td>{{gel.samples.well7.sample_id}}</td>
-              <td>{{gel.samples.well7.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">8</td>
-              <td>{{gel.samples.well8.lab_id}}</td>
-              <td>{{gel.samples.well8.sample_id}}</td>
-              <td>{{gel.samples.well8.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">9</td>
-              <td>{{gel.samples.well9.lab_id}}</td>
-              <td>{{gel.samples.well9.sample_id}}</td>
-              <td>{{gel.samples.well9.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">10</td>
-              <td>{{gel.samples.well10.lab_id}}</td>
-              <td>{{gel.samples.well10.sample_id}}</td>
-              <td>{{gel.samples.well10.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">11</td>
-              <td>{{gel.samples.well11.lab_id}}</td>
-              <td>{{gel.samples.well11.sample_id}}</td>
-              <td>{{gel.samples.well11.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">12</td>
-              <td>{{gel.samples.well12.lab_id}}</td>
-              <td>{{gel.samples.well12.sample_id}}</td>
-              <td>{{gel.samples.well12.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">13</td>
-              <td>{{gel.samples.well13.lab_id}}</td>
-              <td>{{gel.samples.well13.sample_id}}</td>
-              <td>{{gel.samples.well13.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">14</td>
-              <td>{{gel.samples.well14.lab_id}}</td>
-              <td>{{gel.samples.well14.sample_id}}</td>
-              <td>{{gel.samples.well14.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">15</td>
-              <td>{{gel.samples.well15.lab_id}}</td>
-              <td>{{gel.samples.well15.sample_id}}</td>
-              <td>{{gel.samples.well15.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">16</td>
-              <td>{{gel.samples.well16.lab_id}}</td>
-              <td>{{gel.samples.well16.sample_id}}</td>
-              <td>{{gel.samples.well16.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">17</td>
-              <td>{{gel.samples.well17.lab_id}}</td>
-              <td>{{gel.samples.well17.sample_id}}</td>
-              <td>{{gel.samples.well17.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">18</td>
-              <td>{{gel.samples.well18.lab_id}}</td>
-              <td>{{gel.samples.well18.sample_id}}</td>
-              <td>{{gel.samples.well18.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">19</td>
-              <td>{{gel.samples.well19.lab_id}}</td>
-              <td>{{gel.samples.well19.sample_id}}</td>
-              <td>{{gel.samples.well19.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">20</td>
-              <td>{{gel.samples.well20.lab_id}}</td>
-              <td>{{gel.samples.well20.sample_id}}</td>
-              <td>{{gel.samples.well20.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">21</td>
-              <td>{{gel.samples.well21.lab_id}}</td>
-              <td>{{gel.samples.well21.sample_id}}</td>
-              <td>{{gel.samples.well21.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">22</td>
-              <td>{{gel.samples.well22.lab_id}}</td>
-              <td>{{gel.samples.well22.sample_id}}</td>
-              <td>{{gel.samples.well22.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">23</td>
-              <td>{{gel.samples.well23.lab_id}}</td>
-              <td>{{gel.samples.well23.sample_id}}</td>
-              <td>{{gel.samples.well23.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">24</td>
-              <td>{{gel.samples.well24.lab_id}}</td>
-              <td>{{gel.samples.well24.sample_id}}</td>
-              <td>{{gel.samples.well24.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">25</td>
-              <td>{{gel.samples.well25.lab_id}}</td>
-              <td>{{gel.samples.well25.sample_id}}</td>
-              <td>{{gel.samples.well25.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">26</td>
-              <td>{{gel.samples.well26.lab_id}}</td>
-              <td>{{gel.samples.well26.sample_id}}</td>
-              <td>{{gel.samples.well26.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">27</td>
-              <td>{{gel.samples.well27.lab_id}}</td>
-              <td>{{gel.samples.well27.sample_id}}</td>
-              <td>{{gel.samples.well27.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">28</td>
-              <td>{{gel.samples.well28.lab_id}}</td>
-              <td>{{gel.samples.well28.sample_id}}</td>
-              <td>{{gel.samples.well28.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">29</td>
-              <td>{{gel.samples.well29.lab_id}}</td>
-              <td>{{gel.samples.well29.sample_id}}</td>
-              <td>{{gel.samples.well29.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">30</td>
-              <td>{{gel.samples.well30.lab_id}}</td>
-              <td>{{gel.samples.well30.sample_id}}</td>
-              <td>{{gel.samples.well30.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">31</td>
-              <td>{{gel.samples.well31.lab_id}}</td>
-              <td>{{gel.samples.well31.sample_id}}</td>
-              <td>{{gel.samples.well31.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">32</td>
-              <td>{{gel.samples.well32.lab_id}}</td>
-              <td>{{gel.samples.well32.sample_id}}</td>
-              <td>{{gel.samples.well32.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">33</td>
-              <td>{{gel.samples.well33.lab_id}}</td>
-              <td>{{gel.samples.well33.sample_id}}</td>
-              <td>{{gel.samples.well33.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">34</td>
-              <td>{{gel.samples.well34.lab_id}}</td>
-              <td>{{gel.samples.well34.sample_id}}</td>
-              <td>{{gel.samples.well34.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">35</td>
-              <td>{{gel.samples.well35.lab_id}}</td>
-              <td>{{gel.samples.well35.sample_id}}</td>
-              <td>{{gel.samples.well35.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">36</td>
-              <td>{{gel.samples.well36.lab_id}}</td>
-              <td>{{gel.samples.well36.sample_id}}</td>
-              <td>{{gel.samples.well36.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">37</td>
-              <td>{{gel.samples.well37.lab_id}}</td>
-              <td>{{gel.samples.well37.sample_id}}</td>
-              <td>{{gel.samples.well37.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">38</td>
-              <td>{{gel.samples.well38.lab_id}}</td>
-              <td>{{gel.samples.well38.sample_id}}</td>
-              <td>{{gel.samples.well38.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">39</td>
-              <td>{{gel.samples.well39.lab_id}}</td>
-              <td>{{gel.samples.well39.sample_id}}</td>
-              <td>{{gel.samples.well39.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">40</td>
-              <td>{{gel.samples.well40.lab_id}}</td>
-              <td>{{gel.samples.well40.sample_id}}</td>
-              <td>{{gel.samples.well40.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">41</td>
-              <td>{{gel.samples.well41.lab_id}}</td>
-              <td>{{gel.samples.well41.sample_id}}</td>
-              <td>{{gel.samples.well41.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">42</td>
-              <td>{{gel.samples.well42.lab_id}}</td>
-              <td>{{gel.samples.well42.sample_id}}</td>
-              <td>{{gel.samples.well42.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">43</td>
-              <td>{{gel.samples.well43.lab_id}}</td>
-              <td>{{gel.samples.well43.sample_id}}</td>
-              <td>{{gel.samples.well43.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">44</td>
-              <td>{{gel.samples.well44.lab_id}}</td>
-              <td>{{gel.samples.well44.sample_id}}</td>
-              <td>{{gel.samples.well44.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">45</td>
-              <td>{{gel.samples.well45.lab_id}}</td>
-              <td>{{gel.samples.well45.sample_id}}</td>
-              <td>{{gel.samples.well45.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">46</td>
-              <td>{{gel.samples.well46.lab_id}}</td>
-              <td>{{gel.samples.well46.sample_id}}</td>
-              <td>{{gel.samples.well46.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">47</td>
-              <td>{{gel.samples.well47.lab_id}}</td>
-              <td>{{gel.samples.well47.sample_id}}</td>
-              <td>{{gel.samples.well47.assay}}</td>
-            </tr>
-            <tr>
-              <td class="fw-bold">48</td>
-              <td>{{gel.samples.well48.lab_id}}</td>
-              <td>{{gel.samples.well48.sample_id}}</td>
-              <td>{{gel.samples.well48.assay}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    {% endif %}
-
-    <div class="table-responsive">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">{{gel.protocol.name}} for {{gel.protocol.number_of_cycles}} Cycles</th>
-            <th scope="col">Temperature (°C)</th>
-            <th scope="col">Duration (sec.)</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>Denature</td>
-            <td>{{gel.protocol.denature_temp}}</td>
-            <td>{{gel.protocol.denature_duration}}</td>
-          </tr>
-          <tr>
-            <td>Anneal</td>
-            <td>{{gel.protocol.anneal_temp}}</td>
-            <td>{{gel.protocol.anneal_duration}}</td>
-          </tr>
-          <tr>
-            <td>Extend</td>
-            <td>{{gel.protocol.extension_temp}}</td>
-            <td>{{gel.protocol.extension_duration}}</td>
-          </tr>
-        </tbody>
-
-      </table>
-    </div>
-
-    {% for assay in gel.assays %}
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
-              <th scope="col">Total Master Mix (μL)</th>
-              <th scope="col">Per Sample (μL) × {{assay.sample_num}}</th>
-              <th scope="col">Stock Conc.</th>
-              <th scope="col">Final Conc.</th>
-              <th scope="col">DF</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {% for reagent in assay.reagents %}
-              <tr class="table-light">
-                <td>{{reagent.name}}</td>
-                <td class="table-success">{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
-                <td>{{reagent.volume_per_sample}}</td>
-                <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
-                <td>{% if reagent.final_stock_concentration %} {{reagent.final_stock_concentration}} {{reagent.final_unit_concentration}} {% else %} ------ {% endif %}</td>
-                <td>{% if reagent.dilution_factor %} {{reagent.dilution_factor}} {% else %} ------ {% endif %}</td>
+    <div class="container border border-5 border-secondary p-3 mb-2">
+      {% if gel.size == 12 %}
+        <div class="table-responsive col-sm-6">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Well #</th>
+                <th scope="col">Lab ID</th>
+                <th scope="col">Sample ID</th>
+                <th scope="col">Assay</th>
               </tr>
-            {% endfor %}
-            <tr class="table-dark">
-              <td>Total</td>
-              <td>{{assay.mm_volume|dec_mult_string:assay.sample_num}}</td>
-              <td>{{assay.mm_volume}}</td>
-              <td>------</td>
-              <td>------</td>
-              <td>------</td>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="fw-bold">1</td>
+                <td>{{gel.samples.well1.lab_id}}</td>
+                <td>{{gel.samples.well1.sample_id}}</td>
+                <td>{{gel.samples.well1.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">2</td>
+                <td>{{gel.samples.well2.lab_id}}</td>
+                <td>{{gel.samples.well2.sample_id}}</td>
+                <td>{{gel.samples.well2.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">3</td>
+                <td>{{gel.samples.well3.lab_id}}</td>
+                <td>{{gel.samples.well3.sample_id}}</td>
+                <td>{{gel.samples.well3.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">4</td>
+                <td>{{gel.samples.well4.lab_id}}</td>
+                <td>{{gel.samples.well4.sample_id}}</td>
+                <td>{{gel.samples.well4.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">5</td>
+                <td>{{gel.samples.well5.lab_id}}</td>
+                <td>{{gel.samples.well5.sample_id}}</td>
+                <td>{{gel.samples.well5.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">6</td>
+                <td>{{gel.samples.well6.lab_id}}</td>
+                <td>{{gel.samples.well6.sample_id}}</td>
+                <td>{{gel.samples.well6.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">7</td>
+                <td>{{gel.samples.well7.lab_id}}</td>
+                <td>{{gel.samples.well7.sample_id}}</td>
+                <td>{{gel.samples.well7.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">8</td>
+                <td>{{gel.samples.well8.lab_id}}</td>
+                <td>{{gel.samples.well8.sample_id}}</td>
+                <td>{{gel.samples.well8.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">9</td>
+                <td>{{gel.samples.well9.lab_id}}</td>
+                <td>{{gel.samples.well9.sample_id}}</td>
+                <td>{{gel.samples.well9.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">10</td>
+                <td>{{gel.samples.well10.lab_id}}</td>
+                <td>{{gel.samples.well10.sample_id}}</td>
+                <td>{{gel.samples.well10.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">11</td>
+                <td>{{gel.samples.well11.lab_id}}</td>
+                <td>{{gel.samples.well11.sample_id}}</td>
+                <td>{{gel.samples.well11.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">12</td>
+                <td>{{gel.samples.well12.lab_id}}</td>
+                <td>{{gel.samples.well12.sample_id}}</td>
+                <td>{{gel.samples.well12.assay}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+
+      {% if gel.size == 24 %}
+        <div class="table-responsive col-sm-6">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Well #</th>
+                <th scope="col">Lab ID</th>
+                <th scope="col">Sample ID</th>
+                <th scope="col">Assay</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="fw-bold">1</td>
+                <td>{{gel.samples.well1.lab_id}}</td>
+                <td>{{gel.samples.well1.sample_id}}</td>
+                <td>{{gel.samples.well1.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">2</td>
+                <td>{{gel.samples.well2.lab_id}}</td>
+                <td>{{gel.samples.well2.sample_id}}</td>
+                <td>{{gel.samples.well2.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">3</td>
+                <td>{{gel.samples.well3.lab_id}}</td>
+                <td>{{gel.samples.well3.sample_id}}</td>
+                <td>{{gel.samples.well3.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">4</td>
+                <td>{{gel.samples.well4.lab_id}}</td>
+                <td>{{gel.samples.well4.sample_id}}</td>
+                <td>{{gel.samples.well4.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">5</td>
+                <td>{{gel.samples.well5.lab_id}}</td>
+                <td>{{gel.samples.well5.sample_id}}</td>
+                <td>{{gel.samples.well5.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">6</td>
+                <td>{{gel.samples.well6.lab_id}}</td>
+                <td>{{gel.samples.well6.sample_id}}</td>
+                <td>{{gel.samples.well6.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">7</td>
+                <td>{{gel.samples.well7.lab_id}}</td>
+                <td>{{gel.samples.well7.sample_id}}</td>
+                <td>{{gel.samples.well7.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">8</td>
+                <td>{{gel.samples.well8.lab_id}}</td>
+                <td>{{gel.samples.well8.sample_id}}</td>
+                <td>{{gel.samples.well8.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">9</td>
+                <td>{{gel.samples.well9.lab_id}}</td>
+                <td>{{gel.samples.well9.sample_id}}</td>
+                <td>{{gel.samples.well9.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">10</td>
+                <td>{{gel.samples.well10.lab_id}}</td>
+                <td>{{gel.samples.well10.sample_id}}</td>
+                <td>{{gel.samples.well10.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">11</td>
+                <td>{{gel.samples.well11.lab_id}}</td>
+                <td>{{gel.samples.well11.sample_id}}</td>
+                <td>{{gel.samples.well11.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">12</td>
+                <td>{{gel.samples.well12.lab_id}}</td>
+                <td>{{gel.samples.well12.sample_id}}</td>
+                <td>{{gel.samples.well12.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">13</td>
+                <td>{{gel.samples.well13.lab_id}}</td>
+                <td>{{gel.samples.well13.sample_id}}</td>
+                <td>{{gel.samples.well13.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">14</td>
+                <td>{{gel.samples.well14.lab_id}}</td>
+                <td>{{gel.samples.well14.sample_id}}</td>
+                <td>{{gel.samples.well14.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">15</td>
+                <td>{{gel.samples.well15.lab_id}}</td>
+                <td>{{gel.samples.well15.sample_id}}</td>
+                <td>{{gel.samples.well15.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">16</td>
+                <td>{{gel.samples.well16.lab_id}}</td>
+                <td>{{gel.samples.well16.sample_id}}</td>
+                <td>{{gel.samples.well16.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">17</td>
+                <td>{{gel.samples.well17.lab_id}}</td>
+                <td>{{gel.samples.well17.sample_id}}</td>
+                <td>{{gel.samples.well17.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">18</td>
+                <td>{{gel.samples.well18.lab_id}}</td>
+                <td>{{gel.samples.well18.sample_id}}</td>
+                <td>{{gel.samples.well18.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">19</td>
+                <td>{{gel.samples.well19.lab_id}}</td>
+                <td>{{gel.samples.well19.sample_id}}</td>
+                <td>{{gel.samples.well19.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">20</td>
+                <td>{{gel.samples.well20.lab_id}}</td>
+                <td>{{gel.samples.well20.sample_id}}</td>
+                <td>{{gel.samples.well20.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">21</td>
+                <td>{{gel.samples.well21.lab_id}}</td>
+                <td>{{gel.samples.well21.sample_id}}</td>
+                <td>{{gel.samples.well21.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">22</td>
+                <td>{{gel.samples.well22.lab_id}}</td>
+                <td>{{gel.samples.well22.sample_id}}</td>
+                <td>{{gel.samples.well22.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">23</td>
+                <td>{{gel.samples.well23.lab_id}}</td>
+                <td>{{gel.samples.well23.sample_id}}</td>
+                <td>{{gel.samples.well23.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">24</td>
+                <td>{{gel.samples.well24.lab_id}}</td>
+                <td>{{gel.samples.well24.sample_id}}</td>
+                <td>{{gel.samples.well24.assay}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+
+      {% if gel.size == 48 %}
+        <div class="table-responsive col-sm-6">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Well #</th>
+                <th scope="col">Lab ID</th>
+                <th scope="col">Sample ID</th>
+                <th scope="col">Assay</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="fw-bold">1</td>
+                <td>{{gel.samples.well1.lab_id}}</td>
+                <td>{{gel.samples.well1.sample_id}}</td>
+                <td>{{gel.samples.well1.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">2</td>
+                <td>{{gel.samples.well2.lab_id}}</td>
+                <td>{{gel.samples.well2.sample_id}}</td>
+                <td>{{gel.samples.well2.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">3</td>
+                <td>{{gel.samples.well3.lab_id}}</td>
+                <td>{{gel.samples.well3.sample_id}}</td>
+                <td>{{gel.samples.well3.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">4</td>
+                <td>{{gel.samples.well4.lab_id}}</td>
+                <td>{{gel.samples.well4.sample_id}}</td>
+                <td>{{gel.samples.well4.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">5</td>
+                <td>{{gel.samples.well5.lab_id}}</td>
+                <td>{{gel.samples.well5.sample_id}}</td>
+                <td>{{gel.samples.well5.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">6</td>
+                <td>{{gel.samples.well6.lab_id}}</td>
+                <td>{{gel.samples.well6.sample_id}}</td>
+                <td>{{gel.samples.well6.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">7</td>
+                <td>{{gel.samples.well7.lab_id}}</td>
+                <td>{{gel.samples.well7.sample_id}}</td>
+                <td>{{gel.samples.well7.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">8</td>
+                <td>{{gel.samples.well8.lab_id}}</td>
+                <td>{{gel.samples.well8.sample_id}}</td>
+                <td>{{gel.samples.well8.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">9</td>
+                <td>{{gel.samples.well9.lab_id}}</td>
+                <td>{{gel.samples.well9.sample_id}}</td>
+                <td>{{gel.samples.well9.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">10</td>
+                <td>{{gel.samples.well10.lab_id}}</td>
+                <td>{{gel.samples.well10.sample_id}}</td>
+                <td>{{gel.samples.well10.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">11</td>
+                <td>{{gel.samples.well11.lab_id}}</td>
+                <td>{{gel.samples.well11.sample_id}}</td>
+                <td>{{gel.samples.well11.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">12</td>
+                <td>{{gel.samples.well12.lab_id}}</td>
+                <td>{{gel.samples.well12.sample_id}}</td>
+                <td>{{gel.samples.well12.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">13</td>
+                <td>{{gel.samples.well13.lab_id}}</td>
+                <td>{{gel.samples.well13.sample_id}}</td>
+                <td>{{gel.samples.well13.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">14</td>
+                <td>{{gel.samples.well14.lab_id}}</td>
+                <td>{{gel.samples.well14.sample_id}}</td>
+                <td>{{gel.samples.well14.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">15</td>
+                <td>{{gel.samples.well15.lab_id}}</td>
+                <td>{{gel.samples.well15.sample_id}}</td>
+                <td>{{gel.samples.well15.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">16</td>
+                <td>{{gel.samples.well16.lab_id}}</td>
+                <td>{{gel.samples.well16.sample_id}}</td>
+                <td>{{gel.samples.well16.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">17</td>
+                <td>{{gel.samples.well17.lab_id}}</td>
+                <td>{{gel.samples.well17.sample_id}}</td>
+                <td>{{gel.samples.well17.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">18</td>
+                <td>{{gel.samples.well18.lab_id}}</td>
+                <td>{{gel.samples.well18.sample_id}}</td>
+                <td>{{gel.samples.well18.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">19</td>
+                <td>{{gel.samples.well19.lab_id}}</td>
+                <td>{{gel.samples.well19.sample_id}}</td>
+                <td>{{gel.samples.well19.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">20</td>
+                <td>{{gel.samples.well20.lab_id}}</td>
+                <td>{{gel.samples.well20.sample_id}}</td>
+                <td>{{gel.samples.well20.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">21</td>
+                <td>{{gel.samples.well21.lab_id}}</td>
+                <td>{{gel.samples.well21.sample_id}}</td>
+                <td>{{gel.samples.well21.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">22</td>
+                <td>{{gel.samples.well22.lab_id}}</td>
+                <td>{{gel.samples.well22.sample_id}}</td>
+                <td>{{gel.samples.well22.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">23</td>
+                <td>{{gel.samples.well23.lab_id}}</td>
+                <td>{{gel.samples.well23.sample_id}}</td>
+                <td>{{gel.samples.well23.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">24</td>
+                <td>{{gel.samples.well24.lab_id}}</td>
+                <td>{{gel.samples.well24.sample_id}}</td>
+                <td>{{gel.samples.well24.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">25</td>
+                <td>{{gel.samples.well25.lab_id}}</td>
+                <td>{{gel.samples.well25.sample_id}}</td>
+                <td>{{gel.samples.well25.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">26</td>
+                <td>{{gel.samples.well26.lab_id}}</td>
+                <td>{{gel.samples.well26.sample_id}}</td>
+                <td>{{gel.samples.well26.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">27</td>
+                <td>{{gel.samples.well27.lab_id}}</td>
+                <td>{{gel.samples.well27.sample_id}}</td>
+                <td>{{gel.samples.well27.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">28</td>
+                <td>{{gel.samples.well28.lab_id}}</td>
+                <td>{{gel.samples.well28.sample_id}}</td>
+                <td>{{gel.samples.well28.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">29</td>
+                <td>{{gel.samples.well29.lab_id}}</td>
+                <td>{{gel.samples.well29.sample_id}}</td>
+                <td>{{gel.samples.well29.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">30</td>
+                <td>{{gel.samples.well30.lab_id}}</td>
+                <td>{{gel.samples.well30.sample_id}}</td>
+                <td>{{gel.samples.well30.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">31</td>
+                <td>{{gel.samples.well31.lab_id}}</td>
+                <td>{{gel.samples.well31.sample_id}}</td>
+                <td>{{gel.samples.well31.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">32</td>
+                <td>{{gel.samples.well32.lab_id}}</td>
+                <td>{{gel.samples.well32.sample_id}}</td>
+                <td>{{gel.samples.well32.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">33</td>
+                <td>{{gel.samples.well33.lab_id}}</td>
+                <td>{{gel.samples.well33.sample_id}}</td>
+                <td>{{gel.samples.well33.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">34</td>
+                <td>{{gel.samples.well34.lab_id}}</td>
+                <td>{{gel.samples.well34.sample_id}}</td>
+                <td>{{gel.samples.well34.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">35</td>
+                <td>{{gel.samples.well35.lab_id}}</td>
+                <td>{{gel.samples.well35.sample_id}}</td>
+                <td>{{gel.samples.well35.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">36</td>
+                <td>{{gel.samples.well36.lab_id}}</td>
+                <td>{{gel.samples.well36.sample_id}}</td>
+                <td>{{gel.samples.well36.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">37</td>
+                <td>{{gel.samples.well37.lab_id}}</td>
+                <td>{{gel.samples.well37.sample_id}}</td>
+                <td>{{gel.samples.well37.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">38</td>
+                <td>{{gel.samples.well38.lab_id}}</td>
+                <td>{{gel.samples.well38.sample_id}}</td>
+                <td>{{gel.samples.well38.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">39</td>
+                <td>{{gel.samples.well39.lab_id}}</td>
+                <td>{{gel.samples.well39.sample_id}}</td>
+                <td>{{gel.samples.well39.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">40</td>
+                <td>{{gel.samples.well40.lab_id}}</td>
+                <td>{{gel.samples.well40.sample_id}}</td>
+                <td>{{gel.samples.well40.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">41</td>
+                <td>{{gel.samples.well41.lab_id}}</td>
+                <td>{{gel.samples.well41.sample_id}}</td>
+                <td>{{gel.samples.well41.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">42</td>
+                <td>{{gel.samples.well42.lab_id}}</td>
+                <td>{{gel.samples.well42.sample_id}}</td>
+                <td>{{gel.samples.well42.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">43</td>
+                <td>{{gel.samples.well43.lab_id}}</td>
+                <td>{{gel.samples.well43.sample_id}}</td>
+                <td>{{gel.samples.well43.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">44</td>
+                <td>{{gel.samples.well44.lab_id}}</td>
+                <td>{{gel.samples.well44.sample_id}}</td>
+                <td>{{gel.samples.well44.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">45</td>
+                <td>{{gel.samples.well45.lab_id}}</td>
+                <td>{{gel.samples.well45.sample_id}}</td>
+                <td>{{gel.samples.well45.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">46</td>
+                <td>{{gel.samples.well46.lab_id}}</td>
+                <td>{{gel.samples.well46.sample_id}}</td>
+                <td>{{gel.samples.well46.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">47</td>
+                <td>{{gel.samples.well47.lab_id}}</td>
+                <td>{{gel.samples.well47.sample_id}}</td>
+                <td>{{gel.samples.well47.assay}}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">48</td>
+                <td>{{gel.samples.well48.lab_id}}</td>
+                <td>{{gel.samples.well48.sample_id}}</td>
+                <td>{{gel.samples.well48.assay}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+
+      <div class="table-responsive col-sm-6">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">{{gel.protocol.name}} for {{gel.protocol.number_of_cycles}} Cycles</th>
+              <th scope="col">Temperature (°C)</th>
+              <th scope="col">Duration (sec.)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Denature</td>
+              <td>{{gel.protocol.denature_temp}}</td>
+              <td>{{gel.protocol.denature_duration}}</td>
+            </tr>
+            <tr>
+              <td>Anneal</td>
+              <td>{{gel.protocol.anneal_temp}}</td>
+              <td>{{gel.protocol.anneal_duration}}</td>
+            </tr>
+            <tr>
+              <td>Extend</td>
+              <td>{{gel.protocol.extension_temp}}</td>
+              <td>{{gel.protocol.extension_duration}}</td>
             </tr>
           </tbody>
 
         </table>
       </div>
-    {% endfor %}
+        
+      <div class="row">
+        {% for assay in gel.assays %}
+          <div class="table-responsive col-sm-12">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">{{assay.name}} × {{assay.sample_num}} Wells @ {{assay.sample_volume}} μL in {{assay.reaction_volume}} μL</th>
+                  <th scope="col">Total Master Mix (μL)</th>
+                  <th scope="col">Per Sample (μL) × {{assay.sample_num}}</th>
+                  <th scope="col">Stock Conc.</th>
+                  <th scope="col">Final Conc.</th>
+                  <th scope="col">DF</th>
+                </tr>
+              </thead>
 
-    <hr class="mt-5">
+              <tbody>
+                {% for reagent in assay.reagents %}
+                  <tr class="table-light">
+                    <td>{{reagent.name}}</td>
+                    <td class="table-success">{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
+                    <td>{{reagent.volume_per_sample}}</td>
+                    <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
+                    <td>{% if reagent.final_stock_concentration %} {{reagent.final_stock_concentration}} {{reagent.final_unit_concentration}} {% else %} ------ {% endif %}</td>
+                    <td>{% if reagent.dilution_factor %} {{reagent.dilution_factor}} {% else %} ------ {% endif %}</td>
+                  </tr>
+                {% endfor %}
+                <tr class="table-dark">
+                  <td>Total</td>
+                  <td>{{assay.mm_volume|dec_mult_string:assay.sample_num}}</td>
+                  <td>{{assay.mm_volume}}</td>
+                  <td>------</td>
+                  <td>------</td>
+                  <td>------</td>
+                </tr>
+              </tbody>
 
+            </table>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
   {% endfor %}
 
 </div>
