@@ -31,22 +31,28 @@
 
   <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="POST" action="">
     {% csrf_token %}
-    <div class="col-sm-4">
-      <div class="input-group">
-        <div class="input-group-text">Name/Brand/Catalog#/Lot#</div>
-        {{form.text_search}}
-      </div>
-    </div>
     <div class="col-sm-2">
       <div class="input-group">
         <div class="input-group-text">Size</div>
         {{form.size}}
       </div>
     </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <div class="input-group-text">Type</div>
+        {{form.type}}
+      </div>
+    </div>
     <div class="col-sm-3">
       <div class="input-group">
         <div class="input-group-text">Location</div>
         {{form.location}}
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="input-group">
+        <div class="input-group-text">Name/Brand/Catalog#/Lot#</div>
+        {{form.text_search}}
       </div>
     </div>
     <div class="col-auto">
@@ -66,6 +72,7 @@
           <th scope="col">Catalog #</th>
           <th scope="col">Lot #</th>
           <th scope="col">Size</th>
+          <th scope="col">Type</th>
           <th scope="col">Amount Stored</th>
           <th scope="col">Location</th>
         </tr>
@@ -81,6 +88,7 @@
             <td>{{plate.catalog_number}}</td>
             <td>{{plate.lot_number}}</td>
             <td>{{plate.size}}</td>
+            <td>{{plate.type}}</td>
             <td>{{plate.amount}}</td>
             
             <td>

@@ -240,12 +240,15 @@ def plates(request):
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']
       size = form.cleaned_data['size']
+      type = form.cleaned_data['type']
 
       filters = {}
       if location:
         filters['location'] = location
       if size:
         filters['size'] = size
+      if type:
+        filters['type'] = type
 
       plates = Plate.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
     else:

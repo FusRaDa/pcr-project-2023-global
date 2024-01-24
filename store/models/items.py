@@ -82,9 +82,14 @@ class StorePlate(models.Model):
     NINETY_SIX = 96, _('96')
     THREE_HUNDRED_EIGHTY_FOUR = 384, _('384')
 
+  class Types(models.TextChoices):
+    PCR = 'PCR', _('PCR')
+    qPCR = 'qPCR', _('qPCR')
+
   name = models.CharField(blank=False, max_length=25, default="PLATE")
 
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
+  type = models.CharField(choices=Types.choices, blank=False, default=Types.PCR, max_length=25)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
 
   def __str__(self):

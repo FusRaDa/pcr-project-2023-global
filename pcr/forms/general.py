@@ -94,8 +94,11 @@ class SearchPlateForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
-  CHOICES = [(None, '------'), (Plate.Sizes.EIGHT, '8'), (Plate.Sizes.TWENTY_FOUR, '24'), (Plate.Sizes.FOURTY_EIGHT, '48'), (Plate.Sizes.NINETY_SIX, '96'), (Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR, '384')]
-  size = forms.ChoiceField(choices=CHOICES, required=False)
+  SIZE_CHOICES = [(None, '------'), (Plate.Sizes.EIGHT, '8'), (Plate.Sizes.TWENTY_FOUR, '24'), (Plate.Sizes.FOURTY_EIGHT, '48'), (Plate.Sizes.NINETY_SIX, '96'), (Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR, '384')]
+  size = forms.ChoiceField(choices=SIZE_CHOICES, required=False)
+
+  TYPE_CHOICES = [(None, '------'), (Plate.Types.PCR, 'PCR'), (Plate.Types.qPCR, 'qPCR')]
+  type = forms.ChoiceField(choices=TYPE_CHOICES, required=False)
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -105,6 +108,7 @@ class SearchPlateForm(forms.Form):
     self.fields['text_search'].widget.attrs['class'] = 'form-control'
     self.fields['location'].widget.attrs['class'] = 'form-select'
     self.fields['size'].widget.attrs['class'] = 'form-select'
+    self.fields['type'].widget.attrs['class'] = 'form-select'
 
 
 class SearchGelForm(forms.Form):

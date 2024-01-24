@@ -101,6 +101,7 @@ def kit_to_inventory(kit, user, lot_number):
       lot_number = lot_number,
       catalog_number = kit.catalog_number,
       size = plate.size,
+      type = plate.type,
       amount = plate.amount,
     )
 

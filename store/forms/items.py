@@ -61,6 +61,7 @@ class StorePlateForm(ModelForm):
     super().__init__(*args, **kwargs)
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['size'].widget.attrs['class'] = 'form-select'
+    self.fields['type'].widget.attrs['class'] = 'form-select'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
 
   class Meta:

@@ -152,6 +152,7 @@ class PlateForm(ModelForm):
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['size'].widget.attrs['class'] = 'form-select'
+    self.fields['type'].widget.attrs['class'] = 'form-select'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 

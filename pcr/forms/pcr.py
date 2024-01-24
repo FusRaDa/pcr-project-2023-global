@@ -30,7 +30,12 @@ class ThermalCyclerProtocolForm(ModelForm):
 class ProcessForm(ModelForm):
   name = forms.CharField(required=False)
 
-  plate = forms.ModelMultipleChoiceField(
+  qpcr_plate = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=False)
+  
+  pcr_plate = forms.ModelMultipleChoiceField(
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
     required=False)
@@ -157,7 +162,9 @@ class ProcessForm(ModelForm):
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
-    self.fields['plate'].queryset = Plate.objects.filter(user=self.user)
+    self.fields['qpcr_plate'].queryset = Plate.objects.filter(user=self.user, type=Plate.Types.qPCR)
+    self.fields['pcr_plate'].queryset = Plate.objects.filter(user=self.user, type=Plate.Types.PCR)
+
     self.fields['gel'].queryset = Gel.objects.filter(user=self.user)
 
     self.fields['name'].widget.attrs['class'] = 'form-control'
