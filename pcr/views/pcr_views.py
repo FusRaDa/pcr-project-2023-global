@@ -16,7 +16,7 @@ from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
-from ..models.inventory import Reagent
+from ..models.inventory import Reagent, Plate
 from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_qpcr_samples, process_pcr_samples
 
 
@@ -247,9 +247,13 @@ def process_paperwork(request, pk):
       if a.type == Assay.Types.RNA and a.method == Assay.Methods.qPCR:
         requires_rna_qpcr = True
 
-  plates = []
-  for plate in process.plate.all().order_by('size'):
-    plates.append({'plate': plate, 'name': plate.name, 'catalog_number': plate.catalog_number, 'lot_number': plate.lot_number, 'size': plate.size, 'amount': plate.amount, 'used': 0})
+  qpcr_plates = []
+  for plate in process.plate.filter(type=Plate.Types.qPCR).order_by('size'):
+    qpcr_plates.append({'plate': plate, 'name': plate.name, 'catalog_number': plate.catalog_number, 'lot_number': plate.lot_number, 'size': plate.size, 'amount': plate.amount, 'used': 0})
+
+  pcr_plates = []
+  for plate in process.plate.filter(type=Plate.Types.PCR).order_by('size'):
+    pcr_plates.append({'plate': plate, 'name': plate.name, 'catalog_number': plate.catalog_number, 'lot_number': plate.lot_number, 'size': plate.size, 'amount': plate.amount, 'used': 0})
 
   gels = []
   for gel in process.gel.all().order_by('size'):
@@ -268,17 +272,17 @@ def process_paperwork(request, pk):
   dna_qpcr_json = None
   if requires_dna_qpcr:
     samples_dna_qpcr = dna_qpcr_samples(assay_samples)
-    dna_qpcr_json = process_qpcr_samples(samples_dna_qpcr, plates, process.qpcr_dna_protocol, process.min_samples_per_plate_dna)
+    dna_qpcr_json = process_qpcr_samples(samples_dna_qpcr, qpcr_plates, process.qpcr_dna_protocol, process.min_samples_per_plate_dna)
 
   rna_qpcr_json = None
   if requires_rna_qpcr:
     samples_rna_qpcr = rna_qpcr_samples(assay_samples)
-    rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, plates, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
+    rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, qpcr_plates, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
 
   if 'process' in request.POST:
 
     # **VALIDATION FOR PLATES, GELS AND REAGENTS
-    for plate in plates:
+    for plate in qpcr_plates:
       if plate['amount'] < 0:
         messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
         return redirect(request.path_info)
@@ -325,7 +329,7 @@ def process_paperwork(request, pk):
             return redirect(request.path_info)
     # **VALIDATION FOR PLATES, GELS AND REAGENTS
           
-    for plate in plates:
+    for plate in qpcr_plates:
       plate['plate'].amount -= plate['used']
       plate['plate'].save()
       plate.pop('plate')
@@ -429,7 +433,7 @@ def process_paperwork(request, pk):
     process.qpcr_dna_json = dna_qpcr_json
     process.qpcr_rna_json = rna_qpcr_json
 
-    process.plates = plates
+    process.plates = qpcr_plates
     process.gels = gels
 
     array = []
@@ -444,7 +448,7 @@ def process_paperwork(request, pk):
     process.save()
     return redirect('processes')
 
-  context = {'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json, 'plates': plates, 'gels': gels}
+  context = {'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json, 'plates': qpcr_plates, 'gels': gels}
   return render(request, 'pcr/process_paperwork.html', context)
 
 

@@ -90,16 +90,39 @@
         <div class="card mt-2">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-              Plates
-              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#plate-collapse" aria-expanded="false" aria-controls="plate-collapse">
+              qPCR Plates
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#qpcr-plate-collapse" aria-expanded="false" aria-controls="qpcr-plate-collapse">
                 ⮝
               </button>
             </li>
 
-            <div class="collapse show" id="plate-collapse">
+            <div class="collapse show" id="qpcr-plate-collapse">
               <div class="card-body"> 
                 <ul class="list-group">
-                  {% for plate in form.plate %}
+                  {% for plate in form.qpcr_plate %}
+                    <li class="list-group-item">
+                      {{plate}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+
+        <div class="card mt-2">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              PCR Plates
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#pcr-plate-collapse" aria-expanded="false" aria-controls="pcr-plate-collapse">
+                ⮝
+              </button>
+            </li>
+
+            <div class="collapse show" id="pcr-plate-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for plate in form.pcr_plate %}
                     <li class="list-group-item">
                       {{plate}}
                     </li>
