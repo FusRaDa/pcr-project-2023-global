@@ -17,7 +17,7 @@ from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
 from ..models.inventory import Reagent, Plate
-from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_pcr_samples
+from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_gels, all_pcr_samples
 
 
 @login_required(login_url='login')
@@ -248,43 +248,63 @@ def process_paperwork(request, pk):
         requires_rna_qpcr = True
 
   qpcr_plates = []
-  for plate in process.plate.filter(type=Plate.Types.qPCR).order_by('size'):
+  for plate in process.qpcr_plate.all().order_by('size'):
     qpcr_plates.append({'plate': plate, 'name': plate.name, 'catalog_number': plate.catalog_number, 'lot_number': plate.lot_number, 'size': plate.size, 'amount': plate.amount, 'used': 0})
 
   pcr_plates = []
-  for plate in process.plate.filter(type=Plate.Types.PCR).order_by('size'):
+  for plate in process.pcr_plate.all().order_by('size'):
     pcr_plates.append({'plate': plate, 'name': plate.name, 'catalog_number': plate.catalog_number, 'lot_number': plate.lot_number, 'size': plate.size, 'amount': plate.amount, 'used': 0})
 
   gels = []
   for gel in process.gel.all().order_by('size'):
     gels.append({'gel': gel, 'name': gel.name, 'catalog_number': gel.catalog_number, 'lot_number': gel.lot_number, 'size': gel.size, 'amount': gel.amount, 'used': 0})
 
+  # **GENERATE PLATES FOR qPCR** #
   dna_qpcr_json = None
   if requires_dna_qpcr:
     samples_dna_qpcr = dna_qpcr_samples(assay_samples)
-    dna_qpcr_json = process_plates(samples_dna_qpcr, qpcr_plates, process.qpcr_dna_protocol, process.min_samples_per_plate_dna)
+    dna_qpcr_json = process_plates(samples_dna_qpcr, qpcr_plates, process.qpcr_dna_protocol, process.min_samples_per_plate_dna_qpcr)
 
   rna_qpcr_json = None
   if requires_rna_qpcr:
     samples_rna_qpcr = rna_qpcr_samples(assay_samples)
-    rna_qpcr_json = process_plates(samples_rna_qpcr, qpcr_plates, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
-
+    rna_qpcr_json = process_plates(samples_rna_qpcr, qpcr_plates, process.qpcr_rna_protocol, process.min_samples_per_plate_rna_qpcr)
+  # **GENERATE PLATES FOR qPCR** #
+    
+  # **GENERATE PLATES FOR PCR** #
   dna_pcr_json = None
   if requires_dna_pcr:
     samples_dna_pcr = dna_pcr_samples(assay_samples)
-    dna_pcr_json = process_plates(samples_dna_pcr, pcr_plates, process.pcr_dna_protocol, process.min_samples_per_gel_dna)
+    dna_pcr_json = process_plates(samples_dna_pcr, pcr_plates, process.pcr_dna_protocol, process.min_samples_per_plate_dna_pcr)
 
   rna_pcr_json = None
   if requires_rna_pcr:
     samples_rna_pcr = rna_pcr_samples(assay_samples)
-    rna_pcr_json = process_plates(samples_rna_pcr, pcr_plates, process.pcr_rna_protocol, process.min_samples_per_gel_rna)
+    rna_pcr_json = process_plates(samples_rna_pcr, pcr_plates, process.pcr_rna_protocol, process.min_samples_per_plate_rna_pcr)
+  # **GENERATE PLATES FOR PCR** #
+  
+  # **GENERATE GELS FOR PCR** #
+  pcr_gels_json = None
+  if requires_dna_pcr or requires_rna_pcr:
+    gel_samples = all_pcr_samples(assay_samples)
+    pcr_gels_json = process_gels(gel_samples, gels, process.min_samples_per_gel)
+  
+  for item in pcr_gels_json:
+    print(item)
+  
+  # **GENERATE GELS FOR PCR** #
   
   if 'process' in request.POST:
 
     # **VALIDATION FOR PLATES, GELS AND REAGENTS
     for plate in qpcr_plates:
       if plate['amount'] < 0:
-        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
+        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for qPCR has an insufficient amount for this process. Please update inventory or change selection.")
+        return redirect(request.path_info)
+    
+    for plate in pcr_plates:
+      if plate['amount'] < 0:
+        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for PCR has an insufficient amount for this process. Please update inventory or change selection.")
         return redirect(request.path_info)
 
     for gel in gels:
@@ -328,8 +348,14 @@ def process_paperwork(request, pk):
             messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
             return redirect(request.path_info)
     # **VALIDATION FOR PLATES, GELS AND REAGENTS
-          
+    
+    # **UPDATE ALL PLATES AND GELS IN DB** #
     for plate in qpcr_plates:
+      plate['plate'].amount -= plate['used']
+      plate['plate'].save()
+      plate.pop('plate')
+
+    for plate in pcr_plates:
       plate['plate'].amount -= plate['used']
       plate['plate'].save()
       plate.pop('plate')
@@ -338,7 +364,9 @@ def process_paperwork(request, pk):
       gel['gel'].amount -= gel['used']
       gel['gel'].save()
       gel.pop('gel')
+    # **UPDATE ALL PLATES AND GELS IN DB** #
 
+    # **UPDATE REAGENTS FOR qPCR** #
     all_reagents = []
     for plate in dna_qpcr_json:
       for assay in plate['assays']:
@@ -379,7 +407,9 @@ def process_paperwork(request, pk):
                 dict['total'] += total_volume
                 break
           reagent.pop('reagent')
-      
+    # **UPDATE REAGENTS FOR qPCR** #
+    
+    # **UPDATE REAGENTS FOR PCR** #
     for plate in dna_pcr_json:
       for assay in plate['assays']:
         for reagent in assay['reagents']:
@@ -419,21 +449,31 @@ def process_paperwork(request, pk):
                 dict['total'] += total_volume
                 break
           reagent.pop('reagent')
+    # **UPDATE REAGENTS FOR PCR** #
     
+    # **FINAL UPDATE OF ALL REAGENTS IN DB** #
     for reagent_dict in all_reagents:
       reagent_dict['reagent'].volume = reagent_dict['reagent'].volume_in_microliters - reagent_dict['total']
       reagent_dict['reagent'].unit_volume == Reagent.VolumeUnits.MICROLITER
       reagent_dict['reagent'].save()
+    # **FINAL UPDATE OF ALL REAGENTS IN DB** #
       
+    # **UPDATE DYES AND LADDERS ** #
+      # START HERE!!!!!!!!!
+    # **UPDATE DYES AND LADDERS ** #
+
     process.is_processed = True
     process.date_processed = timezone.now()
 
     process.pcr_dna_json = dna_pcr_json
     process.pcr_rna_json = rna_pcr_json
+    process.pcr_gels_json = pcr_gels_json
+
     process.qpcr_dna_json = dna_qpcr_json
     process.qpcr_rna_json = rna_qpcr_json
 
-    process.plates = qpcr_plates
+    process.plates_for_qpcr = qpcr_plates
+    process.plates_for_pcr = pcr_plates
     process.gels = gels
 
     array = []
@@ -448,7 +488,12 @@ def process_paperwork(request, pk):
     process.save()
     return redirect('processes')
 
-  context = {'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json, 'plates': qpcr_plates, 'gels': gels}
+  context = {
+    'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 
+    'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json, 
+    'qpcr_plates': qpcr_plates, 'pcr_plates': pcr_plates, 'gels': gels,
+    'pcr_gels_json': pcr_gels_json,
+    }
   return render(request, 'pcr/process_paperwork.html', context)
 
 

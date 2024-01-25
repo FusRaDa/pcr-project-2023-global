@@ -158,6 +158,54 @@ def rna_pcr_samples(assay_samples):
   return all_samples
 
 
+def all_pcr_samples(assay_samples):
+  colors = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark']
+
+  all_samples = []
+  color = 0
+  for index in assay_samples:
+    for assay, samples in index.items():
+      if assay.method == Assay.Methods.PCR and assay.type == Assay.Types.DNA:
+    
+        data = []
+        for sample in samples:
+          sample_data = {None:{
+            'color': colors[color],
+            'lab_id': sample.lab_id_num,
+            'sample_id': sample.sample_id,
+            'assay': assay.name
+          }}
+          data.append(sample_data)
+     
+        color += 1
+        if color > 7:
+          color = 0
+        assay_data = {assay: data}
+        all_samples.append(assay_data)
+
+  for index in assay_samples:
+    for assay, samples in index.items():
+      if assay.method == Assay.Methods.PCR and assay.type == Assay.Types.RNA:
+    
+        data = []
+        for sample in samples:
+          sample_data = {None:{
+            'color': colors[color],
+            'lab_id': sample.lab_id_num,
+            'sample_id': sample.sample_id,
+            'assay': assay.name
+          }}
+          data.append(sample_data)
+     
+        color += 1
+        if color > 7:
+          color = 0
+        assay_data = {assay: data}
+        all_samples.append(assay_data)
+
+  return all_samples
+
+
 def choose_plate(all_samples, plates):
   total_wells_used= 0
   for assay_group in all_samples:
@@ -448,20 +496,10 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
   return plate_dict, all_samples
 
 
-def load_gel(all_samples, gels, protocol, minimum_samples_in_gel):
+def load_gel(all_samples, gels, minimum_samples_in_gel):
   gel, list = choose_gel(all_samples, gels)
 
   gel_data = {'size': gel.size}
-  protocol_data = {'protocol': {
-    'name': protocol.name,
-    'denature_temp': float(protocol.denature_temp),
-    'denature_duration': protocol.denature_duration,
-    'anneal_temp': float(protocol.anneal_temp),
-    'anneal_duration': protocol.anneal_duration,
-    'extension_temp': float(protocol.extension_temp),
-    'extension_duration': protocol.extension_duration,
-    'number_of_cycles': protocol.number_of_cycles
-  }}
   assays_data = {'assays': []}
   samples_data = {'samples': {}}
 
@@ -618,7 +656,7 @@ def load_gel(all_samples, gels, protocol, minimum_samples_in_gel):
         for sample in loaded_samples:
           samples.remove(sample)
      
-  gel_dict = protocol_data | gel_data | assays_data | samples_data
+  gel_dict = gel_data | assays_data | samples_data
   return gel_dict, all_samples
 
 
@@ -642,13 +680,13 @@ def process_plates(all_samples, plates, protocol, minimum_samples_in_plate):
   return qpcr_data
 
 
-def process_pcr_samples(all_samples, gels, protocol, minimum_samples_in_gel):
+def process_gels(all_samples, gels, minimum_samples_in_gel):
   pcr_data = []
 
   is_empty = False
   while not is_empty:
 
-    gel_dict, all_samples = load_gel(all_samples, gels, protocol, minimum_samples_in_gel)
+    gel_dict, all_samples = load_gel(all_samples, gels, minimum_samples_in_gel)
     pcr_data.append(gel_dict)
 
 

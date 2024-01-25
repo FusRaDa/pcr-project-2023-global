@@ -177,13 +177,8 @@
         </div>
 
         <div class="input-group mb-2">
-          <div class="input-group-text input-group-min">Min. Samples In Gel (PCR - DNA)</div>
-          {{form.min_samples_per_gel_dna}}
-        </div>
-
-        <div class="input-group mb-2">
-          <div class="input-group-text input-group-min">Min. Samples In Gel (PCR - RNA)</div>
-          {{form.min_samples_per_gel_rna}}
+          <div class="input-group-text input-group-min">Min. Samples In Gel</div>
+          {{form.min_samples_per_gel}}
         </div>
 
         {% if form.errors %}

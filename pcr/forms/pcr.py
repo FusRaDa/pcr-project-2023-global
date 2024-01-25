@@ -58,11 +58,10 @@ class ProcessForm(ModelForm):
     min_samples_per_plate_dna_qpcr = cleaned_data.get('min_samples_per_plate_dna_qpcr')
     min_samples_per_plate_rna_qpcr = cleaned_data.get('min_samples_per_plate_rna_qpcr')
 
-    min_samples_per_plate_dna_qpcr = cleaned_data.get('min_samples_per_plate_dna_pcr')
-    min_samples_per_plate_rna_qpcr = cleaned_data.get('min_samples_per_plate_rna_pcr')
+    min_samples_per_plate_dna_pcr = cleaned_data.get('min_samples_per_plate_dna_pcr')
+    min_samples_per_plate_rna_pcr = cleaned_data.get('min_samples_per_plate_rna_pcr')
 
-    min_samples_per_gel_dna = cleaned_data.get('min_samples_per_gel_dna')
-    min_samples_per_gel_rna = cleaned_data.get('min_samples_per_gel_rna')
+    min_samples_per_gel = cleaned_data.get('min_samples_per_gel')
 
     array = []
     for sample in self.instance.samples.all():
@@ -159,8 +158,8 @@ class ProcessForm(ModelForm):
         plates.append(p.size)
       min_num = plates[0]
 
-      for assay in qpcr_dna_assays:
-        if min_samples_per_plate_dna_qpcr > min_num - assay.controls.count():
+      for assay in pcr_dna_assays:
+        if min_samples_per_plate_dna_pcr > min_num - assay.controls.count():
           raise ValidationError(
             message=f"Minimum samples (PCR - DNA) per plate cannot exceed {min_num - assay.controls.count()}"
           )
@@ -171,36 +170,30 @@ class ProcessForm(ModelForm):
         plates.append(p.size)
       min_num = plates[0]
 
-      for assay in qpcr_rna_assays:
-        if min_samples_per_plate_rna_qpcr > min_num - assay.controls.count():
+      for assay in pcr_rna_assays:
+        if min_samples_per_plate_rna_pcr > min_num - assay.controls.count():
           raise ValidationError(
             message=f"Minimum samples (PCR - RNA) per plate cannot exceed {min_num - assay.controls.count()}"
           )
     # **VALIDATE PCR PLATE MIN NUM** #
     
     # **VALIDATE PCR GEL MIN NUM** #
-    if len(pcr_dna_assays) and gel:
+    if len(pcr_dna_assays) > 0 and gel or len(pcr_rna_assays) > 0 and gel:
       gels = []
       for g in gel.all().order_by('size'):
         gels.append(g.size)
       min_num = gels[0]
 
       for assay in pcr_dna_assays:
-        if min_samples_per_gel_dna > min_num - assay.controls.count():
+        if min_samples_per_gel > min_num - assay.controls.count():
           raise ValidationError(
-            message=f"Minimum samples (DNA) per gel cannot exceed {min_num - assay.controls.count()}"
+            message=f"Minimum samples per gel cannot exceed {min_num - assay.controls.count()}"
           )
         
-    if len(pcr_rna_assays) and gel:
-      gels = []
-      for g in gel.all().order_by('size'):
-        gels.append(g.size)
-      min_num = gels[0]
-
       for assay in pcr_rna_assays:
-        if min_samples_per_gel_rna > min_num - assay.controls.count():
+        if min_samples_per_gel > min_num - assay.controls.count():
           raise ValidationError(
-            message=f"Minimum samples (RNA) per gel cannot exceed {min_num - assay.controls.count()}"
+            message=f"Minimum samples per gel cannot exceed {min_num - assay.controls.count()}"
           )
     # **VALIDATE PCR GEL MIN NUM** #
   
@@ -223,15 +216,13 @@ class ProcessForm(ModelForm):
     self.fields['min_samples_per_plate_rna_qpcr'].widget.attrs['class'] = 'form-control'
     self.fields['min_samples_per_plate_dna_pcr'].widget.attrs['class'] = 'form-control'
     self.fields['min_samples_per_plate_rna_pcr'].widget.attrs['class'] = 'form-control'
-    self.fields['min_samples_per_gel_dna'].widget.attrs['class'] = 'form-control'
-    self.fields['min_samples_per_gel_rna'].widget.attrs['class'] = 'form-control'
+    self.fields['min_samples_per_gel'].widget.attrs['class'] = 'form-control'
 
     self.fields['min_samples_per_plate_dna_qpcr'].widget.attrs['min'] = 0
     self.fields['min_samples_per_plate_rna_qpcr'].widget.attrs['min'] = 0
     self.fields['min_samples_per_plate_dna_pcr'].widget.attrs['min'] = 0
     self.fields['min_samples_per_plate_rna_pcr'].widget.attrs['min'] = 0
-    self.fields['min_samples_per_gel_dna'].widget.attrs['min'] = 0
-    self.fields['min_samples_per_gel_rna'].widget.attrs['min'] = 0
+    self.fields['min_samples_per_gel'].widget.attrs['min'] = 0
 
   class Meta:
     model = Process

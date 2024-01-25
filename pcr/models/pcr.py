@@ -50,7 +50,9 @@ class Process(models.Model):
   qpcr_dna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='qpcr_dna', blank=True, null=True, default=None)
   qpcr_rna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='qpcr_rna', blank=True, null=True, default=None)
 
-  plate = models.ManyToManyField(Plate)
+  qpcr_plate = models.ManyToManyField(Plate, related_name='qpcr_plate')
+  pcr_plate = models.ManyToManyField(Plate, related_name='pcr_plate')
+
   gel = models.ManyToManyField(Gel)
   samples = models.ManyToManyField(Sample)
 
@@ -62,17 +64,20 @@ class Process(models.Model):
   min_samples_per_plate_dna_pcr = models.IntegerField(default=0, validators=[MinValueValidator(0)])
   min_samples_per_plate_rna_pcr = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
-  min_samples_per_gel_dna = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-  min_samples_per_gel_rna = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+  min_samples_per_gel = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
   date_processed = models.DateTimeField(blank=True, null=True, editable=False, default=None)
 
   pcr_dna_json = models.JSONField(blank=True, null=True, default=None)
   pcr_rna_json = models.JSONField(blank=True, null=True, default=None)
+
+  pcr_gels_json = models.JSONField(blank=True, null=True, default=None)
+
   qpcr_dna_json = models.JSONField(blank=True, null=True, default=None)
   qpcr_rna_json = models.JSONField(blank=True, null=True, default=None)
 
-  plates = models.JSONField(blank=True, null=True, default=None)
+  plates_for_qpcr = models.JSONField(blank=True, null=True, default=None)
+  plates_for_pcr = models.JSONField(blank=True, null=True, default=None)
   gels = models.JSONField(blank=True, null=True, default=None)
 
   batches = models.ManyToManyField(Batch)
