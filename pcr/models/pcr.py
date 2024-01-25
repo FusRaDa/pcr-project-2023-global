@@ -56,11 +56,14 @@ class Process(models.Model):
 
   is_processed = models.BooleanField(default=False)
 
+  min_samples_per_plate_dna_qpcr = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+  min_samples_per_plate_rna_qpcr = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+
+  min_samples_per_plate_dna_pcr = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+  min_samples_per_plate_rna_pcr = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+
   min_samples_per_gel_dna = models.IntegerField(default=0, validators=[MinValueValidator(0)])
   min_samples_per_gel_rna = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-
-  min_samples_per_plate_dna = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-  min_samples_per_plate_rna = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
   date_processed = models.DateTimeField(blank=True, null=True, editable=False, default=None)
 

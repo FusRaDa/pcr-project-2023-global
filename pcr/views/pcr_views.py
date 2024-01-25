@@ -17,7 +17,7 @@ from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
 from ..models.inventory import Reagent, Plate
-from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_qpcr_samples, process_pcr_samples
+from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_pcr_samples
 
 
 @login_required(login_url='login')
@@ -259,26 +259,26 @@ def process_paperwork(request, pk):
   for gel in process.gel.all().order_by('size'):
     gels.append({'gel': gel, 'name': gel.name, 'catalog_number': gel.catalog_number, 'lot_number': gel.lot_number, 'size': gel.size, 'amount': gel.amount, 'used': 0})
 
-  dna_pcr_json = None
-  if requires_dna_pcr:
-    samples_dna_pcr = dna_pcr_samples(assay_samples)
-    dna_pcr_json = process_pcr_samples(samples_dna_pcr, gels, process.pcr_dna_protocol, process.min_samples_per_gel_dna)
-
-  rna_pcr_json = None
-  if requires_rna_pcr:
-    samples_rna_pcr = rna_pcr_samples(assay_samples)
-    rna_pcr_json = process_pcr_samples(samples_rna_pcr, gels, process.pcr_rna_protocol, process.min_samples_per_gel_rna)
-  
   dna_qpcr_json = None
   if requires_dna_qpcr:
     samples_dna_qpcr = dna_qpcr_samples(assay_samples)
-    dna_qpcr_json = process_qpcr_samples(samples_dna_qpcr, qpcr_plates, process.qpcr_dna_protocol, process.min_samples_per_plate_dna)
+    dna_qpcr_json = process_plates(samples_dna_qpcr, qpcr_plates, process.qpcr_dna_protocol, process.min_samples_per_plate_dna)
 
   rna_qpcr_json = None
   if requires_rna_qpcr:
     samples_rna_qpcr = rna_qpcr_samples(assay_samples)
-    rna_qpcr_json = process_qpcr_samples(samples_rna_qpcr, qpcr_plates, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
+    rna_qpcr_json = process_plates(samples_rna_qpcr, qpcr_plates, process.qpcr_rna_protocol, process.min_samples_per_plate_rna)
 
+  dna_pcr_json = None
+  if requires_dna_pcr:
+    samples_dna_pcr = dna_pcr_samples(assay_samples)
+    dna_pcr_json = process_plates(samples_dna_pcr, pcr_plates, process.pcr_dna_protocol, process.min_samples_per_gel_dna)
+
+  rna_pcr_json = None
+  if requires_rna_pcr:
+    samples_rna_pcr = rna_pcr_samples(assay_samples)
+    rna_pcr_json = process_plates(samples_rna_pcr, pcr_plates, process.pcr_rna_protocol, process.min_samples_per_gel_rna)
+  
   if 'process' in request.POST:
 
     # **VALIDATION FOR PLATES, GELS AND REAGENTS

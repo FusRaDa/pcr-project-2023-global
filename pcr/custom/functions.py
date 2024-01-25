@@ -622,7 +622,7 @@ def load_gel(all_samples, gels, protocol, minimum_samples_in_gel):
   return gel_dict, all_samples
 
 
-def process_qpcr_samples(all_samples, plates, protocol, minimum_samples_in_plate):
+def process_plates(all_samples, plates, protocol, minimum_samples_in_plate):
   qpcr_data = []
 
   is_empty = False

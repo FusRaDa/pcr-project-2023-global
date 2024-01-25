@@ -51,11 +51,15 @@ class ProcessForm(ModelForm):
     pcr_rna_protocol = cleaned_data.get('pcr_rna_protocol')
     qpcr_dna_protocol = cleaned_data.get('qpcr_dna_protocol')
     qpcr_rna_protocol = cleaned_data.get('qpcr_rna_protocol')
-    plate = cleaned_data.get('plate')
+    pcr_plate = cleaned_data.get('pcr_plate')
+    qpcr_plate = cleaned_data.get('qpcr_plate')
     gel = cleaned_data.get('gel')
 
-    min_samples_per_plate_dna = cleaned_data.get('min_samples_per_plate_dna')
-    min_samples_per_plate_rna = cleaned_data.get('min_samples_per_plate_rna')
+    min_samples_per_plate_dna_qpcr = cleaned_data.get('min_samples_per_plate_dna_qpcr')
+    min_samples_per_plate_rna_qpcr = cleaned_data.get('min_samples_per_plate_rna_qpcr')
+
+    min_samples_per_plate_dna_qpcr = cleaned_data.get('min_samples_per_plate_dna_pcr')
+    min_samples_per_plate_rna_qpcr = cleaned_data.get('min_samples_per_plate_rna_pcr')
 
     min_samples_per_gel_dna = cleaned_data.get('min_samples_per_gel_dna')
     min_samples_per_gel_rna = cleaned_data.get('min_samples_per_gel_rna')
@@ -81,6 +85,7 @@ class ProcessForm(ModelForm):
       if assay.method == Assay.Methods.qPCR and assay.type == Assay.Types.RNA:
         qpcr_rna_assays.append(assay)
 
+    # **VALIDATE PROTOCOLS** #
     if len(pcr_dna_assays) > 0 and not pcr_dna_protocol:
       raise ValidationError(
         message="This process requires a thermal cycler protocol for DNA in PCR."
@@ -100,41 +105,80 @@ class ProcessForm(ModelForm):
       raise ValidationError(
         message="This process requires a thermal cycler protocol for RNA in qPCR."
       )
+    # **VALIDATE PROTOCOLS** #
     
-    if len(qpcr_dna_assays) > 0 and not plate or len(qpcr_rna_assays) > 0 and not plate:
+    # **VALIDATE qPCR PLATES** #
+    if len(qpcr_dna_assays) > 0 and not qpcr_plate or len(qpcr_rna_assays) > 0 and not qpcr_plate:
       raise ValidationError(
-        message="This process requires plates."
+        message="This process requires plates for qPCR."
+      )
+    # **VALIDATE qPCR PLATES** #
+    
+    # **VALIDATE PCR PLATES AND GELS** #
+    if len(pcr_dna_assays) and not pcr_plate or len(pcr_rna_assays) and not pcr_plate:
+      raise ValidationError(
+        message="This process requires plates for PCR."
       )
     
     if len(pcr_dna_assays) and not gel or len(pcr_rna_assays) and not gel:
       raise ValidationError(
-        message="This process requires gels."
+        message="This process requires gels for PCR."
       )
+    # **VALIDATE PCR PLATES AND GELS** #
     
-    if len(qpcr_dna_assays) > 0 and plate:
+    # **VALIDATE qPCR PLATE MIN NUM** #
+    if len(qpcr_dna_assays) > 0 and qpcr_plate:
       plates = []
-      for p in plate.all().order_by('size'):
+      for p in qpcr_plate.all().order_by('size'):
         plates.append(p.size)
       min_num = plates[0]
 
       for assay in qpcr_dna_assays:
-        if min_samples_per_plate_dna > min_num - assay.controls.count():
+        if min_samples_per_plate_dna_qpcr > min_num - assay.controls.count():
           raise ValidationError(
-            message=f"Minimum samples (DNA) per plate cannot exceed {min_num - assay.controls.count()}"
+            message=f"Minimum samples (qPCR - DNA) per plate cannot exceed {min_num - assay.controls.count()}"
           )
         
-    if len(qpcr_rna_assays) > 0 and plate:
+    if len(qpcr_rna_assays) > 0 and qpcr_plate:
       plates = []
-      for p in plate.all().order_by('size'):
+      for p in qpcr_plate.all().order_by('size'):
         plates.append(p.size)
       min_num = plates[0]
 
       for assay in qpcr_rna_assays:
-        if min_samples_per_plate_rna > min_num - assay.controls.count():
+        if min_samples_per_plate_rna_qpcr > min_num - assay.controls.count():
           raise ValidationError(
-            message=f"Minimum samples (RNA) per plate cannot exceed {min_num - assay.controls.count()}"
+            message=f"Minimum samples (qPCR - RNA) per plate cannot exceed {min_num - assay.controls.count()}"
+          )
+    # **VALIDATE qPCR PLATE MIN NUM** #
+        
+    # **VALIDATE PCR PLATE MIN NUM** #
+    if len(pcr_dna_assays) > 0 and pcr_plate:
+      plates = []
+      for p in pcr_plate.all().order_by('size'):
+        plates.append(p.size)
+      min_num = plates[0]
+
+      for assay in qpcr_dna_assays:
+        if min_samples_per_plate_dna_qpcr > min_num - assay.controls.count():
+          raise ValidationError(
+            message=f"Minimum samples (PCR - DNA) per plate cannot exceed {min_num - assay.controls.count()}"
           )
         
+    if len(pcr_rna_assays) > 0 and pcr_plate:
+      plates = []
+      for p in pcr_plate.all().order_by('size'):
+        plates.append(p.size)
+      min_num = plates[0]
+
+      for assay in qpcr_rna_assays:
+        if min_samples_per_plate_rna_qpcr > min_num - assay.controls.count():
+          raise ValidationError(
+            message=f"Minimum samples (PCR - RNA) per plate cannot exceed {min_num - assay.controls.count()}"
+          )
+    # **VALIDATE PCR PLATE MIN NUM** #
+    
+    # **VALIDATE PCR GEL MIN NUM** #
     if len(pcr_dna_assays) and gel:
       gels = []
       for g in gel.all().order_by('size'):
@@ -144,7 +188,7 @@ class ProcessForm(ModelForm):
       for assay in pcr_dna_assays:
         if min_samples_per_gel_dna > min_num - assay.controls.count():
           raise ValidationError(
-            message=f"Minimum samples per gel cannot exceed {min_num - assay.controls.count()}"
+            message=f"Minimum samples (DNA) per gel cannot exceed {min_num - assay.controls.count()}"
           )
         
     if len(pcr_rna_assays) and gel:
@@ -156,8 +200,9 @@ class ProcessForm(ModelForm):
       for assay in pcr_rna_assays:
         if min_samples_per_gel_rna > min_num - assay.controls.count():
           raise ValidationError(
-            message=f"Minimum samples per gel cannot exceed {min_num - assay.controls.count()}"
+            message=f"Minimum samples (RNA) per gel cannot exceed {min_num - assay.controls.count()}"
           )
+    # **VALIDATE PCR GEL MIN NUM** #
   
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -174,13 +219,17 @@ class ProcessForm(ModelForm):
     self.fields['qpcr_dna_protocol'].widget.attrs['class'] = 'form-select'
     self.fields['qpcr_rna_protocol'].widget.attrs['class'] = 'form-select'
 
-    self.fields['min_samples_per_plate_dna'].widget.attrs['class'] = 'form-control'
-    self.fields['min_samples_per_plate_rna'].widget.attrs['class'] = 'form-control'
+    self.fields['min_samples_per_plate_dna_qpcr'].widget.attrs['class'] = 'form-control'
+    self.fields['min_samples_per_plate_rna_qpcr'].widget.attrs['class'] = 'form-control'
+    self.fields['min_samples_per_plate_dna_pcr'].widget.attrs['class'] = 'form-control'
+    self.fields['min_samples_per_plate_rna_pcr'].widget.attrs['class'] = 'form-control'
     self.fields['min_samples_per_gel_dna'].widget.attrs['class'] = 'form-control'
     self.fields['min_samples_per_gel_rna'].widget.attrs['class'] = 'form-control'
 
-    self.fields['min_samples_per_plate_dna'].widget.attrs['min'] = 0
-    self.fields['min_samples_per_plate_rna'].widget.attrs['min'] = 0
+    self.fields['min_samples_per_plate_dna_qpcr'].widget.attrs['min'] = 0
+    self.fields['min_samples_per_plate_rna_qpcr'].widget.attrs['min'] = 0
+    self.fields['min_samples_per_plate_dna_pcr'].widget.attrs['min'] = 0
+    self.fields['min_samples_per_plate_rna_pcr'].widget.attrs['min'] = 0
     self.fields['min_samples_per_gel_dna'].widget.attrs['min'] = 0
     self.fields['min_samples_per_gel_rna'].widget.attrs['min'] = 0
 

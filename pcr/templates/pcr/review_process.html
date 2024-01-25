@@ -157,22 +157,32 @@
         </div>
 
         <div class="input-group mb-2">
-          <div class="input-group-text input-group-min">Min. Samples In Plate (DNA)</div>
-          {{form.min_samples_per_plate_dna}}
+          <div class="input-group-text input-group-min">Min. Samples In Plate (qPCR - DNA)</div>
+          {{form.min_samples_per_plate_dna_qpcr}}
         </div>
 
         <div class="input-group mb-2">
-          <div class="input-group-text input-group-min">Min. Samples In Plate (RNA)</div>
-          {{form.min_samples_per_plate_rna}}
+          <div class="input-group-text input-group-min">Min. Samples In Plate (qPCR - RNA)</div>
+          {{form.min_samples_per_plate_rna_qpcr}}
         </div>
 
         <div class="input-group mb-2">
-          <div class="input-group-text input-group-min">Min. Samples In Gel (DNA)</div>
+          <div class="input-group-text input-group-min">Min. Samples In Plate (PCR - DNA)</div>
+          {{form.min_samples_per_plate_dna_pcr}}
+        </div>
+
+        <div class="input-group mb-2">
+          <div class="input-group-text input-group-min">Min. Samples In Plate (PCR - RNA)</div>
+          {{form.min_samples_per_plate_rna_pcr}}
+        </div>
+
+        <div class="input-group mb-2">
+          <div class="input-group-text input-group-min">Min. Samples In Gel (PCR - DNA)</div>
           {{form.min_samples_per_gel_dna}}
         </div>
 
         <div class="input-group mb-2">
-          <div class="input-group-text input-group-min">Min. Samples In Gel (RNA)</div>
+          <div class="input-group-text input-group-min">Min. Samples In Gel (PCR - RNA)</div>
           {{form.min_samples_per_gel_rna}}
         </div>
 
