@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from users.models import User
 
-from .inventory import Reagent, Location, Ladder
+from .inventory import Reagent, Location, Ladder, Dye
 
 
 class Fluorescence(models.Model):
@@ -89,6 +89,10 @@ class Assay(models.Model):
   reaction_volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
 
   ladder = models.ForeignKey(Ladder, blank=True, null=True, default=None, on_delete=models.PROTECT)
+  ladder_volume_per_gel = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12, default=0) # in microliters
+
+  dye = models.ForeignKey(Dye, blank=True, null=True, default=None, on_delete=models.PROTECT)
+  dye_volume_per_well = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12, default=0) # in microliters
   
   fluorescence = models.ManyToManyField(Fluorescence)
   controls = models.ManyToManyField(Control, through='ControlAssay')
