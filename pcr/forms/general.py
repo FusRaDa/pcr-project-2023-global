@@ -90,6 +90,19 @@ class SearchLadderForm(forms.Form):
     self.fields['location'].widget.attrs['class'] = 'form-select'
 
 
+class SearchDyeForm(forms.Form):
+  text_search = forms.CharField(max_length=100, required=False)
+  location = forms.ModelChoiceField(queryset=None, required=False)
+
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['text_search'].widget.attrs['class'] = 'form-control'
+    self.fields['location'].widget.attrs['class'] = 'form-select'
+
+
 class SearchPlateForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)

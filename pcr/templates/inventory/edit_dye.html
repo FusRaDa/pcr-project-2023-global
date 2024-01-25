@@ -1,0 +1,160 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Add Gel {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">Add New Gel</h3>
+  </div>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div class="row justify-content-center mb-2">
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" disabled readonly value="{{dye.name}}">
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Brand</label>
+          <input type="text" class="form-control" disabled readonly value="{{dye.brand}}">
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Lot Number</label>
+          <input type="text" class="form-control" disabled readonly value="{{dye.lot_number}}">
+        </div>
+      </div>
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center">
+          <label class="form-label">Catalog Number</label>
+          <input type="text" class="form-control" disabled readonly value="{{dye.catalog_number}}">
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Amount Stored (&#181;L)</label>
+          {{form.amount}}
+        </div>
+        
+        <div class="text-center">
+          <label class="form-label">Expiration Date</label>
+          {{form.exp_date}}
+        </div>
+      </div>
+
+      <div class="col-sm-3 form-width-18">
+        <div class="card  mt-2">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Locations
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#dyes-collapse" aria-expanded="false" aria-controls="dyes-collapse">
+                ⮝
+              </button>
+            </li>
+
+            <div class="collapse show" id="dyes-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for loc in form.location %}
+                    <li class="list-group-item">
+                      {{loc}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {% if form.errors %}
+    <div class="row text-center mt-2">
+      {% for key,value in form.errors.items %} 
+        {{ value|escape }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center">
+      <div class="text-center mt-2">
+        <a class="btn btn-secondary" href="{% url 'dyes' %}">Cancel</a>
+        <button type="submit" class="btn btn-primary" name='update'>Update dye</button>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="row justify-content-center">
+    <div class="col d-flex justify-content-center">
+      <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
+        Delete Plate
+      </button>
+    </div>
+  </div>
+
+  <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting dye...</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="container-sm">
+
+            <div class="row justify-content-center">
+              <h5 class="text-center">Are you sure?</h5>
+            </div>
+            
+            <div class="row justify-content-center">
+              <div class="col-sm-8">
+                <form method="POST" action="">
+                  {% csrf_token %}
+            
+                  <div class="text-center mx-auto">
+                    <label class="form-label">Enter: "{{dye.name}}" &amp; Confirm</label>
+                    {{del_form.confirm}}
+                  </div>
+
+                  {% if del_form.errors %}
+                  <div class="row text-center mt-2">
+                    {% for key,value in del_form.errors.items %} 
+                      {{ value|escape }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+            
+                  <div class="text-center mt-2">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" name="delete">Confirm</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮟' ?  '⮝' : '⮟';
+    });
+  });
+</script>
+{% endblock %}

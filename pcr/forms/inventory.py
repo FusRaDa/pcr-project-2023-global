@@ -128,6 +128,61 @@ class EditGelForm(ModelForm):
     model = Plate
     fields = ['amount', 'exp_date', 'location']
     exclude = ['user', 'last_updated']
+
+
+class DyeForm(ModelForm):
+
+  location = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=False)
+  
+  exp_date = forms.DateField(
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
+  
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['brand'].widget.attrs['class'] = 'form-control'
+    self.fields['lot_number'].widget.attrs['class'] = 'form-control'
+    self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
+    self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+  class Meta:
+    model = Plate
+    exclude = ['user', 'last_updated']
+
+
+class EditDyeForm(ModelForm):
+
+  location = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=False)
+  
+  exp_date = forms.DateField(
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
+  
+  def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
+    super().__init__(*args, **kwargs) 
+    self.fields['location'].queryset = Location.objects.filter(user=self.user)
+
+    self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+  class Meta:
+    model = Plate
+    fields = ['amount', 'exp_date', 'location']
+    exclude = ['user', 'last_updated']
     
 
 class PlateForm(ModelForm):

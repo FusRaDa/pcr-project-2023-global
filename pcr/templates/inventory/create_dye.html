@@ -2,13 +2,13 @@
 
 {% load static %}
                                                                                                                                                                                                                               
-{% block title %} Add Ladder {% endblock %} 
+{% block title %} Add Dye {% endblock %} 
 
 {% block content %}
 <div class="container">
 
   <div class="row justify-content-center">
-    <h3 class="text-center">Add New Ladder</h3>
+    <h3 class="text-center">Add New Dye</h3>
   </div>
 
   <form method="POST" action="">
@@ -54,12 +54,12 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               Locations
-              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#ladders-collapse" aria-expanded="false" aria-controls="ladders-collapse">
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#dyes-collapse" aria-expanded="false" aria-controls="dyes-collapse">
                 ⮝
               </button>
             </li>
 
-            <div class="collapse show" id="ladders-collapse">
+            <div class="collapse show" id="dyes-collapse">
               <div class="card-body"> 
                 <ul class="list-group">
                   {% for loc in form.location %}
@@ -85,8 +85,8 @@
 
     <div class="row justify-content-center mb-2">
       <div class="text-center mt-2">
-        <a class="btn btn-secondary" href="{% url 'ladders' %}">Cancel</a>
-        <button type="submit" class="btn btn-primary">Add New Ladder</button>
+        <a class="btn btn-secondary" href="{% url 'dyes' %}">Cancel</a>
+        <button type="submit" class="btn btn-primary">Add New dye</button>
       </div>
     </div>
 

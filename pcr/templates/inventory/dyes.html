@@ -1,0 +1,123 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Dyes {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Dyes</h3>
+    </div>
+  </div>
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <a href="{% url 'create_dye' %}">
+        <button type="button" class="btn btn-primary mb-2">Add New Dye</button>
+      </a>
+    </div>
+  </div>
+
+  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="POST" action="">
+    {% csrf_token %}
+    <div class="col-sm-5">
+      <div class="input-group">
+        <div class="input-group-text">Name/Brand/Catalog#/Lot#</div>
+        {{form.text_search}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Location</div>
+        {{form.location}}
+      </div>
+    </div>
+    <div class="col-auto">
+      <a class="btn btn-secondary me-1" href="{% url 'dyes' %}" role="button">Clear</a>
+      <button type="submit" class="btn btn-primary" name="search">Search</button>
+    </div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Exp. Date</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Catalog #</th>
+          <th scope="col">Lot #</th>
+          <th scope="col">Amount Stored</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for dye in page_obj %}
+          <tr class="dye-row {% if dye.is_expired %} table-danger {% endif %} {% if dye.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_dye' dye.pk %}">
+            <td>{{dye.exp_date}} {% if dye.is_expired %} (EXPIRED) {% endif %} {% if dye.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{dye.last_updated}}</td>
+            <td>{{dye.name}}</td>
+            <td>{{dye.brand}}</td>
+            <td>{{dye.catalog_number}}</td>
+            <td>{{dye.lot_number}}</td>
+            <td>{{dye.amount}}</td>
+            
+            <td>
+              {% for location in dye.location.all %}
+                <span class="badge text-bg-info">
+                  {{location}}
+                </span>
+              {% endfor %}
+            </td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+    <div class="d-flex justify-content-center">
+      <div class="pagination">
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+            <a href="?page=1">⮜⮜ First</a>
+            <a href="?page={{ page_obj.previous_page_number }}">⮜</a>
+          {% endif %}
+  
+          <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+  
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">⮞</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Last ⮞⮞</a>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+    
+  </div>
+
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".dye-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
+{% endblock %}

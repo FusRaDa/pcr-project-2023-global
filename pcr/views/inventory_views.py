@@ -7,9 +7,9 @@ from django.db.models import Q
 from django.contrib import messages
 from users.models import User
 
-from ..models.inventory import Location, Reagent, Tube, Plate, Gel, Ladder
-from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, EditGelForm, EditTubeForm, EditPlateForm, EditReagentForm, LadderForm, EditLadderForm
-from ..forms.general import DeletionForm, SearchGelForm, SearchLadderForm, SearchPlateForm, SearchReagentForm, SearchTubeForm
+from ..models.inventory import Location, Reagent, Tube, Plate, Gel, Ladder, Dye
+from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, EditGelForm, EditTubeForm, EditPlateForm, EditReagentForm, LadderForm, EditLadderForm, DyeForm, EditDyeForm
+from ..forms.general import DeletionForm, SearchGelForm, SearchLadderForm, SearchPlateForm, SearchReagentForm, SearchTubeForm, SearchDyeForm
 
 
 # **LOCATIONS VIEWS** #
@@ -226,6 +226,84 @@ def edit_gel(request, pk):
   context = {'form': form, 'gel': gel, 'del_form': del_form}
   return render(request, 'inventory/edit_gel.html', context)
 # **GELS VIEWS** #
+
+
+# **DYES VIEWS** #
+@login_required(login_url='login')
+def dyes(request):
+  dyes = Dye.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
+
+  form = SearchDyeForm(user=request.user)
+  if request.method == 'POST':
+    form = SearchDyeForm(request.POST, user=request.user)
+    if form.is_valid():
+      text_search = form.cleaned_data['text_search']
+      location = form.cleaned_data['location']
+
+      filters = {}
+      if location:
+        filters['location'] = location
+
+      dyes = Dye.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+    else:
+      print(form.errors)
+
+  paginator = Paginator(dyes, 25)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
+
+  context = {'page_obj': page_obj, 'form': form}
+  return render(request, 'inventory/dyes.html', context)
+
+
+@login_required(login_url='login')
+def create_dye(request):
+  form = DyeForm(user=request.user)
+
+  if request.method == "POST":
+    form = DyeForm(request.POST, user=request.user)
+    if form.is_valid():
+      dye = form.save(commit=False)
+      dye.user = request.user
+      dye = form.save()
+      return redirect('dyes')
+    else:
+      print(form.errors)
+
+  context = {'form': form}
+  return render(request, 'inventory/create_dye.html', context)
+
+
+@login_required(login_url='login')
+def edit_dye(request, pk):
+  try:
+    dye = Dye.objects.get(user=request.user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no dye to edit.")
+    return redirect('gels')
+  
+  form = EditDyeForm(user=request.user, instance=dye)
+  del_form = DeletionForm(value=dye.name)
+
+  if 'update' in request.POST:
+    form = EditDyeForm(request.POST, user=request.user, instance=dye)
+    if form.is_valid():
+      form.save()
+      return redirect('gels')
+    else:
+      print(form.errors)
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=dye.name)
+    if del_form.is_valid():
+      dye.delete()
+      return redirect('dyes')
+    else:
+      print(del_form.errors)
+
+  context = {'form': form, 'dye': dye, 'del_form': del_form}
+  return render(request, 'inventory/edit_dye.html', context)
+# **DYES VIEWS** #
 
 
 # **PLATES VIEWS** #
