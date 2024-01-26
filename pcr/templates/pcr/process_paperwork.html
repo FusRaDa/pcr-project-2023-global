@@ -12889,6 +12889,57 @@
   {% comment %} Gels for PCR {% endcomment %}
   {% for gel in pcr_gels_json %}
     <div class="container border border-secondary p-3 mb-2">
+
+      <div class="row">
+ 
+        <div class="table-responsive col-sm-8">
+          <table class="table table-bordered" style="break-inside: avoid">
+            <thead>
+              <tr>
+                <th scope="col">Dyes</th>
+                <th scope="col">Total Usage (μL)</th>
+                <th scope="col">Total Wells W/O Ladder</th>
+                <th scope="col">Volume Per Well (μL)</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for dye in gel.dyes %}
+                <tr>
+                  <td>{{dye.name}}</td>
+                  <td>{{dye.sample_num|dec_mult_string:dye.volume_per_well}}</td>
+                  <td>{{dye.sample_num}}</td>
+                  <td class="table-success">{{dye.volume_per_well}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+
+        <div class="table-responsive col-sm-4">
+          <table class="table table-bordered" style="break-inside: avoid">
+            <thead>
+              <tr>
+                <th scope="col">Ladders</th>
+                <th scope="col">Total Usage (μL)</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for ladder in gel.ladders %}
+                <tr>
+                  <td>{{ladder.name}}</td>
+                  <td class="table-success">{{ladder.volume_per_gel}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+
       {% if gel.size == 12 %}
         <div class="table-responsive col-sm-6">
           <table class="table table-bordered">
@@ -13446,37 +13497,6 @@
           </table>
         </div>
       {% endif %}
-
-      <div class="row">
- 
-        <div class="table-responsive col-sm-8">
-          <table class="table table-bordered" style="break-inside: avoid">
-            <thead>
-              <tr>
-                <th scope="col">Dyes</th>
-                <th scope="col">Total Usage</th>
-                <th scope="col">Total Wells W/O Ladder</th>
-                <th scope="col">Volume Per Well</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {% for dye in gel.dyes %}
-                <tr class="table-light">
-                  <td>{{dye.name}}</td>
-                  <td>{{dye.sample_num|dec_mult_string:dye.volume_per_well}}</td>
-                  <td>{{dye.sample_num}}</td>
-                  <td>{{dye.volume_per_well}}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-
-          </table>
-            </div>
-
- 
-      </div>
-
     </div>
   {% endfor %}
   {% comment %} Gels for PCR {% endcomment %}
