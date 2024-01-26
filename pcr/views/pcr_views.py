@@ -292,7 +292,7 @@ def process_paperwork(request, pk):
   
   if 'process' in request.POST:
 
-    # **VALIDATION FOR PLATES, GELS AND REAGENTS
+    # **VALIDATION FOR PLATES & GELS** #
     for plate in qpcr_plates:
       if plate['amount'] < 0:
         messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for qPCR has an insufficient amount for this process. Please update inventory or change selection.")
@@ -307,62 +307,10 @@ def process_paperwork(request, pk):
       if gel['amount'] < 0:
         messages.error(request, f"Gel: {gel.name} lot#: {gel.lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
         return redirect(request.path_info)
+    # **VALIDATION FOR PLATES & GELS** #
       
-    for plate in dna_qpcr_json:
-      for assay in plate['assays']:
-        for reagent in assay['reagents']:
-          reagent_obj = reagent['reagent']
-          total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
-          if reagent_obj.volume_in_microliters - total_volume < 0:
-            messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
-            return redirect(request.path_info)
-          
-    for plate in rna_qpcr_json:
-      for assay in plate['assays']:
-        for reagent in assay['reagents']:
-          reagent_obj = reagent['reagent']
-          total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
-          if reagent_obj.volume_in_microliters - total_volume < 0:
-            messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
-            return redirect(request.path_info)
-          
-    for plate in dna_pcr_json:
-      for assay in plate['assays']:
-        for reagent in assay['reagents']:
-          reagent_obj = reagent['reagent']
-          total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
-          if reagent_obj.volume_in_microliters - total_volume < 0:
-            messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
-            return redirect(request.path_info)
-          
-    for plate in rna_pcr_json:
-      for assay in plate['assays']:
-        for reagent in assay['reagents']:
-          reagent_obj = reagent['reagent']
-          total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
-          if reagent_obj.volume_in_microliters - total_volume < 0:
-            messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
-            return redirect(request.path_info)
-    # **VALIDATION FOR PLATES, GELS AND REAGENTS
-    
-    # **UPDATE ALL PLATES AND GELS IN DB** #
-    for plate in qpcr_plates:
-      plate['plate'].amount -= plate['used']
-      plate['plate'].save()
-      plate.pop('plate')
 
-    for plate in pcr_plates:
-      plate['plate'].amount -= plate['used']
-      plate['plate'].save()
-      plate.pop('plate')
-
-    for gel in gels:
-      gel['gel'].amount -= gel['used']
-      gel['gel'].save()
-      gel.pop('gel')
-    # **UPDATE ALL PLATES AND GELS IN DB** #
-
-    # **UPDATE REAGENTS FOR qPCR** #
+    # **UPDATE REAGENTS FOR PCR & qPCR** #
     all_reagents = []
     for plate in dna_qpcr_json:
       for assay in plate['assays']:
@@ -403,9 +351,7 @@ def process_paperwork(request, pk):
                 dict['total'] += total_volume
                 break
           reagent.pop('reagent')
-    # **UPDATE REAGENTS FOR qPCR** #
-    
-    # **UPDATE REAGENTS FOR PCR** #
+ 
     for plate in dna_pcr_json:
       for assay in plate['assays']:
         for reagent in assay['reagents']:
@@ -445,8 +391,75 @@ def process_paperwork(request, pk):
                 dict['total'] += total_volume
                 break
           reagent.pop('reagent')
-    # **UPDATE REAGENTS FOR PCR** #
+    # **UPDATE REAGENTS FOR PCR & qPCR** #
     
+
+    # **UPDATE DYES AND LADDERS ** #
+    all_dyes = []
+    for gel in pcr_gels_json:
+      for dye in gel['dyes']:
+        dye_obj = dye['dye']
+        total_volume = Decimal(dye['volume_per_well'] * dye['sample_num'])
+
+        if dye['dye_in_ladder'] == True:
+          total_volume += dye['volume_per_well']
+
+        exists = False
+        for dict in all_dyes:
+          if dict['dye'].pk == dye_obj.pk:
+            exists = True
+        
+        if exists == False:
+          all_dyes.append({'dye': dye_obj, 'total': total_volume})
+        else:
+          for dict in all_dyes:
+            if dict['dye'].pk == dye_obj.pk:
+              dict['total'] += total_volume
+              break
+        dye.pop('dye')
+      
+    all_ladders = []
+    for gel in pcr_gels_json:
+      for ladder in gel['ladders']:
+        ladder_obj = dye['ladder']
+        total_volume = Decimal(ladder['volume_per_gel'])
+
+        exists = False
+        for dict in all_ladders:
+          if dict['ladder'].pk == ladder_obj.pk:
+            exists = True
+        
+        if exists == False:
+          all_ladders.append({'ladder': ladder_obj, 'total': total_volume})
+        else:
+          for dict in all_ladders:
+            if dict['ladder'].pk == ladder_obj.pk:
+              dict['total'] += total_volume
+              break
+        ladder.pop('ladder')
+
+      print(all_dyes)
+      print(all_ladders)
+    # **UPDATE DYES AND LADDERS ** #
+      
+      
+    # **UPDATE ALL PLATES AND GELS IN DB** #
+    for plate in qpcr_plates:
+      plate['plate'].amount -= plate['used']
+      plate['plate'].save()
+      plate.pop('plate')
+
+    for plate in pcr_plates:
+      plate['plate'].amount -= plate['used']
+      plate['plate'].save()
+      plate.pop('plate')
+
+    for gel in gels:
+      gel['gel'].amount -= gel['used']
+      gel['gel'].save()
+      gel.pop('gel')
+    # **UPDATE ALL PLATES AND GELS IN DB** #
+      
     # **FINAL UPDATE OF ALL REAGENTS IN DB** #
     for reagent_dict in all_reagents:
       reagent_dict['reagent'].volume = reagent_dict['reagent'].volume_in_microliters - reagent_dict['total']
@@ -454,9 +467,9 @@ def process_paperwork(request, pk):
       reagent_dict['reagent'].save()
     # **FINAL UPDATE OF ALL REAGENTS IN DB** #
       
-    # **UPDATE DYES AND LADDERS ** #
-      # START HERE!!!!!!!!!
-    # **UPDATE DYES AND LADDERS ** #
+    # **FINAL UPDATE OF ALL DYES & LADDERS IN DB** #
+      # START HERE!!!!
+    # **FINAL UPDATE OF ALL DYES & LADDERS IN DB** #
 
     process.is_processed = True
     process.date_processed = timezone.now()

@@ -534,9 +534,11 @@ def load_gel(all_samples, gels, minimum_samples_in_gel):
             samples_data['samples'].update(sample)
 
           dye_dict = {
+            'dye': assay.dye,
             'name': f"{assay.dye.name} - {assay.name}",
             'sample_num': num_samples + control_wells,
-            'volume_per_well': assay.dye_volume_per_well,
+            'volume_per_well': round(float(assay.dye_volume_per_well), 2),
+            'dye_in_ladder': assay.dye_in_ladder,
           }
           dyes_data['dyes'].append(dye_dict)
           
@@ -551,9 +553,9 @@ def load_gel(all_samples, gels, minimum_samples_in_gel):
             samples_data['samples'].update(control_data)
 
           ladder_dict = {
+            'ladder': assay.ladder,
             'name': f"{assay.ladder.name} - {assay.name}",
-            'volume_per_gel': assay.ladder_volume_per_gel,
-            'dye_in_ladder': assay.dye_in_ladder,
+            'volume_per_gel': round(float(assay.ladder_volume_per_gel), 2),
           }
           ladders_data['ladders'].append(ladder_dict)
           
@@ -579,9 +581,11 @@ def load_gel(all_samples, gels, minimum_samples_in_gel):
               samples_data['samples'].update(sample)
 
             dye_dict = {
-            'name': f"{assay.dye.name} - {assay.name}",
-            'sample_num': num_samples + control_wells,
-            'volume_per_well': assay.dye_volume_per_well,
+              'dye': assay.dye,
+              'name': f"{assay.dye.name} - {assay.name}",
+              'sample_num': num_samples + control_wells,
+              'volume_per_well': round(float(assay.dye_volume_per_well), 2),
+              'dye_in_ladder': assay.dye_in_ladder,
             }
             dyes_data['dyes'].append(dye_dict)
             
@@ -596,9 +600,9 @@ def load_gel(all_samples, gels, minimum_samples_in_gel):
               samples_data['samples'].update(control_data)
 
             ladder_dict = {
-            'name': f"{assay.ladder.name} - {assay.name}",
-            'volume_per_gel': assay.ladder_volume_per_gel,
-            'dye_in_ladder': assay.dye_in_ladder,
+              'ladder': assay.ladder,
+              'name': f"{assay.ladder.name} - {assay.name}",
+              'volume_per_gel': round(float(assay.ladder_volume_per_gel), 2),
             }
             ladders_data['ladders'].append(ladder_dict)
             
