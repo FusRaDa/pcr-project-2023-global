@@ -288,10 +288,6 @@ def process_paperwork(request, pk):
   if requires_dna_pcr or requires_rna_pcr:
     gel_samples = all_pcr_samples(assay_samples)
     pcr_gels_json = process_gels(gel_samples, gels, process.min_samples_per_gel)
-  
-  for item in pcr_gels_json:
-    print(item)
-  
   # **GENERATE GELS FOR PCR** #
   
   if 'process' in request.POST:
@@ -316,7 +312,7 @@ def process_paperwork(request, pk):
       for assay in plate['assays']:
         for reagent in assay['reagents']:
           reagent_obj = reagent['reagent']
-          total_volume = Decimal(round(reagent['volume_per_sample'] * assay['sample_num'], 2))
+          total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
           if reagent_obj.volume_in_microliters - total_volume < 0:
             messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
             return redirect(request.path_info)
@@ -325,7 +321,7 @@ def process_paperwork(request, pk):
       for assay in plate['assays']:
         for reagent in assay['reagents']:
           reagent_obj = reagent['reagent']
-          total_volume = Decimal(round(reagent['volume_per_sample'] * assay['sample_num'], 2))
+          total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
           if reagent_obj.volume_in_microliters - total_volume < 0:
             messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
             return redirect(request.path_info)
@@ -334,7 +330,7 @@ def process_paperwork(request, pk):
       for assay in plate['assays']:
         for reagent in assay['reagents']:
           reagent_obj = reagent['reagent']
-          total_volume = Decimal(round(reagent['volume_per_sample'] * assay['sample_num'], 2))
+          total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
           if reagent_obj.volume_in_microliters - total_volume < 0:
             messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
             return redirect(request.path_info)
@@ -343,7 +339,7 @@ def process_paperwork(request, pk):
       for assay in plate['assays']:
         for reagent in assay['reagents']:
           reagent_obj = reagent['reagent']
-          total_volume = Decimal(round(reagent['volume_per_sample'] * assay['sample_num'], 2))
+          total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
           if reagent_obj.volume_in_microliters - total_volume < 0:
             messages.error(request, f"Reagent: {reagent_obj.name} lot#: {reagent_obj.lot_number} has an insufficient amount for this process. Please update inventory or change assay reagents.")
             return redirect(request.path_info)
@@ -372,7 +368,7 @@ def process_paperwork(request, pk):
       for assay in plate['assays']:
         for reagent in assay['reagents']:
           reagent_obj = reagent['reagent']
-          total_volume = round(Decimal(reagent['volume_per_sample'] * assay['sample_num']), 2)
+          total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
 
           exists = False
           for dict in all_reagents:
@@ -392,7 +388,7 @@ def process_paperwork(request, pk):
       for assay in plate['assays']:
         for reagent in assay['reagents']:
           reagent_obj = reagent['reagent']
-          total_volume = round(Decimal(reagent['volume_per_sample'] * assay['sample_num']), 2)
+          total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
 
           exists = False
           for dict in all_reagents:
@@ -414,7 +410,7 @@ def process_paperwork(request, pk):
       for assay in plate['assays']:
         for reagent in assay['reagents']:
           reagent_obj = reagent['reagent']
-          total_volume = round(Decimal(reagent['volume_per_sample'] * assay['sample_num']), 2)
+          total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
 
           exists = False
           for dict in all_reagents:
@@ -434,7 +430,7 @@ def process_paperwork(request, pk):
       for assay in plate['assays']:
         for reagent in assay['reagents']:
           reagent_obj = reagent['reagent']
-          total_volume = round(Decimal(reagent['volume_per_sample'] * assay['sample_num']), 2)
+          total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
 
           exists = False
           for dict in all_reagents:

@@ -69,7 +69,13 @@ class AssayForm(ModelForm):
     reagents = cleaned_data.get('reagents')
     fluorescence = cleaned_data.get('fluorescence')
     method = cleaned_data.get('method')
+
     ladder = cleaned_data.get('ladder')
+    ladder_volume_per_gel = cleaned_data.get('ladder_volume_per_gel')
+
+    dye = cleaned_data.get('dye')
+    dye_volume_per_well = cleaned_data.get('dye_volume_per_well')
+    dye_in_ladder = cleaned_data.get('dye_in_ladder')
 
     if ladder == None and method == Assay.Methods.PCR:
       raise ValidationError(
@@ -79,6 +85,41 @@ class AssayForm(ModelForm):
     if ladder != None and method == Assay.Methods.qPCR:
       raise ValidationError(
         message="qPCR assays do not require a ladder."
+      )
+    
+    if ladder_volume_per_gel == 0 and method == Assay.Methods.PCR:
+      raise ValidationError(
+        message="PCR assays must contain a ladder volume per gel."
+      )
+    
+    if ladder_volume_per_gel > 0 and method == Assay.Methods.qPCR:
+      raise ValidationError(
+        message="qPCR assays do not require a ladder volume per gel."
+      )
+    
+    if dye == None and method == Assay.Methods.PCR:
+      raise ValidationError(
+        message="PCR assays must contain a loading gel dye."
+      )
+    
+    if dye != None and method == Assay.Methods.qPCR:
+      raise ValidationError(
+        message="qPCR assays do not require a loading gel dye."
+      )
+    
+    if dye_volume_per_well == 0 and method == Assay.Methods.PCR:
+      raise ValidationError(
+        message="PCR assays must contain a loading gel dye volume per well."
+      )
+    
+    if dye_volume_per_well > 0 and method == Assay.Methods.qPCR:
+      raise ValidationError(
+        message="qPCR assays do not require a loading gel dye volume per well."
+      )
+    
+    if dye_in_ladder == True and method == Assay.Methods.qPCR:
+      raise ValidationError(
+        message="qPCR assays do not require a loading gel dye."
       )
 
     if method == Assay.Methods.qPCR and not fluorescence:
@@ -132,9 +173,12 @@ class AssayForm(ModelForm):
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['method'].widget.attrs['class'] = 'form-select'
     self.fields['type'].widget.attrs['class'] = 'form-select'
-    self.fields['ladder'].widget.attrs['class'] = 'form-select'
     self.fields['sample_volume'].widget.attrs['class'] = 'form-control'
     self.fields['reaction_volume'].widget.attrs['class'] = 'form-control'
+    self.fields['ladder'].widget.attrs['class'] = 'form-select'
+    self.fields['ladder_volume_per_gel'].widget.attrs['class'] = 'form-control'
+    self.fields['dye'].widget.attrs['class'] = 'form-select'
+    self.fields['dye_volume_per_well'].widget.attrs['class'] = 'form-control'
     
   class Meta:
     model = Assay

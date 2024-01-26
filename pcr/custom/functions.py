@@ -274,11 +274,11 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
   plate_data = {'size': plate.size}
   protocol_data = {'protocol': {
     'name': protocol.name,
-    'denature_temp': float(protocol.denature_temp),
+    'denature_temp': round(float(protocol.denature_temp), 2),
     'denature_duration': protocol.denature_duration,
-    'anneal_temp': float(protocol.anneal_temp),
+    'anneal_temp': round(float(protocol.anneal_temp), 2),
     'anneal_duration': protocol.anneal_duration,
-    'extension_temp': float(protocol.extension_temp),
+    'extension_temp': round(float(protocol.extension_temp), 2),
     'extension_duration': protocol.extension_duration,
     'number_of_cycles': protocol.number_of_cycles
   }}
@@ -317,29 +317,29 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
           assay_dict = {
             'name': assay.name,
             'sample_num': num_samples + control_wells,
-            'sample_volume': float(assay.sample_volume),
-            'reaction_volume': float(assay.reaction_volume),
-            'mm_volume': float(assay.mm_volume),
+            'sample_volume': round(float(assay.sample_volume), 2),
+            'reaction_volume': round(float(assay.reaction_volume), 2),
+            'mm_volume': round(float(assay.mm_volume), 2),
             'reagents': [],
           }
           
           for reagent in assay.reagentassay_set.all().order_by('order'):
             stock_concentration = None
             if reagent.reagent.stock_concentration:
-              stock_concentration = float(reagent.reagent.stock_concentration)
+              stock_concentration = round(float(reagent.reagent.stock_concentration), 2)
 
             final_stock_concentration = None
             if reagent.final_concentration:
-              final_stock_concentration = float(reagent.final_concentration)
+              final_stock_concentration = round(float(reagent.final_concentration), 2)
 
             dilution_factor = None
             if reagent.dilution_factor:
-              dilution_factor = float(reagent.dilution_factor)
+              dilution_factor = round(float(reagent.dilution_factor), 2)
 
             assay_dict['reagents'].append({
               'reagent': reagent.reagent,
               'name': reagent.reagent.name,
-              'volume_per_sample': float(reagent.volume_per_sample),
+              'volume_per_sample': round(float(reagent.volume_per_sample), 2),
               'stock_concentration': stock_concentration,
               'unit_concentration': reagent.reagent.unit_concentration,
               'final_stock_concentration': final_stock_concentration,
@@ -443,29 +443,29 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
             assay_dict = {
               'name': assay.name,
               'sample_num': num_samples + control_wells,
-              'sample_volume': float(assay.sample_volume),
-              'reaction_volume': float(assay.reaction_volume),
-              'mm_volume': float(assay.mm_volume),
+              'sample_volume': round(float(assay.sample_volume), 2),
+              'reaction_volume': round(float(assay.reaction_volume), 2),
+              'mm_volume': round(float(assay.mm_volume), 2),
               'reagents': [],
             }
             
             for reagent in assay.reagentassay_set.all().order_by('order'):
               stock_concentration = None
               if reagent.reagent.stock_concentration:
-                stock_concentration = float(reagent.reagent.stock_concentration)
+                stock_concentration = round(float(reagent.reagent.stock_concentration), 2)
 
               final_stock_concentration = None
               if reagent.final_concentration:
-                final_stock_concentration = float(reagent.final_concentration)
+                final_stock_concentration = round(float(reagent.final_concentration), 2)
 
               dilution_factor = None
               if reagent.dilution_factor:
-                dilution_factor = float(reagent.dilution_factor)
+                dilution_factor = round(float(reagent.dilution_factor), 2)
 
               assay_dict['reagents'].append({
                 'reagent': reagent.reagent,
                 'name': reagent.reagent.name,
-                'volume_per_sample': float(reagent.volume_per_sample),
+                'volume_per_sample': round(float(reagent.volume_per_sample), 2),
                 'stock_concentration': stock_concentration,
                 'unit_concentration': reagent.reagent.unit_concentration,
                 'final_stock_concentration': final_stock_concentration,
@@ -500,8 +500,9 @@ def load_gel(all_samples, gels, minimum_samples_in_gel):
   gel, list = choose_gel(all_samples, gels)
 
   gel_data = {'size': gel.size}
-  assays_data = {'assays': []}
   samples_data = {'samples': {}}
+  dyes_data = {'dyes': []}
+  ladders_data = {'ladders': []}
 
   remaining_wells = gel.size
   position = 0
@@ -531,41 +532,14 @@ def load_gel(all_samples, gels, minimum_samples_in_gel):
             del sample[None]
             loaded_samples.append(sample)
             samples_data['samples'].update(sample)
-          
-          assay_dict = {
-            'name': assay.name,
+
+          dye_dict = {
+            'name': f"{assay.dye.name} - {assay.name}",
             'sample_num': num_samples + control_wells,
-            'sample_volume': float(assay.sample_volume),
-            'reaction_volume': float(assay.reaction_volume),
-            'mm_volume': float(assay.mm_volume),
-            'reagents': [],
+            'volume_per_well': assay.dye_volume_per_well,
           }
+          dyes_data['dyes'].append(dye_dict)
           
-          for reagent in assay.reagentassay_set.all().order_by('order'):
-            stock_concentration = None
-            if reagent.reagent.stock_concentration:
-              stock_concentration = float(reagent.reagent.stock_concentration)
-
-            final_stock_concentration = None
-            if reagent.final_concentration:
-              final_stock_concentration = float(reagent.final_concentration)
-
-            dilution_factor = None
-            if reagent.dilution_factor:
-              dilution_factor = float(reagent.dilution_factor)
-
-            assay_dict['reagents'].append({
-              'reagent': reagent.reagent,
-              'name': reagent.reagent.name,
-              'volume_per_sample': float(reagent.volume_per_sample),
-              'stock_concentration': stock_concentration,
-              'unit_concentration': reagent.reagent.unit_concentration,
-              'final_stock_concentration': final_stock_concentration,
-              'final_unit_concentration': reagent.final_concentration_unit,
-              'dilution_factor': dilution_factor,
-            })
-          assays_data['assays'].append(assay_dict)
-
           for control in assay.controlassay_set.all().order_by('order'):
             position += 1
             control_data = {f"well{position}": {
@@ -575,6 +549,13 @@ def load_gel(all_samples, gels, minimum_samples_in_gel):
               'assay': assay.name
             }}
             samples_data['samples'].update(control_data)
+
+          ladder_dict = {
+            'name': f"{assay.ladder.name} - {assay.name}",
+            'volume_per_gel': assay.ladder_volume_per_gel,
+            'dye_in_ladder': assay.dye_in_ladder,
+          }
+          ladders_data['ladders'].append(ladder_dict)
           
           position += 1
           ladder = {f"well{position}": {
@@ -596,41 +577,14 @@ def load_gel(all_samples, gels, minimum_samples_in_gel):
               del sample[None]
               loaded_samples.append(sample)
               samples_data['samples'].update(sample)
-            
-            assay_dict = {
-              'name': assay.name,
-              'sample_num': num_samples + control_wells,
-              'sample_volume': float(assay.sample_volume),
-              'reaction_volume': float(assay.reaction_volume),
-              'mm_volume': float(assay.mm_volume),
-              'reagents': [],
+
+            dye_dict = {
+            'name': f"{assay.dye.name} - {assay.name}",
+            'sample_num': num_samples + control_wells,
+            'volume_per_well': assay.dye_volume_per_well,
             }
-          
-            for reagent in assay.reagentassay_set.all().order_by('order'):
-              stock_concentration = None
-              if reagent.reagent.stock_concentration:
-                stock_concentration = float(reagent.reagent.stock_concentration)
-
-              final_stock_concentration = None
-              if reagent.final_concentration:
-                final_stock_concentration = float(reagent.final_concentration)
-
-              dilution_factor = None
-              if reagent.dilution_factor:
-                dilution_factor = float(reagent.dilution_factor)
-
-              assay_dict['reagents'].append({
-                'reagent': reagent.reagent,
-                'name': reagent.reagent.name,
-                'volume_per_sample': float(reagent.volume_per_sample),
-                'stock_concentration': stock_concentration,
-                'unit_concentration': reagent.reagent.unit_concentration,
-                'final_stock_concentration': final_stock_concentration,
-                'final_unit_concentration': reagent.final_concentration_unit,
-                'dilution_factor': dilution_factor,
-              })
-            assays_data['assays'].append(assay_dict)
-
+            dyes_data['dyes'].append(dye_dict)
+            
             for control in assay.controlassay_set.all().order_by('order'):
               position += 1
               control_data = {f"well{position}": {
@@ -640,6 +594,13 @@ def load_gel(all_samples, gels, minimum_samples_in_gel):
                 'assay': assay.name
               }}
               samples_data['samples'].update(control_data)
+
+            ladder_dict = {
+            'name': f"{assay.ladder.name} - {assay.name}",
+            'volume_per_gel': assay.ladder_volume_per_gel,
+            'dye_in_ladder': assay.dye_in_ladder,
+            }
+            ladders_data['ladders'].append(ladder_dict)
             
             position += 1
             ladder = {f"well{position}": {
@@ -656,7 +617,7 @@ def load_gel(all_samples, gels, minimum_samples_in_gel):
         for sample in loaded_samples:
           samples.remove(sample)
      
-  gel_dict = gel_data | assays_data | samples_data
+  gel_dict = gel_data | samples_data | dyes_data | ladders_data
   return gel_dict, all_samples
 
 

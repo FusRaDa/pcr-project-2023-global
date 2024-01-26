@@ -3,7 +3,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from ..models.inventory import Ladder, Gel, Plate, Tube, Reagent, Location
+from ..models.inventory import Ladder, Gel, Plate, Tube, Reagent, Location, Dye
 
 
 class LocationForm(ModelForm):
@@ -155,7 +155,7 @@ class DyeForm(ModelForm):
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
   class Meta:
-    model = Plate
+    model = Dye
     exclude = ['user', 'last_updated']
 
 
@@ -180,7 +180,7 @@ class EditDyeForm(ModelForm):
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
   class Meta:
-    model = Plate
+    model = Dye
     fields = ['amount', 'exp_date', 'location']
     exclude = ['user', 'last_updated']
     

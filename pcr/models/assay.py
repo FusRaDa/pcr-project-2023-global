@@ -93,6 +93,7 @@ class Assay(models.Model):
 
   dye = models.ForeignKey(Dye, blank=True, null=True, default=None, on_delete=models.PROTECT)
   dye_volume_per_well = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12, default=0) # in microliters
+  dye_in_ladder = models.BooleanField(default=False)
   
   fluorescence = models.ManyToManyField(Fluorescence)
   controls = models.ManyToManyField(Control, through='ControlAssay')

@@ -280,7 +280,7 @@ def edit_dye(request, pk):
     dye = Dye.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
     messages.error(request, "There is no dye to edit.")
-    return redirect('gels')
+    return redirect('dyes')
   
   form = EditDyeForm(user=request.user, instance=dye)
   del_form = DeletionForm(value=dye.name)
@@ -289,7 +289,7 @@ def edit_dye(request, pk):
     form = EditDyeForm(request.POST, user=request.user, instance=dye)
     if form.is_valid():
       form.save()
-      return redirect('gels')
+      return redirect('dyes')
     else:
       print(form.errors)
 
