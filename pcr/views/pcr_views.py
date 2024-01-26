@@ -292,25 +292,7 @@ def process_paperwork(request, pk):
   
   if 'process' in request.POST:
 
-    # **VALIDATION FOR PLATES & GELS** #
-    for plate in qpcr_plates:
-      if plate['amount'] < 0:
-        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for qPCR has an insufficient amount for this process. Please update inventory or change selection.")
-        return redirect(request.path_info)
-    
-    for plate in pcr_plates:
-      if plate['amount'] < 0:
-        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for PCR has an insufficient amount for this process. Please update inventory or change selection.")
-        return redirect(request.path_info)
-
-    for gel in gels:
-      if gel['amount'] < 0:
-        messages.error(request, f"Gel: {gel.name} lot#: {gel.lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
-        return redirect(request.path_info)
-    # **VALIDATION FOR PLATES & GELS** #
-      
-
-    # **UPDATE REAGENTS FOR PCR & qPCR** #
+    # **RECOLLECT REAGENTS FOR PCR & qPCR** #
     all_reagents = []
     for plate in dna_qpcr_json:
       for assay in plate['assays']:
@@ -391,10 +373,10 @@ def process_paperwork(request, pk):
                 dict['total'] += total_volume
                 break
           reagent.pop('reagent')
-    # **UPDATE REAGENTS FOR PCR & qPCR** #
+    # **RECOLLECT REAGENTS FOR PCR & qPCR** #
     
 
-    # **UPDATE DYES AND LADDERS ** #
+    # **RECOLLECT DYES AND LADDERS ** #
     all_dyes = []
     for gel in pcr_gels_json:
       for dye in gel['dyes']:
@@ -421,7 +403,7 @@ def process_paperwork(request, pk):
     all_ladders = []
     for gel in pcr_gels_json:
       for ladder in gel['ladders']:
-        ladder_obj = dye['ladder']
+        ladder_obj = ladder['ladder']
         total_volume = Decimal(ladder['volume_per_gel'])
 
         exists = False
@@ -437,12 +419,54 @@ def process_paperwork(request, pk):
               dict['total'] += total_volume
               break
         ladder.pop('ladder')
+    # **RECOLLECT DYES AND LADDERS ** #
+        
 
-      print(all_dyes)
-      print(all_ladders)
-    # **UPDATE DYES AND LADDERS ** #
+    # **VALIDATION FOR PLATES & GELS** #
+    for plate in qpcr_plates:
+      if plate['amount'] < 0:
+        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for qPCR has an insufficient amount for this process. Please update inventory or change selection.")
+        return redirect(request.path_info)
+    
+    for plate in pcr_plates:
+      if plate['amount'] < 0:
+        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for PCR has an insufficient amount for this process. Please update inventory or change selection.")
+        return redirect(request.path_info)
+
+    for gel in gels:
+      if gel['amount'] < 0:
+        messages.error(request, f"Gel: {gel.name} lot#: {gel.lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
+        return redirect(request.path_info)
+    # **VALIDATION FOR PLATES & GELS** #
       
+    
+    # **VALIDATION FOR REAGENTS** #
+    for reagent_dict in all_reagents:
+      if reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] < 0:
+        name = reagent_dict['reagent'].name
+        lot_number = reagent_dict['reagent'].lot_number
+        messages.error(request, f"Reagent: {name} lot#: {lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
+        return redirect(request.path_info)
+    # **VALIDATION FOR REAGENTS** #
       
+
+    # **VALIDATION FOR DYES & LADDERS** #
+    for dye_dict in all_dyes:
+      if dye_dict['dye'].amount - dye_dict['total'] < 0:
+        name = dye_dict['dye'].name
+        lot_number = dye_dict['dye'].lot_number
+        messages.error(request, f"Dye: {name} lot#: {lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
+        return redirect(request.path_info)
+      
+    for ladder_dict in all_ladders:
+      if ladder_dict['ladder'].amount - ladder_dict['total'] < 0:
+        name = ladder_dict['ladder'].name
+        lot_number = ladder_dict['lot_number'].lot_number
+        messages.error(request, f"Ladder: {name} lot#: {lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
+        return redirect(request.path_info)
+    # **VALIDATION FOR DYES & LADDERS** #
+      
+
     # **UPDATE ALL PLATES AND GELS IN DB** #
     for plate in qpcr_plates:
       plate['plate'].amount -= plate['used']
@@ -468,7 +492,13 @@ def process_paperwork(request, pk):
     # **FINAL UPDATE OF ALL REAGENTS IN DB** #
       
     # **FINAL UPDATE OF ALL DYES & LADDERS IN DB** #
-      # START HERE!!!!
+    for dye_dict in all_dyes:
+      dye_dict['dye'].amount -= dye_dict['total']
+      dye_dict['dye'].save()
+
+    for ladder_dict in all_ladders:
+      ladder_dict['ladder'].amount -= ladder_dict['total']
+      ladder_dict['ladder'].save()
     # **FINAL UPDATE OF ALL DYES & LADDERS IN DB** #
 
     process.is_processed = True
@@ -560,5 +590,10 @@ def pcr_paperwork(request, pk):
     messages.error(request, "There is no process to review.")
     return redirect('processes')
   
-  context = {'dna_qpcr_json': process.qpcr_dna_json, 'rna_qpcr_json': process.qpcr_rna_json, 'dna_pcr_json': process.pcr_dna_json, 'rna_pcr_json': process.pcr_rna_json, 'process': process, 'plates': process.plates, 'gels': process.gels}
+  context = {
+    'dna_qpcr_json': process.qpcr_dna_json, 'rna_qpcr_json': process.qpcr_rna_json, 
+    'dna_pcr_json': process.pcr_dna_json, 'rna_pcr_json': process.pcr_rna_json, 
+    'process': process, 'pcr_gels_json': process.pcr_gels_json,
+    'pcr_plates': process.plates_for_pcr, 'qpcr_plates': process.plates_for_qpcr, 'gels': process.gels
+  }
   return render(request, 'pcr/pcr_paperwork.html', context)

@@ -3260,8 +3260,8 @@
         </div>
       {% endif %}
 
-      <div class="table-responsive col-sm-6">
-        <table class="table table-bordered">
+      <div class="table-responsive col-sm-4">
+        <table class="table table-bordered table-text-tcp">
           <thead>
             <tr>
               <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
@@ -6442,8 +6442,8 @@
         </div>
       {% endif %}
 
-      <div class="table-responsive col-sm-6">
-        <table class="table table-bordered">
+      <div class="table-responsive col-sm-4">
+        <table class="table table-bordered table-text-tcp">
           <thead>
             <tr>
               <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
@@ -9627,8 +9627,8 @@
         </div>
       {% endif %}
 
-      <div class="table-responsive col-sm-6">
-        <table class="table table-bordered">
+      <div class="table-responsive col-sm-4">
+        <table class="table table-bordered table-text-tcp">
           <thead>
             <tr>
               <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
@@ -12809,8 +12809,8 @@
         </div>
       {% endif %}
 
-      <div class="table-responsive col-sm-6">
-        <table class="table table-bordered">
+      <div class="table-responsive col-sm-4">
+        <table class="table table-bordered table-text-tcp">
           <thead>
             <tr>
               <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
@@ -12897,8 +12897,8 @@
             <thead>
               <tr>
                 <th scope="col">Dyes</th>
-                <th scope="col">Total Usage (μL)</th>
-                <th scope="col">Total Wells W/O Ladder</th>
+                <th scope="col">Usage (μL)</th>
+                <th scope="col">Total Wells</th>
                 <th scope="col">Volume Per Well (μL)</th>
               </tr>
             </thead>
@@ -12907,8 +12907,8 @@
               {% for dye in gel.dyes %}
                 <tr>
                   <td>{{dye.name}}</td>
-                  <td>{{dye.sample_num|dec_mult_string:dye.volume_per_well}}</td>
-                  <td>{{dye.sample_num}}</td>
+                  <td>{% if dye.dye_in_ladder%} {{dye.sample_num|add:1|dec_mult_string:dye.volume_per_well}} {% else %} {{dye.sample_num|dec_mult_string:dye.volume_per_well}} {% endif %}</td>
+                  <td>{% if dye.dye_in_ladder %} {{dye.sample_num|add:1}} w/ ladder {% else %} {{dye.sample_num}} {% endif %}</td>
                   <td class="table-success">{{dye.volume_per_well}}</td>
                 </tr>
               {% endfor %}
@@ -12922,7 +12922,7 @@
             <thead>
               <tr>
                 <th scope="col">Ladders</th>
-                <th scope="col">Total Usage (μL)</th>
+                <th scope="col">Usage (μL)</th>
               </tr>
             </thead>
 

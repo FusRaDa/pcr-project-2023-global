@@ -31,7 +31,6 @@ def create_samples(number_of_samples, lab_id, user):
   control.assays.add(*assays)
 
 
-# order ALL samples by assay
 def samples_by_assay(samples):
   all_assays = []
   for sample in samples:
