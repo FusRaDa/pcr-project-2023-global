@@ -299,6 +299,7 @@ def process_paperwork(request, pk):
         for reagent in assay['reagents']:
           reagent_obj = reagent['reagent']
           total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
+          volume_per_sample = Decimal(reagent['volume_per_sample'])
 
           exists = False
           for dict in all_reagents:
@@ -306,7 +307,7 @@ def process_paperwork(request, pk):
               exists = True
           
           if exists == False:
-            all_reagents.append({'reagent': reagent_obj, 'total' : total_volume})
+            all_reagents.append({'reagent': reagent_obj, 'total' : total_volume, 'volume_per_sample': volume_per_sample})
           else:
             for dict in all_reagents:
               if dict['reagent'].pk == reagent_obj.pk:
@@ -319,6 +320,7 @@ def process_paperwork(request, pk):
         for reagent in assay['reagents']:
           reagent_obj = reagent['reagent']
           total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
+          volume_per_sample = Decimal(reagent['volume_per_sample'])
 
           exists = False
           for dict in all_reagents:
@@ -326,7 +328,7 @@ def process_paperwork(request, pk):
               exists = True
           
           if exists == False:
-            all_reagents.append({'reagent': reagent_obj, 'total' : total_volume})
+            all_reagents.append({'reagent': reagent_obj, 'total' : total_volume, 'volume_per_sample': volume_per_sample})
           else:
             for dict in all_reagents:
               if dict['reagent'].pk == reagent_obj.pk:
@@ -339,6 +341,7 @@ def process_paperwork(request, pk):
         for reagent in assay['reagents']:
           reagent_obj = reagent['reagent']
           total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
+          volume_per_sample = Decimal(reagent['volume_per_sample'])
 
           exists = False
           for dict in all_reagents:
@@ -346,7 +349,7 @@ def process_paperwork(request, pk):
               exists = True
           
           if exists == False:
-            all_reagents.append({'reagent': reagent_obj, 'total' : total_volume})
+            all_reagents.append({'reagent': reagent_obj, 'total' : total_volume, 'volume_per_sample': volume_per_sample})
           else:
             for dict in all_reagents:
               if dict['reagent'].pk == reagent_obj.pk:
@@ -359,6 +362,7 @@ def process_paperwork(request, pk):
         for reagent in assay['reagents']:
           reagent_obj = reagent['reagent']
           total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
+          volume_per_sample = Decimal(reagent['volume_per_sample'])
 
           exists = False
           for dict in all_reagents:
@@ -366,7 +370,7 @@ def process_paperwork(request, pk):
               exists = True
           
           if exists == False:
-            all_reagents.append({'reagent': reagent_obj, 'total' : total_volume})
+            all_reagents.append({'reagent': reagent_obj, 'total' : total_volume, 'volume_per_sample': volume_per_sample})
           else:
             for dict in all_reagents:
               if dict['reagent'].pk == reagent_obj.pk:
@@ -486,7 +490,10 @@ def process_paperwork(request, pk):
       
     # **FINAL UPDATE OF ALL REAGENTS IN DB** #
     for reagent_dict in all_reagents:
-      reagent_dict['reagent'].volume = reagent_dict['reagent'].volume_in_microliters - reagent_dict['total']
+      if process.is_plus_one_well == True:
+        reagent_dict['reagent'].volume = reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] - reagent_dict['volume_per_sample']
+      else:
+        reagent_dict['reagent'].volume = reagent_dict['reagent'].volume_in_microliters - reagent_dict['total']
       reagent_dict['reagent'].unit_volume == Reagent.VolumeUnits.MICROLITER
       reagent_dict['reagent'].save()
     # **FINAL UPDATE OF ALL REAGENTS IN DB** #

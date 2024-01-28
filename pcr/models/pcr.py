@@ -44,6 +44,8 @@ class Process(models.Model):
 
   name = models.CharField(blank=True, null=True, default=None, max_length=100)
 
+  is_plus_one_well = models.BooleanField(default=True)
+
   pcr_dna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='pcr_dna', blank=True, null=True, default=None)
   pcr_rna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='pcr_rna', blank=True, null=True, default=None)
 
@@ -55,8 +57,6 @@ class Process(models.Model):
 
   gel = models.ManyToManyField(Gel)
   samples = models.ManyToManyField(Sample)
-
-  is_processed = models.BooleanField(default=False)
 
   min_samples_per_plate_dna_qpcr = models.IntegerField(default=0, validators=[MinValueValidator(0)])
   min_samples_per_plate_rna_qpcr = models.IntegerField(default=0, validators=[MinValueValidator(0)])
@@ -81,6 +81,8 @@ class Process(models.Model):
   gels = models.JSONField(blank=True, null=True, default=None)
 
   batches = models.ManyToManyField(Batch)
+
+  is_processed = models.BooleanField(default=False)
 
   @property
   def lab_ids(self):
