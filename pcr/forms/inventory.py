@@ -1,3 +1,5 @@
+import re
+
 from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
@@ -320,6 +322,7 @@ class ReagentForm(ModelForm):
     unit = cleaned_data.get('unit_concentration')
     pcr_reagent = cleaned_data.get('pcr_reagent')
     usage = cleaned_data.get('usage')
+    sequence = cleaned_data.get('sequence')
 
     if usage == Reagent.Usages.EXTRACTION and (stock != None or unit != None):
       raise ValidationError(
@@ -340,22 +343,14 @@ class ReagentForm(ModelForm):
       raise ValidationError(
         message="Water for PCR does not require concentration."
       )
-    
-    if pcr_reagent == Reagent.PCRReagent.POLYMERASE and (unit != Reagent.ConcentrationUnits.UNITS or stock == None):
-      raise ValidationError(
-        message="Polymerase must have a concentration unit of U/\u00B5L."
-      )
-    
-    if pcr_reagent == Reagent.PCRReagent.GENERAL and unit == Reagent.ConcentrationUnits.UNITS:
-      raise ValidationError(
-        message="General PCR reagents cannot have a concentration unit of U/\u00B5L."
-      )
-    
-    if pcr_reagent == Reagent.PCRReagent.GENERAL and (unit == None or stock == None):
-      raise ValidationError(
-        message="General PCR reagents must have a concentration."
-      )
   
+    if pcr_reagent != Reagent.PCRReagent.WATER and (stock != None or unit != None):
+      raise ValidationError(
+        message="All reagents for PCR except water must have a concentration."
+      )
+    
+    valid_seq = re.compile('^[GUACT]+$')
+    
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -373,6 +368,7 @@ class ReagentForm(ModelForm):
     self.fields['unit_volume'].widget.attrs['class'] = 'form-select'
     self.fields['stock_concentration'].widget.attrs['class'] = 'form-control'
     self.fields['unit_concentration'].widget.attrs['class'] = 'form-select'
+    self.fields['sequence'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
   
   class Meta:

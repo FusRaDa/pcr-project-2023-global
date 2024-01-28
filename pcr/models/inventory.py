@@ -1,6 +1,6 @@
 from django.utils.timezone import now
 from django.db import models
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 
 import datetime
@@ -224,7 +224,7 @@ class Reagent(models.Model):
   class Usages(models.TextChoices):
     EXTRACTION = 'EXTRACTION', _('EXTRACTION')
     PCR = 'PCR', _('PCR')
-
+ 
   class VolumeUnits(models.TextChoices):
     LITER = 'L', _('L')
     MILLILITER = 'mL', _('mL')
@@ -239,9 +239,10 @@ class Reagent(models.Model):
     X = 'X', _('X')
 
   class PCRReagent(models.TextChoices):
-    GENERAL = 'GENERAL', _('GENERAL')
-    POLYMERASE = 'POLYMERASE', _('POLYMERASE') #used as units/micro-liter
-    WATER = 'WATER', _('WATER')
+    GENERAL = 'GENERAL', _('General')
+    PRIMER = 'PRIMER', _('Primer')
+    POLYMERASE = 'POLYMERASE', _('Polymerase') #used as units/micro-liter
+    WATER = 'WATER', _('Water')
 
   name = models.CharField(blank=False, max_length=50)
   brand = models.CharField(blank=True, max_length=25)
@@ -258,6 +259,8 @@ class Reagent(models.Model):
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)
 
+  sequence = models.CharField(blank=True, null=True, max_length=50)
+  
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)

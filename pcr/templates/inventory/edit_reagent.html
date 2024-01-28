@@ -53,6 +53,11 @@
         </div>
 
         <div class="text-center">
+          <label class="form-label">Sequence</label>
+          <input type="text" class="form-control" disabled readonly value="{{reagent.sequence}}">
+        </div>
+
+        <div class="text-center">
           <label class="form-label">Volume</label>
           {{form.volume}}
         </div>
@@ -61,6 +66,10 @@
           <label class="form-label">Volume Unit</label>
           {{form.unit_volume}}
         </div>
+
+      </div>
+      
+      <div class="col-sm-3 form-width-18">
 
         <div class="text-center">
           <label class="form-label">Stock Concentration</label>
@@ -71,9 +80,6 @@
           <label class="form-label">Concentration Unit</label>
           <input type="text" class="form-control" disabled readonly value="{{reagent.unit_concentration}}">
         </div>
-      </div>
-      
-      <div class="col-sm-3 form-width-18">
 
         <div class="text-center mb-2">
           <label class="form-label">Expiration Date</label>
