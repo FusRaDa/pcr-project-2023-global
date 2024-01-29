@@ -510,7 +510,11 @@ def create_reagent(request):
     form = ReagentForm(request.POST, user=request.user)
     if form.is_valid():
       reagent = form.save(commit=False)
+
+      seq = form.cleaned_data['sequence']
+      reagent.sequence = seq.upper()
       reagent.user = request.user
+      
       reagent = form.save()
       return redirect('reagents')
     else:

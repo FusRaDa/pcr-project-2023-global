@@ -388,8 +388,8 @@ def process_paperwork(request, pk):
         total_volume = Decimal(dye['volume_per_well'] * dye['sample_num'])
 
         if dye['dye_in_ladder'] == True:
-          total_volume += dye['volume_per_well']
-
+          total_volume += Decimal(dye['volume_per_well'])
+          
         exists = False
         for dict in all_dyes:
           if dict['dye'].pk == dye_obj.pk:

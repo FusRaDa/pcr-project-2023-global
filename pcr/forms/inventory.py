@@ -349,7 +349,16 @@ class ReagentForm(ModelForm):
         message="All reagents for PCR except water must have a concentration."
       )
     
-    valid_seq = re.compile('^[GUACT]+$')
+    if pcr_reagent != Reagent.PCRReagent.PRIMER and sequence != None:
+      raise ValidationError(
+        message="Only primers require a sequence."
+      )
+    
+    valid_seq = re.compile('[^GUACT]')
+    if valid_seq.search(sequence.upper()) is not None:
+      raise ValidationError(
+        message="Sequence for primer contains invalid characters."
+      )
     
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')

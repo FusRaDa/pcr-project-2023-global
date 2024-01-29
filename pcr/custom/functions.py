@@ -343,6 +343,8 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
               'unit_concentration': reagent.reagent.unit_concentration,
               'final_stock_concentration': final_stock_concentration,
               'final_unit_concentration': reagent.final_concentration_unit,
+              'pcr_reagent': reagent.reagent.pcr_reagent,
+              'sequence': reagent.reagent.sequence,
               'dilution_factor': dilution_factor,
             })
           assays_data['assays'].append(assay_dict)
@@ -469,6 +471,8 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
                 'unit_concentration': reagent.reagent.unit_concentration,
                 'final_stock_concentration': final_stock_concentration,
                 'final_unit_concentration': reagent.final_concentration_unit,
+                'pcr_reagent': reagent.reagent.pcr_reagent,
+                'sequence': reagent.reagent.sequence,
                 'dilution_factor': dilution_factor,
               })
             assays_data['assays'].append(assay_dict)

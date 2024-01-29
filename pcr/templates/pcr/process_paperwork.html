@@ -3259,36 +3259,63 @@
           </table>
         </div>
       {% endif %}
+      
+      <div class="row">
+        {% for assay in plate.assays %}
+          <div class="table-responsive col-sm-4">
+            <table class="table table-bordered table-text-tcp">
+              <thead>
+                <tr>
+                  <th scope="col">Primer &amp; Assay</th>
+                  <th scope="col">Sequence (3' to 5')</th>
+                </tr>
+              </thead>
 
-      <div class="table-responsive col-sm-4">
-        <table class="table table-bordered table-text-tcp">
-          <thead>
-            <tr>
-              <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
-              <th scope="col">Temperature (°C)</th>
-              <th scope="col">Duration (sec.)</th>
-            </tr>
-          </thead>
+              <tbody>
+                {% for reagent in assay.reagents %}
+                  {% if reagent.pcr_reagent == PRIMER %}
+                  <tr class="table-light">
+                    <td>{{reagent.name}} - {{assay.name}}</td>
+                    <td>{{reagent.sequence}}</td>
+                  </tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
 
-          <tbody>
-            <tr>
-              <td>Denature</td>
-              <td>{{plate.protocol.denature_temp}}</td>
-              <td>{{plate.protocol.denature_duration}}</td>
-            </tr>
-            <tr>
-              <td>Anneal</td>
-              <td>{{plate.protocol.anneal_temp}}</td>
-              <td>{{plate.protocol.anneal_duration}}</td>
-            </tr>
-            <tr>
-              <td>Extend</td>
-              <td>{{plate.protocol.extension_temp}}</td>
-              <td>{{plate.protocol.extension_duration}}</td>
-            </tr>
-          </tbody>
+            </table>
+          </div>
+        {% endfor %}
 
-        </table>
+        <div class="table-responsive col-sm-4">
+          <table class="table table-bordered table-text-tcp">
+            <thead>
+              <tr>
+                <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
+                <th scope="col">Temperature (°C)</th>
+                <th scope="col">Duration (sec.)</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Denature</td>
+                <td>{{plate.protocol.denature_temp}}</td>
+                <td>{{plate.protocol.denature_duration}}</td>
+              </tr>
+              <tr>
+                <td>Anneal</td>
+                <td>{{plate.protocol.anneal_temp}}</td>
+                <td>{{plate.protocol.anneal_duration}}</td>
+              </tr>
+              <tr>
+                <td>Extend</td>
+                <td>{{plate.protocol.extension_temp}}</td>
+                <td>{{plate.protocol.extension_duration}}</td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
       </div>
         
       <div class="row">
@@ -6445,35 +6472,62 @@
         </div>
       {% endif %}
 
-      <div class="table-responsive col-sm-4">
-        <table class="table table-bordered table-text-tcp">
-          <thead>
-            <tr>
-              <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
-              <th scope="col">Temperature (°C)</th>
-              <th scope="col">Duration (sec.)</th>
-            </tr>
-          </thead>
+      <div class="row">
+        {% for assay in plate.assays %}
+          <div class="table-responsive col-sm-4">
+            <table class="table table-bordered table-text-tcp">
+              <thead>
+                <tr>
+                  <th scope="col">Primer &amp; Assay</th>
+                  <th scope="col">Sequence (3' to 5')</th>
+                </tr>
+              </thead>
 
-          <tbody>
-            <tr>
-              <td>Denature</td>
-              <td>{{plate.protocol.denature_temp}}</td>
-              <td>{{plate.protocol.denature_duration}}</td>
-            </tr>
-            <tr>
-              <td>Anneal</td>
-              <td>{{plate.protocol.anneal_temp}}</td>
-              <td>{{plate.protocol.anneal_duration}}</td>
-            </tr>
-            <tr>
-              <td>Extend</td>
-              <td>{{plate.protocol.extension_temp}}</td>
-              <td>{{plate.protocol.extension_duration}}</td>
-            </tr>
-          </tbody>
+              <tbody>
+                {% for reagent in assay.reagents %}
+                  {% if reagent.pcr_reagent == PRIMER %}
+                  <tr class="table-light">
+                    <td>{{reagent.name}} - {{assay.name}}</td>
+                    <td>{{reagent.sequence}}</td>
+                  </tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
 
-        </table>
+            </table>
+          </div>
+        {% endfor %}
+
+        <div class="table-responsive col-sm-4">
+          <table class="table table-bordered table-text-tcp">
+            <thead>
+              <tr>
+                <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
+                <th scope="col">Temperature (°C)</th>
+                <th scope="col">Duration (sec.)</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Denature</td>
+                <td>{{plate.protocol.denature_temp}}</td>
+                <td>{{plate.protocol.denature_duration}}</td>
+              </tr>
+              <tr>
+                <td>Anneal</td>
+                <td>{{plate.protocol.anneal_temp}}</td>
+                <td>{{plate.protocol.anneal_duration}}</td>
+              </tr>
+              <tr>
+                <td>Extend</td>
+                <td>{{plate.protocol.extension_temp}}</td>
+                <td>{{plate.protocol.extension_duration}}</td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
       </div>
         
       <div class="row">
@@ -9633,35 +9687,62 @@
         </div>
       {% endif %}
 
-      <div class="table-responsive col-sm-4">
-        <table class="table table-bordered table-text-tcp">
-          <thead>
-            <tr>
-              <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
-              <th scope="col">Temperature (°C)</th>
-              <th scope="col">Duration (sec.)</th>
-            </tr>
-          </thead>
+      <div class="row">
+        {% for assay in plate.assays %}
+          <div class="table-responsive col-sm-4">
+            <table class="table table-bordered table-text-tcp">
+              <thead>
+                <tr>
+                  <th scope="col">Primer &amp; Assay</th>
+                  <th scope="col">Sequence (3' to 5')</th>
+                </tr>
+              </thead>
 
-          <tbody>
-            <tr>
-              <td>Denature</td>
-              <td>{{plate.protocol.denature_temp}}</td>
-              <td>{{plate.protocol.denature_duration}}</td>
-            </tr>
-            <tr>
-              <td>Anneal</td>
-              <td>{{plate.protocol.anneal_temp}}</td>
-              <td>{{plate.protocol.anneal_duration}}</td>
-            </tr>
-            <tr>
-              <td>Extend</td>
-              <td>{{plate.protocol.extension_temp}}</td>
-              <td>{{plate.protocol.extension_duration}}</td>
-            </tr>
-          </tbody>
+              <tbody>
+                {% for reagent in assay.reagents %}
+                  {% if reagent.pcr_reagent == PRIMER %}
+                  <tr class="table-light">
+                    <td>{{reagent.name}} - {{assay.name}}</td>
+                    <td>{{reagent.sequence}}</td>
+                  </tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
 
-        </table>
+            </table>
+          </div>
+        {% endfor %}
+
+        <div class="table-responsive col-sm-4">
+          <table class="table table-bordered table-text-tcp">
+            <thead>
+              <tr>
+                <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
+                <th scope="col">Temperature (°C)</th>
+                <th scope="col">Duration (sec.)</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Denature</td>
+                <td>{{plate.protocol.denature_temp}}</td>
+                <td>{{plate.protocol.denature_duration}}</td>
+              </tr>
+              <tr>
+                <td>Anneal</td>
+                <td>{{plate.protocol.anneal_temp}}</td>
+                <td>{{plate.protocol.anneal_duration}}</td>
+              </tr>
+              <tr>
+                <td>Extend</td>
+                <td>{{plate.protocol.extension_temp}}</td>
+                <td>{{plate.protocol.extension_duration}}</td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
       </div>
         
       <div class="row">
@@ -12818,35 +12899,62 @@
         </div>
       {% endif %}
 
-      <div class="table-responsive col-sm-4">
-        <table class="table table-bordered table-text-tcp">
-          <thead>
-            <tr>
-              <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
-              <th scope="col">Temperature (°C)</th>
-              <th scope="col">Duration (sec.)</th>
-            </tr>
-          </thead>
+      <div class="row">
+        {% for assay in plate.assays %}
+          <div class="table-responsive col-sm-4">
+            <table class="table table-bordered table-text-tcp">
+              <thead>
+                <tr>
+                  <th scope="col">Primer &amp; Assay</th>
+                  <th scope="col">Sequence (3' to 5')</th>
+                </tr>
+              </thead>
 
-          <tbody>
-            <tr>
-              <td>Denature</td>
-              <td>{{plate.protocol.denature_temp}}</td>
-              <td>{{plate.protocol.denature_duration}}</td>
-            </tr>
-            <tr>
-              <td>Anneal</td>
-              <td>{{plate.protocol.anneal_temp}}</td>
-              <td>{{plate.protocol.anneal_duration}}</td>
-            </tr>
-            <tr>
-              <td>Extend</td>
-              <td>{{plate.protocol.extension_temp}}</td>
-              <td>{{plate.protocol.extension_duration}}</td>
-            </tr>
-          </tbody>
+              <tbody>
+                {% for reagent in assay.reagents %}
+                  {% if reagent.pcr_reagent == PRIMER %}
+                  <tr class="table-light">
+                    <td>{{reagent.name}} - {{assay.name}}</td>
+                    <td>{{reagent.sequence}}</td>
+                  </tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
 
-        </table>
+            </table>
+          </div>
+        {% endfor %}
+
+        <div class="table-responsive col-sm-4">
+          <table class="table table-bordered table-text-tcp">
+            <thead>
+              <tr>
+                <th scope="col">{{plate.protocol.name}} for {{plate.protocol.number_of_cycles}} Cycles</th>
+                <th scope="col">Temperature (°C)</th>
+                <th scope="col">Duration (sec.)</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Denature</td>
+                <td>{{plate.protocol.denature_temp}}</td>
+                <td>{{plate.protocol.denature_duration}}</td>
+              </tr>
+              <tr>
+                <td>Anneal</td>
+                <td>{{plate.protocol.anneal_temp}}</td>
+                <td>{{plate.protocol.anneal_duration}}</td>
+              </tr>
+              <tr>
+                <td>Extend</td>
+                <td>{{plate.protocol.extension_temp}}</td>
+                <td>{{plate.protocol.extension_duration}}</td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
       </div>
         
       <div class="row">
