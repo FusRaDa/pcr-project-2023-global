@@ -513,14 +513,16 @@ def create_reagent(request):
     if form.is_valid():
       reagent = form.save(commit=False)
 
-      seq = form.cleaned_data['sequence']
+      fseq = form.cleaned_data['forward_sequence']
+      rseq = form.cleaned_data['reverse_sequence']
       usage = form.cleaned_data['usage']
 
-      if seq:
-        reagent.sequence = seq.upper()
+      if fseq:
+        reagent.forward_sequence = fseq.upper()
+      if rseq:
+        reagent.reverse_sequence = rseq.upper()
 
       reagent.user = request.user
-      
       reagent = form.save()
 
       base_url = reverse('reagents')
@@ -549,6 +551,14 @@ def edit_reagent(request, pk):
   if 'update' in request.POST:
     form = EditReagentForm(request.POST, user=request.user, instance=reagent)
     if form.is_valid():
+      fseq = form.cleaned_data['forward_sequence']
+      rseq = form.cleaned_data['reverse_sequence']
+
+      if fseq:
+        reagent.forward_sequence = fseq.upper()
+      if rseq:
+        reagent.reverse_sequence = rseq.upper()
+
       form.save()
       
       base_url = reverse('reagents')

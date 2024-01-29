@@ -3261,30 +3261,27 @@
       {% endif %}
       
       <div class="row">
-        {% for assay in plate.assays %}
-          <div class="table-responsive col-sm-4">
-            <table class="table table-bordered table-text-tcp">
-              <thead>
-                <tr>
-                  <th scope="col">Primer &amp; Assay</th>
-                  <th scope="col">Sequence (3' to 5')</th>
+
+        <div class="table-responsive col-sm-4">
+          <table class="table table-bordered table-text-tcp">
+            <thead>
+              <tr>
+                <th scope="col">Primer &amp; Assay</th>
+                <th scope="col">Sequence (3' to 5')</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for primer in plate.primers %}
+                <tr class="table-light">
+                  <td>{{primer.name}} - {{primer.assay}}</td>
+                  <td>{{primer.sequence}}</td>
                 </tr>
-              </thead>
+              {% endfor %}
+            </tbody>
 
-              <tbody>
-                {% for reagent in assay.reagents %}
-                  {% if reagent.pcr_reagent == PRIMER %}
-                  <tr class="table-light">
-                    <td>{{reagent.name}} - {{assay.name}}</td>
-                    <td>{{reagent.sequence}}</td>
-                  </tr>
-                  {% endif %}
-                {% endfor %}
-              </tbody>
-
-            </table>
-          </div>
-        {% endfor %}
+          </table>
+        </div>
 
         <div class="table-responsive col-sm-4">
           <table class="table table-bordered table-text-tcp">

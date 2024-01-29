@@ -259,7 +259,8 @@ class Reagent(models.Model):
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)
 
-  sequence = models.CharField(blank=True, null=True, max_length=50)
+  forward_sequence = models.CharField(blank=True, null=True, max_length=50) # 3 to 5
+  reverse_sequence = models.CharField(blank=True, null=True, max_length=50) # 5 to 3
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)

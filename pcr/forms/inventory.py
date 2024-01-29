@@ -322,7 +322,8 @@ class ReagentForm(ModelForm):
     unit = cleaned_data.get('unit_concentration')
     pcr_reagent = cleaned_data.get('pcr_reagent')
     usage = cleaned_data.get('usage')
-    sequence = cleaned_data.get('sequence')
+    forward_sequence = cleaned_data.get('forward_sequence')
+    reverse_sequence = cleaned_data.get('reverse_sequence')
 
     if usage == Reagent.Usages.EXTRACTION and (stock != None or unit != None):
       raise ValidationError(
@@ -349,15 +350,19 @@ class ReagentForm(ModelForm):
         message="All reagents for PCR except water must have a concentration."
       )
     
-    if pcr_reagent != Reagent.PCRReagent.PRIMER and sequence != None:
+    if pcr_reagent != Reagent.PCRReagent.PRIMER and forward_sequence != None or pcr_reagent != Reagent.PCRReagent.PRIMER and reverse_sequence != None:
       raise ValidationError(
         message="Only primers require a sequence."
       )
     
     valid_seq = re.compile('[^GUACT]')
-    if sequence and valid_seq.search(sequence.upper()) is not None:
+    if forward_sequence and valid_seq.search(forward_sequence.upper()) is not None:
       raise ValidationError(
-        message="Sequence for primer contains invalid characters."
+        message="Forward sequence for primer contains invalid characters."
+      )
+    if reverse_sequence and valid_seq.search(reverse_sequence.upper()) is not None:
+      raise ValidationError(
+        message="Reverse sequence for primer contains invalid characters."
       )
     
   def __init__(self, *args, **kwargs):
@@ -377,7 +382,8 @@ class ReagentForm(ModelForm):
     self.fields['unit_volume'].widget.attrs['class'] = 'form-select'
     self.fields['stock_concentration'].widget.attrs['class'] = 'form-control'
     self.fields['unit_concentration'].widget.attrs['class'] = 'form-select'
-    self.fields['sequence'].widget.attrs['class'] = 'form-control'
+    self.fields['forward_sequence'].widget.attrs['class'] = 'form-control'
+    self.fields['reverse_sequence'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
   
   class Meta:
@@ -397,16 +403,68 @@ class EditReagentForm(ModelForm):
     label='Date Start',
     required=False)
   
+  def clean(self):
+    cleaned_data = super().clean()
+    stock = cleaned_data.get('stock_concentration')
+    unit = cleaned_data.get('unit_concentration')
+    pcr_reagent = cleaned_data.get('pcr_reagent')
+    usage = cleaned_data.get('usage')
+    forward_sequence = cleaned_data.get('forward_sequence')
+    reverse_sequence = cleaned_data.get('reverse_sequence')
+
+    if usage == Reagent.Usages.EXTRACTION and (stock != None or unit != None):
+      raise ValidationError(
+        message="If reagent is for extraction, stock concentration is not needed."
+      )
+
+    if pcr_reagent != None and usage == Reagent.Usages.EXTRACTION:
+      raise ValidationError(
+        message="Leave PCR reagent type empty if reagent usage is for extraction."
+      )
+    
+    if pcr_reagent == None and usage == Reagent.Usages.PCR:
+      raise ValidationError(
+        message="Select PCR reagent type if reagent usage is for PCR."
+      )
+    
+    if pcr_reagent == Reagent.PCRReagent.WATER and (stock != None or unit != None):
+      raise ValidationError(
+        message="Water for PCR does not require concentration."
+      )
+  
+    if usage == Reagent.Usages.PCR and pcr_reagent != Reagent.PCRReagent.WATER and (stock == None or unit == None):
+      raise ValidationError(
+        message="All reagents for PCR except water must have a concentration."
+      )
+    
+    if pcr_reagent != Reagent.PCRReagent.PRIMER and forward_sequence != None or pcr_reagent != Reagent.PCRReagent.PRIMER and reverse_sequence != None:
+      raise ValidationError(
+        message="Only primers require a sequence."
+      )
+    
+    valid_seq = re.compile('[^GUACT]')
+    if forward_sequence and valid_seq.search(forward_sequence.upper()) is not None:
+      raise ValidationError(
+        message="Forward sequence for primer contains invalid characters."
+      )
+    if reverse_sequence and valid_seq.search(reverse_sequence.upper()) is not None:
+      raise ValidationError(
+        message="Reverse sequence for primer contains invalid characters."
+      )
+  
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
 
+    self.fields['pcr_reagent'].widget.attrs['class'] = 'form-select'
+    self.fields['forward_sequence'].widget.attrs['class'] = 'form-control'
+    self.fields['reverse_sequence'].widget.attrs['class'] = 'form-control'
     self.fields['volume'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
     self.fields['unit_volume'].widget.attrs['class'] = 'form-select'
   
   class Meta:
     model = Reagent
-    fields = ['location', 'volume', 'exp_date', 'unit_volume']
+    fields = ['location', 'volume', 'exp_date', 'unit_volume', 'pcr_reagent', 'forward_sequence', 'reverse_sequence']
     exclude = ['user', 'last_updated']

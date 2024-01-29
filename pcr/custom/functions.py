@@ -3,6 +3,8 @@ from ..models.assay import Assay
 from ..models.inventory import Plate
 import math
 
+from ..models.inventory import Reagent
+
 
 def create_samples(number_of_samples, lab_id, user):
   batch = Batch.objects.get(user=user, lab_id=lab_id)
@@ -288,6 +290,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
   }}
   assays_data = {'assays': []}
   samples_data = {'samples': {}}
+  primers_data = {'primers': []}
 
   remaining_wells = plate.size
   position = 0
@@ -348,10 +351,19 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
               'unit_concentration': reagent.reagent.unit_concentration,
               'final_stock_concentration': final_stock_concentration,
               'final_unit_concentration': reagent.final_concentration_unit,
-              'pcr_reagent': reagent.reagent.pcr_reagent,
-              'sequence': reagent.reagent.sequence,
               'dilution_factor': dilution_factor,
             })
+
+            if reagent.reagent.pcr_reagent == Reagent.PCRReagent.PRIMER:
+              primer_dict = {
+                'pk': reagent.reagent.pk, 
+                'name': reagent.reagent.name, 
+                'forward_sequence': reagent.reagent.forward_sequence, 
+                'reverse_sequence': reagent.reagent.reverse_sequence, 
+                'assay': assay.name
+              }
+              primers_data['primers'].append(primer_dict)
+
           assays_data['assays'].append(assay_dict)
 
           # add validation if plate size is insufficient to even hold only one assay w/ controls
@@ -476,10 +488,19 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
                 'unit_concentration': reagent.reagent.unit_concentration,
                 'final_stock_concentration': final_stock_concentration,
                 'final_unit_concentration': reagent.final_concentration_unit,
-                'pcr_reagent': reagent.reagent.pcr_reagent,
-                'sequence': reagent.reagent.sequence,
                 'dilution_factor': dilution_factor,
               })
+
+              if reagent.reagent.pcr_reagent == Reagent.PCRReagent.PRIMER:
+                primer_dict = {
+                'pk': reagent.reagent.pk, 
+                'name': reagent.reagent.name, 
+                'forward_sequence': reagent.reagent.forward_sequence, 
+                'reverse_sequence': reagent.reagent.reverse_sequence, 
+                'assay': assay.name
+                }
+                primers_data['primers'].append(primer_dict)
+
             assays_data['assays'].append(assay_dict)
 
             for control in assay.controlassay_set.all().order_by('order'):
@@ -499,8 +520,12 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
         for sample in loaded_samples:
           samples.remove(sample)
 
+  sorted_primers_data = [dict(tupleized) for tupleized in set(tuple(item.items()) for item in primers_data['primers'])]
+  primers_data['primers'].clear()
+  primers_data['primers'] = sorted_primers_data
+          
   # create plate dictionary that contains plate, tcprotocol, assays, and samples
-  plate_dict = protocol_data | plate_data | assays_data | samples_data
+  plate_dict = protocol_data | plate_data | assays_data | samples_data | primers_data
   return plate_dict, all_samples
 
 
