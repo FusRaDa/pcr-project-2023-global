@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 
@@ -95,7 +95,7 @@ class Assay(models.Model):
   dye_volume_per_well = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12, default=0) # in microliters
   dye_in_ladder = models.BooleanField(default=True)
 
-  # multiplicates = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], default=1)
+  multiplicates = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], default=1)
   
   fluorescence = models.ManyToManyField(Fluorescence)
   controls = models.ManyToManyField(Control, through='ControlAssay')

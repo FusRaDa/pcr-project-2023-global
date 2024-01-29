@@ -40,11 +40,16 @@ def samples_by_assay(samples):
   
   assay_samples = []
   for assay in assays:
-    x = {assay:[]}
-    for sample in samples:
-      if sample.assays.contains(assay):
-        x[assay].append(sample)
-    assay_samples.append(x)
+    
+    multiplicates = assay.multiplicates
+    while multiplicates > 0:
+      x = {assay:[]}
+      for sample in samples:
+        if sample.assays.contains(assay):
+          x[assay].append(sample)
+      assay_samples.append(x)
+      multiplicates -= 1
+
   return assay_samples
 
 

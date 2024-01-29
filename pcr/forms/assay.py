@@ -179,6 +179,7 @@ class AssayForm(ModelForm):
     self.fields['ladder_volume_per_gel'].widget.attrs['class'] = 'form-control'
     self.fields['dye'].widget.attrs['class'] = 'form-select'
     self.fields['dye_volume_per_well'].widget.attrs['class'] = 'form-control'
+    self.fields['multiplicates'].widget.attrs['class'] = 'form-control'
     
   class Meta:
     model = Assay

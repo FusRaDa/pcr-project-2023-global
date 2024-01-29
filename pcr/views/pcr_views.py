@@ -230,6 +230,7 @@ def process_paperwork(request, pk):
   
   samples = process.samples.all()
   assay_samples = samples_by_assay(samples)
+  print(assay_samples)
 
   requires_dna_pcr = False
   requires_rna_pcr = False
