@@ -18,8 +18,8 @@ def assays(request):
   assays = Assay.objects.filter(user=request.user).order_by('name')
 
   form = SearchAssayForm()
-  if request.method == "POST":
-    form = SearchAssayForm(request.POST)
+  if request.method == "GET":
+    form = SearchAssayForm(request.GET)
     if form.is_valid():
       name = form.cleaned_data['name']
       method = form.cleaned_data['method']
@@ -160,8 +160,8 @@ def fluorescence(request):
   fluorescence = Fluorescence.objects.filter(user=request.user).order_by('name')
 
   form = SearchFluorescenseForm()
-  if request.method == "POST":
-    form = SearchFluorescenseForm(request.POST)
+  if request.method == "GET":
+    form = SearchFluorescenseForm(request.GET)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       fluorescence  = Fluorescence.objects.filter(Q(name__icontains=text_search) | Q(assay__name__icontains=text_search)).distinct().order_by('name')
@@ -229,8 +229,8 @@ def controls(request):
   controls = Control.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
 
   form = SearchControlForm(user=request.user)
-  if request.method == "POST":
-    form = SearchControlForm(request.POST, user=request.user)
+  if request.method == "GET":
+    form = SearchControlForm(request.GET, user=request.user)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']

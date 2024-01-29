@@ -17,8 +17,8 @@ def extraction_protocols(request):
   protocols = ExtractionProtocol.objects.filter(user=request.user).order_by('type')
 
   form = SearchExtractionProtocolForm()
-  if request.method == "POST":
-    form = SearchExtractionProtocolForm(request.POST)
+  if request.method == "GET":
+    form = SearchExtractionProtocolForm(request.GET)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       type = form.cleaned_data['type']

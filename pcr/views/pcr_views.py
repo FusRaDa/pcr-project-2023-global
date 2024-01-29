@@ -91,8 +91,8 @@ def extracted_batches(request):
     return redirect(request.path_info)
   
   form = SearchBatchForm(user=request.user)
-  if 'search' in request.POST:
-    form = SearchBatchForm(request.POST, user=request.user)
+  if request.method == "GET":
+    form = SearchBatchForm(request.GET, user=request.user)
     if form.is_valid():
       name = form.cleaned_data['name']
       lab_id = form.cleaned_data['lab_id']
@@ -123,7 +123,7 @@ def extracted_batches(request):
         end_date += datetime.timedelta(days=1)
         filters['date_created__range'] = [start_date, end_date]
 
-      batches = Batch.objects.filter(**filters, is_extracted=True).order_by('-date_created')
+      batches = Batch.objects.filter(**filters, is_extracted=True, user=request.user).order_by('-date_created')
     else:
       print(form.errors)
 
@@ -548,8 +548,8 @@ def processes(request):
   processes = Process.objects.filter(user=request.user, is_processed=True).order_by('-date_processed')
 
   form = SearchProcessForm(user=request.user)
-  if request.method == "POST":
-    form = SearchProcessForm(request.POST, user=request.user)
+  if request.method == "GET":
+    form = SearchProcessForm(request.GET, user=request.user)
     if form.is_valid():
       name = form.cleaned_data['name']
       panel = form.cleaned_data['panel']
@@ -577,7 +577,7 @@ def processes(request):
         end_date += datetime.timedelta(days=1)
         filters['date_processed__range'] = [start_date, end_date]
 
-      processes = Process.objects.filter(**filters, is_processed=True).order_by('-date_processed')
+      processes = Process.objects.filter(**filters, is_processed=True, user=request.user).order_by('-date_processed')
     else:
       print(form.errors)
 

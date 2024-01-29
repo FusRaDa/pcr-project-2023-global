@@ -35,8 +35,8 @@ def store(request):
   kits = Kit.objects.all().order_by('name')
 
   form = SearchStoreForm()
-  if request.method == 'POST':
-    form = SearchStoreForm(request.POST)
+  if request.method == 'GET':
+    form = SearchStoreForm(request.GET)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       brands = form.cleaned_data['brands']

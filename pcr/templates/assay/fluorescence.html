@@ -31,8 +31,7 @@
     </div>
   </div>
 
-  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="POST" action="">
-    {% csrf_token %}
+  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
     <div class="col-sm-3">
       <div class="input-group">
         <div class="input-group-text">Name/Assays</div>
@@ -41,7 +40,7 @@
     </div>
     <div class="col-auto">
       <a class="btn btn-secondary me-1" href="{% url 'fluorescence' %}" role="button">Clear</a>
-      <button type="submit" class="btn btn-primary" name="search">Search</button>
+      <button type="submit" class="btn btn-primary">Search</button>
     </div>
   </form>
 

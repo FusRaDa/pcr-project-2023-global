@@ -78,8 +78,8 @@ def ladders(request):
   ladders = Ladder.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
 
   form = SearchLadderForm(user=request.user)
-  if request.method == 'POST':
-    form = SearchLadderForm(request.POST, user=request.user)
+  if request.method == 'GET':
+    form = SearchLadderForm(request.GET, user=request.user)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']
@@ -154,8 +154,8 @@ def gels(request):
   gels = Gel.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
 
   form = SearchGelForm(user=request.user)
-  if request.method == 'POST':
-    form = SearchGelForm(request.POST, user=request.user)
+  if request.method == 'GET':
+    form = SearchGelForm(request.GET, user=request.user)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']
@@ -234,8 +234,8 @@ def dyes(request):
   dyes = Dye.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
 
   form = SearchDyeForm(user=request.user)
-  if request.method == 'POST':
-    form = SearchDyeForm(request.POST, user=request.user)
+  if request.method == 'GET':
+    form = SearchDyeForm(request.GET, user=request.user)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']
@@ -312,8 +312,8 @@ def plates(request):
   plates = Plate.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
 
   form = SearchPlateForm(user=request.user)
-  if request.method == 'POST':
-    form = SearchPlateForm(request.POST, user=request.user)
+  if request.method == 'GET':
+    form = SearchPlateForm(request.GET, user=request.user)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']
@@ -396,8 +396,8 @@ def tubes(request):
   tubes = Tube.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
 
   form = SearchTubeForm(user=request.user)
-  if request.method == 'POST':
-    form = SearchTubeForm(request.POST, user=request.user)
+  if request.method == 'GET':
+    form = SearchTubeForm(request.GET, user=request.user)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']
@@ -474,8 +474,8 @@ def reagents(request):
   reagents = Reagent.objects.filter(user=request.user).order_by(F('exp_date').asc(nulls_last=True))
 
   form = SearchReagentForm(user=request.user)
-  if request.method == 'POST':
-    form = SearchReagentForm(request.POST, user=request.user)
+  if request.method == 'GET':
+    form = SearchReagentForm(request.GET, user=request.user)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']

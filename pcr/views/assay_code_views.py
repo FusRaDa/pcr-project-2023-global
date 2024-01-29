@@ -16,8 +16,8 @@ def assay_codes(request):
   assay_codes = AssayCode.objects.filter(user=request.user).order_by('name')
 
   form = SearchAssayCodeForm()
-  if request.method == "POST":
-    form = SearchAssayCodeForm(request.POST)
+  if request.method == "GET":
+    form = SearchAssayCodeForm(request.GET)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       assay_codes  = AssayCode.objects.filter(Q(name__icontains=text_search) | Q(assays__name__icontains=text_search)).distinct().order_by('name')
