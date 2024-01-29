@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
+from django.urls import reverse
+from urllib.parse import urlencode
 from django.db.models import F
 from django.db.models import Q
 from django.contrib import messages
@@ -512,11 +514,20 @@ def create_reagent(request):
       reagent = form.save(commit=False)
 
       seq = form.cleaned_data['sequence']
-      reagent.sequence = seq.upper()
+      usage = form.cleaned_data['usage']
+
+      if seq:
+        reagent.sequence = seq.upper()
+
       reagent.user = request.user
       
       reagent = form.save()
-      return redirect('reagents')
+
+      base_url = reverse('reagents')
+      query_string =  urlencode({'usage': usage})
+      url = '{}?{}'.format(base_url, query_string)
+
+      return redirect(url)
     else:
       print(form.errors)
 
@@ -539,7 +550,12 @@ def edit_reagent(request, pk):
     form = EditReagentForm(request.POST, user=request.user, instance=reagent)
     if form.is_valid():
       form.save()
-      return redirect('reagents')
+      
+      base_url = reverse('reagents')
+      query_string =  urlencode({'usage': reagent.usage})
+      url = '{}?{}'.format(base_url, query_string)
+
+      return redirect(url)
     else:
       print(form.errors)
  
@@ -547,7 +563,12 @@ def edit_reagent(request, pk):
     del_form = DeletionForm(request.POST, value=reagent.name)
     if del_form.is_valid():
       reagent.delete()
-      return redirect('reagents')
+
+      base_url = reverse('reagents')
+      query_string =  urlencode({'usage': reagent.usage})
+      url = '{}?{}'.format(base_url, query_string)
+
+      return redirect(url)
     else:
       print(del_form.errors)
 
