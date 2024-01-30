@@ -13,7 +13,7 @@ class Batch(models.Model):
 
   # Batch refers to a list of samples that are to be extracted
   name = models.CharField(blank=False, max_length=25)
-  lab_id = models.CharField(blank=False, max_length=5) # This will be a short STRING to be shown on the plate such as ABC
+  lab_id = models.CharField(blank=False, max_length=3) # This will be a short STRING to be shown on the plate such as ABC
 
   code = models.ForeignKey(AssayCode, on_delete=models.RESTRICT) # a batch can only refer to one list of assays (AssayList) - but users can individually edit samples after
   extraction_protocol = models.ForeignKey(ExtractionProtocol, on_delete=models.RESTRICT)

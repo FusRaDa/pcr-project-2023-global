@@ -553,16 +553,21 @@ def edit_reagent(request, pk):
     if form.is_valid():
       fseq = form.cleaned_data['forward_sequence']
       rseq = form.cleaned_data['reverse_sequence']
-
+      
       if fseq:
-        reagent.forward_sequence = fseq.upper()
+        form.forward_sequence = fseq.upper()
       if rseq:
-        reagent.reverse_sequence = rseq.upper()
+        form.reverse_sequence = rseq.upper()
 
       form.save()
       
       base_url = reverse('reagents')
-      query_string =  urlencode({'usage': reagent.usage})
+
+      if reagent.pcr_reagent == Reagent.PCRReagent.PRIMER:
+        query_string =  urlencode({'usage': reagent.usage, 'pcr_reagent': Reagent.PCRReagent.PRIMER})
+      else:
+        query_string =  urlencode({'usage': reagent.usage})
+
       url = '{}?{}'.format(base_url, query_string)
 
       return redirect(url)

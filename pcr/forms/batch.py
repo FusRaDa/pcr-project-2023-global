@@ -1,3 +1,4 @@
+import re
 from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
@@ -53,6 +54,17 @@ class BatchForm(ModelForm):
     extraction_protocol_dna = cleaned_data.get('extraction_protocol_dna')
     extraction_protocol_rna = cleaned_data.get('extraction_protocol_rna')
     extraction_protocol_tn = cleaned_data.get('extraction_protocol_tn')
+
+    if len(lab_id) != 3:
+      raise ValidationError(
+        message="Lab ID must contain three capitalized English letters."
+      )
+
+    valid_lab_id = re.compile('^[A-Z]+$')
+    if valid_lab_id.match(lab_id.upper()) is None:
+      raise ValidationError(
+        message="Lab ID contains must only contain English letters."
+      )
 
     if Batch.objects.filter(user=self.user, lab_id=lab_id).exists():
       raise ValidationError(
