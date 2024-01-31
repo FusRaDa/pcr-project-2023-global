@@ -60,12 +60,6 @@
   </div>
 
   <div class="text-center mb-2">
-    <h6>
-      **Make sure to confirm/modify assays for each sample before updating sample ID's**
-    </h6>
-  </div>
-
-  <div class="text-center mb-2">
     <a href="{% url 'batch_paperwork' batch.pk %}" target="_blank" class="btn btn-info">Preview</a>
     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#number-samples" id="reset">
       Reset Samples
@@ -73,6 +67,12 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#populate-modal">
       Insert ID's
     </button>
+  </div>
+
+  <div class="text-center mb-2">
+    <h6 class="text-danger"> 
+      **Update sample ID's first. If you decide to add an additional assay to a sample, add that assay to the negative control as well.**
+    </h6>
   </div>
 
   <form action="" method="POST">
