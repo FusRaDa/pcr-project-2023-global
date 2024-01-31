@@ -317,6 +317,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
       break
     
     for assay, samples in data.items():
+      
       if len(samples) != 0:
 
         loaded_samples = [] # collect keys to delete later after samples have been added to the json file
@@ -423,7 +424,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
               }}
               samples_data['samples'].update(control_data)
 
-            remaining_wells -= block
+            remaining_wells -= wells_in_row
             position = block
 
           else:
@@ -447,8 +448,9 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
                 }}
                 samples_data['samples'].update(control_data)
 
-              remaining_wells -= block
+              remaining_wells -= wells_in_row
               position = block
+
             else:
               for control in assay.controlassay_set.all().order_by('order'):
                 position += 1
