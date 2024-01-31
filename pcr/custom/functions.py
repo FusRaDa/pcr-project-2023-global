@@ -317,7 +317,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
       break
     
     for assay, samples in data.items():
-      
+
       if len(samples) != 0:
 
         loaded_samples = [] # collect keys to delete later after samples have been added to the json file
@@ -448,7 +448,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
                 }}
                 samples_data['samples'].update(control_data)
 
-              remaining_wells -= wells_in_row
+              remaining_wells -= (wells_in_row * 2)
               position = block
 
             else:
@@ -462,7 +462,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
                 }}
                 samples_data['samples'].update(control_data)
               remaining_wells -= position
-        # if assay samples wont fit in remaining wells... (total wells > remaining_wells)
+        # comment - if assay samples wont fit in remaining wells... (total wells > remaining_wells)
         else:
           # create validation for minimum_samples_in_plate where it cannot be negative or greater than smallest plate size. 
           if minimum_samples_in_plate + control_wells <= remaining_wells:
