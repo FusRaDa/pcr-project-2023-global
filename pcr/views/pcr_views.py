@@ -17,7 +17,7 @@ from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
 from ..models.inventory import Reagent, Plate
-from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_gels, all_pcr_samples
+from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_gels, all_pcr_samples, samples_by_assay_multiplicates
 
 
 @login_required(login_url='login')
@@ -229,7 +229,7 @@ def process_paperwork(request, pk):
     return redirect('extracted_batches')
   
   samples = process.samples.all()
-  assay_samples = samples_by_assay(samples)
+  assay_samples = samples_by_assay_multiplicates(samples)
 
   requires_dna_pcr = False
   requires_rna_pcr = False

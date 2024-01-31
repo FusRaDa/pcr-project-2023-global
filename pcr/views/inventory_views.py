@@ -526,7 +526,7 @@ def create_reagent(request):
       reagent = form.save()
 
       base_url = reverse('reagents')
-      query_string =  urlencode({'usage': usage})
+      query_string = urlencode({'usage': usage})
       url = '{}?{}'.format(base_url, query_string)
 
       return redirect(url)
@@ -564,9 +564,9 @@ def edit_reagent(request, pk):
       base_url = reverse('reagents')
 
       if reagent.pcr_reagent == Reagent.PCRReagent.PRIMER:
-        query_string =  urlencode({'usage': reagent.usage, 'pcr_reagent': Reagent.PCRReagent.PRIMER})
+        query_string = urlencode({'usage': reagent.usage, 'pcr_reagent': Reagent.PCRReagent.PRIMER})
       else:
-        query_string =  urlencode({'usage': reagent.usage})
+        query_string = urlencode({'usage': reagent.usage})
 
       url = '{}?{}'.format(base_url, query_string)
 
@@ -580,7 +580,7 @@ def edit_reagent(request, pk):
       reagent.delete()
 
       base_url = reverse('reagents')
-      query_string =  urlencode({'usage': reagent.usage})
+      query_string = urlencode({'usage': reagent.usage})
       url = '{}?{}'.format(base_url, query_string)
 
       return redirect(url)

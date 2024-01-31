@@ -32,8 +32,24 @@ def create_samples(number_of_samples, lab_id, user):
 
   control.assays.add(*assays)
 
-
 def samples_by_assay(samples):
+  all_assays = []
+  for sample in samples:
+    for assay in sample.assays.all():
+      all_assays.append(assay)
+  assays = list(set(all_assays))
+  
+  assay_samples = []
+  for assay in assays:
+    x = {assay:[]}
+    for sample in samples:
+      if sample.assays.contains(assay):
+        x[assay].append(sample)
+    assay_samples.append(x)
+  return assay_samples
+
+
+def samples_by_assay_multiplicates(samples):
   all_assays = []
   for sample in samples:
     for assay in sample.assays.all():
