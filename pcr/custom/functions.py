@@ -403,10 +403,10 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
           row = math.floor(position / wells_in_row) + 1
           if position % wells_in_row == 0: # if position is the last on the row make sure it is assigned to the proper row
             row -= 1
-          rem_wells_in_row = (row * wells_in_row) - position + 1
+          rem_wells_in_row = (row * wells_in_row) - position
 
           # if there is enough room in the same row add controls
-          if control_wells < rem_wells_in_row:
+          if control_wells <= rem_wells_in_row:
             block = (row * wells_in_row)
             start = block - control_wells
             cwells = []
@@ -424,9 +424,9 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
               }}
               samples_data['samples'].update(control_data)
 
-            remaining_wells -= wells_in_row
+            remaining_wells = (plate.size - block)
             position = block
-
+          
           else:
             # move to next row only if plate size is not 8 - since there is no "row"
             if plate.size != Plate.Sizes.EIGHT:
@@ -448,20 +448,23 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
                 }}
                 samples_data['samples'].update(control_data)
 
-              remaining_wells -= (wells_in_row * 2)
+              remaining_wells = (plate.size - block)
               position = block
 
-            else:
-              for control in assay.controlassay_set.all().order_by('order'):
-                position += 1
-                control_data = {f"well{position}": {
-                  'color': control_color,
-                  'lab_id': control.control.name,
-                  'sample_id': control.control.lot_number,
-                  'assay': assay.name
-                }}
-                samples_data['samples'].update(control_data)
-              remaining_wells -= position
+            # IS THIS NECESSARY? #
+            # else:
+            #   for control in assay.controlassay_set.all().order_by('order'):
+            #     position += 1
+            #     control_data = {f"well{position}": {
+            #       'color': control_color,
+            #       'lab_id': control.control.name,
+            #       'sample_id': control.control.lot_number,
+            #       'assay': assay.name
+            #     }}
+            #     samples_data['samples'].update(control_data)
+            #   remaining_wells -= position
+            # IS THIS NECESSARY? #
+              
         # comment - if assay samples wont fit in remaining wells... (total wells > remaining_wells)
         else:
           # create validation for minimum_samples_in_plate where it cannot be negative or greater than smallest plate size. 
