@@ -538,7 +538,7 @@ def process_paperwork(request, pk):
     'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 
     'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json, 
     'qpcr_plates': qpcr_plates, 'pcr_plates': pcr_plates, 'gels': gels,
-    'pcr_gels_json': pcr_gels_json,
+    'pcr_gels_json': pcr_gels_json, 'process': process,
     }
   return render(request, 'pcr/process_paperwork.html', context)
 
