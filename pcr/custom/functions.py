@@ -229,10 +229,11 @@ def all_pcr_samples(assay_samples):
 
 
 def choose_plate(all_samples, plates):
-  total_wells_used= 0
+  total_wells_used = 0
   for assay_group in all_samples:
     for assay, samples in assay_group.items():
-      total_wells_used += (len(samples) + assay.controls.count())
+      if len(samples) > 0:
+        total_wells_used += (len(samples) + assay.controls.count())
 
   chosen_plate = None     
   for plate in plates:
@@ -243,7 +244,7 @@ def choose_plate(all_samples, plates):
       break
 
   if chosen_plate == None:
-    rev_list = sorted(plates, key=lambda x: x['size'])
+    rev_list = sorted(plates, key=lambda x: x['size'], reverse=True)
     for plate in rev_list:
       if plate['amount'] > 0:
         plate['amount'] -= 1
@@ -263,7 +264,8 @@ def choose_gel(all_samples, gels):
   total_wells_used = 0
   for assay_group in all_samples:
     for assay, samples in assay_group.items():
-      total_wells_used += (len(samples) + assay.controls.count())
+      if len(samples) > 0:
+        total_wells_used += (len(samples) + assay.controls.count())
 
   chosen_gel = None
   for gel in gels:
@@ -274,7 +276,7 @@ def choose_gel(all_samples, gels):
       break
   
   if chosen_gel == None:
-    rev_list = sorted(gels, key=lambda x: x['size'])
+    rev_list = sorted(gels, key=lambda x: x['size'], reverse=True)
     for plate in rev_list:
       if plate['amount'] > 0:
         plate['amount'] -= 1
@@ -451,19 +453,19 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
               remaining_wells = (plate.size - block)
               position = block
 
-            # IS THIS NECESSARY? #
-            # else:
-            #   for control in assay.controlassay_set.all().order_by('order'):
-            #     position += 1
-            #     control_data = {f"well{position}": {
-            #       'color': control_color,
-            #       'lab_id': control.control.name,
-            #       'sample_id': control.control.lot_number,
-            #       'assay': assay.name
-            #     }}
-            #     samples_data['samples'].update(control_data)
-            #   remaining_wells -= position
-            # IS THIS NECESSARY? #
+            # FOR 8-WELL PLATE ONLY TO ADD CONTROLS #
+            else:
+              for control in assay.controlassay_set.all().order_by('order'):
+                position += 1
+                control_data = {f"well{position}": {
+                  'color': control_color,
+                  'lab_id': control.control.name,
+                  'sample_id': control.control.lot_number,
+                  'assay': assay.name
+                }}
+                samples_data['samples'].update(control_data)
+              remaining_wells -= position
+            # FOR 8-WELL PLATE ONLY TO ADD CONTROLS #
               
         # comment - if assay samples wont fit in remaining wells... (total wells > remaining_wells)
         else:
@@ -544,7 +546,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
   sorted_primers_data = [dict(tupleized) for tupleized in set(tuple(item.items()) for item in primers_data['primers'])]
   primers_data['primers'].clear()
   primers_data['primers'] = sorted_primers_data
-          
+
   # create plate dictionary that contains plate, tcprotocol, assays, and samples
   plate_dict = protocol_data | plate_data | assays_data | samples_data | primers_data
   return plate_dict, all_samples
