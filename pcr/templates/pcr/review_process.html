@@ -27,31 +27,37 @@
 
         <div class="card mb-2">
           <h5 class="card-header">
-            <span>{{key}} ({{value|length}} Samples)</span>
-            <span class="float-end">{{key.type}}-{{key.method}}</span>
+            <span>{{key.name}} ({{value|length}} Samples)</span>
+            <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#samples-collapse-{{key.pk}}" aria-expanded="false" aria-controls="samples-collapse-{{key.pk}}">
+              ⮝
+            </button>
+            <span class="float-end me-2">{{key.type}}-{{key.method}}</span>
           </h5>
-          <div class="card-body">
 
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">Lab ID</th>
-                  <th scope="col">Sample ID</th>
-                  <th scope="col">Batch</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for sample in value %}
-                <tr>
-                  <td>{{sample.lab_id_num}}</td>
-                  <td>{{sample.sample_id}}</td>
-                  <td>{{sample.batch.name}}</td>
-                </tr>
-                {% endfor %}
-             
-              </tbody>
-            </table>
+          <div class="collapse show" id="samples-collapse-{{key.pk}}">
+            <div class="card-body">
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Lab ID</th>
+                    <th scope="col">Sample ID</th>
+                    <th scope="col">Batch</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for sample in value %}
+                  <tr>
+                    <td>{{sample.lab_id_num}}</td>
+                    <td>{{sample.sample_id}}</td>
+                    <td>{{sample.batch.name}}</td>
+                  </tr>
+                  {% endfor %}
+              
+                </tbody>
+              </table>
             
+            </div>
           </div>
         </div>
 
@@ -214,7 +220,7 @@
 <script>
   $('.btn-arrow').click(function(){
     $(this).text(function(i,old){
-      return old=='⮝' ?  '⮟' : '⮝';
+      return old=='⮟' ?  '⮝' : '⮟';
     });
   });
 </script>
