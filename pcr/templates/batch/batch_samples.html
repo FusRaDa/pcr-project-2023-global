@@ -107,15 +107,7 @@
                 <i class="fa-solid fa-vial-circle-check"></i>
               </a>
               {% for assay in samples.assays.all %}
-                {% if samples.assays.all|length > 1 %}
-                  <span>
-                    {{assay}} |
-                  </span>
-                {% else %}
-                  <span>
-                    {{assay}}
-                  </span>
-                {% endif %}
+                <span class="badge rounded-pill text-bg-success">{{assay}}</span>
               {% endfor %}
             </td>
           </tr>

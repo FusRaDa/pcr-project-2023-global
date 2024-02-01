@@ -118,7 +118,7 @@
                     <li class="list-group-item {% if sample.is_anomaly %} list-group-item-warning {% endif %}">
                       <div class="fw-bold">{{sample.lab_id_num}}: {{sample.sample_id}}</div>
                       {% for assay in sample.assays.all %}
-                      <span class="badge rounded-pill text-bg-primary">{{assay}}</span>
+                      <span class="badge rounded-pill text-bg-success">{{assay}}</span>
                       {% endfor %}
                       <button
                         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
