@@ -1,4 +1,5 @@
 from django.utils.timezone import now
+from decimal import Decimal
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy as _
@@ -283,11 +284,11 @@ class Reagent(models.Model):
   @property
   def volume_in_microliters(self):
     if self.unit_volume == Reagent.VolumeUnits.LITER:
-      return self.volume * 1000000
+      return Decimal(self.volume * 1000000)
     if self.unit_volume == Reagent.VolumeUnits.MILLILITER:
-      return self.volume * 1000
+      return Decimal(self.volume * 1000)
     if self.unit_volume == Reagent.VolumeUnits.MICROLITER:
-      return self.volume
+      return Decimal(self.volume)
 
   def __str__(self):
     return f"{self.name}-Lot#:{self.lot_number}"
