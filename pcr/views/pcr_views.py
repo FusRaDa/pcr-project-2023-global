@@ -292,8 +292,9 @@ def process_paperwork(request, pk):
   
   if 'process' in request.POST:
 
-    # **RECOLLECT REAGENTS FOR PCR & qPCR** #
+    # **RECOLLECT REAGENTS & CONTROLS FOR PCR & qPCR** #
     all_reagents = []
+    controls = []
     for plate in dna_qpcr_json:
       for assay in plate['assays']:
         for reagent in assay['reagents']:
@@ -377,7 +378,7 @@ def process_paperwork(request, pk):
                 dict['total'] += total_volume
                 break
           reagent.pop('reagent')
-    # **RECOLLECT REAGENTS FOR PCR & qPCR** #
+    # **RECOLLECT REAGENTS & CONTROLS FOR PCR & qPCR** #
     
 
     # **RECOLLECT DYES AND LADDERS ** #

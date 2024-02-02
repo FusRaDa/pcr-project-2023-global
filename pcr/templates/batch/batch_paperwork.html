@@ -37,36 +37,6 @@
       </div>
     </div>
 
-    <div class="table-responsive">
-      <h5 class="text-center">Samples</h5>
-      <table class="table table-bordered table-text-mm" style="break-inside: avoid">
-        <thead>
-          <tr>
-            <th scope="col" class="col-sm-2">Lab ID</th>
-            <th scope="col" class="col-sm-3">Sample ID</th>
-            <th scope="col" class="col-sm-2">Confirm ID</th>
-            <th scope="col" class="col-sm-5">Assays</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {% for sample in batch.sample_set.all %}
-            <tr>
-              <td>{{sample.lab_id_num}} {% if samples.is_anomaly %} ⚠ {% endif %}</td>
-              <td>{{sample.sample_id}}</td>
-              <td></td>
-              <td>
-                {% for assay in sample.assays.all %}
-                <span class="badge text-bg-success">{{assay}}</span>
-                {% endfor %}
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-
-      </table>
-    </div>
-
     <h5 class="text-center">Extraction</h5>
     <div class="row">
       <div class="table-responsive col-sm-6">
@@ -118,6 +88,36 @@
 
         </table>
       </div>
+    </div>
+
+    <div class="table-responsive">
+      <h5 class="text-center">Samples</h5>
+      <table class="table table-bordered table-text-mm" style="break-inside: avoid">
+        <thead>
+          <tr>
+            <th scope="col" class="col-sm-2">Lab ID</th>
+            <th scope="col" class="col-sm-3">Sample ID</th>
+            <th scope="col" class="col-sm-2">Confirm ID</th>
+            <th scope="col" class="col-sm-5">Assays</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for sample in batch.sample_set.all %}
+            <tr>
+              <td>{{sample.lab_id_num}} {% if samples.is_anomaly %} ⚠ {% endif %}</td>
+              <td>{{sample.sample_id}}</td>
+              <td></td>
+              <td>
+                {% for assay in sample.assays.all %}
+                <span class="badge text-bg-success">{{assay}}</span>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
     </div>
 
   </div>

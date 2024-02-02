@@ -95,6 +95,63 @@
 
             </li>
             {% endif %}
+
+            {% if location.gel_set.all %}
+            <li class="list-group-item"> Gels
+              <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#gel-collapse-{{location.pk}}" aria-expanded="false" aria-controls="gel-collapse-{{location.pk}}">
+                ⮟
+              </button>
+
+              <div class="collapse" id="gel-collapse-{{location.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for gel in location.gel_set.all %}
+                    <li class="list-group-item">{{gel}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+
+            </li>
+            {% endif %}
+
+            {% if location.ladder_set.all %}
+            <li class="list-group-item"> Ladders
+              <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#ladder-collapse-{{location.pk}}" aria-expanded="false" aria-controls="ladder-collapse-{{location.pk}}">
+                ⮟
+              </button>
+
+              <div class="collapse" id="ladder-collapse-{{location.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for ladder in location.gel_set.all %}
+                    <li class="list-group-item">{{ladder}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+
+            </li>
+            {% endif %}
+
+            {% if location.dye_set.all %}
+            <li class="list-group-item"> Dyes
+              <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#dye-collapse-{{location.pk}}" aria-expanded="false" aria-controls="dye-collapse-{{location.pk}}">
+                ⮟
+              </button>
+
+              <div class="collapse" id="dye-collapse-{{location.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for dye in location.gel_set.all %}
+                    <li class="list-group-item">{{dye}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+
+            </li>
+            {% endif %}
           </ul>
           <div class="card-body">
             <a href="{% url 'edit_location' location.pk %}" class="card-link">Edit Location</a>
