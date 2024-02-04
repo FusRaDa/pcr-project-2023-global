@@ -433,16 +433,28 @@ def process_paperwork(request, pk):
 
     # **VALIDATION FOR PLATES & GELS** #
     for plate in qpcr_plates:
+      if plate['plate'].is_expired:
+        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} is expired.")
+        return redirect(request.path_info)
+      
       if plate['amount'] < 0:
         messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for qPCR has an insufficient amount for this process. {plate['amount']} plates are required. Please update inventory or change selection.")
         return redirect(request.path_info)
     
     for plate in pcr_plates:
+      if plate['plate'].is_expired:
+        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} is expired.")
+        return redirect(request.path_info)
+      
       if plate['amount'] < 0:
         messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for PCR has an insufficient amount for this process. {plate['amount']} plates are required. Please update inventory or change selection.")
         return redirect(request.path_info)
 
     for gel in gels:
+      if gel['gel'].is_expired:
+        messages.error(request, f"Gel: {gel.name} lot#: {gel.lot_number} is expired.")
+        return redirect(request.path_info)
+      
       if gel['amount'] < 0:
         messages.error(request, f"Gel: {gel.name} lot#: {gel.lot_number} has an insufficient amount for this process. {gel['amount']} gels are required. Please update inventory or change selection.")
         return redirect(request.path_info)
@@ -451,9 +463,14 @@ def process_paperwork(request, pk):
     
     # **VALIDATION FOR REAGENTS** #
     for reagent_dict in all_reagents:
+      name = reagent_dict['reagent'].name
+      lot_number = reagent_dict['reagent'].lot_number
+      
+      if reagent_dict['reagent'].is_expired:
+        messages.error(request, f"Reagent: {name} lot#: {lot_number} is expired")
+        return redirect(request.path_info)
+      
       if reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] < 0:
-        name = reagent_dict['reagent'].name
-        lot_number = reagent_dict['reagent'].lot_number
         messages.error(request, f"Reagent: {name} lot#: {lot_number} has an insufficient amount for this process. {reagent_dict['total']}µl is required. Please update inventory or change selection.")
         return redirect(request.path_info)
     # **VALIDATION FOR REAGENTS** #
@@ -461,6 +478,13 @@ def process_paperwork(request, pk):
 
     # **VALIDATION FOR DYES & LADDERS** #
     for dye_dict in all_dyes:
+      name = dye_dict['dye'].name
+      lot_number = dye_dict['dye'].lot_number
+
+      if dye_dict['dye'].is_expired:
+        messages.error(request, f"Dye: {name} lot#: {lot_number} is expired.")
+        return redirect(request.path_info)
+
       if dye_dict['dye'].amount - dye_dict['total'] < 0:
         name = dye_dict['dye'].name
         lot_number = dye_dict['dye'].lot_number
@@ -468,9 +492,14 @@ def process_paperwork(request, pk):
         return redirect(request.path_info)
       
     for ladder_dict in all_ladders:
+      name = ladder_dict['ladder'].name
+      lot_number = ladder_dict['lot_number'].lot_number
+
+      if ladder_dict['ladder'].is_expired:
+        messages.error(request, f"Ladder: {name} lot#: {lot_number} is expired.")
+        return redirect(request.path_info)
+    
       if ladder_dict['ladder'].amount - ladder_dict['total'] < 0:
-        name = ladder_dict['ladder'].name
-        lot_number = ladder_dict['lot_number'].lot_number
         messages.error(request, f"Ladder: {name} lot#: {lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
         return redirect(request.path_info)
     # **VALIDATION FOR DYES & LADDERS** #

@@ -139,6 +139,10 @@ def batchSamples(request, pk):
       return redirect(request.path_info)
     
     for reagent in batch.extraction_protocol.reagentextraction_set.all():
+      if reagent.reagent.is_expired:
+        messages.error(request, f"Reagent: {reagent.name} is expired")
+        return redirect(request.path_info)
+      
       total_used_reagents = reagent.amount_per_sample * batch.sample_set.count()
       rem_reagents = reagent.reagent.volume_in_microliters - total_used_reagents
       if rem_reagents < 0:
@@ -146,6 +150,10 @@ def batchSamples(request, pk):
         return redirect(request.path_info)
       
     for tube in batch.extraction_protocol.tubeextraction_set.all():
+      if tube.tube.is_expired:
+        messages.error(request, f"Tube: {tube.name} is expired")
+        return redirect(request.path_info)
+      
       total_used_tubes = tube.amount_per_sample * batch.sample_set.count()
       rem_tubes = tube.tube.amount - total_used_tubes
       if rem_tubes < 0:

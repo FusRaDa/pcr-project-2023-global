@@ -346,6 +346,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
             'sample_volume': round(float(assay.sample_volume), 2),
             'reaction_volume': round(float(assay.reaction_volume), 2),
             'mm_volume': round(float(assay.mm_volume), 2),
+            'fluorescence': assay.fluorescence.all(),
             'reagents': [],
           }
           
@@ -487,6 +488,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
               'sample_volume': round(float(assay.sample_volume), 2),
               'reaction_volume': round(float(assay.reaction_volume), 2),
               'mm_volume': round(float(assay.mm_volume), 2),
+              'fluorescence': assay.fluorescence.all(),
               'reagents': [],
             }
             
