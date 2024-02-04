@@ -3337,8 +3337,8 @@
 
                 <tbody>
                   {% for reagent in assay.reagents %}
-                    <tr class="table-light">
-                      <td>{{reagent.name}}</td>
+                    <tr {% if reagent.reagent.is_expired or reagent.reagent.month_exp %} class="table-danger" {% endif %}>
+                      <td>{{reagent.name}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
                       <td class="table-success">{{assay.sample_num|add:1|dec_mult_string:reagent.volume_per_sample}}</td>
                       <td>{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
                       <td>{{reagent.volume_per_sample}}</td>
@@ -3378,8 +3378,8 @@
 
                 <tbody>
                   {% for reagent in assay.reagents %}
-                    <tr class="table-light">
-                      <td>{{reagent.name}}</td>
+                    <tr {% if reagent.reagent.is_expired or reagent.reagent.month_exp %} class="table-danger" {% endif %}>
+                      <td>{{reagent.name}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
                       <td class="table-success">{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
                       <td>{{reagent.volume_per_sample}}</td>
                       <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
@@ -6591,8 +6591,8 @@
 
                 <tbody>
                   {% for reagent in assay.reagents %}
-                    <tr class="table-light">
-                      <td>{{reagent.name}}</td>
+                    <tr {% if reagent.reagent.is_expired or reagent.reagent.month_exp %} class="table-danger" {% endif %}>
+                      <td>{{reagent.name}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
                       <td class="table-success">{{assay.sample_num|add:1|dec_mult_string:reagent.volume_per_sample}}</td>
                       <td>{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
                       <td>{{reagent.volume_per_sample}}</td>
@@ -6632,8 +6632,8 @@
 
                 <tbody>
                   {% for reagent in assay.reagents %}
-                    <tr class="table-light">
-                      <td>{{reagent.name}}</td>
+                    <tr {% if reagent.reagent.is_expired or reagent.reagent.month_exp %} class="table-danger" {% endif %}>
+                      <td>{{reagent.name}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
                       <td class="table-success">{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
                       <td>{{reagent.volume_per_sample}}</td>
                       <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
@@ -9848,8 +9848,8 @@
 
                 <tbody>
                   {% for reagent in assay.reagents %}
-                    <tr class="table-light">
-                      <td>{{reagent.name}}</td>
+                    <tr {% if reagent.reagent.is_expired or reagent.reagent.month_exp %} class="table-danger" {% endif %}>
+                      <td>{{reagent.name}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
                       <td class="table-success">{{assay.sample_num|add:1|dec_mult_string:reagent.volume_per_sample}}</td>
                       <td>{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
                       <td>{{reagent.volume_per_sample}}</td>
@@ -9889,8 +9889,8 @@
 
                 <tbody>
                   {% for reagent in assay.reagents %}
-                    <tr class="table-light">
-                      <td>{{reagent.name}}</td>
+                    <tr {% if reagent.reagent.is_expired or reagent.reagent.month_exp %} class="table-danger" {% endif %}>
+                      <td>{{reagent.name}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
                       <td class="table-success">{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
                       <td>{{reagent.volume_per_sample}}</td>
                       <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
@@ -13102,8 +13102,8 @@
 
                 <tbody>
                   {% for reagent in assay.reagents %}
-                    <tr class="table-light">
-                      <td>{{reagent.name}}</td>
+                    <tr {% if reagent.reagent.is_expired or reagent.reagent.month_exp %} class="table-danger" {% endif %}>
+                      <td>{{reagent.name}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
                       <td class="table-success">{{assay.sample_num|add:1|dec_mult_string:reagent.volume_per_sample}}</td>
                       <td>{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
                       <td>{{reagent.volume_per_sample}}</td>
@@ -13143,8 +13143,8 @@
 
                 <tbody>
                   {% for reagent in assay.reagents %}
-                    <tr class="table-light">
-                      <td>{{reagent.name}}</td>
+                    <tr {% if reagent.reagent.is_expired or reagent.reagent.month_exp %} class="table-danger" {% endif %}>
+                      <td>{{reagent.name}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
                       <td class="table-success">{{reagent.volume_per_sample|dec_mult_string:assay.sample_num}}</td>
                       <td>{{reagent.volume_per_sample}}</td>
                       <td>{% if reagent.stock_concentration %} {{reagent.stock_concentration}} {{reagent.unit_concentration}} {% else %} ------ {% endif %}</td>
