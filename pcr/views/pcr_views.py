@@ -293,11 +293,30 @@ def process_paperwork(request, pk):
   if 'process' in request.POST:
 
     # **RECOLLECT REAGENTS & CONTROLS FOR PCR & qPCR** #
+    all_controls = []
     all_reagents = []
-    controls = []
+    
     if dna_qpcr_json:
       for plate in dna_qpcr_json:
         for assay in plate['assays']:
+
+          for control in assay['controls']:
+            total_volume = Decimal(assay['sample_volume'])
+
+            exists = False
+            for dict in all_controls:
+              if dict['control'].pk == control.pk:
+                exists = True
+            
+            if exists == False:
+              all_controls.append({'control': control, 'total': total_volume})
+            else:
+              for dict in all_controls:
+                if dict['control'].pk == control.pk:
+                  dict['total'] += total_volume
+                  break
+          assay.pop('controls')
+            
           for reagent in assay['reagents']:
             reagent_obj = reagent['reagent']
             total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
@@ -320,6 +339,24 @@ def process_paperwork(request, pk):
     if rna_qpcr_json:
       for plate in rna_qpcr_json:
         for assay in plate['assays']:
+
+          for control in assay['controls']:
+            total_volume = Decimal(assay['sample_volume'])
+
+            exists = False
+            for dict in all_controls:
+              if dict['control'].pk == control.pk:
+                exists = True
+            
+            if exists == False:
+              all_controls.append({'control': control, 'total': total_volume})
+            else:
+              for dict in all_controls:
+                if dict['control'].pk == control.pk:
+                  dict['total'] += total_volume
+                  break
+          assay.pop('controls')
+
           for reagent in assay['reagents']:
             reagent_obj = reagent['reagent']
             total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
@@ -342,6 +379,24 @@ def process_paperwork(request, pk):
     if dna_pcr_json:
       for plate in dna_pcr_json:
         for assay in plate['assays']:
+
+          for control in assay['controls']:
+            total_volume = Decimal(assay['sample_volume'])
+
+            exists = False
+            for dict in all_controls:
+              if dict['control'].pk == control.pk:
+                exists = True
+            
+            if exists == False:
+              all_controls.append({'control': control, 'total': total_volume})
+            else:
+              for dict in all_controls:
+                if dict['control'].pk == control.pk:
+                  dict['total'] += total_volume
+                  break
+          assay.pop('controls')
+
           for reagent in assay['reagents']:
             reagent_obj = reagent['reagent']
             total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
@@ -364,6 +419,24 @@ def process_paperwork(request, pk):
     if rna_pcr_json:
       for plate in rna_pcr_json:
         for assay in plate['assays']:
+
+          for control in assay['controls']:
+            total_volume = Decimal(assay['sample_volume'])
+
+            exists = False
+            for dict in all_controls:
+              if dict['control'].pk == control.pk:
+                exists = True
+            
+            if exists == False:
+              all_controls.append({'control': control, 'total': total_volume})
+            else:
+              for dict in all_controls:
+                if dict['control'].pk == control.pk:
+                  dict['total'] += total_volume
+                  break
+          assay.pop('controls')
+
           for reagent in assay['reagents']:
             reagent_obj = reagent['reagent']
             total_volume = Decimal(reagent['volume_per_sample'] * assay['sample_num'])
@@ -460,6 +533,20 @@ def process_paperwork(request, pk):
         return redirect(request.path_info)
     # **VALIDATION FOR PLATES & GELS** #
       
+    # **VALIDATION FOR CONTROLS** #
+    for control_dict in all_controls:
+      name = control_dict['control'].name
+      lot_number = control_dict['lot_number'].lot_number
+
+      if control_dict['control'].is_expired:
+        messages.error(request, f"Control: {name} lot#: {lot_number} is expired")
+        return redirect(request.path_info)
+      
+      if control_dict['control'].amount - control_dict['total'] < 0:
+        messages.error(request, f"Control: {name} lot#: {lot_number} has an insufficient amount for this process. {reagent_dict['total']}µl is required. Please update inventory or change selection.")
+        return redirect(request.path_info)
+    # **VALIDATION FOR CONTROLS** #
+      
     
     # **VALIDATION FOR REAGENTS** #
     for reagent_dict in all_reagents:
@@ -522,6 +609,14 @@ def process_paperwork(request, pk):
       gel.pop('gel')
     # **UPDATE ALL PLATES AND GELS IN DB** #
       
+
+    # **FINAL UPDATE OF ALL REAGENTS IN DB** #
+    for control_dict in all_controls:
+      control_dict['control'].amount -= Decimal(control_dict['total'])
+      control_dict['control'].save()
+    # **FINAL UPDATE OF ALL REAGENTS IN DB** #
+      
+
     # **FINAL UPDATE OF ALL REAGENTS IN DB** #
     for reagent_dict in all_reagents:
       if process.is_plus_one_well == True:
@@ -532,6 +627,7 @@ def process_paperwork(request, pk):
       reagent_dict['reagent'].save()
     # **FINAL UPDATE OF ALL REAGENTS IN DB** #
       
+
     # **FINAL UPDATE OF ALL DYES & LADDERS IN DB** #
     for dye_dict in all_dyes:
       dye_dict['dye'].amount -= dye_dict['total']
