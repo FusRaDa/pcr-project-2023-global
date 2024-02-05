@@ -346,9 +346,12 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
             'sample_volume': round(float(assay.sample_volume), 2),
             'reaction_volume': round(float(assay.reaction_volume), 2),
             'mm_volume': round(float(assay.mm_volume), 2),
-            'fluorescence': assay.fluorescence.all(),
+            'fluorescence': [],
             'reagents': [],
           }
+
+          for fluor in assay.fluorescence.all():
+              assay_dict['fluorescence'].append(fluor.name)
           
           for reagent in assay.reagentassay_set.all().order_by('order'):
             stock_concentration = None
@@ -488,9 +491,12 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
               'sample_volume': round(float(assay.sample_volume), 2),
               'reaction_volume': round(float(assay.reaction_volume), 2),
               'mm_volume': round(float(assay.mm_volume), 2),
-              'fluorescence': assay.fluorescence.all(),
+              'fluorescence': [],
               'reagents': [],
             }
+
+            for fluor in assay.fluorescence.all():
+              assay_dict['fluorescence'].append(fluor.name)
             
             for reagent in assay.reagentassay_set.all().order_by('order'):
               stock_concentration = None
