@@ -8,7 +8,6 @@ from ..models.affiliates import Brand
 from ..models.items import Kit, StorePlate, StoreReagent, StoreTube, Tag, Review, StoreGel
 from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm, TagForm, ReviewForm, StoreGelForm
 from ..forms.general import DeletionForm
-from users.models import User
 
 
 @staff_member_required(login_url='login')

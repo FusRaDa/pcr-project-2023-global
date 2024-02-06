@@ -25,7 +25,7 @@ urlpatterns = [
   path('', include("pcr.urls")),
   path('', include("users.urls")),
   path('store/', include("store.urls")),
-  path('guide/', include("guide.urls")),
+  path('', include("guide.urls")),
 ]
 
 

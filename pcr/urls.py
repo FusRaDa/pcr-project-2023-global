@@ -3,7 +3,7 @@ from .views import batch_views, assay_code_views, extraction_protocol_views, ass
 
 
 urlpatterns = [
-  path("", batch_views.viewBatches, name="batches"),
+  path("batches/", batch_views.viewBatches, name="batches"),
   path("create-batch/", batch_views.createBatches, name="create_batch"),
   path("batch-samples/<int:pk>/", batch_views.batchSamples, name='batch_samples'),
   path("sample-assay/<int:pk>/", batch_views.editSampleAssay, name='sample_assay'),

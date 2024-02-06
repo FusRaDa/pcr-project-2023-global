@@ -23,11 +23,6 @@ from .forms import DeletionForm
 
 from pcr.custom.constants import LIMITS
 
-@login_required(login_url='login')
-def pricing_page(request):
-  context = {'products': Product.objects.all()}
-  return render(request, 'pricing_page.html', context)
-
 
 @login_required(login_url='login')
 def subscription_confirm(request):
