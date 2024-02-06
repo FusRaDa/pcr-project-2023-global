@@ -70,6 +70,97 @@
     </div>
 
   </div>
-  
+
+  <div class="row justify-content-center">
+    <div class="text-center mt-2"> 
+      <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirm-batches">Delete All Batches</button>
+      <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirm-processes">Delete All Processes</button>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirm-batches" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting all batches...</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="row justify-content-center">
+            <h5 class="text-center">Are you sure?</h5>
+          </div>
+          
+          <div class="row justify-content-center">
+            <form method="POST" action="">
+              {% csrf_token %}
+        
+              <div class="text-center mx-auto">
+                <label class="form-label">Enter your email &amp; Confirm</label>
+                {{clear_batch_form.confirm}}
+              </div>
+
+              {% if clear_batch_form.errors %}
+              <div class="row text-center mt-2">
+                {% for key,value in clear_batch_form.errors.items %} 
+                  {{ value|escape }}
+                {% endfor %}
+              </div>
+              {% endif %}
+        
+              <div class="text-center mt-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" name="clear_batches">Confirm</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirm-processes" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting all processes...</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="row justify-content-center">
+            <h5 class="text-center">Are you sure?</h5>
+          </div>
+          
+          <div class="row justify-content-center">
+            <form method="POST" action="">
+              {% csrf_token %}
+        
+              <div class="text-center mx-auto">
+                <label class="form-label">Enter your email &amp; Confirm</label>
+                {{clear_process_form.confirm}}
+              </div>
+
+              {% if clear_process_form.errors %}
+              <div class="row text-center mt-2">
+                {% for key,value in clear_process_form.errors.items %} 
+                  {{ value|escape }}
+                {% endfor %}
+              </div>
+              {% endif %}
+        
+              <div class="text-center mt-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" name="clear_processes">Confirm</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 {% endblock %}

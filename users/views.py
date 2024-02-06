@@ -19,6 +19,7 @@ from .models import User
 from pcr.models.assay import Assay, AssayCode
 from pcr.models.batch import Batch
 from pcr.models.pcr import Process
+from .forms import DeletionForm
 
 from pcr.custom.constants import LIMITS
 
@@ -80,7 +81,6 @@ def create_portal_session(request):
 @csrf_exempt
 @djstripe_hooks.handler("checkout.session.completed", "customer.subscription.deleted")
 def handle_stripe_sub(request):
-
   event_dict = json.loads(request.body)
 
   # print(event_dict['type'])
@@ -121,7 +121,6 @@ def handle_stripe_sub(request):
 
 @login_required(login_url='login')
 def profile(request):
-
   assay_count = Assay.objects.filter(user=request.user).count()
   assay_code_count = AssayCode.objects.filter(user=request.user).count()
   batch_count = Batch.objects.filter(user=request.user).count()
@@ -138,6 +137,27 @@ def profile(request):
   limits.append({'name': 'Batches', 'count': batch_count, 'limit': limit_batch, 'premium': "∞"})
   limits.append({'name': 'Processes', 'count': process_count, 'limit': limit_process, 'premium': "∞"})
 
-  context = {'limits': limits}
+  clear_batch_form = DeletionForm(value=request.user.email)
+  clear_process_form = DeletionForm(value=request.user.email)
+
+  if 'clear_batches' in request.POST:
+    clear_batch_form = DeletionForm(request.POST, value=request.user.email)
+    if clear_batch_form.is_valid():
+      batches = Batch.objects.filter(user=request.user, is_extracted=True)
+      for batch in batches:
+        batch.delete()
+    else:
+      print(clear_batch_form.errors)
+
+  if 'clear_processes' in request.POST:
+    clear_process_form = DeletionForm(request.POST, value=request.user.email)
+    if clear_process_form.is_valid():
+      processes = Process.objects.filter(user=request.user, is_processed=True)
+      for process in processes:
+        process.delete()
+    else:
+      print(clear_process_form.errors)
+
+  context = {'limits': limits, 'clear_batch_form': clear_batch_form, 'clear_process_form': clear_process_form}
   return render(request, 'profile.html', context)
 

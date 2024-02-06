@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from ..models.assay import AssayCode, Assay
 from ..models.batch import ExtractionProtocol
-from ..models.inventory import Location, Plate, Gel, Reagent, Ladder
+from ..models.inventory import Location, Plate, Gel, Reagent
 
 
 class SearchExtractionProtocolForm(forms.Form):
