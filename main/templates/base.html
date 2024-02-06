@@ -131,7 +131,7 @@
               {% endif %}
 
               <li class="nav-item">
-                <a class="nav-link" href="#">{{request.user}}</a>
+                <a class="nav-link" href="{% url 'profile' %}">{% if request.user.is_subscribed %} <span class="badge rounded-pill text-bg-success">Premium</span> {{request.user}} {% else %} <span class="badge rounded-pill text-bg-info">Upgrade</span> {{request.user}} {% endif %}</a>
               </li>
 
               <li class="nav-item">

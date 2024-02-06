@@ -14,6 +14,14 @@ from djstripe import webhooks as djstripe_hooks
 from djstripe.settings import djstripe_settings
 from djstripe.models import Product, Subscription, Customer, APIKey
 
+from .models import User
+
+from pcr.models.assay import Assay, AssayCode
+from pcr.models.batch import Batch
+from pcr.models.pcr import Process
+
+from pcr.custom.constants import LIMITS
+
 @login_required(login_url='login')
 def pricing_page(request):
   context = {'products': Product.objects.all()}
@@ -55,6 +63,7 @@ def subscription_confirm(request):
   
 @login_required(login_url='login')
 def create_portal_session(request):
+  try:
     stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
     portal_session = stripe.billing_portal.Session.create(
       customer=request.user.customer.id,
@@ -62,6 +71,8 @@ def create_portal_session(request):
       # return_url="https://127.0.0.1:8000/subscription-details/",
     )
     return HttpResponseRedirect(portal_session.url)
+  except AttributeError:
+    return redirect('profile')
 
 
 # Stripe webhook
@@ -110,8 +121,23 @@ def handle_stripe_sub(request):
 
 @login_required(login_url='login')
 def profile(request):
-  user = request.user
 
-  context = {}
+  assay_count = Assay.objects.filter(user=request.user).count()
+  assay_code_count = AssayCode.objects.filter(user=request.user).count()
+  batch_count = Batch.objects.filter(user=request.user).count()
+  process_count = Process.objects.filter(user=request.user).count()
+
+  limit_assay = LIMITS.ASSAY_LIMIT
+  limit_assay_code = LIMITS.ASSAY_CODE_LIMIT
+  limit_batch = LIMITS.BATCH_LIMIT
+  limit_process = LIMITS.PROCESS_LIMIT
+
+  limits = []
+  limits.append({'name': 'Assays', 'count': assay_count, 'limit': limit_assay, 'premium': "∞"})
+  limits.append({'name': 'Panels', 'count': assay_code_count, 'limit': limit_assay_code, 'premium': "∞"})
+  limits.append({'name': 'Batches', 'count': batch_count, 'limit': limit_batch, 'premium': "∞"})
+  limits.append({'name': 'Processes', 'count': process_count, 'limit': limit_process, 'premium': "∞"})
+
+  context = {'limits': limits}
   return render(request, 'profile.html', context)
 

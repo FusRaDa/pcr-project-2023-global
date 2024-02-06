@@ -18,13 +18,13 @@ class User(AbstractUser):
   can_review = models.BooleanField(default=True)
 
   def is_subscribed(self):
-    if self.subscription != None and self.customer != None:
-      return "🧪"
+    if self.subscription and self.customer:
+      return True
     else:
-      return ""
+      return False
 
   def __str__(self):
-    return f"{self.username}{self.is_subscribed()}"
+    return self.username
   
 
 

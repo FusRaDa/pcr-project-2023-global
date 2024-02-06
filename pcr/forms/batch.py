@@ -3,29 +3,31 @@ from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # from ..custom.constants import FREE_LIMITS
 from ..models.extraction import ExtractionProtocol
 from ..models.assay import Assay, AssayCode
 from ..models.batch import Batch, Sample
 
+from ..custom.constants import LIMITS
 
 class NumberSamplesForm(forms.Form):
 
   number_of_samples = forms.IntegerField(
-    validators=[MinValueValidator(1)])
+    validators=[MinValueValidator(1), MaxValueValidator(LIMITS.SAMPLES_PER_BATCH_LIMIT)])
   
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs) 
     self.fields['number_of_samples'].widget.attrs['class'] = 'form-control'
     self.fields['number_of_samples'].widget.attrs['min'] = 1
+    self.fields['number_of_samples'].widget.attrs['max'] = LIMITS.SAMPLES_PER_BATCH_LIMIT
 
 
 class BatchForm(ModelForm):
 
   number_of_samples = forms.IntegerField(
-    validators=[MinValueValidator(1)])
+    validators=[MinValueValidator(1), MaxValueValidator(LIMITS.SAMPLES_PER_BATCH_LIMIT)])
 
   code = forms.ModelChoiceField(
     queryset=None,
@@ -136,6 +138,7 @@ class BatchForm(ModelForm):
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['number_of_samples'].widget.attrs['class'] = 'form-control'
     self.fields['number_of_samples'].widget.attrs['min'] = 1
+    self.fields['number_of_samples'].widget.attrs['max'] = LIMITS.SAMPLES_PER_BATCH_LIMIT
     self.fields['lab_id'].widget.attrs['class'] = 'form-control'
 
   class Meta:
