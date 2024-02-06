@@ -49,7 +49,9 @@ INSTALLED_APPS = [
     'users',
     'accounts',
     'pcr',
+
     'store',
+    'guide',
 ]
 
 MIDDLEWARE = [

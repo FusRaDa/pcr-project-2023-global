@@ -1,70 +1,7 @@
-# This files keeps all enums as limits to how many object can be created per user.
+# This files keeps all enums as limits to how many object can be created per user. Premium tier will be unlimited!
 
-class FREE_LIMITS():
-  # **INVENTORY** #
-  LOCATION_LIMIT = 10
-  PLATE_LIMIT = 25
-  TUBE_LIMIT = 25
-  REAGENT_LIMIT = 250
-  # **INVENTORY** #
-
-
-  # **EXTRACTION CONSTANTS** #
-  EXTRACTION_PROTOCOL_LIMIT = 10
-  # **EXTRACTION CONSTANTS** #
-
-
-  # **ASSAY CONSTANTS** #
-  FLUORESCENCE_LIMIT = 20
-  CONTROL_LIMIT = 60
-  ASSAY_LIMIT = 20
-  ASSAY_CODE_LIMIT = 40
-  # **ASSAY CONSTANTS** #
-
-
-  # **SAMPLE CONSTANTS** #
-  BATCH_LIMIT = 100
-  SAMPLE_LIMIT = 50 # Per batch
-  # **SAMPLE CONSTANTS** #
-
-
-  # **PROCESS** #
-  THERMAL_CYCLER_PROTOCOL = 10
-  #TBA
-  # **PROCESS** #
-
-
-class PREMIUM_LIMITS():
-  # **INVENTORY** #
-  LOCATION_LIMIT = 25
-  PLATE_LIMIT = 50
-  TUBE_LIMIT = 50
-  REAGENT_LIMIT = 500
-  # **INVENTORY** #
-
-
-  # **EXTRACTION CONSTANTS** #
-  EXTRACTION_PROTOCOL_LIMIT = 10
-  # **EXTRACTION CONSTANTS** #
-
-
-  # **ASSAY CONSTANTS** #
-  FLUORESCENCE_LIMIT = 20
-  CONTROL_LIMIT = 60
-  ASSAY_LIMIT = 20
-  ASSAY_CODE_LIMIT = 10
-  # **ASSAY CONSTANTS** #
-
-
-  # **SAMPLE CONSTANTS** #
-  BATCH_LIMIT = 100
-  SAMPLE_LIMIT = 50
-  # **SAMPLE CONSTANTS** #
-
-
-  # **PROCESS** #
-  THERMAL_CYCLER_PROTOCOL = 10
-  #TBA
-  # **PROCESS** #
-
-
+class FREE_LIMITS:
+  ASSAY_LIMIT = 40
+  ASSAY_CODE_LIMIT = 80
+  BATCH_LIMIT = 1000
+  PROCESS_LIMIT = 2000

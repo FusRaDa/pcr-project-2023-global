@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import get_user_model
+from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
@@ -48,16 +49,17 @@ def subscription_confirm(request):
   subscription_holder.save()
 
   # show a message to the user and redirect
-  messages.success(request, f"You've successfully signed up. Thanks for the support!")
+  messages.success(request, f"You've successfully signed up as a premium user.")
   return redirect('batches')
 
   
-@login_required
+@login_required(login_url='login')
 def create_portal_session(request):
     stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
     portal_session = stripe.billing_portal.Session.create(
       customer=request.user.customer.id,
-      return_url="https://127.0.0.1:8000/subscription-details/",
+      return_url=f"{get_current_site(request).domain}/subscription-details/",
+      # return_url="https://127.0.0.1:8000/subscription-details/",
     )
     return HttpResponseRedirect(portal_session.url)
 
@@ -70,13 +72,13 @@ def handle_stripe_sub(request):
 
   event_dict = json.loads(request.body)
 
-  print(event_dict['type'])
+  # print(event_dict['type'])
 
   if event_dict['type'] == 'checkout.session.completed':
     data = event_dict['data']['object']
 
     stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
-    print(djstripe_settings.STRIPE_SECRET_KEY)
+    # print(djstripe_settings.STRIPE_SECRET_KEY)
     
     try:
       subscription_holder = get_user_model().objects.get(id=data['client_reference_id'])
@@ -104,3 +106,12 @@ def handle_stripe_sub(request):
       pass
 
   return HttpResponse(status=200)
+
+
+@login_required(login_url='login')
+def profile(request):
+  user = request.user
+
+  context = {}
+  return render(request, 'profile.html', context)
+
