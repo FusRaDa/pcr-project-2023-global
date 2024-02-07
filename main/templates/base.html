@@ -130,11 +130,11 @@
               </li>
               {% endif %}
 
-              <li class="nav-item">
+              <li class="nav-item bg-primary-subtle">
                 <a class="nav-link" href="{% url 'profile' %}">{% if request.user.is_subscribed %} <span class="badge rounded-pill text-bg-success">Premium</span> {{request.user}} {% else %} <span class="badge rounded-pill text-bg-info">Upgrade</span> {{request.user}} {% endif %}</a>
               </li>
 
-              <li class="nav-item">
+              <li class="nav-item bg-warning">
                 <a class="nav-link" href="{% url 'logout' %}">Logout</a>
               </li>
 
@@ -171,11 +171,11 @@
 
             <ul class="navbar-nav ms-auto">
 
-              <li class="nav-item">
+              <li class="nav-item bg-primary-subtle">
                 <a class="nav-link" href="{% url 'login' %}">Login</a>
               </li>
 
-              <li class="nav-item">
+              <li class="nav-item bg-warning">
                 <a class="nav-link" href="{% url 'register' %}">Register</a>
               </li>
 
