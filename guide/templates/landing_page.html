@@ -7,11 +7,83 @@
 {% block content %}
 <div class="container">
 
-  <h1 class="text-center">Introducing PCRprep: Free PCR Inventory Management &amp; Paperwork</h1>
+  <div class="container bg-primary">
+    <div class="row">
+      <h1 class="text-center text-warning display-1 mt-2">Introducing PCRprep: Free PCR Inventory Management &amp; Paperwork</h1>
 
-  <p>Explain what PCRprep does.</p>
+      <h2 class="text-center text-light mt-2">PCRprep is a software that generates paperwork from extraction to PCR and keeps track of your inventory usage. If you find one of these questions a concern of yours then try PCRprep for free!</h2>
+ 
+      <h6 class="text-center mt-3 text-warning">PCR Pain Points</h6>
+      <div class="d-flex justify-content-center">
+        <ul class="list-group list-group-flush text-center">
+          <li class="list-group-item bg-primary px-5 text-warning mb-4">Do you perform PCR on a daily basis and spend hours on creating paperwork?</li>
+          <li class="list-group-item bg-primary px-5 text-warning mb-4">Do you process hundreds of samples a week and test each one for multiple assays?</li>
+          <li class="list-group-item bg-primary px-5 text-warning mb-4">Are you tired of calculating your master mixes every time?</li>
+          <li class="list-group-item bg-primary px-5 text-warning mb-4">Have you accidently used an expired reagent and had to redo the entire process?</li>
+          <li class="list-group-item bg-primary px-5 text-warning mb-4">Do you find it difficult to manage inventory and tend to run out of stock?</li>
+          <li class="list-group-item bg-primary px-5 text-warning"></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <a href="{% url 'register' %}" type="button" class="btn btn-warning btn-lg">Register Now</a>
+    </div>
+
+    <hr class="text-warning">
+
+    <h3 class="text-center text-warning">The Workflow</h3>
+
+    <div class="row mt-3 d-flex align-items-center">
+      <div class="col-sm-6">
+        <h4 class="text-warning">Inventory</h4>
+        <p class="text-light">Inventory is the foundation of running PCR processes. You will need items for both extraction and PCR. Keeping count of what you have and what you don’t have can be a challenge. But with PCRprep, you will find inventory tracking to be a much more seamless process.</p>
+        <p class="text-light">First you create storage locations to assign to each inventory item. Then you add your reagents, tubes, plates, gels, ladders, and loading dyes. These items will all contain a name, brand, catalog number, lot number, and amount stored.</p>
+        <p class="text-light">You can then assign an expiration date to time sensitive items such as PCR reagents. Once your inventory is setup you can always go back and check to see what’s in stock, what needs to be replenished, and what is expired.</p>
+        <p class="text-light">Once this is all done, you are ready to create your assays to eventually assign your samples the tests they require.</p>
+      </div>
+
+      <div class="col-sm-6">
+        <button type="button" class="btn btn-warning btn-sm float-end">Play Slideshow</button>
+        <img src="/static/images/pcr-prep-diagram.png" class="img-fluid" alt="">
+      </div>
+    </div>
+
+    <hr class="text-warning">
+
+    <div class="row mt-3 d-flex align-items-center">
+      <div class="col-sm-6">
+        <h4 class="text-warning">Tests (Assays)</h4>
+        <p class="text-light">PCRprep allows you to customize each assay to what reagents they require. When creating an assay, you first give it a name and choose whether it will be for PCR or qPCR. Of course, all assays must have a reaction volume and sample volume that you are adding to each well in a plate.</p>
+        <p class="text-light">PCR assays require loading dyes and ladders as they use gel electrophoresis to view the results. You may also need to run replicates of the assay which you may do so. For qPCR assays, they must be assigned a fluorescence tag to be used during analysis.</p>
+        <p class="text-light">Perhaps you are testing a sample for E.coli. You understand that each assay will have their own unique set of primers (forward and reverse) and that all assays require a diluent (such as water), an enzyme (polymerase),  dNTP’s, and several other buffers may be included.</p>
+        <p class="text-light">Every assay also requires at least one control and sometimes multiple controls for a gradient. Controls are very time sensitive reagents that should not be used should they expire and botch your results. With PCRprep, you can assign each control an expiration date where you will not be allowed to continue the workflow should there be an expired reagent in use.</p>
+      </div>
+
+      <div class="col-sm-6">
+        <button type="button" class="btn btn-warning btn-sm float-end">Play Slideshow</button>
+        <img src="/static/images/pcr-prep-diagram.png" class="img-fluid" alt="">
+      </div>
+    </div>
+
+    <hr class="text-warning">
+
+    <div class="row mt-3 d-flex align-items-center">
+      <div class="col-sm-6">
+        <h4 class="text-warning">Protocols</h4>
+        <p class="text-light">Protocols are necessary to decide how the samples will be extracted, what assays each sample requires, and what thermal cycler settings will be used.</p>
+        <p class="text-light">When you have created your assays, the next step to create a panel which is simply a group of assays under one label. For example, if you have two assays of “E.coli Str1” and E.coli Str2” you can create a panel called “E.coli Panel” that will test samples for these two strains of E.coli. Of course, if you only intend to test for one assay then you can simply just create a panel with that that one assay to test. </p>
+        <p class="text-light">Extraction protocols are the next requirement where you must decide whether you are extracting DNA, RNA, or both from your samples. You must then assign the tubes and reagents used for this extraction.</p>
+        <p class="text-light">Thermal cycler protocols are the last requirement where you must set the time and duration of the following steps: denature, anneal, and extend. You can then decide how many cycles you are running. </p>
+      </div>
+
+      <div class="col-sm-6">
+        <button type="button" class="btn btn-warning btn-sm float-end">Play Slideshow</button>
+        <img src="/static/images/pcr-prep-diagram.png" class="img-fluid" alt="">
+      </div>
+    </div>
 
 
-
+  </div> 
 </div>
 {% endblock %}
