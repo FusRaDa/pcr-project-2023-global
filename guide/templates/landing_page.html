@@ -11,7 +11,7 @@
     <div class="row">
       <h1 class="text-center text-warning display-1 mt-2">Introducing PCRprep: Free PCR Inventory Management &amp; Paperwork</h1>
 
-      <h2 class="text-center text-light mt-2">PCRprep is a software that generates paperwork from extraction to PCR and keeps track of your inventory usage. If you find one of these questions a concern of yours then try PCRprep for free!</h2>
+      <h2 class="text-center text-light mt-2">PCRprep is a software that generates paperwork for PCR and keeps track of your inventory usage. If you find one of the questions above a concern of yours then try PCRprep for free.</h2>
  
       <h6 class="text-center mt-3 text-warning">PCR Pain Points</h6>
       <div class="d-flex justify-content-center">
@@ -32,7 +32,7 @@
 
     <hr class="text-warning">
 
-    <h3 class="text-center text-warning">The Workflow</h3>
+    <h3 class="text-center text-warning"><u>The Workflow</u></h3>
 
     <div class="row mt-3 d-flex align-items-center">
       <div class="col-sm-6">
@@ -56,7 +56,7 @@
         <h4 class="text-warning">Tests (Assays)</h4>
         <p class="text-light">PCRprep allows you to customize each assay to what reagents they require. When creating an assay, you first give it a name and choose whether it will be for PCR or qPCR. Of course, all assays must have a reaction volume and sample volume that you are adding to each well in a plate.</p>
         <p class="text-light">PCR assays require loading dyes and ladders as they use gel electrophoresis to view the results. You may also need to run replicates of the assay which you may do so. For qPCR assays, they must be assigned a fluorescence tag to be used during analysis.</p>
-        <p class="text-light">Perhaps you are testing a sample for E.coli. You understand that each assay will have their own unique set of primers (forward and reverse) and that all assays require a diluent (such as water), an enzyme (polymerase),  dNTP’s, and several other buffers may be included.</p>
+        <p class="text-light">Each assay will have their own unique set of primers (forward and reverse) and require a diluent (such as water), an enzyme (polymerase),  dNTP’s, and several other buffers that may be included.</p>
         <p class="text-light">Every assay also requires at least one control and sometimes multiple controls for a gradient. Controls are very time sensitive reagents that should not be used should they expire and botch your results. With PCRprep, you can assign each control an expiration date where you will not be allowed to continue the workflow should there be an expired reagent in use.</p>
       </div>
 
@@ -72,9 +72,60 @@
       <div class="col-sm-6">
         <h4 class="text-warning">Protocols</h4>
         <p class="text-light">Protocols are necessary to decide how the samples will be extracted, what assays each sample requires, and what thermal cycler settings will be used.</p>
-        <p class="text-light">When you have created your assays, the next step to create a panel which is simply a group of assays under one label. For example, if you have two assays of “E.coli Str1” and E.coli Str2” you can create a panel called “E.coli Panel” that will test samples for these two strains of E.coli. Of course, if you only intend to test for one assay then you can simply just create a panel with that that one assay to test. </p>
+        <p class="text-light">When you have created your assays, the next step to create a panel which is simply a group of assays under one label. For example, if you have two assays of “E.coli Str1” and E.coli Str2” you can create a panel called “E.coli Panel” that will test samples for these two strains of E.coli. Of course, if you only intend to test for one assay then you can simply just create a panel with that that one assay to test.</p>
         <p class="text-light">Extraction protocols are the next requirement where you must decide whether you are extracting DNA, RNA, or both from your samples. You must then assign the tubes and reagents used for this extraction.</p>
-        <p class="text-light">Thermal cycler protocols are the last requirement where you must set the time and duration of the following steps: denature, anneal, and extend. You can then decide how many cycles you are running. </p>
+        <p class="text-light">Thermal cycler protocols are the last requirement where you must set the time and duration of the following steps: denature, anneal, and extend. You can then decide how many cycles you are running.</p>
+      </div>
+
+      <div class="col-sm-6">
+        <button type="button" class="btn btn-warning btn-sm float-end">Play Slideshow</button>
+        <img src="/static/images/pcr-prep-diagram.png" class="img-fluid" alt="">
+      </div>
+    </div>
+
+    <hr class="text-warning">
+
+    <div class="row mt-3 d-flex align-items-center">
+      <div class="col-sm-6">
+        <h4 class="text-warning">Extraction - Batch</h4>
+        <p class="text-light">When your inventory, tests, and protocols have been set you can now begin creating batches of samples for extraction.</p>
+        <p class="text-light">Creating a batch requires you to give it a name, number of samples for extraction, and lab ID which must be composed of three capitalized English letters.</p>
+        <p class="text-light">You must then select a panel to decide what assays are required for the samples. Then according to what type of assays (RNA, DNA, or both) you choose, you must select an extraction protocol appropriate to extracting that genetic material.</p>
+        <p class="text-light">For example, if you have a panel for C.bovis (DNA) and HIV (RNA), then you must select an extraction protocol to extract both DNA and RNA.</p>
+      </div>
+
+      <div class="col-sm-6">
+        <button type="button" class="btn btn-warning btn-sm float-end">Play Slideshow</button>
+        <img src="/static/images/pcr-prep-diagram.png" class="img-fluid" alt="">
+      </div>
+    </div>
+
+    <hr class="text-warning">
+
+    <div class="row mt-3 d-flex align-items-center">
+      <div class="col-sm-6">
+        <h4 class="text-warning">Extraction - Samples</h4>
+        <p class="text-light">When the batch is created, you are then able to assign each sample a sample ID. Note how PCRprep adds an additional sample that serves as a negative control.</p>
+        <p class="text-light">If you wish to change the number of samples you have in the batch, simply select “Reset Samples” and select a new number of samples you wish to have in the batch.</p>
+        <p class="text-light">Should a sample require more assays to test, you are able to individually change each sample to what assays they require.</p>
+        <p class="text-light">When all samples have been confirmed for extraction you may then generate and review paperwork for extraction. Once you have extracted the samples, select “Extracted” to update your inventory based on the calculated usage, and move the samples up for PCR.</p>
+      </div>
+
+      <div class="col-sm-6">
+        <button type="button" class="btn btn-warning btn-sm float-end">Play Slideshow</button>
+        <img src="/static/images/pcr-prep-diagram.png" class="img-fluid" alt="">
+      </div>
+    </div>
+
+    <hr class="text-warning">
+
+    <div class="row mt-3 d-flex align-items-center">
+      <div class="col-sm-6">
+        <h4 class="text-warning">PCR</h4>
+        <p class="text-light">Once samples have been extracted you are able to select which samples to process for PCR. You must then review all samples sorted by each assay they require and adjust the proper settings. </p>
+        <p class="text-light">You must assign the process a name and select thermal cycler protocols. Then you can decide what plates and gels you wish to use. </p>
+        <p class="text-light">For the following settings below it is recommended to initially leave all to 0 and to calculate master mixes with an additional well.</p>
+        <p class="text-light">You can now update and review the process where you will see how PCRprep generates paperwork. Once you are satisfied, you can confirm the paperwork where you no longer be allowed to make any modifications to the process and you can now print the results to assist you in PCR.</p>
       </div>
 
       <div class="col-sm-6">

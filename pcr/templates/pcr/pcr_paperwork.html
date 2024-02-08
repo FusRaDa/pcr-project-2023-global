@@ -125,7 +125,7 @@
   <div id="printDivPlates">
     {% comment %} Plates for qPCR {% endcomment %}
     {% for plate in dna_qpcr_json %}
-      <div class="container border border-secondary p-3 mb-2" style="page-break-after: always;">
+      <div class="container border border-secondary p-3 mb-2 bg-white" style="page-break-after: always;">
     
         {% if plate.size == 384 %}
           <div class="table-responsive">
@@ -3388,7 +3388,7 @@
     {% endfor %}
 
     {% for plate in rna_qpcr_json %}
-      <div class="container border border-secondary p-3 mb-2" style="page-break-after: always;">
+      <div class="container border border-secondary p-3 mb-2 bg-white" style="page-break-after: always;">
       
         {% if plate.size == 384 %}
           <div class="table-responsive">
@@ -6653,7 +6653,7 @@
 
     {% comment %} Plates for PCR {% endcomment %}
     {% for plate in dna_pcr_json %}
-      <div class="container border border-secondary p-3 mb-2" style="page-break-after: always;">
+      <div class="container border border-secondary p-3 mb-2 bg-white" style="page-break-after: always;">
 
         {% if plate.size == 384 %}
           <div class="table-responsive">
@@ -9906,7 +9906,7 @@
     {% endfor %}
 
     {% for plate in rna_pcr_json %}
-      <div class="container border border-secondary p-3 mb-2" style="page-break-after: always;">
+      <div class="container border border-secondary p-3 mb-2 bg-white" style="page-break-after: always;">
       
         {% if plate.size == 384 %}
           <div class="table-responsive">
@@ -13163,7 +13163,7 @@
   <div id="printDivGels">
     {% comment %} Gels for PCR {% endcomment %}
     {% for gel in pcr_gels_json %}
-      <div class="container border border-secondary p-3 mb-2" style="page-break-after: always;">
+      <div class="container border border-secondary p-3 mb-2 bg-white" style="page-break-after: always;">
 
           <div class="table-responsive col-sm-6">
             <table class="table table-bordered table-text-gel" style="break-inside: avoid">

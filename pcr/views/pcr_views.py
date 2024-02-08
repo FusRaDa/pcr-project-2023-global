@@ -536,7 +536,7 @@ def process_paperwork(request, pk):
     # **VALIDATION FOR CONTROLS** #
     for control_dict in all_controls:
       name = control_dict['control'].name
-      lot_number = control_dict['lot_number'].lot_number
+      lot_number = control_dict['control'].lot_number
 
       if control_dict['control'].is_expired:
         messages.error(request, f"Control: {name} lot#: {lot_number} is expired")
@@ -580,7 +580,7 @@ def process_paperwork(request, pk):
       
     for ladder_dict in all_ladders:
       name = ladder_dict['ladder'].name
-      lot_number = ladder_dict['lot_number'].lot_number
+      lot_number = ladder_dict['ladder'].lot_number
 
       if ladder_dict['ladder'].is_expired:
         messages.error(request, f"Ladder: {name} lot#: {lot_number} is expired.")
