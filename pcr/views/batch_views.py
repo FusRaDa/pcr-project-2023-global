@@ -128,6 +128,7 @@ def batchSamples(request, pk):
     return redirect(request.path_info)
   
   if 'extracted' in request.POST:
+
     # **VALIDATE** #
     invalid_samples = []
     for sample in samples:
@@ -162,6 +163,23 @@ def batchSamples(request, pk):
     # **VALIDATE** #
       
     batch.is_extracted = True
+
+    # Ensure neg ctrl sample has all assays #
+    sample_assays = []  
+    for sample in batch.sample_set.all()[:batch.sample_set.count()-1]:
+      for assay in sample.assays.all():
+        sample_assays.append(assay)
+    set_sample_assays = set(sample_assays)
+
+    print(set_sample_assays)
+
+    neg_sample = batch.sample_set.all().last()
+
+    neg_sample.assays.clear()
+    for assay in set_sample_assays:
+      neg_sample.assays.add(assay)
+    neg_sample.save()
+    # Ensure neg ctrl sample has all assays #
 
     for reagent in batch.extraction_protocol.reagentextraction_set.all():
       total_used_reagents = reagent.amount_per_sample * batch.sample_set.count()
