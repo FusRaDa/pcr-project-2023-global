@@ -13,168 +13,138 @@
 
   <form method="POST" action="">
     {% csrf_token %}
-      <div class="row justify-content-center">
-  
-        <div class="col-sm-3 form-width-18">
-          <div class="text-center">
-            <label class="form-label">Name</label>
-            {{form.name}}
-          </div>
-  
-          <div class="text-center">
-            <label class="form-label">Method</label>
-            {{form.method}}
-          </div>
+    <div class="row justify-content-center">
 
-          <div class="text-center">
-            <label class="form-label">Type</label>
-            {{form.type}}
-          </div>
-  
-          <div class="text-center">
-            <label class="form-label">Reaction Volume (&#181;l)</label>
-            {{form.reaction_volume}}
-          </div>
-  
-          <div class="text-center">
-            <label class="form-label">Sample Volume (&#181;l)</label>
-            {{form.sample_volume}}
-          </div>
-
-          <div class="text-center">
-            <label class="form-label">Ladder (PCR)</label>
-            {{form.ladder}}
-          </div>
-
-          <div class="text-center mb-2">
-            <label class="form-label">Ladder Volume Per Gel (&#181;l)</label>
-            {{form.ladder_volume_per_gel}}
-          </div>
-  
-          <div class="text-center mb-2">
-            <label class="form-label">Dye</label>
-            {{form.dye}}
-          </div>
-  
-          <div class="text-center mb-2">
-            <label class="form-label">Dye Volume Per Well (&#181;l)</label>
-            {{form.dye_volume_per_well}}
-          </div>
-  
-          <div class="text-center mb-2">
-            <label class="form-label">Dye Used In Ladder?</label>
-            {{form.dye_in_ladder}}
-          </div>
-
-          <div class="text-center mb-2">
-            <label class="form-label">Replicates</label>
-            {{form.multiplicates}}
-          </div>
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center mb-2">
+          <label class="form-label">Name</label>
+          {{form.name}}
         </div>
-  
-        <div class="col-sm-3 form-width-18">
-          <div class="card mt-2">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                Flourescence
-                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#fluor-collapse" aria-expanded="true" aria-controls="fluor-collapse">
-                  ⮝
-                </button>
-              </li>
-              <div class="collapse show" id="fluor-collapse">
-                <div class="card-body"> 
-                  <ul class="list-group">
-                    {% for fluor in form.fluorescence %}
-                      <li class="list-group-item">
-                        {{fluor}}
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
+
+        <div class="text-center mb-2">
+          <label class="form-label">Method</label>
+          {{form.method}}
+        </div>
+
+        <div class="text-center mb-2">
+          <label class="form-label">Type</label>
+          {{form.type}}
+        </div>
+        
+        <div class="text-center mb-2">
+          <label class="form-label">Reaction Volume (&#181;l)</label>
+          {{form.reaction_volume}}
+        </div>
+      </div>
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center mb-2">
+          <label class="form-label">Sample Volume (&#181;l)</label>
+          {{form.sample_volume}}
+        </div>
+
+        <div class="text-center mb-2">
+          <label class="form-label">Ladder</label>
+          {{form.ladder}}
+        </div>
+
+        <div class="text-center mb-2">
+          <label class="form-label">Ladder Volume Per Gel (&#181;l)</label>
+          {{form.ladder_volume_per_gel}}
+        </div>
+
+        <div class="text-center mb-2">
+          <label class="form-label">Dye Used In Ladder?</label>
+          {{form.dye_in_ladder}}
+        </div>
+      </div>
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center mb-2">
+          <label class="form-label">Dye</label>
+          {{form.dye}}
+        </div>
+
+        <div class="text-center mb-2">
+          <label class="form-label">Dye Volume Per Well (&#181;l)</label>
+          {{form.dye_volume_per_well}}
+        </div>
+
+        <div class="text-center mb-2">
+          <label class="form-label">Replicates</label>
+          {{form.multiplicates}}
+        </div>
+      </div>
+ 
+      <div class="col-sm-3 form-width-18">
+        <div class="card mt-2">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Flourescence
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#fluor-collapse" aria-expanded="true" aria-controls="fluor-collapse">
+                ⮝
+              </button>
+            </li>
+            <div class="collapse show" id="fluor-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for fluor in form.fluorescence %}
+                    <li class="list-group-item">
+                      {{fluor}}
+                    </li>
+                  {% endfor %}
+                </ul>
               </div>
-            </ul>
-          </div>
-        </div>
-  
-        <div class="col-sm-3 form-width-18">
-          <div class="card mt-2">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                Controls
-                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#control-collapse" aria-expanded="false" aria-controls="control-collapse">
-                  ⮝
-                </button>
-              </li>
-              <div class="collapse show" id="control-collapse">
-                <div class="card-body"> 
-                  <ul class="list-group">
-                    {% for control in form.controls %}
-                      <li class="list-group-item">
-                        {{control}}
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
-              </div>
-            </ul>
-          </div>
-        </div>
-  
-        <div class="col-sm-3 form-width-18">
-          <div class="card mt-2">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                Reagents
-                <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagent-collapse" aria-expanded="false" aria-controls="reagent-collapse">
-                  ⮝
-                </button>
-              </li>
-              <div class="collapse show" id="reagent-collapse">
-                <div class="card-body"> 
-                  <ul class="list-group">
-                    {% for reagent in form.reagents %}
-                      <li class="list-group-item">
-                        {{reagent}}
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
-              </div>
-            </ul>
-          </div>
-        </div>
-  
-      </div>
-
-      {% if form.errors %}
-      <div class="row text-center mt-2">
-        {% for key,value in form.errors.items %} 
-          {{ value|escape }}
-        {% endfor %}
-      </div>
-      {% endif %}
-  
-      <div class="row justify-content-center">
-        <div class="text-center mt-2"> 
-          <a class="btn btn-secondary" href="{% url 'assays' %}">Cancel</a>
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete Assay</button>
-          <button class="btn btn-primary" type="submit" name="update">Update Assay</button>
+            </div>
+          </ul>
         </div>
       </div>
 
-      <div class="row justify-content-center">
-        <div class="text-center mt-2">       
-          <button class="btn btn-success" type="submit" name="update_control">Control Quantities</button>
-          <button class="btn btn-warning" type="submit" name="update_reagent">Reagent Quantities</button>
-        </div>
+    </div>
+
+    {% if form.errors %}
+    <div class="row text-center mt-2">
+      {% for key,value in form.errors.items %} 
+        {{ value|escape }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center">
+      <div class="text-center mt-2"> 
+        <a class="btn btn-secondary" href="{% url 'assays' %}">Cancel</a>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete Assay</button>
+        <button class="btn btn-primary" type="submit" name="update">Update Assay</button>
       </div>
+    </div>
   </form>
+
+  <div class="row justify-content-center mt-4">
+
+    <div class="col-sm-3 text-center">
+      <h3><u>Controls<button type="button" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-arrows-left-right"></i></button></u></h3>
+    </div>
+
+    <div class="col-sm-3">
+      search
+    </div>
+
+    <div class="col-sm-3 text-center">
+      <h3><u>Reagents<button type="button" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></i></button></u></h3>
+    </div>
+
+    <div class="col-sm-3">
+      search
+    </div>
+  
+
+  </div>
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Deleting Extraction Protocol...</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting Assay...</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">

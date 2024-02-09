@@ -30,12 +30,14 @@
           <label class="form-label">Type</label>
           {{form.type}}
         </div>
-
+        
         <div class="text-center mb-2">
           <label class="form-label">Reaction Volume (&#181;l)</label>
           {{form.reaction_volume}}
         </div>
+      </div>
 
+      <div class="col-sm-3 form-width-18">
         <div class="text-center mb-2">
           <label class="form-label">Sample Volume (&#181;l)</label>
           {{form.sample_volume}}
@@ -52,6 +54,13 @@
         </div>
 
         <div class="text-center mb-2">
+          <label class="form-label">Dye Used In Ladder?</label>
+          {{form.dye_in_ladder}}
+        </div>
+      </div>
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center mb-2">
           <label class="form-label">Dye</label>
           {{form.dye}}
         </div>
@@ -62,16 +71,11 @@
         </div>
 
         <div class="text-center mb-2">
-          <label class="form-label">Dye Used In Ladder?</label>
-          {{form.dye_in_ladder}}
-        </div>
-
-        <div class="text-center mb-2">
           <label class="form-label">Replicates</label>
           {{form.multiplicates}}
         </div>
       </div>
-
+ 
       <div class="col-sm-3 form-width-18">
         <div class="card mt-2">
           <ul class="list-group list-group-flush">
@@ -96,54 +100,6 @@
         </div>
       </div>
 
-      <div class="col-sm-3 form-width-18">
-        <div class="card mt-2">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              Controls
-              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#control-collapse" aria-expanded="false" aria-controls="control-collapse">
-                ⮝
-              </button>
-            </li>
-            <div class="collapse show" id="control-collapse">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for control in form.controls %}
-                    <li class="list-group-item">
-                      {{control}}
-                    </li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-sm-3 form-width-18">
-        <div class="card mt-2">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              Reagents
-              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagent-collapse" aria-expanded="false" aria-controls="reagent-collapse">
-                ⮝
-              </button>
-            </li>
-            <div class="collapse show" id="reagent-collapse">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for reagent in form.reagents %}
-                    <li class="list-group-item">
-                      {{reagent}}
-                    </li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-          </ul>
-        </div>
-      </div>
-
     </div>
 
     {% if form.errors %}
@@ -157,7 +113,7 @@
     <div class="row justify-content-center">
       <div class="text-center mt-2"> 
         <a class="btn btn-secondary" href="{% url 'assays' %}">Cancel</a>
-        <button class="btn btn-primary" type="submit">Add Assay</button>
+        <button class="btn btn-primary" type="submit">Create Assay</button>
       </div>
     </div>
   

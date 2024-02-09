@@ -32,7 +32,7 @@ def loginPage(request):
 
     if user is not None:
       login(request, user)
-      return redirect('batches')
+      return redirect('reagents')
     else:
       messages.info(request, '**username and/or password is incorrect.**')
 
@@ -101,7 +101,7 @@ def register(request):
       user.is_active=False
       user.save()
       activateEmail(request, user, form.cleaned_data.get('email'))
-      return redirect('login')
+      return redirect('reagents')
     
     else:
       for error in list(form.errors.values()):

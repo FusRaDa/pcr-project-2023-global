@@ -7,10 +7,10 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib import messages
 
-from users.models import User
+from ..models.inventory import Reagent
 from ..models.assay import Assay, Fluorescence, Control, ControlAssay, ReagentAssay
 from ..forms.assay import AssayForm, ReagentAssayForm, FluorescenceForm, ControlForm, ControlAssayForm
-from ..forms.general import DeletionForm, SearchAssayForm, SearchControlForm, SearchFluorescenseForm
+from ..forms.general import DeletionForm, SearchAssayForm, SearchControlForm, SearchFluorescenseForm, SearchAssayControlForm, SearchAssayReagentForm
 
 
 @login_required(login_url='login')
@@ -54,12 +54,12 @@ def create_assay(request):
       assay.user = request.user
       assay = form.save()
 
-      reagents = assay.reagentassay_set.all()
-      for reagent in reagents:
-        reagent.final_concentration_unit = reagent.reagent.unit_concentration
-        reagent.save()
+      # reagents = assay.reagentassay_set.all()
+      # for reagent in reagents:
+      #   reagent.final_concentration_unit = reagent.reagent.unit_concentration
+      #   reagent.save()
 
-      return redirect('assays')
+      return redirect('edit_assay', assay.pk)
     else:
       print(form.errors)
 
@@ -72,40 +72,24 @@ def edit_assay(request, pk):
   try:
     assay = Assay.objects.get(user=request.user, pk=pk)
     reagents = assay.reagentassay_set.all()
+    controls = assay.controlassay_set.all()
   except ObjectDoesNotExist:
     messages.error(request, "There is no assay to edit.")
     return redirect('assays')
   
+  reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR)
+  controls = Control.objects.filter(user=request.user)
+  
   form = AssayForm(user=request.user, instance=assay)
   del_form = DeletionForm(value=assay.name)
-
-  if 'update_reagent' in request.POST:
-    form = AssayForm(request.POST, user=request.user, instance=assay)
-    if form.is_valid():
-
-      form.save()
-
-      for reagent in reagents:
-        reagent.final_concentration_unit = reagent.reagent.unit_concentration
-        reagent.save()
-      
-      return redirect('assay_through', pk)
-    else:
-      print(form.errors)
+  search_control = SearchAssayControlForm()
+  search_reagent = SearchAssayReagentForm()
 
   if 'update' in request.POST:
     form = AssayForm(request.POST, user=request.user, instance=assay)
     if form.is_valid():
       form.save()
       return redirect('assays')
-    else:
-      print(form.errors)
-
-  if 'update_control' in request.POST:
-    form = AssayForm(request.POST, user=request.user, instance=assay)
-    if form.is_valid():
-      form.save()
-      return redirect('control_through', pk)
     else:
       print(form.errors)
 

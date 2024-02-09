@@ -52,22 +52,20 @@ class AssayForm(ModelForm):
     widget=forms.CheckboxSelectMultiple,
     required=False)
   
-  controls = forms.ModelMultipleChoiceField(
-    queryset=None,
-    widget=forms.CheckboxSelectMultiple,
-    required=True)
+  # controls = forms.ModelMultipleChoiceField(
+  #   queryset=None,
+  #   widget=forms.CheckboxSelectMultiple,
+  #   required=True)
   
-  reagents = forms.ModelMultipleChoiceField(
-    queryset=None,
-    widget=forms.CheckboxSelectMultiple,
-    required=True)
+  # reagents = forms.ModelMultipleChoiceField(
+  #   queryset=None,
+  #   widget=forms.CheckboxSelectMultiple,
+  #   required=True)
   
   def clean(self):
     cleaned_data = super().clean()
     reaction_volume = cleaned_data.get('reaction_volume')
     sample_volume = cleaned_data.get('sample_volume')
-    controls = cleaned_data.get('controls')
-    reagents = cleaned_data.get('reagents')
     fluorescence = cleaned_data.get('fluorescence')
     method = cleaned_data.get('method')
 
@@ -144,38 +142,38 @@ class AssayForm(ModelForm):
         message="Reaction volume must be greater or equal to the sample volume."
       )
     
-    if controls:
-      neg_ctrl_found = 0
-      for control in controls:
-        if control.is_negative_ctrl == True:
-          neg_ctrl_found += 1
+    # if controls:
+    #   neg_ctrl_found = 0
+    #   for control in controls:
+    #     if control.is_negative_ctrl == True:
+    #       neg_ctrl_found += 1
 
-      if neg_ctrl_found != 1:
-        raise ValidationError(
-          message="Assay must only contain one negative control."
-        )
+    #   if neg_ctrl_found != 1:
+    #     raise ValidationError(
+    #       message="Assay must only contain one negative control."
+    #     )
    
-    if reagents:
-      water_reagent_found = 0
-      for reagent in reagents:
-        if reagent.pcr_reagent == Reagent.PCRReagent.WATER:
-          water_reagent_found += 1
+    # if reagents:
+    #   water_reagent_found = 0
+    #   for reagent in reagents:
+    #     if reagent.pcr_reagent == Reagent.PCRReagent.WATER:
+    #       water_reagent_found += 1
       
-      if water_reagent_found != 1:
-        raise ValidationError(
-          message="Assay must only contain one reagent as PCR water"
-        )
+    #   if water_reagent_found != 1:
+    #     raise ValidationError(
+    #       message="Assay must only contain one reagent as PCR water"
+    #     )
  
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['fluorescence'].queryset = Fluorescence.objects.filter(user=self.user)
-    self.fields['controls'].queryset = Control.objects.filter(user=self.user)
-    self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user, usage=Reagent.Usages.PCR)
+    # self.fields['controls'].queryset = Control.objects.filter(user=self.user)
+    # self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user, usage=Reagent.Usages.PCR)
 
     self.fields['fluorescence'].error_messages = {'required': "Assay requires at least one fluorescence"}
-    self.fields['controls'].error_messages = {'required': "Assay requires controls."}
-    self.fields['reagents'].error_messages = {'required': "Assay requires reagents."}
+    # self.fields['controls'].error_messages = {'required': "Assay requires controls."}
+    # self.fields['reagents'].error_messages = {'required': "Assay requires reagents."}
     
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['method'].widget.attrs['class'] = 'form-select'
@@ -190,7 +188,7 @@ class AssayForm(ModelForm):
     
   class Meta:
     model = Assay
-    exclude = ['user']
+    exclude = ['user', 'controls', 'reagents']
 
 
 class ControlAssayForm(ModelForm):

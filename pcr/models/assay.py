@@ -107,6 +107,8 @@ class Assay(models.Model):
     for reagent in reagents:
       if reagent.reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.final_concentration == None:
         return False
+    if self.controlassay_set.count() < 1:
+      return False
     return True
   
   @property
