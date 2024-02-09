@@ -103,12 +103,13 @@ class Assay(models.Model):
 
   @property
   def is_complete(self):
-    reagents = self.reagentassay_set.all()
-    for reagent in reagents:
+    if self.controls.count() < 1 or self.reagents.count() < 1:
+      return False
+    
+    for reagent in self.reagentassay_set.all():
       if reagent.reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.final_concentration == None:
         return False
-    if self.controlassay_set.count() < 1:
-      return False
+    
     return True
   
   @property

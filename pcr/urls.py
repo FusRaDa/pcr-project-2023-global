@@ -21,6 +21,11 @@ urlpatterns = [
   path("assays/", assay_views.assays, name='assays'),
   path("create-assay/", assay_views.create_assay, name='create_assay'),
   path("edit-assay/<int:pk>/", assay_views.edit_assay, name='edit_assay'),
+  path("add-control-assay/<int:assay_pk>/<int:control_pk>/", assay_views.add_control_assay, name='add_control_assay'),
+  path("remove-control-assay/<int:assay_pk>/<int:control_pk>/", assay_views.remove_control_assay, name='remove_control_assay'),
+  path("add-reagent-assay/<int:assay_pk>/<int:reagent_pk>/", assay_views.add_reagent_assay, name='add_reagent_assay'),
+  path("remove-reagent-assay/<int:assay_pk>/<int:reagent_pk>/", assay_views.remove_reagent_assay, name='remove_reagent_assay'),
+  
   path("reagents-in-assay/<int:pk>/", assay_views.assay_through, name='assay_through'),
   path("controls-in-assay/<int:pk>/", assay_views.control_through, name='control_through'),
 

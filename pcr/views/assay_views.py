@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 from django.db.models import F
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -71,8 +72,6 @@ def create_assay(request):
 def edit_assay(request, pk):
   try:
     assay = Assay.objects.get(user=request.user, pk=pk)
-    assay_reagents = assay.reagentassay_set.all()
-    assay_controls = assay.controlassay_set.all()
   except ObjectDoesNotExist:
     messages.error(request, "There is no assay to edit.")
     return redirect('assays')
@@ -105,7 +104,7 @@ def edit_assay(request, pk):
     search_control_form = TextSearchForm(request.GET)
     if search_control_form.is_valid():
       text_search = search_control_form.cleaned_data['text_search']
-      controls = Control.objects.filter(Q(name__icontains=text_search) | Q(lot_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+      controls = Control.objects.filter(user=request.user).filter(Q(name__icontains=text_search) | Q(lot_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(search_control_form.errors)
 
@@ -113,7 +112,7 @@ def edit_assay(request, pk):
     search_reagent_form = TextSearchForm(request.GET)
     if search_reagent_form.is_valid():
       text_search = search_reagent_form.cleaned_data['text_search']
-      reagents = Reagent.objects.filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F('exp_date').asc(nulls_last=True))
+      reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(search_reagent_form.errors)
   
@@ -123,6 +122,72 @@ def edit_assay(request, pk):
     'controls': controls, 'reagents': reagents,
     }
   return render(request, 'assay/edit_assay.html', context)
+
+
+@login_required(login_url='login')
+def add_control_assay(request, assay_pk, control_pk):
+  try:
+    assay = Assay.objects.get(user=request.user, pk=assay_pk)
+    control = Control.objects.get(user=request.user, pk=control_pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no control or assay found.")
+    return redirect('assays')
+  
+  if 'add_control' in request.POST:
+    if not assay.controls.contains(control):
+      assay.controls.add(control)
+      context = {'assay': assay, 'control': control}
+      return render(request, 'assay/control_in_assay.html', context)
+    
+  return HttpResponse(status=200)
+
+
+@login_required(login_url='login')
+def remove_control_assay(request, assay_pk, control_pk):
+  try:
+    assay = Assay.objects.get(user=request.user, pk=assay_pk)
+    control = Control.objects.get(user=request.user, pk=control_pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no control or assay found.")
+    return redirect('assays')
+  
+  if 'remove_control' in request.POST:
+    assay.controls.remove(control)
+
+  return HttpResponse(status=200)
+
+
+@login_required(login_url='login')
+def add_reagent_assay(request, assay_pk, reagent_pk):
+  try:
+    assay = Assay.objects.get(user=request.user, pk=assay_pk)
+    reagent = Reagent.objects.get(user=request.user, pk=reagent_pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no reagent or assay found.")
+    return redirect('assays')
+  
+  if 'add_reagent' in request.POST:
+    if not assay.reagents.contains(reagent):
+      assay.reagents.add(reagent)
+      context = {'assay': assay, 'reagent': reagent}
+      return render(request, 'assay/reagent_in_assay.html', context)
+
+  return HttpResponse(status=200)
+
+
+@login_required(login_url='login')
+def remove_reagent_assay(request, assay_pk, reagent_pk):
+  try:
+    assay = Assay.objects.get(user=request.user, pk=assay_pk)
+    reagent = Reagent.objects.get(user=request.user, pk=reagent_pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no reagent or assay found.")
+    return redirect('assays')
+  
+  if 'remove_reagent' in request.POST:
+    assay.reagents.remove(reagent)
+  
+  return HttpResponse(status=200)
 
 
 @login_required(login_url='login')

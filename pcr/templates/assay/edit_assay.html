@@ -123,12 +123,10 @@
 
     <div class="col-sm-3 text-center">
       <h3><u>Controls<button type="button" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-arrows-left-right"></i></button></u></h3>
-      <ul class="list-group">
-        <li class="list-group-item">An item</li>
-        <li class="list-group-item">A second item</li>
-        <li class="list-group-item">A third item</li>
-        <li class="list-group-item">A fourth item</li>
-        <li class="list-group-item">And a fifth one</li>
+      <ul class="list-group" id="controls-list">
+        {% for control in assay.controls.all %}
+          {% include 'assay/control_in_assay.html' %}
+        {% endfor %}
       </ul>
     </div>
 
@@ -142,19 +140,28 @@
 
       <ul class="list-group">
         {% for control in controls %}
-        <li class="list-group-item">{{control}}</li>
+        <li class="list-group-item">
+          {{control}}
+          <button 
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+            hx-post="{% url 'add_control_assay' assay.pk control.pk %}"
+            hx-target="#controls-list"
+            hx-swap="beforeend"
+            class="btn btn-success btn-sm float-end" 
+            name="add_control">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </li>
         {% endfor %}
       </ul>
     </div>
 
     <div class="col-sm-3 text-center">
       <h3><u>Reagents<button type="button" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></i></button></u></h3>
-      <ul class="list-group">
-        <li class="list-group-item">An item</li>
-        <li class="list-group-item">A second item</li>
-        <li class="list-group-item">A third item</li>
-        <li class="list-group-item">A fourth item</li>
-        <li class="list-group-item">And a fifth one</li>
+      <ul class="list-group" id="reagents-list">
+        {% for reagent in assay.reagents.all %}
+          {% include 'assay/reagent_in_assay.html' %}
+        {% endfor %}
       </ul>
     </div>
 
@@ -168,7 +175,18 @@
 
       <ul class="list-group">
         {% for reagent in reagents %}
-        <li class="list-group-item">{{reagent}}</li>
+        <li class="list-group-item">
+          {{reagent}}
+          <button 
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+            hx-post="{% url 'add_reagent_assay' assay.pk reagent.pk %}"
+            hx-target="#reagents-list"
+            hx-swap="beforeend"
+            class="btn btn-success btn-sm float-end" 
+            name="add_reagent">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </li>
         {% endfor %}
       </ul>
     </div>
