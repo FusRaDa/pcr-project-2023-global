@@ -123,18 +123,54 @@
 
     <div class="col-sm-3 text-center">
       <h3><u>Controls<button type="button" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-arrows-left-right"></i></button></u></h3>
+      <ul class="list-group">
+        <li class="list-group-item">An item</li>
+        <li class="list-group-item">A second item</li>
+        <li class="list-group-item">A third item</li>
+        <li class="list-group-item">A fourth item</li>
+        <li class="list-group-item">And a fifth one</li>
+      </ul>
     </div>
 
     <div class="col-sm-3">
-      search
+      <form class="gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
+        <div class="input-group">
+          {{search_control_form.text_search}}
+          <div class="input-group-text"><button type="submit" class="btn btn-primary btn-sm" name="search_control">Search</button></div>
+        </div>
+      </form>
+
+      <ul class="list-group">
+        {% for control in controls %}
+        <li class="list-group-item">{{control}}</li>
+        {% endfor %}
+      </ul>
     </div>
 
     <div class="col-sm-3 text-center">
       <h3><u>Reagents<button type="button" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></i></button></u></h3>
+      <ul class="list-group">
+        <li class="list-group-item">An item</li>
+        <li class="list-group-item">A second item</li>
+        <li class="list-group-item">A third item</li>
+        <li class="list-group-item">A fourth item</li>
+        <li class="list-group-item">And a fifth one</li>
+      </ul>
     </div>
 
     <div class="col-sm-3">
-      search
+      <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
+        <div class="input-group">
+          {{search_reagent_form.text_search}}
+          <div class="input-group-text"><button type="submit" class="btn btn-primary btn-sm" name="search_reagent">Search</button></div>
+        </div>
+      </form>
+
+      <ul class="list-group">
+        {% for reagent in reagents %}
+        <li class="list-group-item">{{reagent}}</li>
+        {% endfor %}
+      </ul>
     </div>
   
 

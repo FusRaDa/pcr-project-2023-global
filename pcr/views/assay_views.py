@@ -10,7 +10,7 @@ from django.contrib import messages
 from ..models.inventory import Reagent
 from ..models.assay import Assay, Fluorescence, Control, ControlAssay, ReagentAssay
 from ..forms.assay import AssayForm, ReagentAssayForm, FluorescenceForm, ControlForm, ControlAssayForm
-from ..forms.general import DeletionForm, SearchAssayForm, SearchControlForm, SearchFluorescenseForm, SearchAssayControlForm, SearchAssayReagentForm
+from ..forms.general import DeletionForm, SearchAssayForm, SearchControlForm, SearchFluorescenseForm, TextSearchForm
 
 
 @login_required(login_url='login')
@@ -71,8 +71,8 @@ def create_assay(request):
 def edit_assay(request, pk):
   try:
     assay = Assay.objects.get(user=request.user, pk=pk)
-    reagents = assay.reagentassay_set.all()
-    controls = assay.controlassay_set.all()
+    assay_reagents = assay.reagentassay_set.all()
+    assay_controls = assay.controlassay_set.all()
   except ObjectDoesNotExist:
     messages.error(request, "There is no assay to edit.")
     return redirect('assays')
@@ -82,8 +82,8 @@ def edit_assay(request, pk):
   
   form = AssayForm(user=request.user, instance=assay)
   del_form = DeletionForm(value=assay.name)
-  search_control = SearchAssayControlForm()
-  search_reagent = SearchAssayReagentForm()
+  search_control_form = TextSearchForm()
+  search_reagent_form = TextSearchForm()
 
   if 'update' in request.POST:
     form = AssayForm(request.POST, user=request.user, instance=assay)
@@ -100,8 +100,28 @@ def edit_assay(request, pk):
       return redirect('assays')
     else:
       print(del_form.errors)
+
+  if 'search_control' in request.GET:
+    search_control_form = TextSearchForm(request.GET)
+    if search_control_form.is_valid():
+      text_search = search_control_form.cleaned_data['text_search']
+      controls = Control.objects.filter(Q(name__icontains=text_search) | Q(lot_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+    else:
+      print(search_control_form.errors)
+
+  if 'search_reagent' in request.GET:
+    search_reagent_form = TextSearchForm(request.GET)
+    if search_reagent_form.is_valid():
+      text_search = search_reagent_form.cleaned_data['text_search']
+      reagents = Reagent.objects.filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F('exp_date').asc(nulls_last=True))
+    else:
+      print(search_reagent_form.errors)
   
-  context = {'assay': assay, 'form': form, 'del_form': del_form}
+  context = {
+    'assay': assay, 'form': form, 'del_form': del_form, 
+    'search_control_form': search_control_form, 'search_reagent_form': search_reagent_form, 
+    'controls': controls, 'reagents': reagents,
+    }
   return render(request, 'assay/edit_assay.html', context)
 
 

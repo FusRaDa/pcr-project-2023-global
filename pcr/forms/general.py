@@ -48,14 +48,6 @@ class SearchControlForm(forms.Form):
     self.fields['text_search'].widget.attrs['class'] = 'form-control'
 
 
-class SearchAssayControlForm(forms.Form):
-  text_search = forms.CharField(max_length=100, required=False)
-
-  def __init__(self, *args, **kwargs):
-    super().__init__(*args, **kwargs) 
-    self.fields['text_search'].widget.attrs['class'] = 'form-control'
-
-
 class SearchAssayForm(forms.Form):
   name = forms.CharField(max_length=100, required=False)
 
@@ -170,18 +162,6 @@ class SearchReagentForm(forms.Form):
     self.fields['pcr_reagent'].widget.attrs['class'] = 'form-select'
 
 
-class SearchAssayReagentForm(forms.Form):
-  text_search = forms.CharField(max_length=100, required=False)
-
-  PCR_REAGENT_CHOICES = [(None, '------'), (Reagent.PCRReagent.GENERAL, 'GENERAL'), (Reagent.PCRReagent.PRIMER, 'PRIMER'), (Reagent.PCRReagent.POLYMERASE, 'POLYMERASE'), (Reagent.PCRReagent.WATER, 'WATER')]
-  pcr_reagent = forms.ChoiceField(choices=PCR_REAGENT_CHOICES, required=False)
-
-  def __init__(self, *args, **kwargs):
-    super().__init__(*args, **kwargs) 
-    self.fields['text_search'].widget.attrs['class'] = 'form-control'
-    self.fields['pcr_reagent'].widget.attrs['class'] = 'form-select'
-
-
 class SearchBatchForm(forms.Form):
   name = forms.CharField(max_length=100, required=False)
   lab_id = forms.CharField(max_length=4, required=False)
@@ -240,6 +220,14 @@ class SearchProcessForm(forms.Form):
     self.fields['lab_id'].widget.attrs['class'] = 'form-control'
     self.fields['start_date'].widget.attrs['class'] = 'form-control'
     self.fields['end_date'].widget.attrs['class'] = 'form-control'
+
+
+class TextSearchForm(forms.Form):
+  text_search = forms.CharField(max_length=100, required=False)
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs) 
+    self.fields['text_search'].widget.attrs['class'] = 'form-control'
 
 
 class DeletionForm(forms.Form):
