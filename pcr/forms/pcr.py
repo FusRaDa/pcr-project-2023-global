@@ -7,6 +7,8 @@ from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.inventory import Plate, Gel
 from ..models.assay import Assay
 
+from ..custom.constants import LIMITS
+
 
 class ThermalCyclerProtocolForm(ModelForm):
 
@@ -54,6 +56,12 @@ class ProcessForm(ModelForm):
     pcr_plate = cleaned_data.get('pcr_plate')
     qpcr_plate = cleaned_data.get('qpcr_plate')
     gel = cleaned_data.get('gel')
+
+    if not self.user.is_subscribed:
+      if Process.objects.filter(user=self.user, is_processed=True).count() >= LIMITS.PROCESS_LIMIT:
+        raise ValidationError(
+          message=f"You have reached the maximum number of {LIMITS.PROCESS_LIMIT} PCR processes. Consider upgrading for an infinite amount or deleting all processes."
+        )
 
     min_samples_per_plate_dna_qpcr = cleaned_data.get('min_samples_per_plate_dna_qpcr')
     min_samples_per_plate_rna_qpcr = cleaned_data.get('min_samples_per_plate_rna_qpcr')

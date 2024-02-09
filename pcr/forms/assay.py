@@ -81,7 +81,7 @@ class AssayForm(ModelForm):
     if not self.user.is_subscribed:
       if Assay.objects.filter(user=self.user).count() >= LIMITS.ASSAY_LIMIT:
         raise ValidationError(
-          message="You have reached the maximum number of 10 assays. Consider upgrading for an infinite amount."
+          message=f"You have reached the maximum number of {LIMITS.ASSAY_LIMIT} assays. Consider upgrading for an infinite amount or deleting some assays."
         )
 
     if ladder == None and method == Assay.Methods.PCR:
@@ -261,6 +261,12 @@ class AssayCodeForm(ModelForm):
     pcr_rna = cleaned_data.get('pcr_rna')
     qpcr_dna = cleaned_data.get('qpcr_dna')
     qpcr_rna = cleaned_data.get('qpcr_rna')
+
+    if not self.user.is_subscribed:
+      if AssayCode.objects.filter(user=self.user).count() >= LIMITS.ASSAY_CODE_LIMIT:
+        raise ValidationError(
+          message=f"You have reached the maximum number of {LIMITS.ASSAY_CODE_LIMIT} panels. Consider upgrading for an infinite amount or deleting some panels."
+        )
 
     for assay in pcr_dna | pcr_rna | qpcr_dna | qpcr_rna:
       if not assay.is_complete:

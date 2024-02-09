@@ -57,6 +57,12 @@ class BatchForm(ModelForm):
     extraction_protocol_rna = cleaned_data.get('extraction_protocol_rna')
     extraction_protocol_tn = cleaned_data.get('extraction_protocol_tn')
 
+    if not self.user.is_subscribed:
+      if Batch.objects.filter(user=self.user).count() >= LIMITS.BATCH_LIMIT:
+        raise ValidationError(
+          message=f"You have reached the maximum number of {LIMITS.BATCH_LIMIT} batches. Consider upgrading for an infinite amount or deleting all batches."
+        )
+
     if len(lab_id) != 3:
       raise ValidationError(
         message="Lab ID must contain three capitalized English letters."
