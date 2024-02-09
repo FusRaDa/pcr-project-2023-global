@@ -121,8 +121,8 @@
 
   <div class="row justify-content-center mt-4">
 
-    <div class="col-sm-3 text-center">
-      <h3><u>Controls<button type="button" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-arrows-left-right"></i></button></u></h3>
+    <div class="col-sm-2">
+      <h3 class="text-center"><u>Controls<a href="{% url 'control_through' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-arrows-left-right"></i></a></u></h3>
       <ul class="list-group" id="controls-list">
         {% for control in assay.controls.all %}
           {% include 'assay/control_in_assay.html' %}
@@ -130,11 +130,11 @@
       </ul>
     </div>
 
-    <div class="col-sm-3">
+    <div class="col-sm-2">
       <form class="gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
         <div class="input-group">
           {{search_control_form.text_search}}
-          <div class="input-group-text"><button type="submit" class="btn btn-primary btn-sm" name="search_control">Search</button></div>
+          <div class="input-group-text"><button type="submit" class="btn btn-primary btn-sm" name="search_control"><i class="fa-solid fa-magnifying-glass"></i></button></div>
         </div>
       </form>
 
@@ -156,8 +156,8 @@
       </ul>
     </div>
 
-    <div class="col-sm-3 text-center">
-      <h3><u>Reagents<button type="button" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></i></button></u></h3>
+    <div class="col-sm-4">
+      <h3 class="text-center"><u>Reagents<a href="{% url 'assay_through' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></a></u></h3>
       <ul class="list-group" id="reagents-list">
         {% for reagent in assay.reagents.all %}
           {% include 'assay/reagent_in_assay.html' %}
@@ -165,11 +165,11 @@
       </ul>
     </div>
 
-    <div class="col-sm-3">
+    <div class="col-sm-4">
       <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
         <div class="input-group">
           {{search_reagent_form.text_search}}
-          <div class="input-group-text"><button type="submit" class="btn btn-primary btn-sm" name="search_reagent">Search</button></div>
+          <div class="input-group-text"><button type="submit" class="btn btn-primary btn-sm" name="search_reagent"><i class="fa-solid fa-magnifying-glass"></i></button></div>
         </div>
       </form>
 

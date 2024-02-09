@@ -55,11 +55,6 @@ def create_assay(request):
       assay.user = request.user
       assay = form.save()
 
-      # reagents = assay.reagentassay_set.all()
-      # for reagent in reagents:
-      #   reagent.final_concentration_unit = reagent.reagent.unit_concentration
-      #   reagent.save()
-
       return redirect('edit_assay', assay.pk)
     else:
       print(form.errors)
@@ -169,6 +164,12 @@ def add_reagent_assay(request, assay_pk, reagent_pk):
   if 'add_reagent' in request.POST:
     if not assay.reagents.contains(reagent):
       assay.reagents.add(reagent)
+
+      if reagent.pcr_reagent != Reagent.PCRReagent.WATER:
+        reagent_assay = ReagentAssay.objects.get(assay=assay, reagent=reagent)
+        reagent_assay.final_concentration_unit = reagent.unit_concentration
+        reagent_assay.save()
+
       context = {'assay': assay, 'reagent': reagent}
       return render(request, 'assay/reagent_in_assay.html', context)
 
@@ -186,6 +187,7 @@ def remove_reagent_assay(request, assay_pk, reagent_pk):
   
   if 'remove_reagent' in request.POST:
     assay.reagents.remove(reagent)
+    print(assay.reagents.all())
   
   return HttpResponse(status=200)
 
