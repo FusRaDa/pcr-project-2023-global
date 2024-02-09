@@ -17,6 +17,7 @@ class User(AbstractUser):
 
   can_review = models.BooleanField(default=True)
 
+  @property
   def is_subscribed(self):
     if self.subscription and self.customer:
       return True

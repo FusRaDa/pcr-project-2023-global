@@ -171,8 +171,6 @@ def batchSamples(request, pk):
         sample_assays.append(assay)
     set_sample_assays = set(sample_assays)
 
-    print(set_sample_assays)
-
     neg_sample = batch.sample_set.all().last()
 
     neg_sample.assays.clear()

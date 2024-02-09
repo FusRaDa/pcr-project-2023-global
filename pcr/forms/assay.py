@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from ..models.assay import Assay, AssayCode, ReagentAssay, Fluorescence, Control, ControlAssay
 from ..models.inventory import Reagent, Location
+from ..custom.constants import LIMITS
 
 
 class FluorescenceForm(ModelForm):
@@ -76,6 +77,12 @@ class AssayForm(ModelForm):
     dye = cleaned_data.get('dye')
     dye_volume_per_well = cleaned_data.get('dye_volume_per_well')
     dye_in_ladder = cleaned_data.get('dye_in_ladder')
+
+    if not self.user.is_subscribed:
+      if Assay.objects.filter(user=self.user).count() >= LIMITS.ASSAY_LIMIT:
+        raise ValidationError(
+          message="You have reached the maximum number of 10 assays. Consider upgrading for an infinite amount."
+        )
 
     if ladder == None and method == Assay.Methods.PCR:
       raise ValidationError(

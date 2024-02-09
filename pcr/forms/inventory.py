@@ -11,7 +11,7 @@ from ..models.inventory import Ladder, Gel, Plate, Tube, Reagent, Location, Dye
 class LocationForm(ModelForm):
 
   def __init__(self, *args, **kwargs):
-    super(LocationForm, self).__init__(*args, **kwargs)
+    super().__init__(*args, **kwargs)
     self.fields['name'].error_messages = {'max_length': "Location name is too long."}
     self.fields['name'].widget.attrs['placeholder'] = "Name of freezer, bin, drawer, etc..."
 
