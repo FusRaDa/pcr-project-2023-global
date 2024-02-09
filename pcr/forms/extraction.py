@@ -10,31 +10,15 @@ from ..models.extraction import ExtractionProtocol, TubeExtraction, ReagentExtra
 
 class ExtractionProtocolForm(ModelForm):
 
-  tubes = forms.ModelMultipleChoiceField(
-    queryset=None,
-    widget=forms.CheckboxSelectMultiple,
-    required=True)
-  
-  reagents = forms.ModelMultipleChoiceField(
-    queryset=None,
-    widget=forms.CheckboxSelectMultiple,
-    required=True)
-
   def __init__(self, *args, **kwargs):
-    self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
-    self.fields['tubes'].queryset = Tube.objects.filter(user=self.user)
-    self.fields['reagents'].queryset = Reagent.objects.filter(user=self.user, usage=Reagent.Usages.EXTRACTION)
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['type'].widget.attrs['class'] = 'form-select'
     self.fields['doc_url'].widget.attrs['class'] = 'form-control'
 
-    self.fields['tubes'].error_messages = {'required': "Select tubes for your extraction protocol."}
-    self.fields['reagents'].error_messages = {'required': "Select reagents for your extraction protocol."}
-    
   class Meta:
     model = ExtractionProtocol
-    exclude = ['user']
+    exclude = ['user', 'tubes', 'reagents']
 
 
 class TubeExtractionForm(ModelForm):

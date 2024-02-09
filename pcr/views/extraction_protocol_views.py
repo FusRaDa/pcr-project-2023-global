@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 
 from ..models.extraction import ExtractionProtocol, TubeExtraction, ReagentExtraction
 from ..forms.extraction import ExtractionProtocolForm, TubeExtractionForm, ReagentExtractionForm
-from ..forms.general import DeletionForm, SearchExtractionProtocolForm
+from ..forms.general import DeletionForm, SearchExtractionProtocolForm, TextSearchForm
 
 
 @login_required(login_url='login')
@@ -39,15 +39,15 @@ def extraction_protocols(request):
 @login_required(login_url='login')
 def create_extraction_protocol(request):
   context = {}
-  form = ExtractionProtocolForm(user=request.user)
+  form = ExtractionProtocolForm()
 
   if request.method == "POST":
-    form = ExtractionProtocolForm(request.POST, user=request.user)
+    form = ExtractionProtocolForm(request.POST)
     if form.is_valid():
       protocol = form.save(commit=False)
       protocol.user = request.user
       protocol.save()
-      return redirect('extraction_protocols')
+      return redirect('edit_extraction_protocol', protocol.pk)
     else:
       print(form.errors)
     

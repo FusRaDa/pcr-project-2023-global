@@ -15,12 +15,6 @@
     <h6 class="text-center">Type: {{assay.type}}</h6>
   </div>
 
-  <div class="text-center mb-2">
-    <a href="{% url 'edit_assay' assay.pk %}">
-    <input class="btn btn-primary" type="Submit" value="Edit Assay">
-    </a>
-  </div>
-
   <form method="POST" action="">
     <div class="table-responsive">
       <table class="table table-bordered">
@@ -32,7 +26,7 @@
             <th scope="col">Stock Concentration</th>
             <th scope="col">Final Concentration</th>
             <th scope="col">Concentration Unit</th>
-            <th scope="col">Display Order</th>
+            <th scope="col">Display Order (0 is 1st) </th>
           </tr>
         </thead>
         <tbody>
@@ -77,6 +71,7 @@
     {% endif %}
 
     <div class="text-center"> 
+      <a href="{% url 'edit_assay' assay.pk %}" class="btn btn-secondary">Cancel</a>
       <button class="btn btn-primary" type="submit">Update Reagents</button>
     </div>
 

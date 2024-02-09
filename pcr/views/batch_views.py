@@ -13,14 +13,14 @@ from ..custom.functions import create_samples
 
 
 @login_required(login_url='login')
-def viewBatches(request):
+def batches(request):
   batches = Batch.objects.filter(user=request.user, is_extracted=False).order_by('-date_created')
   context = {'batches': batches}
   return render(request, 'batch/batches.html', context)
 
 
 @login_required(login_url='login')
-def createBatches(request):
+def create_batch(request):
   form = BatchForm(user=request.user)
 
   if request.method == "POST":
@@ -66,7 +66,7 @@ def createBatches(request):
 
 
 @login_required(login_url='login')
-def batchSamples(request, pk):
+def batch_samples(request, pk):
   SampleFormSet = inlineformset_factory(
     Batch, 
     Sample, 
@@ -228,7 +228,7 @@ def batch_paperwork(request, pk):
 
 
 @login_required(login_url='login')
-def editSampleAssay(request, pk):
+def sample_assay(request, pk):
   try:
     sample = Sample.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:

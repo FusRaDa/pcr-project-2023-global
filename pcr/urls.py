@@ -3,10 +3,10 @@ from .views import batch_views, assay_code_views, extraction_protocol_views, ass
 
 
 urlpatterns = [
-  path("batches/", batch_views.viewBatches, name="batches"),
-  path("create-batch/", batch_views.createBatches, name="create_batch"),
-  path("batch-samples/<int:pk>/", batch_views.batchSamples, name='batch_samples'),
-  path("sample-assay/<int:pk>/", batch_views.editSampleAssay, name='sample_assay'),
+  path("batches/", batch_views.batches, name="batches"),
+  path("create-batch/", batch_views.create_batch, name="create_batch"),
+  path("batch-samples/<int:pk>/", batch_views.batch_samples, name='batch_samples'),
+  path("sample-assay/<int:pk>/", batch_views.sample_assay, name='sample_assay'),
   path("batch-paperwork/<int:pk>/", batch_views.batch_paperwork, name='batch_paperwork'),
 
   path("extraction-protocols/", extraction_protocol_views.extraction_protocols, name='extraction_protocols'),
