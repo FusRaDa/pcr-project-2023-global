@@ -1,0 +1,77 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Extraction Tubes {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="row">
+    <h3 class="text-center">{{protocol.name}}</h3>
+  </div>
+
+  <div class="row">
+    <h6 class="text-center">Extracting: {{protocol.type}}</h6>
+  </div>
+
+  <form method="POST" action="">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        
+        <thead>
+          <tr>
+            <th scope="col" class="col-sm-4">Tube</th>
+            <th scope="col" class="col-sm-2">Exp. Date</th>
+            <th scope="col" class="col-sm-3">Amount Per Sample</th>
+            <th scope="col">Display Order (0 is 1st)</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {{ tubeformset.management_form }}
+          {% csrf_token %}
+          {% for tubes, tubeformset in tubes_data %}
+
+          {{tubeformset.id}}
+
+          <tr class="{% if tubes.tube.is_expired %} table-danger {% endif %} {% if tubes.tube.month_exp %} table-warning {% endif %}">
+            <td>{{tubes}} {% if tubes.tube.is_expired %} (EXPIRED) {% endif %} {% if tubes.tube.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{tubes.tube.exp_date}}</td>
+            <td>{{tubeformset.amount_per_sample}}</td>
+            <td>{{tubeformset.order}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+ 
+    {% if tubeformset.errors %}
+      <div class="row text-center mt-2">
+      {% for errors in tubeformset.errors %}
+        {% for error in errors.values %}
+          {{error}}
+        {%endfor%}
+      {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="text-center"> 
+      <a href="{% url 'edit_extraction_protocol' protocol.pk %}" class="btn btn-secondary">Cancel</a>
+      <button class="btn btn-primary" type="submit">Update Tubes</button>
+    </div>
+
+  </form>
+ 
+</div>
+{% endblock %}

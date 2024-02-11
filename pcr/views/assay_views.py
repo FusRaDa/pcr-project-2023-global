@@ -193,7 +193,7 @@ def remove_reagent_assay(request, assay_pk, reagent_pk):
 
 
 @login_required(login_url='login')
-def assay_through(request, pk):
+def reagents_in_assay(request, pk):
   ReagentAssayFormSet = modelformset_factory(
     ReagentAssay,
     form=ReagentAssayForm,
@@ -223,7 +223,7 @@ def assay_through(request, pk):
       print(reagentformset.non_form_errors())
         
   context = {'reagentformset': reagentformset, 'reagents_data': reagents_data, 'assay': assay}
-  return render(request, 'assay/assay_through.html', context)
+  return render(request, 'assay/reagent_through.html', context)
 
 
 @login_required(login_url='login')
@@ -370,7 +370,7 @@ def edit_control(request, pk):
 
 
 @login_required(login_url='login')
-def control_through(request, pk):
+def controls_in_assay(request, pk):
   ControlAssayFormSet = modelformset_factory(
     ControlAssay,
     form=ControlAssayForm,

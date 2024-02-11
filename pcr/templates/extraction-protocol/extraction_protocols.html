@@ -92,8 +92,9 @@
             </li>
             {% endif %}
           </ul>
-          <div class="card-body">
+          <div class="card-body {% if not protocol.is_complete %} bg-danger-subtle {% endif %}">
             <a href="{% url 'edit_extraction_protocol' protocol.pk %}" class="card-link">Edit Protocol</a>
+            {% if not protocol.is_complete %} (Not Complete) {% endif %}
           </div>
         </div>
       </div>

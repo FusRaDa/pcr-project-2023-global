@@ -122,7 +122,7 @@
   <div class="row justify-content-center mt-4">
 
     <div class="col-sm-2 mt-4">
-      <h3 class="text-center"><u>Controls<a href="{% url 'control_through' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-arrows-left-right"></i></a></u></h3>
+      <h3 class="text-center"><u>Controls<a href="{% url 'controls_in_assay' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-arrows-left-right"></i></a></u></h3>
       <ul class="list-group" id="controls-list">
         {% for control in assay.controls.all %}
           {% include 'assay/control_in_assay.html' %}
@@ -157,7 +157,7 @@
     </div>
 
     <div class="col-sm-4 mt-4">
-      <h3 class="text-center"><u>Reagents<a href="{% url 'assay_through' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></a></u></h3>
+      <h3 class="text-center"><u>Reagents<a href="{% url 'reagents_in_assay' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></a></u></h3>
       <ul class="list-group" id="reagents-list">
         {% for reagent in assay.reagents.all %}
           {% include 'assay/reagent_in_assay.html' %}

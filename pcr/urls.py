@@ -16,7 +16,8 @@ urlpatterns = [
   path("remove-tube-extraction/<int:protocol_pk>/<int:tube_pk>/", extraction_protocol_views.remove_tube_extraction, name='remove_tube_extraction'),
   path("add-reagent-extraction/<int:protocol_pk>/<int:reagent_pk>/", extraction_protocol_views.add_reagent_extraction, name='add_reagent_extraction'),
   path("remove-reagent-extraction/<int:protocol_pk>/<int:reagent_pk>/", extraction_protocol_views.remove_reagent_extraction, name='remove_reagent_extraction'),
-  path("amount-extraction-protocol/<int:pk>/", extraction_protocol_views.extraction_protocol_through, name='extraction_protocol_through'),
+  path("tubes-in-extraction/<int:pk>/", extraction_protocol_views.tubes_in_extraction, name='tubes_in_extraction'),
+  path("reagents-in-extraction/<int:pk>/", extraction_protocol_views.reagents_in_extraction, name='reagents_in_extraction'),
 
   path("assay-codes/", assay_code_views.assay_codes, name='assay_codes'),
   path("create-assay-code/", assay_code_views.create_assay_code, name='create_assay_code'),
@@ -30,8 +31,8 @@ urlpatterns = [
   path("add-reagent-assay/<int:assay_pk>/<int:reagent_pk>/", assay_views.add_reagent_assay, name='add_reagent_assay'),
   path("remove-reagent-assay/<int:assay_pk>/<int:reagent_pk>/", assay_views.remove_reagent_assay, name='remove_reagent_assay'),
   
-  path("reagents-in-assay/<int:pk>/", assay_views.assay_through, name='assay_through'),
-  path("controls-in-assay/<int:pk>/", assay_views.control_through, name='control_through'),
+  path("reagents-in-assay/<int:pk>/", assay_views.reagents_in_assay, name='reagents_in_assay'),
+  path("controls-in-assay/<int:pk>/", assay_views.controls_in_assay, name='controls_in_assay'),
 
   path("fluorescence/", assay_views.fluorescence, name='fluorescence'),
   path("create-fluorescence/", assay_views.create_fluorescence, name='create_fluorescence'),

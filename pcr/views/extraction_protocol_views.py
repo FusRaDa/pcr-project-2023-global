@@ -183,6 +183,69 @@ def remove_reagent_extraction(request, protocol_pk, reagent_pk):
       return render(request, 'extraction-protocol/add_reagent_extraction.html', context)
 
   return HttpResponse(status=200)
+
+
+@login_required(login_url='login')
+def tubes_in_extraction(request, pk):
+  try:
+    protocol = ExtractionProtocol.objects.get(user=request.user, pk=pk)
+    tubes = TubeExtraction.objects.prefetch_related('tube', 'protocol').filter(protocol=protocol).order_by('order')
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no extraction protocol to edit.")
+    return redirect('extraction_protocols')
+  
+  TubeExtractionFormSet = modelformset_factory(
+    TubeExtraction,
+    form=TubeExtractionForm,
+    extra=0,
+    )
+  
+  tubeformset = TubeExtractionFormSet(queryset=tubes)
+  tubes_data = zip(tubes, tubeformset)
+
+  if request.method == 'POST':
+    tubeformset = TubeExtractionFormSet(request.POST)
+    if tubeformset.is_valid():
+      tubeformset.save()
+      return redirect(request.path_info)
+    else:
+      print(tubeformset.errors)
+      print(tubeformset.non_form_errors())
+
+  context = {'tubeformset': tubeformset, 'tubes_data': tubes_data, 'protocol': protocol}
+  return render(request, 'extraction-protocol/tube_through.html', context)
+
+
+@login_required(login_url='login')
+def reagents_in_extraction(request, pk):
+  try:
+    protocol = ExtractionProtocol.objects.get(user=request.user, pk=pk)
+    reagents = ReagentExtraction.objects.prefetch_related('reagent', 'protocol').filter(protocol=protocol).order_by('order')
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no extraction protocol to edit.")
+    return redirect('extraction_protocols')
+  
+  ReagentExtractionFormSet = modelformset_factory(
+    ReagentExtraction,
+    form=ReagentExtractionForm,
+    extra=0,
+    )
+  
+  reagentformset = ReagentExtractionFormSet(queryset=reagents)
+  reagents_data = zip(reagents, reagentformset)
+
+  if request.method == 'POST':
+    reagentformset = ReagentExtractionFormSet(request.POST)
+    if reagentformset.is_valid():
+      reagentformset.save()
+      return redirect(request.path_info)
+    else:
+      print(reagentformset.errors)
+      print(reagentformset.non_form_errors())
+
+  context = {'reagentformset': reagentformset, 'reagents_data': reagents_data, 'protocol': protocol}
+  return render(request, 'extraction-protocol/reagent_through.html', context)
+
   
 
 @login_required(login_url='login')

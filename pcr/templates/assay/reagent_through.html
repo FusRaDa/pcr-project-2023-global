@@ -1,0 +1,81 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Assay Reagents {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">{{assay.name}}</h3>
+  </div>
+
+  <div class="row justify-content-center">
+    <h6 class="text-center">Type: {{assay.type}}</h6>
+  </div>
+
+  <form method="POST" action="">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        
+        <thead>
+          <tr>
+            <th scope="col">Reagent</th>
+            <th scope="col">Exp. Date</th>
+            <th scope="col">Stock Concentration</th>
+            <th scope="col">Final Concentration</th>
+            <th scope="col">Concentration Unit</th>
+            <th scope="col">Display Order (0 is 1st)</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {{ reagentformset.management_form }}
+          {% csrf_token %}
+          {% for reagents, reagentformset in reagents_data %}
+
+          {{reagentformset.id}}
+
+          <tr class="{% if reagents.reagent.is_expired %} table-danger {% endif %} {% if reagents.reagent.month_exp %} table-warning {% endif %}">
+            <td>{{reagents}} {% if reagents.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagents.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{reagents.reagent.exp_date}}</td>
+
+            <td>
+              {% if reagents.reagent.stock_concentration or reagents.reagent.unit_concentration%}
+              {{reagents.reagent.stock_concentration}} {{reagents.reagent.unit_concentration}}
+              {% else %}
+              ---------
+              {% endif %}
+            </td>
+            
+            <td>{{reagentformset.final_concentration}}</td>
+            <td>{{reagents.final_concentration_unit}}</td>
+            <td>{{reagentformset.order}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+ 
+    {% if reagentformset.errors %}
+      <div class="row text-center mt-2">
+      {% for errors in reagentformset.errors %}
+        {% for error in errors.values %}
+          {{error}}
+        {%endfor%}
+      {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="text-center"> 
+      <a href="{% url 'edit_assay' assay.pk %}" class="btn btn-secondary">Cancel</a>
+      <button class="btn btn-primary" type="submit">Update Reagents</button>
+    </div>
+
+  </form>
+ 
+</div>
+{% endblock %}
