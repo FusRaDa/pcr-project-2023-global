@@ -71,8 +71,8 @@ def edit_assay(request, pk):
     messages.error(request, "There is no assay to edit.")
     return redirect('assays')
   
-  reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR)
-  controls = Control.objects.filter(user=request.user)
+  reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR).exclude(pk__in=assay.reagents.all())
+  controls = Control.objects.filter(user=request.user).exclude(pk__in=assay.controls.all())
   
   form = AssayForm(user=request.user, instance=assay)
   del_form = DeletionForm(value=assay.name)
@@ -99,7 +99,7 @@ def edit_assay(request, pk):
     search_control_form = TextSearchForm(request.GET)
     if search_control_form.is_valid():
       text_search = search_control_form.cleaned_data['text_search']
-      controls = Control.objects.filter(user=request.user).filter(Q(name__icontains=text_search) | Q(lot_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+      controls = Control.objects.filter(user=request.user).filter(Q(name__icontains=text_search) | Q(lot_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True)).exclude(pk__in=assay.controls.all())
     else:
       print(search_control_form.errors)
 
@@ -107,7 +107,7 @@ def edit_assay(request, pk):
     search_reagent_form = TextSearchForm(request.GET)
     if search_reagent_form.is_valid():
       text_search = search_reagent_form.cleaned_data['text_search']
-      reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F('exp_date').asc(nulls_last=True))
+      reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F('exp_date').asc(nulls_last=True)).exclude(pk__in=assay.reagents.all())
     else:
       print(search_reagent_form.errors)
   
@@ -147,7 +147,10 @@ def remove_control_assay(request, assay_pk, control_pk):
     return redirect('assays')
   
   if 'remove_control' in request.POST:
-    assay.controls.remove(control)
+    if assay.controls.contains(control):
+      assay.controls.remove(control)
+      context = {'assay': assay, 'control': control}
+      return render(request, 'assay/add_control_assay.html', context)
 
   return HttpResponse(status=200)
 
@@ -186,9 +189,11 @@ def remove_reagent_assay(request, assay_pk, reagent_pk):
     return redirect('assays')
   
   if 'remove_reagent' in request.POST:
-    assay.reagents.remove(reagent)
-    print(assay.reagents.all())
-  
+    if assay.reagents.contains(reagent):
+      assay.reagents.remove(reagent)
+      context = {'assay': assay, 'reagent': reagent}
+      return render(request, 'assay/add_reagent_assay.html', context)
+ 
   return HttpResponse(status=200)
 
 

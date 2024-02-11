@@ -138,20 +138,9 @@
         </div>
       </form>
 
-      <ul class="list-group">
+      <ul class="list-group" id="controls-list-search">
         {% for control in controls %}
-        <li class="list-group-item">
-          {{control}}
-          <button 
-            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-            hx-post="{% url 'add_control_assay' assay.pk control.pk %}"
-            hx-target="#controls-list"
-            hx-swap="beforeend"
-            class="btn btn-success btn-sm float-end" 
-            name="add_control">
-            <i class="fa-solid fa-plus"></i>
-          </button>
-        </li>
+          {% include 'assay/add_control_assay.html' %}
         {% endfor %}
       </ul>
     </div>
@@ -175,18 +164,7 @@
 
       <ul class="list-group" id="reagents-list-search">
         {% for reagent in reagents %}
-        <li class="list-group-item">
-          {{reagent}}
-          <button 
-            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-            hx-post="{% url 'add_reagent_assay' assay.pk reagent.pk %}"
-            hx-target="#reagents-list"
-            hx-swap="beforeend"
-            class="btn btn-success btn-sm float-end" 
-            name="add_reagent">
-            <i class="fa-solid fa-plus"></i>
-          </button>
-        </li>
+          {% include 'assay/add_reagent_assay.html' %}
         {% endfor %}
       </ul>
     </div>

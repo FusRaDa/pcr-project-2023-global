@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     'store',
     'guide',
+    'analytics',
 ]
 
 MIDDLEWARE = [

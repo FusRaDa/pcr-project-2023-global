@@ -1,0 +1,13 @@
+<li class="list-group-item">
+  {{control}}
+  <button 
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+    hx-post="{% url 'add_control_assay' assay.pk control.pk %}"
+    hx-on:click="this.parentNode.remove()"
+    hx-target="#controls-list"
+    hx-swap="beforeend"
+    class="btn btn-success btn-sm float-end" 
+    name="add_control">
+    <i class="fa-solid fa-plus"></i>
+  </button>
+</li>
