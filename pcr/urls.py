@@ -12,6 +12,10 @@ urlpatterns = [
   path("extraction-protocols/", extraction_protocol_views.extraction_protocols, name='extraction_protocols'),
   path("create-extraction-protocol/", extraction_protocol_views.create_extraction_protocol, name='create_extraction_protocol'),
   path("edit-extraction-protocol/<int:pk>/", extraction_protocol_views.edit_extraction_protocol, name='edit_extraction_protocol'),
+  path("add-tube-extraction/<int:protocol_pk>/<int:tube_pk>/", extraction_protocol_views.add_tube_extraction, name='add_tube_extraction'),
+  path("remove-tube-extraction/<int:protocol_pk>/<int:tube_pk>/", extraction_protocol_views.remove_tube_extraction, name='remove_tube_extraction'),
+  path("add-reagent-extraction/<int:protocol_pk>/<int:reagent_pk>/", extraction_protocol_views.add_reagent_extraction, name='add_reagent_extraction'),
+  path("remove-reagent-extraction/<int:protocol_pk>/<int:reagent_pk>/", extraction_protocol_views.remove_reagent_extraction, name='remove_reagent_extraction'),
   path("amount-extraction-protocol/<int:pk>/", extraction_protocol_views.extraction_protocol_through, name='extraction_protocol_through'),
 
   path("assay-codes/", assay_code_views.assay_codes, name='assay_codes'),

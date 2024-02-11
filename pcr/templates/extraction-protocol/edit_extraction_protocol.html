@@ -40,56 +40,6 @@
         </div>
       </div>
 
-      <div class="col-sm-3 form-width-18 mb-2">
-        <div class="card">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              Tubes
-              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#tubes-collapse" aria-expanded="false" aria-controls="tubes-collapse">
-                ⮝
-              </button>
-            </li>
-
-            <div class="collapse show" id="tubes-collapse">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for box in form.tubes %}
-                  <li class="list-group-item">
-                    {{box}}
-                  </li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-sm-3 form-width-18 ">
-        <div class="card">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              Tubes
-              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#reagents-collapse" aria-expanded="false" aria-controls="reagents-collapse">
-                ⮝
-              </button>
-            </li>
-
-            <div class="collapse show" id="reagents-collapse">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for box in form.reagents %}
-                  <li class="list-group-item">
-                    {{box}}
-                  </li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-          </ul>
-        </div>
-      </div>
-
       {% if form.errors %}
       <div class="row text-center mt-2">
         {% for key,value in form.errors.items %} 
@@ -97,23 +47,68 @@
         {% endfor %}
       </div>
       {% endif %}
-      
-      <div class="row justify-content-center">
-        <div class="text-center mt-2"> 
-          <a class="btn btn-secondary" href="{% url 'extraction_protocols' %}">Cancel</a>
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete Protocol</button>
-          <button class="btn btn-primary" type="submit" name='update'>Update Protocol</button>
-        </div>
-      </div>
-      
-      <div class="row justify-content-center">
-        <div class="text-center mt-2"> 
-          <button class="btn btn-success" type="submit" name='update-reagents'>Protocol Tubes &amp; Reagents</button>
-        </div>
-      </div>
+    </div>
 
+    <div class="row justify-content-center">
+      <div class="text-center mt-2"> 
+        <a class="btn btn-secondary mt-1" href="{% url 'extraction_protocols' %}">Cancel</a>
+        <button type="button" class="btn btn-danger mt-1" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete Protocol</button>
+        <button class="btn btn-primary mt-1" type="submit" name='update'>Update Protocol</button>
+      </div>
     </div>
   </form>
+
+  <div class="row justify-content-center mt-4">
+
+    <div class="col-sm-3 mt-4">
+      <h3 class="text-center"><u>Tubes<a href="#" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-arrows-left-right"></i></a></u></h3>
+      <ul class="list-group" id="tubes-list">
+        {% for tube in protocol.tubes.all %}
+          {% include 'extraction-protocol/tube_in_extraction.html' %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="col-sm-3 mt-4">
+      <form class="gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
+        <div class="input-group">
+          {{search_tube_form.text_search}}
+          <div class="input-group-text"><button type="submit" class="btn btn-primary btn-sm" name="search_tube"><i class="fa-solid fa-magnifying-glass"></i></button></div>
+        </div>
+      </form>
+
+      <ul class="list-group" id="tubes-list-search">
+        {% for tube in tubes %}
+          {% include 'extraction-protocol/add_tube_extraction.html' %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="col-sm-3 mt-4">
+      <h3 class="text-center"><u>Reagents<a href="#" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></a></u></h3>
+      <ul class="list-group" id="reagents-list">
+        {% for reagent in protocol.reagents.all %}
+          {% include 'extraction-protocol/reagent_in_extraction.html' %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="col-sm-3 mt-4">
+      <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
+        <div class="input-group">
+          {{search_reagent_form.text_search}}
+          <div class="input-group-text"><button type="submit" class="btn btn-primary btn-sm" name="search_reagent"><i class="fa-solid fa-magnifying-glass"></i></button></div>
+        </div>
+      </form>
+
+      <ul class="list-group" id="reagents-list-search">
+        {% for reagent in reagents %}
+          {% include 'extraction-protocol/add_reagent_extraction.html' %}
+        {% endfor %}
+      </ul>
+    </div>
+  
+  </div>
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

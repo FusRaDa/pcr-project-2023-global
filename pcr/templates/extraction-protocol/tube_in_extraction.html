@@ -1,0 +1,13 @@
+<li class="list-group-item">
+  {{tube}}
+  <button 
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+    hx-post="{% url 'remove_tube_extraction' protocol.pk tube.pk %}"
+    hx-on:click="this.parentNode.remove()"
+    hx-target="#tubes-list-search"
+    hx-swap="beforeend"
+    name="remove_tube"
+    class="btn btn-danger btn-sm float-end">
+    <i class="fa-solid fa-minus"></i>
+  </button>
+</li>

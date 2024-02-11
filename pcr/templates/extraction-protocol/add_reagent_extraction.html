@@ -1,0 +1,13 @@
+<li class="list-group-item">
+  {{reagent}}
+  <button 
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+    hx-post="{% url 'add_reagent_extraction' protocol.pk reagent.pk %}"
+    hx-on:click="this.parentNode.remove()"
+    hx-target="#reagents-list"
+    hx-swap="beforeend"
+    class="btn btn-success btn-sm float-end" 
+    name="add_reagent">
+    <i class="fa-solid fa-plus"></i>
+  </button>
+</li>

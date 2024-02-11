@@ -140,6 +140,8 @@ STATIC_URL = '/static/'
 
 # Custom user extension
 AUTH_USER_MODEL = 'users.User'
+SESSION_COOKIE_AGE = 1800 # 30 minutes
+SESSION_SAVE_EVERY_REQUEST = True # Save session cookie for every successful request by user
 
 # Settings for account activation via email
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

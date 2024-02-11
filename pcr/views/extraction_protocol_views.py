@@ -3,10 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from django.db.models import F
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 
-
+from ..models.inventory import Reagent, Tube
 from ..models.extraction import ExtractionProtocol, TubeExtraction, ReagentExtraction
 from ..forms.extraction import ExtractionProtocolForm, TubeExtractionForm, ReagentExtractionForm
 from ..forms.general import DeletionForm, SearchExtractionProtocolForm, TextSearchForm
@@ -63,22 +65,19 @@ def edit_extraction_protocol(request, pk):
     messages.error(request, "There is no extraction protocol to edit.")
     return redirect('extraction_protocols')
   
-  form = ExtractionProtocolForm(user=request.user, instance=protocol)
+  reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.EXTRACTION).exclude(pk__in=protocol.reagents.all())
+  tubes = Tube.objects.filter(user=request.user).exclude(pk__in=protocol.tubes.all())
+  
+  form = ExtractionProtocolForm(instance=protocol)
   del_form = DeletionForm(value=protocol.name)
+  search_tube_form = TextSearchForm()
+  search_reagent_form = TextSearchForm()
 
   if 'update' in request.POST:
-    form = ExtractionProtocolForm(request.POST, user=request.user, instance=protocol)
+    form = ExtractionProtocolForm(request.POST, instance=protocol)
     if form.is_valid():
       form.save()
       return redirect('extraction_protocols')
-    else:
-      print(form.errors)
-
-  if 'update-reagents' in request.POST:
-    form = ExtractionProtocolForm(request.POST, user=request.user, instance=protocol)
-    if form.is_valid():
-      form.save()
-      return redirect('extraction_protocol_through', protocol.pk)
     else:
       print(form.errors)
 
@@ -89,10 +88,102 @@ def edit_extraction_protocol(request, pk):
       return redirect('extraction_protocols')
     else:
       print(del_form.errors)
+
+  if 'search_tube' in request.GET:
+    search_tube_form = TextSearchForm(request.GET)
+    if search_tube_form.is_valid():
+      text_search = search_tube_form.cleaned_data['text_search']
+      tubes = Tube.objects.filter(user=request.user).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F('exp_date').asc(nulls_last=True)).exclude(pk__in=protocol.tubes.all())
+    else:
+      print(search_tube_form.errors)
+
+  if 'search_reagent' in request.GET:
+    search_reagent_form = TextSearchForm(request.GET)
+    if search_reagent_form.is_valid():
+      text_search = search_reagent_form.cleaned_data['text_search']
+      reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.EXTRACTION).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F('exp_date').asc(nulls_last=True)).exclude(pk__in=protocol.reagents.all())
+    else:
+      print(search_reagent_form.errors)
      
-  context = {'form': form, 'protocol': protocol, 'del_form': del_form}
+  context = {
+    'form': form, 'protocol': protocol, 'del_form': del_form,
+    'tubes': tubes, 'reagents': reagents, 'search_tube_form': search_tube_form,
+    'search_reagent_form': search_reagent_form,
+    }
   return render(request, 'extraction-protocol/edit_extraction_protocol.html', context)
 
+
+@login_required(login_url='login')
+def add_tube_extraction(request, protocol_pk, tube_pk):
+  try:
+    protocol = ExtractionProtocol.objects.get(user=request.user, pk=protocol_pk)
+    tube = Tube.objects.get(user=request.user, pk=tube_pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no protocol or tube found.")
+    return redirect('extraction_protocols')
+  
+  if 'add_tube' in request.POST:
+    if not protocol.tubes.contains(tube):
+      protocol.tubes.add(tube)
+      context = {'protocol': protocol, 'tube': tube}
+      return render(request, 'extraction-protocol/tube_in_extraction.html', context)
+
+  return HttpResponse(status=200)
+
+
+@login_required(login_url='login')
+def remove_tube_extraction(request, protocol_pk, tube_pk):
+  try:
+    protocol = ExtractionProtocol.objects.get(user=request.user, pk=protocol_pk)
+    tube = Tube.objects.get(user=request.user, pk=tube_pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no protocol or tube found.")
+    return redirect('extraction_protocols')
+  
+  if 'remove_tube' in request.POST:
+    if protocol.tubes.contains(tube):
+      protocol.tubes.remove(tube)
+      context = {'protocol': protocol, 'tube': tube}
+      return render(request, 'extraction-protocol/add_tube_extraction.html', context)
+
+  return HttpResponse(status=200)
+
+
+@login_required(login_url='login')
+def add_reagent_extraction(request, protocol_pk, reagent_pk):
+  try:
+    protocol = ExtractionProtocol.objects.get(user=request.user, pk=protocol_pk)
+    reagent = Reagent.objects.get(user=request.user, pk=reagent_pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no protocol or reagent found.")
+    return redirect('extraction_protocols')
+  
+  if 'add_reagent' in request.POST:
+    if not protocol.reagents.contains(reagent):
+      protocol.reagents.add(reagent)
+      context = {'protocol': protocol, 'reagent': reagent}
+      return render(request, 'extraction-protocol/reagent_in_extraction.html', context)
+    
+  return HttpResponse(status=200)
+
+
+@login_required(login_url='login')
+def remove_reagent_extraction(request, protocol_pk, reagent_pk):
+  try:
+    protocol = ExtractionProtocol.objects.get(user=request.user, pk=protocol_pk)
+    reagent = Reagent.objects.get(user=request.user, pk=reagent_pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no protocol or reagent found.")
+    return redirect('extraction_protocols')
+  
+  if 'remove_reagent' in request.POST:
+    if protocol.reagents.contains(reagent):
+      protocol.reagents.remove(reagent)
+      context = {'protocol': protocol, 'reagent': reagent}
+      return render(request, 'extraction-protocol/add_reagent_extraction.html', context)
+
+  return HttpResponse(status=200)
+  
 
 @login_required(login_url='login')
 def extraction_protocol_through(request, pk):
