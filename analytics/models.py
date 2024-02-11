@@ -3,7 +3,6 @@ from django.utils.timezone import now
 
 from users.models import User
 
-# Create your models here.
 
 class LoginAction(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -11,4 +10,12 @@ class LoginAction(models.Model):
 
   def __str__(self):
     return f'{self.user}-{self.date}'
+  
+
+class UserGroup(models.Model):
+  date = models.DateField(default=now().date(), editable=False)
+  users = models.ManyToManyField(LoginAction)
+
+  def __str__(self):
+    return self.date
 
