@@ -1,22 +1,15 @@
 from django.utils.timezone import now
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import LoginAction, UserGroup
+from .models import LoginAction, LoginList
 
 def record_user_login(user):  
   try:
-    LoginAction.objects.get(user=user, date=now().date())
+    user_list = LoginList.objects.get(date=now())
   except ObjectDoesNotExist:
-    login_action = LoginAction.objects.create(user=user)
+    user_list = LoginList.objects.create(date=now())
 
-    try:
-      user_group = UserGroup.objects.get(date=now())
-      user_group.users.add(login_action)
-    except ObjectDoesNotExist:
-      user_group = UserGroup.objects.create(date=now())
-      user_group.users.add(login_action)
-
-  
-
-
-  
+  try: 
+    LoginAction.objects.get(list=user_list, user=user, date=now().date())
+  except ObjectDoesNotExist:
+    LoginAction.objects.create(list=user_list, user=user, date=now().date())

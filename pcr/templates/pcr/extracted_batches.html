@@ -87,12 +87,11 @@
 
       </form>
 
-      <h5 class="text-center">Batches For Process</h5>
       {% for batch in page_obj %}
         
-        <div class="card mb-2">
+        <div class="card mb-2 mt-2">
           <div class="card-header">
-            <p class="fw-bold">{{batch.name}} ({{batch.total_samples}} Samples)</p>{{batch.date_created}}
+            <p class="fw-bold">{{batch.lab_id}} ➤ {{batch.name}} ({{batch.total_samples}} Samples)</p>{{batch.date_created}}
             <button
               hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
               hx-post="{% url 'add_batch_samples' process.pk batch.pk %}"

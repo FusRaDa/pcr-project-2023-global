@@ -1,0 +1,61 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                     
+{% block title %} Analytics Dashboard {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Daily Logins</h3>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Total Logins</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for user_list in page_obj %}
+          <tr>
+            <td>{{user_list.date}}</td>
+            <td>{{user_list.logins}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+    <div class="d-flex justify-content-center">
+      <div class="pagination">
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+            <a href="?page=1">⮜⮜ First</a>
+            <a href="?page={{ page_obj.previous_page_number }}">⮜</a>
+          {% endif %}
+  
+          <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+  
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">⮞</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Last ⮞⮞</a>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+    
+  </div>
+
+
+
+</div>
+{% endblock %}

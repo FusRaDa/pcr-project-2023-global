@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import LoginAction, LoginList
+
+
+models = [LoginAction, LoginList]
+admin.site.register(models)

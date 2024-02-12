@@ -15,7 +15,7 @@ from .tokens import account_activation_token
 from .models import EmailOrUsernameModelBackend
 from .forms import CreateUserForm
 from .functions import create_test_objects
-from ..analytics.functions import record_user_login
+from analytics.functions import record_user_login
 
 
 # login user with their username or email and password
@@ -32,7 +32,7 @@ def loginPage(request):
       messages.info(request, 'Please verify your email.')
 
     if user is not None:
-      # record_user_login(user)
+      record_user_login(user)
       login(request, user)
       return redirect('reagents')
     else:
