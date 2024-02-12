@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 import datetime
 import json
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 
 from users.models import User
 from .models import LoginList, LoginAction
@@ -85,4 +87,8 @@ def users(request):
 
 @staff_member_required(login_url='login')
 def manage_user(request, pk):
-  pass
+  try:
+    user = User.objects.get(pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no user to manage.")
+    return redirect('users')
