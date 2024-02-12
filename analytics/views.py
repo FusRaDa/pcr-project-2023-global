@@ -30,31 +30,32 @@ def dashboard(request):
 
 @staff_member_required(login_url='login')
 def users(request):
-  users = User.objects.all().order_by('username')
+  users = User.objects.all().order_by('-date_joined')
 
   form = SearchUserForm()
   if request.method == 'GET':
     form = SearchUserForm(request.GET)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
-      staff = form.cleaned_data['staff']
-      active = form.cleaned_data['active']
-      superuser = form.cleaned_data['superuser']
+      is_staff = form.cleaned_data['is_staff']
+      is_active = form.cleaned_data['is_active']
+      is_superuser = form.cleaned_data['is_superuser']
       can_review = form.cleaned_data['can_review']
+      is_subscribed = form.cleaned_data['is_subscribed']
 
       last_login_start = form.cleaned_data['last_login_start']
       last_login_end = form.cleaned_data['last_login_end']
 
       filters = {}
-      if staff:
-        filters['staff'] = staff
-      if active:
-        filters['active'] = active
-      if superuser:
-        filters['superuser'] = superuser
+      if is_staff:
+        filters['is_staff'] = is_staff
+      if is_active:
+        filters['is_active'] = is_active
+      if is_superuser:
+        filters['is_superuser'] = is_superuser
       if can_review:
         filters['can_review'] = can_review
-
+  
       if last_login_start and not last_login_end:
         day = last_login_start + datetime.timedelta(days=1)
         filters['last_login__range'] = [last_login_start, day]
@@ -67,11 +68,21 @@ def users(request):
         last_login_end += datetime.timedelta(days=1)
         filters['last_login__range'] = [last_login_start, last_login_end]
 
-      users = User.objects.filter(**filters).filter((Q(username__icontains=text_search) | Q(first_name__icontains=text_search) | Q(last_name__icontains=text_search) | Q(email__icontains=text_search))).order_by('username')
+      if is_subscribed == 'False':
+        users = User.objects.filter(**filters).filter(subscription__isnull=True, customer__isnull=True).filter((Q(username__icontains=text_search) | Q(first_name__icontains=text_search) | Q(last_name__icontains=text_search) | Q(email__icontains=text_search))).order_by('-date_joined')
+      if is_subscribed == 'True':
+        users = User.objects.filter(**filters).filter(subscription__isnull=False, customer__isnull=False).filter((Q(username__icontains=text_search) | Q(first_name__icontains=text_search) | Q(last_name__icontains=text_search) | Q(email__icontains=text_search))).order_by('date_joined')
+      else:
+        users = User.objects.filter(**filters).filter((Q(username__icontains=text_search) | Q(first_name__icontains=text_search) | Q(last_name__icontains=text_search) | Q(email__icontains=text_search))).order_by('date_joined')
 
-    paginator = Paginator(users, 25)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+  paginator = Paginator(users, 25)
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)
 
-  context = {'page_obj': page_obj}
+  context = {'page_obj': page_obj, 'form': form}
   return render(request, 'users.html', context)
+
+
+@staff_member_required(login_url='login')
+def manage_user(request, pk):
+  pass

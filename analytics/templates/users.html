@@ -13,22 +13,97 @@
     </div>
   </div>
 
+  <div class="row mb-2">
+    <div class="col d-flex justify-content-center"> 
+      <a href="{% url 'dashboard' %}" class="btn btn-primary text-center">Dashboard</a>
+    </div>
+  </div>
+
+  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Text Search</div>
+        {{form.text_search}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Last Login Start</div>
+        {{form.last_login_start}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Last Login End</div>
+        {{form.last_login_end}}
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <div class="input-group-text">Is Staff?</div>
+        {{form.is_staff}}
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <div class="input-group-text">Is Active?</div>
+        {{form.is_active}}
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <div class="input-group-text">Is Superuser?</div>
+        {{form.is_superuser}}
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <div class="input-group-text">Can Review?</div>
+        {{form.can_review}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Is Subscribed?</div>
+        {{form.is_subscribed}}
+      </div>
+    </div>
+    <div class="col-auto">
+      <a class="btn btn-secondary me-1" href="{% url 'users' %}" role="button">Clear</a>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+
   <div class="table-responsive">
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
+          <th scope="col">Date Joined</th>
           <th scope="col">Username</th>
           <th scope="col">First Name</th>
           <th scope="col">Last Name</th>
           <th scope="col">Email</th>
+          <th scope="col">Can Review</th>
+          <th scope="col">Is Active</th>
+          <th scope="col">Is Staff</th>
+          <th scope="col">Is Superuser</th>
+          <th scope="col">Is Subscribed</th>
         </tr>
       </thead>
 
       <tbody>
         {% for user in page_obj %}
-          <tr>
+          <tr class="user-row {% if user.is_subscribed %} table-success {% endif %}" data-href="{% url 'manage_user' user.pk %}">
+            <td>{{user.date_joined}}</td>
             <td>{{user.username}}</td>
-            <td>{{user.logins}}</td>
+            <td>{{user.first_name}}</td>
+            <td>{{user.last_name}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.can_review}}</td>
+            <td>{{user.is_active}}</td>
+            <td>{{user.is_staff}}</td>
+            <td>{{user.is_superuser}}</td>
+            <td>{{user.is_subscribed}}</td>
           </tr>
         {% endfor %}
       </tbody>
@@ -80,6 +155,14 @@
         }
       }
     }
+  });
+</script>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".user-row").click(function() {
+        window.location = $(this).data("href");
+    });
   });
 </script>
 {% endblock %}

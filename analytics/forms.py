@@ -8,12 +8,11 @@ class SearchUserForm(forms.Form):
 
   CHOICES = [(None, '------'), (False, 'False'), (True, 'True')]
 
-  staff = forms.ChoiceField(choices=CHOICES, required=False)
-  active = forms.ChoiceField(choices=CHOICES, required=False)
-  superuser = forms.ChoiceField(choices=CHOICES, required=False)
+  is_staff = forms.ChoiceField(choices=CHOICES, required=False)
+  is_active = forms.ChoiceField(choices=CHOICES, required=False)
+  is_superuser = forms.ChoiceField(choices=CHOICES, required=False)
   can_review = forms.ChoiceField(choices=CHOICES, required=False)
-
-  #is_subscribed
+  is_subscribed = forms.ChoiceField(choices=CHOICES, required=False)
   
   last_login_start = forms.DateTimeField(
     widget=forms.DateInput(attrs={'type': 'date'}),
@@ -28,10 +27,11 @@ class SearchUserForm(forms.Form):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs) 
     self.fields['text_search'].widget.attrs['class'] = 'form-control'
-    self.fields['staff'].widget.attrs['class'] = 'form-select'
-    self.fields['active'].widget.attrs['class'] = 'form-select'
-    self.fields['superuser'].widget.attrs['class'] = 'form-select'
+    self.fields['is_staff'].widget.attrs['class'] = 'form-select'
+    self.fields['is_active'].widget.attrs['class'] = 'form-select'
+    self.fields['is_superuser'].widget.attrs['class'] = 'form-select'
     self.fields['can_review'].widget.attrs['class'] = 'form-select'
+    self.fields['is_subscribed'].widget.attrs['class'] = 'form-select'
     self.fields['last_login_start'].widget.attrs['class'] = 'form-control'
     self.fields['last_login_end'].widget.attrs['class'] = 'form-control'
 
