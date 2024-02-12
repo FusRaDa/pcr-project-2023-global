@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 import datetime
+import json
 from django.db.models import Q
 from django.core.paginator import Paginator
 
@@ -11,17 +12,25 @@ from .forms import SearchUserForm
 # Create your views here.
 @staff_member_required(login_url='login')
 def dashboard(request):
-  total_users = User.objects.count()
-
+  user_count = User.objects.count()
+  sub_count = User.objects.filter(subscription__isnull=False, customer__isnull=False).count()
   login_list = LoginList.objects.all().order_by('-date')[:30][::-1] # latest thirty rows
 
-  context = {'total_users': total_users, 'login_list': login_list}
+  dates = []
+  logins = []
+  for val in login_list:
+    dates.append(val.date_str)
+    logins.append(val.logins)
+
+  json_dates = json.dumps(dates)
+
+  context = {'user_count': user_count, 'sub_count': sub_count, 'login_list': login_list, 'json_dates': json_dates, 'logins': logins}
   return render(request, 'dashboard.html', context)
 
 
 @staff_member_required(login_url='login')
 def users(request):
-  users = User.objects.all()
+  users = User.objects.all().order_by('username')
 
   form = SearchUserForm()
   if request.method == 'GET':
@@ -35,9 +44,6 @@ def users(request):
 
       last_login_start = form.cleaned_data['last_login_start']
       last_login_end = form.cleaned_data['last_login_end']
-
-      joined_login_start = form.cleaned_data['joined_login_start']
-      joined_login_end = form.cleaned_data['joined_login_end']
 
       filters = {}
       if staff:
@@ -61,19 +67,11 @@ def users(request):
         last_login_end += datetime.timedelta(days=1)
         filters['last_login__range'] = [last_login_start, last_login_end]
 
-      if joined_login_start and not joined_login_end:
-        day = joined_login_start + datetime.timedelta(days=1)
-        filters['date_joined__range'] = [joined_login_start, day]
+      users = User.objects.filter(**filters).filter((Q(username__icontains=text_search) | Q(first_name__icontains=text_search) | Q(last_name__icontains=text_search) | Q(email__icontains=text_search))).order_by('username')
 
-      if joined_login_end and not joined_login_start:
-        day = joined_login_end + datetime.timedelta(days=1)
-        filters['date_joined__range'] = [joined_login_end, day]
+    paginator = Paginator(users, 25)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
 
-      if joined_login_start and joined_login_end:
-        joined_login_end += datetime.timedelta(days=1)
-        filters['date_joined__range'] = [joined_login_start, joined_login_end]
-
-      users = User.objects.filter(**filters).filter((Q(username__icontains=text_search) | Q(first_name__icontains=text_search) | Q(last_name__icontains=text_search) | Q(email__icontains=text_search)))
-
-  context = {'users': users}
+  context = {'page_obj': page_obj}
   return render(request, 'users.html', context)

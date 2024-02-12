@@ -13,6 +13,8 @@ class SearchUserForm(forms.Form):
   superuser = forms.ChoiceField(choices=CHOICES, required=False)
   can_review = forms.ChoiceField(choices=CHOICES, required=False)
 
+  #is_subscribed
+  
   last_login_start = forms.DateTimeField(
     widget=forms.DateInput(attrs={'type': 'date'}),
     label='Date Start',
@@ -22,17 +24,7 @@ class SearchUserForm(forms.Form):
     widget=forms.DateInput(attrs={'type': 'date'}),
     label='Date End',
     required=False)
-  
-  joined_login_start = forms.DateTimeField(
-    widget=forms.DateInput(attrs={'type': 'date'}),
-    label='Date Start',
-    required=False)
-  
-  joined_login_end = forms.DateTimeField(
-    widget=forms.DateInput(attrs={'type': 'date'}),
-    label='Date End',
-    required=False)
- 
+
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs) 
     self.fields['text_search'].widget.attrs['class'] = 'form-control'
@@ -42,8 +34,6 @@ class SearchUserForm(forms.Form):
     self.fields['can_review'].widget.attrs['class'] = 'form-select'
     self.fields['last_login_start'].widget.attrs['class'] = 'form-control'
     self.fields['last_login_end'].widget.attrs['class'] = 'form-control'
-    self.fields['joined_login_start'].widget.attrs['class'] = 'form-control'
-    self.fields['joined_login_end'].widget.attrs['class'] = 'form-control'
 
 
 class SearchLoginListForm(forms.Form):

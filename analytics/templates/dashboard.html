@@ -13,7 +13,22 @@
     </div>
   </div>
 
-  <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <a href="{% url 'users' %}" class="btn btn-primary text-center">View &amp; Manage Users</a>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col d-flex justify-content-center"> 
+      <h6>Total Registered Users: {{user_count}}</h6>
+    </div>
+    <div class="col d-flex justify-content-center"> 
+      <h6>Total Subscribed Users: {{sub_count}}</h6>
+    </div>
+  </div>
+
+  <canvas id="myChart"></canvas>
 
   <div class="table-responsive">
     <table class="table table-bordered table-hover">
@@ -25,10 +40,10 @@
       </thead>
 
       <tbody>
-        {% for user_list in page_obj %}
+        {% for login in login_list %}
           <tr>
-            <td>{{user_list.date}}</td>
-            <td>{{user_list.logins}}</td>
+            <td>{{login.date}}</td>
+            <td>{{login.logins}}</td>
           </tr>
         {% endfor %}
       </tbody>
@@ -36,20 +51,18 @@
     </table>
 
   </div>
-  
 </div>
 
-
-<script>
+<script type="text/javascript">
   const ctx = document.getElementById('myChart');
 
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: {{json_dates|safe}},
       datasets: [{
-        label: '# of Unique Logins',
-        data: [12, 19, 3, 5, 2, 3],
+        label: '# of Unique Logins ~30 days',
+        data: {{logins|safe}},
         borderWidth: 1
       }]
     },

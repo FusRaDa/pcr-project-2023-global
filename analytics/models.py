@@ -8,9 +8,13 @@ class LoginList(models.Model):
   date = models.DateField(default=now, editable=False, unique=True)
 
   @property
+  def date_str(self):
+    return self.date.strftime('%m-%d-%Y')
+
+  @property
   def logins(self):
     return self.loginaction_set.count()
-
+  
   def __str__(self):
     return self.date
 
