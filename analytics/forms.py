@@ -44,3 +44,15 @@ class SearchUserForm(forms.Form):
     self.fields['last_login_end'].widget.attrs['class'] = 'form-control'
     self.fields['joined_login_start'].widget.attrs['class'] = 'form-control'
     self.fields['joined_login_end'].widget.attrs['class'] = 'form-control'
+
+
+class SearchLoginListForm(forms.Form):
+  start_date = forms.DateTimeField(
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date Start',
+    required=False)
+  
+  end_date = forms.DateTimeField(
+    widget=forms.DateInput(attrs={'type': 'date'}),
+    label='Date End',
+    required=False)

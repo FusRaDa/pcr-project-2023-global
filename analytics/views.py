@@ -13,13 +13,9 @@ from .forms import SearchUserForm
 def dashboard(request):
   total_users = User.objects.count()
 
-  user_lists = LoginList.objects.all()
+  login_list = LoginList.objects.all().order_by('-date')[:30][::-1] # latest thirty rows
 
-  paginator = Paginator(user_lists, 25)
-  page_number = request.GET.get("page")
-  page_obj = paginator.get_page(page_number)
-
-  context = {'total_users': total_users, 'page_obj': page_obj}
+  context = {'total_users': total_users, 'login_list': login_list}
   return render(request, 'dashboard.html', context)
 
 
