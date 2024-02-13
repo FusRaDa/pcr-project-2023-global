@@ -15,19 +15,19 @@ from ..custom.constants import LIMITS
 class NumberSamplesForm(forms.Form):
 
   number_of_samples = forms.IntegerField(
-    validators=[MinValueValidator(1), MaxValueValidator(LIMITS.SAMPLES_PER_BATCH_LIMIT)])
+    validators=[MinValueValidator(1), MaxValueValidator(LIMITS.MAX_SAMPLES_PER_BATCH_LIMIT)])
   
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs) 
     self.fields['number_of_samples'].widget.attrs['class'] = 'form-control'
     self.fields['number_of_samples'].widget.attrs['min'] = 1
-    self.fields['number_of_samples'].widget.attrs['max'] = LIMITS.SAMPLES_PER_BATCH_LIMIT
+    self.fields['number_of_samples'].widget.attrs['max'] = LIMITS.MAX_SAMPLES_PER_BATCH_LIMIT
 
 
 class BatchForm(ModelForm):
 
   number_of_samples = forms.IntegerField(
-    validators=[MinValueValidator(1), MaxValueValidator(LIMITS.SAMPLES_PER_BATCH_LIMIT)])
+    validators=[MinValueValidator(1), MaxValueValidator(LIMITS.MAX_SAMPLES_PER_BATCH_LIMIT)])
 
   code = forms.ModelChoiceField(
     queryset=None,
@@ -60,8 +60,13 @@ class BatchForm(ModelForm):
     if not self.user.is_subscribed:
       if Batch.objects.filter(user=self.user).count() >= LIMITS.BATCH_LIMIT:
         raise ValidationError(
-          message=f"You have reached the maximum number of {LIMITS.BATCH_LIMIT} batches. Consider upgrading for an infinite amount or deleting all batches."
+          message=f"You have reached the maximum number of {LIMITS.BATCH_LIMIT} batches. Consider upgrading or deleting your batches."
         )
+    
+    if Batch.objects.filter(user=self.user).count() >= LIMITS.MAX_BATCH_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_BATCH_LIMIT} batches. Should you require more, please contact us!"
+      )
 
     if len(lab_id) != 3:
       raise ValidationError(

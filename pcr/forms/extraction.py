@@ -7,8 +7,16 @@ from django.utils.translation import gettext_lazy as _
 from ..models.inventory import Tube, Reagent
 from ..models.extraction import ExtractionProtocol, TubeExtraction, ReagentExtraction
 
+from ..custom.constants import LIMITS
+
 
 class ExtractionProtocolForm(ModelForm):
+
+  def clean(self):
+    if ExtractionProtocol.objects.filter(user=self.user).count() >= LIMITS.MAX_EXTRACTION_PROTOCOL_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_EXTRACTION_PROTOCOL_LIMIT} extraction protocols. Should you require more, please contact us!"
+      )
 
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs) 

@@ -7,8 +7,16 @@ from django.utils.translation import gettext_lazy as _
 
 from ..models.inventory import Ladder, Gel, Plate, Tube, Reagent, Location, Dye
 
+from ..custom.constants import LIMITS
+
 
 class LocationForm(ModelForm):
+
+  def clean(self):
+    if Location.objects.filter(user=self.user).count() >= LIMITS.MAX_LOCATION_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_LOCATION_LIMIT} storage locations. Should you require more, please contact us!"
+      )
 
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
@@ -33,6 +41,12 @@ class LadderForm(ModelForm):
     widget=forms.DateInput(attrs={'type': 'date'}),
     label='Date Start',
     required=False)
+  
+  def clean(self):
+    if Ladder.objects.filter(user=self.user).count() >= LIMITS.MAX_LADDER_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_LADDER_LIMIT} ladders. Should you require more, please contact us!"
+      )
   
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -87,6 +101,12 @@ class GelForm(ModelForm):
     widget=forms.DateInput(attrs={'type': 'date'}),
     label='Date Start',
     required=False)
+  
+  def clean(self):
+    if Gel.objects.filter(user=self.user).count() >= LIMITS.MAX_GEL_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_GEL_LIMIT} gels. Should you require more, please contact us!"
+      )
   
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -144,6 +164,12 @@ class DyeForm(ModelForm):
     label='Date Start',
     required=False)
   
+  def clean(self):
+    if Dye.objects.filter(user=self.user).count() >= LIMITS.MAX_DYE_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_DYE_LIMIT} dyes. Should you require more, please contact us!"
+      )
+  
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -198,6 +224,12 @@ class PlateForm(ModelForm):
     widget=forms.DateInput(attrs={'type': 'date'}),
     label='Date Start',
     required=False)
+  
+  def clean(self):
+    if Plate.objects.filter(user=self.user).count() >= LIMITS.MAX_PLATE_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_PLATE_LIMIT} plates. Should you require more, please contact us!"
+      )
   
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -255,6 +287,12 @@ class TubeForm(ModelForm):
     widget=forms.DateInput(attrs={'type': 'date'}),
     label='Date Start',
     required=False)
+  
+  def clean(self):
+    if Tube.objects.filter(user=self.user).count() >= LIMITS.MAX_TUBE_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_TUBE_LIMIT} tubes. Should you require more, please contact us!"
+      )
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -324,6 +362,11 @@ class ReagentForm(ModelForm):
     usage = cleaned_data.get('usage')
     forward_sequence = cleaned_data.get('forward_sequence')
     reverse_sequence = cleaned_data.get('reverse_sequence')
+
+    if Reagent.objects.filter(user=self.user).count() >= LIMITS.MAX_REAGENT_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_REAGENT_LIMIT} reagents. Should you require more, please contact us!"
+      )
 
     if usage == Reagent.Usages.EXTRACTION and (stock != None or unit != None):
       raise ValidationError(

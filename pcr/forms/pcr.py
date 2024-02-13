@@ -1,7 +1,6 @@
 from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
 
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.inventory import Plate, Gel
@@ -11,6 +10,12 @@ from ..custom.constants import LIMITS
 
 
 class ThermalCyclerProtocolForm(ModelForm):
+
+  def clean(self):
+    if ThermalCyclerProtocol.objects.filter(user=self.user).count() >= LIMITS.MAX_THERMAL_CYCLER_PROTOCOL_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_THERMAL_CYCLER_PROTOCOL_LIMIT} thermal cycler protocols. Should you require more, please contact us!"
+      )
 
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs) 
@@ -62,6 +67,11 @@ class ProcessForm(ModelForm):
         raise ValidationError(
           message=f"You have reached the maximum number of {LIMITS.PROCESS_LIMIT} PCR processes. Consider upgrading for an infinite amount or deleting all processes."
         )
+      
+    if Process.objects.filter(user=self.user).count() >= LIMITS.MAX_PROCESS_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_PROCESS_LIMIT} processes. Should you require more, please contact us!"
+      )
 
     min_samples_per_plate_dna_qpcr = cleaned_data.get('min_samples_per_plate_dna_qpcr')
     min_samples_per_plate_rna_qpcr = cleaned_data.get('min_samples_per_plate_rna_qpcr')

@@ -10,6 +10,12 @@ from ..custom.constants import LIMITS
 
 class FluorescenceForm(ModelForm):
 
+  def clean(self):
+    if Fluorescence.objects.filter(user=self.user).count() >= LIMITS.MAX_FLUORESCENCE_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_FLUORESCENCE_LIMIT} fluorescence tags. Should you require more, please contact us!"
+      )
+
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs) 
     self.fields['name'].widget.attrs['class'] = 'form-control'
@@ -30,6 +36,18 @@ class ControlForm(ModelForm):
       widget=forms.DateInput(attrs={'type': 'date'}),
       label='Date Start',
       required=False)
+  
+  def clean(self):
+    if not self.user.is_subscribed:
+      if Control.objects.filter(user=self.user).count() >= LIMITS.CONTROL_LIMIT:
+        raise ValidationError(
+          message=f"You have reached the maximum number of {LIMITS.CONTROL_LIMIT} controls. Consider upgrading or deleting your controls."
+        )
+      
+    if Control.objects.filter(user=self.user).count() >= LIMITS.MAX_CONTROL_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_CONTROL_LIMIT} controls. Should you require more, please contact us!"
+      )
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -52,16 +70,6 @@ class AssayForm(ModelForm):
     widget=forms.CheckboxSelectMultiple,
     required=False)
   
-  # controls = forms.ModelMultipleChoiceField(
-  #   queryset=None,
-  #   widget=forms.CheckboxSelectMultiple,
-  #   required=True)
-  
-  # reagents = forms.ModelMultipleChoiceField(
-  #   queryset=None,
-  #   widget=forms.CheckboxSelectMultiple,
-  #   required=True)
-  
   def clean(self):
     cleaned_data = super().clean()
     reaction_volume = cleaned_data.get('reaction_volume')
@@ -79,8 +87,13 @@ class AssayForm(ModelForm):
     if not self.user.is_subscribed:
       if Assay.objects.filter(user=self.user).count() >= LIMITS.ASSAY_LIMIT:
         raise ValidationError(
-          message=f"You have reached the maximum number of {LIMITS.ASSAY_LIMIT} assays. Consider upgrading for an infinite amount or deleting some assays."
+          message=f"You have reached the maximum number of {LIMITS.ASSAY_LIMIT} assays. Consider upgrading or deleting your assays."
         )
+      
+    if Assay.objects.filter(user=self.user).count() >= LIMITS.MAX_ASSAY_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_ASSAY_LIMIT} assays. Should you require more, please contact us!"
+      )
 
     if ladder == None and method == Assay.Methods.PCR:
       raise ValidationError(
@@ -237,8 +250,13 @@ class AssayCodeForm(ModelForm):
     if not self.user.is_subscribed:
       if AssayCode.objects.filter(user=self.user).count() >= LIMITS.ASSAY_CODE_LIMIT:
         raise ValidationError(
-          message=f"You have reached the maximum number of {LIMITS.ASSAY_CODE_LIMIT} panels. Consider upgrading for an infinite amount or deleting some panels."
+          message=f"You have reached the maximum number of {LIMITS.ASSAY_CODE_LIMIT} panels. Consider upgrading or deleting your panels."
         )
+      
+    if AssayCode.objects.filter(user=self.user).count() >= LIMITS.MAX_ASSAY_CODE_LIMIT:
+      raise ValidationError(
+        message=f"You have reached the maximum number of {LIMITS.MAX_ASSAY_CODE_LIMIT} panels. Should you require more, please contact us!"
+      )
 
     for assay in pcr_dna | pcr_rna | qpcr_dna | qpcr_rna:
       if not assay.is_complete:

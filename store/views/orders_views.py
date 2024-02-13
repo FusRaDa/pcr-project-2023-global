@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.forms import modelformset_factory, formset_factory
 
 from django.core.paginator import Paginator
@@ -24,7 +25,8 @@ from ..forms.general import SearchStoreForm, ItemLotNumberForm
 from pcr.models.inventory import Plate, Tube, Reagent
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
+@staff_member_required(login_url='login')
 def store(request):
   orders = Order.objects.filter(user=request.user, has_ordered=False)
   if not orders.exists():
@@ -61,7 +63,8 @@ def store(request):
   return render(request, 'orders/store.html', context)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_kit_to_order(request, order_pk, kit_pk):
   try:
     order = Order.objects.get(user=request.user, pk=order_pk, has_ordered=False)
@@ -80,7 +83,8 @@ def add_kit_to_order(request, order_pk, kit_pk):
       return render(request, 'partials/kit_order.html', context)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
+@staff_member_required(login_url='login')
 def remove_kit_from_order(request, order_pk, kit_pk):
   try:
     order = Order.objects.get(user=request.user, pk=order_pk, has_ordered=False)
@@ -95,7 +99,8 @@ def remove_kit_from_order(request, order_pk, kit_pk):
   return HttpResponse(status=200)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
+@staff_member_required(login_url='login')
 def review_order(request, pk):
   try:
     order = Order.objects.get(user=request.user, has_ordered=False, pk=pk)
@@ -164,14 +169,16 @@ def review_order(request, pk):
   return render(request, 'orders/review_order.html', context)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
+@staff_member_required(login_url='login')
 def orders(request):
   orders = Order.objects.filter(user=request.user, has_ordered=True).order_by('-date_processed')
   context = {'orders': orders}
   return render(request, 'orders/orders.html', context)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
+@staff_member_required(login_url='login')
 def view_order(request, pk):
   try:
     order = Order.objects.get(user=request.user, has_ordered=True, pk=pk)
@@ -187,7 +194,8 @@ def view_order(request, pk):
   return render(request, 'orders/view_order.html', context)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
+@staff_member_required(login_url='login')
 def copy_order(request, pk):
   try:
     past_order = Order.objects.get(user=request.user, pk=pk)
@@ -209,7 +217,8 @@ def copy_order(request, pk):
   return redirect('store')
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
+@staff_member_required(login_url='login')
 def add_to_inventory(request, order_pk, kit_pk):
   try:
     order = Order.objects.get(user=request.user, pk=order_pk)
