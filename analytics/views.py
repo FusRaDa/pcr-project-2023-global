@@ -8,8 +8,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 
 from users.models import User
-from .models import LoginList, LoginAction
-from .forms import SearchUserForm
+from .models import LoginList
+from .forms import SearchUserForm, ManageUserForm
 
 # Create your views here.
 @staff_member_required(login_url='login')
@@ -92,3 +92,14 @@ def manage_user(request, pk):
   except ObjectDoesNotExist:
     messages.error(request, "There is no user to manage.")
     return redirect('users')
+  
+  form = ManageUserForm()
+  if request.method == 'POST':
+    form = ManageUserForm(request.POST)
+    if form.is_valid():
+      form.save()
+    else:
+      print(form.errors)
+  
+  context = {'user': user, 'form': form}
+  return render(request, 'manage_user.html', context)

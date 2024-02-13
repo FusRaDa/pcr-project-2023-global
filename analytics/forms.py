@@ -52,11 +52,6 @@ class SearchLoginListForm(forms.Form):
 
 class ManageUserForm(forms.ModelForm):
 
-  def __init__(self, *args, **kwargs):
-    self.fields['can_review'].widget.attrs['class'] = 'form-control'
-    self.fields['is_active'].widget.attrs['class'] = 'form-control'
-    self.fields['is_staff'].widget.attrs['class'] = 'form-control'
-
   class Meta:
     model = User
     fields = ['can_review', 'is_active', 'is_staff']

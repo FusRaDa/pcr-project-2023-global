@@ -7,7 +7,50 @@
 {% block content %}
 <div class="container">
 
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Manage: {{user.username}}</h3>
+    </div>
+  </div>
 
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div class="row justify-content-center mb-2">
+
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center">
+          <label class="form-label">Can Review</label>
+          {{form.can_review}}
+        </div>
+
+        <div class="text-center ">
+          <label class="form-label">Is Active</label>
+          {{form.is_active}}
+        </div>
+
+        <div class="text-center">
+          <label class="form-label">Is Staff</label>
+          {{form.is_staff}}
+        </div>
+      </div>
+    </div>
+
+    {% if form.errors %}
+    <div class="row text-center mt-2">
+      {% for key,value in form.errors.items %} 
+        {{ value|escape }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center mb-2">
+      <div class="text-center mt-2">
+        <a class="btn btn-secondary" href="{% url 'users' %}">Cancel</a>
+        <button type="submit" class="btn btn-primary">Update User</button>
+      </div>
+    </div>
+
+  </form>
 
 </div>
 {% endblock %}
