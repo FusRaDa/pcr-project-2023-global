@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'djstripe',
     'phonenumber_field',
+    'django_recaptcha',
 
     'main',
     'users',
@@ -144,14 +145,18 @@ AUTH_USER_MODEL = 'users.User'
 SESSION_COOKIE_AGE = 1800 # 30 minutes
 SESSION_SAVE_EVERY_REQUEST = True # Save session cookie for every successful request by user
 
+#Google reCAPTCHA settings
+RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
+
 # Settings for account activation via email
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = config('EMAIL')
-EMAIL_HOST_USER = config('EMAIL')
-EMAIL_HOST_PASSWORD = config('PASSWORD')
+EMAIL_FROM = config('EMAIL_FROM')
+EMAIL_HOST_USER = config('EMAIL_FROM')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 PASSWORD_RESET_TIMEOUT = 14400

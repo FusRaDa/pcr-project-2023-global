@@ -1,10 +1,29 @@
+from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm
 from users.models import User
 from django.utils.translation import gettext_lazy as _
+from django_recaptcha.fields import ReCaptchaField
+
+
+class LoginUserForm(forms.Form):
+  recaptcha = ReCaptchaField()
+  username = forms.CharField(max_length=200, required=True)
+  password = forms.CharField(max_length=200, required=True, widget=forms.PasswordInput())
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['username'].widget.attrs['class'] = 'form-control'
+    self.fields['username'].widget.attrs['id'] = 'username'
+    self.fields['password'].widget.attrs['class'] = 'form-control'
+    self.fields['password'].widget.attrs['id'] = 'password'
+
+    self.fields['username'].widget.attrs['placeholder'] = 'Your username or email...'
+    self.fields['password'].widget.attrs['placeholder'] = 'Your password...'
 
 
 class CreateUserForm(UserCreationForm):
+  recaptcha = ReCaptchaField()
 
   def clean(self):
     cleaned_data = super().clean()
@@ -60,5 +79,5 @@ class CreateUserForm(UserCreationForm):
 
   class Meta: 
     model = User
-    fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+    fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'recaptcha']
 

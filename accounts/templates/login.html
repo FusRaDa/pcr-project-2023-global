@@ -13,7 +13,7 @@
 
   <div class="row justify-content-center pt-2 pb-3">
 
-    <div class="col-sm-3">
+    <div class="col-sm-4">
       <div class="card">
         <img src="{% static 'images/free-tier-img.png' %}"class="card-img-top" alt="...">
         <div class="card-body">
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="col-sm-3">
+    <div class="col-sm-4">
       <div class="card">
         <img src="{% static 'images/lab-tier-img.png' %}"class="card-img-top" alt="...">
         <div class="card-body">
@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <div class="col-sm-3">
+    {% comment %} <div class="col-sm-3">
       <div class="card">
         <img src="{% static 'images/latest-updates-img.png' %}"class="card-img-top" alt="...">
         <div class="card-body">
@@ -56,25 +56,30 @@
           <a href="#" class="card-link float-end">Read Full Details</a>
         </div>
       </div>
-    </div>
+    </div> {% endcomment %}
 
-    <div class="col-sm-3">
+    <div class="col-sm-4">
       <div class="card">
         <img src="{% static 'images/pcr-prep-logo.png' %}"class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title text-center">Login</h5>
+
           <form method="POST" action="">
             {% csrf_token %}
             <div class="form-floating mb-2">
-              <input type="text" name="username" id="floatingEmail" placeholder="Username/Email" class="form-control">
-              <label for="floatingEmail">Username/Email</label>
+              {{form.username}}
+              <label for="username">Username/Email</label>
             </div>
     
             <div class="form-floating mb-2">
-              <input type="password" name="password" id="floatingPassword" placeholder="Password" class="form-control">
-              <label for="floatingPassword">Password</label>
+              {{form.password}}
+              <label for="password">Password</label>
             </div>
-    
+
+            <div class="d-flex justify-content-center">
+              {{form.recaptcha}}
+            </div>
+
             {% for message in messages %}
             <div class="row">
               <div class="col d-flex justify-content-center"> 
@@ -83,7 +88,7 @@
             </div>
             {% endfor %}
           
-            <div class="text-center mb-3"> 
+            <div class="text-center mb-3 mt-1"> 
               <button class="btn btn-primary" type="submit">Login</button>
             </div>
     

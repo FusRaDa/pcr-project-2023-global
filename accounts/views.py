@@ -13,7 +13,7 @@ from users.models import User
 
 from .tokens import account_activation_token
 from .models import EmailOrUsernameModelBackend
-from .forms import CreateUserForm
+from .forms import CreateUserForm, LoginUserForm
 from .functions import create_test_objects
 from analytics.functions import record_user_login
 
@@ -22,23 +22,29 @@ from analytics.functions import record_user_login
 @unauthenticated_user
 def loginPage(request):
 
+  form = LoginUserForm()
   if request.method == "POST":
-    username = request.POST.get('username')
-    password = request.POST.get('password')
+    form = LoginUserForm(request.POST)
+    if form.is_valid():
+      username = form.cleaned_data['username']
+      password = form.cleaned_data['password']
 
-    user = EmailOrUsernameModelBackend.authenticate(request, username=username, password=password)
+      user = EmailOrUsernameModelBackend.authenticate(request, username=username, password=password)
 
-    if user is not None and not user.is_active:
-      messages.info(request, 'Please verify your email.')
+      if user is not None and not user.is_active:
+        messages.info(request, 'Please verify your email.')
 
-    if user is not None:
-      record_user_login(user)
-      login(request, user)
-      return redirect('reagents')
+      if user is not None:
+        record_user_login(user)
+        login(request, user)
+        return redirect('reagents')
+      else:
+        messages.info(request, '**username and/or password is incorrect.**')
+
     else:
-      messages.info(request, '**username and/or password is incorrect.**')
+      print(form.errors)
 
-  context = {}
+  context = {'form': form}
   return render(request, "login.html", context)
   
 
