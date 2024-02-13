@@ -54,7 +54,7 @@ def activateEmail(request, user, to_email):
   })
   email = EmailMessage(mail_subject, message, to=[to_email])
   if email.send():
-    messages.success(request, f'Dear {user}, please go to you email {to_email} inbox and click on \
+    messages.success(request, f'Welcome {user}! Check your email: {to_email} and click on the\
       received activation link to confirm and complete the registration. Note: Check your spam folder.')
   else:
     messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
