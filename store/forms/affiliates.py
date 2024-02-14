@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
+from django_recaptcha.fields import ReCaptchaField
 
 from ..models.affiliates import Brand, Contact
 
@@ -18,6 +19,7 @@ class BrandForm(ModelForm):
 
 
 class ContactForm(ModelForm):
+  recaptcha = ReCaptchaField()
 
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
@@ -29,6 +31,7 @@ class ContactForm(ModelForm):
 
   class Meta:
     model = Contact
+    fields = ['company', 'first_name', 'last_name', 'email', 'phone_number', 'recaptcha']
     exclude = ['brand']
 
 

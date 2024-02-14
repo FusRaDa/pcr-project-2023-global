@@ -7,7 +7,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # from ..custom.constants import FREE_LIMITS
 from ..models.extraction import ExtractionProtocol
-from ..models.assay import Assay, AssayCode
+from ..models.assay import Assay, AssayCode, Control
 from ..models.batch import Batch, Sample
 
 from ..custom.constants import LIMITS
@@ -58,6 +58,21 @@ class BatchForm(ModelForm):
     extraction_protocol_tn = cleaned_data.get('extraction_protocol_tn')
 
     if not self.user.is_subscribed:
+      if Control.objects.filter(user=self.user).count() >= LIMITS.CONTROL_LIMIT:
+        raise ValidationError(
+          message=f"You have reached the maximum number of {LIMITS.CONTROL_LIMIT} controls. Consider upgrading or deleting your controls."
+        )
+      
+      if Assay.objects.filter(user=self.user).count() >= LIMITS.ASSAY_LIMIT:
+        raise ValidationError(
+          message=f"You have reached the maximum number of {LIMITS.ASSAY_LIMIT} assays. Consider upgrading or deleting your assays."
+        )
+      
+      if AssayCode.objects.filter(user=self.user).count() >= LIMITS.ASSAY_CODE_LIMIT:
+        raise ValidationError(
+          message=f"You have reached the maximum number of {LIMITS.ASSAY_CODE_LIMIT} panels. Consider upgrading or deleting your panels."
+        )
+      
       if Batch.objects.filter(user=self.user).count() >= LIMITS.BATCH_LIMIT:
         raise ValidationError(
           message=f"You have reached the maximum number of {LIMITS.BATCH_LIMIT} batches. Consider upgrading or deleting your batches."

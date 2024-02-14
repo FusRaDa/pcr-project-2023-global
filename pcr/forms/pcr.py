@@ -68,7 +68,7 @@ class ProcessForm(ModelForm):
           message=f"You have reached the maximum number of {LIMITS.PROCESS_LIMIT} PCR processes. Consider upgrading for an infinite amount or deleting all processes."
         )
       
-    if Process.objects.filter(user=self.user).count() >= LIMITS.MAX_PROCESS_LIMIT:
+    if Process.objects.filter(user=self.user, is_processed=True).count() >= LIMITS.MAX_PROCESS_LIMIT:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_PROCESS_LIMIT} processes. Should you require more, please contact us!"
       )

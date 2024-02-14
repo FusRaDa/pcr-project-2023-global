@@ -3,7 +3,7 @@ from .views import items_views, affiliates_views, orders_views
 
 urlpatterns = [
   path('contacts/', affiliates_views.contacts, name='contacts'),
-  path('create-contact/', affiliates_views.create_contact, name='create_contact'),
+  path('affiliate-program/', affiliates_views.create_contact, name='create_contact'),
   path('edit-contact/<int:pk>/', affiliates_views.edit_contact, name='edit_contact'),
 
   path('brands/', affiliates_views.brands, name='brands'),
