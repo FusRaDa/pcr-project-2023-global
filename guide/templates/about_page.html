@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} About Us {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row justify-content-center">
+    <h1 class="text-center">About Us</h1>
+  </div>
+
+  <div class="row justify-content-center">
+    <h2 class="text-center">Development &amp; Contact Info</h2>
+  </div>
+
+  <div class="row mt-4">
+
+    <div class="col-sm-4">
+      <img src="{% static 'images/matthew-rada-img.jpg' %}" class="img-thumbnail" alt="...">
+    </div>
+
+    <div class="col-sm-4 text-center fs-5">
+      <p>PCRprep was founded and developed by Matthew Rada.</p>
+      <p>His experience working as a lab technician in lab diagnostics and his interest in software engineering led him to developing PCRprep.</p>
+      <p>Although PCR is a very simple method in microbiology, doing this process for hundreds of samples a week can be quite tedious.</p>
+      <p>Which is why PCRprep was designed specifically to alleviate this pain point in making PCR a more seamless process.</p>
+    </div>
+
+    <div class="col-sm-4 text-center fs-5">
+      <h4><u>Reach Out To Us</u></h4>
+      <p>We are always looking forward to improving our services. Let us know of your suggestions or problems you encounter!</p>
+
+      <h4 class="mt-4"><u>Email</u></h4>
+      <p>pcrprep@gmail.com</p>
+
+      <h4 class="mt-4"><u>Phone Number</u></h4>
+      <p>+1 240-210-2023</p>
+
+      <a href="https://discord.gg/9DXKkhDdtT" target="_blank" class="me-2"><i class="fa-brands fa-discord"></i></a>
+      <a href="https://www.youtube.com/channel/UC4DJGnjrahhneltYoC-iF3w" target="_blank" class="me-2"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://www.linkedin.com/in/christopher-rada-a657a51b6/" target="_blank" class="me-2"><i class="fa-brands fa-linkedin"></i></a>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
