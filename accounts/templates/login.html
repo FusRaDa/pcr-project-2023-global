@@ -17,13 +17,15 @@
       <div class="card">
         <img src="{% static 'images/free-tier-img.png' %}"class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title text-center">Free Tier</h5>
+          <h5 class="card-title text-center">Latest Updates</h5>
           <ol class="list-group list-group-numbered list-group-flush">
-            <li class="list-group-item">A list item</li>
-            <li class="list-group-item">A list item</li>
-            <li class="list-group-item">A list item</li>
+            <li class="list-group-item"><a href="{% url 'faq_page' %}">Answers and questions...</a></li>
+            <li class="list-group-item"><a href="#">We're here to listen...</a></li>
+            <li class="list-group-item"><a href="#">Current list of features...</a></li>
+            <li class="list-group-item"><a href="{% url 'create_contact' %}">How you can work with us...</a></li>
+            <li class="list-group-item"><a href="https://www.youtube.com/channel/UC4DJGnjrahhneltYoC-iF3w">Our YouTube channel...</a></li>
           </ol>
-          <a href="#" class="card-link float-end">Read Full Details</a>
+          <a href="{% url 'about_page' %}" class="card-link float-end">Contact Us</a>
         </div>
       </div>
     </div>
@@ -32,31 +34,18 @@
       <div class="card">
         <img src="{% static 'images/lab-tier-img.png' %}"class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title text-center">Lab Tier</h5>
+          <h5 class="card-title text-center">Guide</h5>
           <ol class="list-group list-group-numbered list-group-flush">
-            <li class="list-group-item">A list item</li>
-            <li class="list-group-item">A list item</li>
-            <li class="list-group-item">A list item</li>
+            <li class="list-group-item"><a href="#">Add your reagents...</a></li>
+            <li class="list-group-item"><a href="#">Create your assays...</a></li>
+            <li class="list-group-item"><a href="#">Build your panels...</a></li>
+            <li class="list-group-item"><a href="#">Select your extractions...</a></li>
+            <li class="list-group-item"><a href="#">Generate your paperwork...</a></li>
           </ol>
-          <a href="#" class="card-link float-end">Read Full Details</a>
+          <a href="{% url 'guide_page' %}" class="card-link float-end">Read Full Guide</a>
         </div>
       </div>
     </div>
-
-    {% comment %} <div class="col-sm-3">
-      <div class="card">
-        <img src="{% static 'images/latest-updates-img.png' %}"class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title text-center">Latest Updates</h5>
-          <ol class="list-group list-group-numbered list-group-flush">
-            <li class="list-group-item">A list item</li>
-            <li class="list-group-item">A list item</li>
-            <li class="list-group-item">A list item</li>
-          </ol>
-          <a href="#" class="card-link float-end">Read Full Details</a>
-        </div>
-      </div>
-    </div> {% endcomment %}
 
     <div class="col-sm-4">
       <div class="card">

@@ -7,6 +7,84 @@
 {% block content %}
 <div class="container">
 
+  <div class="row justify-content-center">
+    <h1 class="text-center">The Workflow Guide</h1>
+  </div>
+
+  <div class="row justify-content-center">
+    <h2 class="text-center"><u>Inventory</u></h2>
+    <div class="col-sm-4">
+      <img src="{% static 'images/inventory-img.png' %}"class="card-img-top" alt="...">
+    </div>
+    <h4 class="text-center"><a href="#">Read Guide</a></h4>
+  </div>
+
+  <div class="row justify-content-center">
+    <h2 class="text-center">🡇</h2>
+    <h2 class="text-center"><u>Tests</u></h2>
+    <div class="col-sm-4">
+      <img src="{% static 'images/tests-img.png' %}"class="card-img-top" alt="...">
+    </div>
+    <h4 class="text-center"><a href="#">Read Guide</a></h4>
+  </div>
+
+  <div class="row justify-content-center">
+    <h2 class="text-center">🡇</h2>
+    <h2 class="text-center"><u>Protocols</u></h2>
+    <div class="col-sm-4">
+      <img src="{% static 'images/protocols-img.png' %}"class="card-img-top" alt="...">
+    </div>
+    <h4 class="text-center"><a href="#">Read Guide</a></h4>
+  </div>
+
+  <div class="row justify-content-center">
+    <h2 class="text-center">🡇</h2>
+    <h2 class="text-center"><u>Extraction</u></h2>
+    <div class="col-sm-4">
+      <img src="{% static 'images/extraction-img.png' %}"class="card-img-top" alt="...">
+    </div>
+    <h4 class="text-center"><a href="#">Read Guide</a></h4>
+  </div>
+
+  <div class="row justify-content-center">
+    <h2 class="text-center">🡇</h2>
+    <h2 class="text-center"><u>PCR</u></h2>
+    <div class="col-sm-4">
+      <img src="{% static 'images/pcr-img.png' %}"class="card-img-top" alt="...">
+    </div>
+    <h4 class="text-center"><a href="#">Read Guide</a></h4>
+  </div>
+
+  {% comment %} <div class="row justify-content-center">
+    <h1 class="text-center">Latest Patch Updates</h1>
+  </div>
+
+  <ul class="list-group">
+
+    <li class="list-group-item"> Patch #1 - MM/DD/YYYY
+      <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#patch1" aria-expanded="false" aria-controls="patch1">
+        ⮟
+      </button>
+
+      <div class="collapse active show" id="patch1">
+        <div class="card-body"> 
+          <ul class="list-group">
+            Content Here
+          </ul>
+        </div>
+      </div>
+    </li>
+
+  </ul> {% endcomment %}
+
 
 </div>
+
+<script>
+  $('.btn-arrow').click(function(){
+    $(this).text(function(i,old){
+      return old=='⮝' ?  '⮟' : '⮝';
+    });
+  });
+</script>
 {% endblock%}

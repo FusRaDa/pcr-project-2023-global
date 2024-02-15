@@ -37,3 +37,8 @@ def subscription_policy(request):
 def terms_conditions(request):
   context = {}
   return render(request, 'terms_conditions.html', context)
+
+
+def inventory_guide(request):
+  context = {}
+  return render(request, 'guides/inventory_guide.html', context)
