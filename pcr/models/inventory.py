@@ -39,6 +39,7 @@ class Ladder(models.Model):
   location = models.ManyToManyField(Location)
 
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -73,6 +74,7 @@ class Dye(models.Model):
   location = models.ManyToManyField(Location)
 
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -120,6 +122,7 @@ class Plate(models.Model):
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.PCR, max_length=25)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -161,6 +164,7 @@ class Gel(models.Model):
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.TWENTY_FOUR, blank=False)
 
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -195,6 +199,7 @@ class Tube(models.Model):
   location = models.ManyToManyField(Location)
 
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
  
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -256,6 +261,7 @@ class Reagent(models.Model):
  
   volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12)
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
+  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0) # in microliters
 
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)

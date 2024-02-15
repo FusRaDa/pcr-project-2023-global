@@ -1,7 +1,6 @@
 from django.shortcuts import render
 
 from store.models.affiliates import Brand
-from .forms import ContactForm
 
 
 def landing_page(request):
@@ -13,3 +12,13 @@ def landing_page(request):
 def about_page(request):
   context = {}
   return render(request, 'about_page.html', context)
+
+
+def faq_page(request):
+  context = {}
+  return render(request, 'faq_page.html', context)
+
+
+def guide_page(request):
+  context = {}
+  return render(request, 'guide_page.html', context)
