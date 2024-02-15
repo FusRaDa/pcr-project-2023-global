@@ -106,7 +106,30 @@ class StoreTube(models.Model):
     return self.name
 
 
-# reagents are exclusively meant to be for PCR
+# class StoreDye(models.Model):
+#   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
+
+#   name = models.CharField(blank=False, max_length=25, default="GEL")
+
+#   wells = models.IntegerField(validators=[MinValueValidator(0)], default=12)
+#   amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
+
+#   def __str__(self):
+#     return self.name
+  
+
+# class StoreLadder(models.Model):
+#   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
+
+#   name = models.CharField(blank=False, max_length=25, default="GEL")
+
+#   wells = models.IntegerField(validators=[MinValueValidator(0)], default=12)
+#   amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
+
+#   def __str__(self):
+#     return self.name
+
+
 class StoreReagent(models.Model):
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
 

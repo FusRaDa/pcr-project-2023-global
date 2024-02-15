@@ -22,3 +22,18 @@ def faq_page(request):
 def guide_page(request):
   context = {}
   return render(request, 'guide_page.html', context)
+
+
+def privacy_policy(request):
+  context = {}
+  return render(request, 'privacy_policy.html', context)
+
+
+def subscription_policy(request):
+  context = {}
+  return render(request, 'subscription_policy.html', context)
+
+
+def terms_conditions(request):
+  context = {}
+  return render(request, 'terms_conditions.html', context)
