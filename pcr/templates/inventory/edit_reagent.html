@@ -49,17 +49,17 @@
       <div class="col-sm-3 form-width-18">
         <div class="text-center">
           <label class="form-label">PCR Reagent Type</label>
-          {{form.pcr_reagent}}
+          <input type="text" class="form-control" disabled readonly value="{{reagent.pcr_reagent}}">
         </div>
 
         <div class="text-center">
           <label class="form-label">Forward Sequence (3' to 5')</label>
-          {{form.forward_sequence}}
+          <input type="text" class="form-control" disabled readonly value="{{reagent.forward_sequence}}">
         </div>
 
         <div class="text-center">
           <label class="form-label">Reverse Sequence (5' to 3')</label>
-          {{form.reverse_sequence}}
+          <input type="text" class="form-control" disabled readonly value="{{reagent.reverse_sequence}}">
         </div>
 
         <div class="text-center">
