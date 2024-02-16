@@ -19,11 +19,6 @@ def faq_page(request):
   return render(request, 'faq_page.html', context)
 
 
-def guide_page(request):
-  context = {}
-  return render(request, 'guide_page.html', context)
-
-
 def privacy_policy(request):
   context = {}
   return render(request, 'privacy_policy.html', context)
@@ -39,6 +34,13 @@ def terms_conditions(request):
   return render(request, 'terms_conditions.html', context)
 
 
+def guide_page(request):
+  context = {}
+  return render(request, 'guide_page.html', context)
+
+
 def inventory_guide(request):
   context = {}
   return render(request, 'guides/inventory_guide.html', context)
+
+

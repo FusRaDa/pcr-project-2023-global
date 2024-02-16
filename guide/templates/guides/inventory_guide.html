@@ -1,0 +1,68 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Inventory Guide {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="row justify-content-center">
+    <h1 class="text-center">Inventory Guide</h1>
+  </div>
+
+  <div class="row justify-content-center">
+    <h2 class="text-center">Setting Up Your Inventory</h2>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <nav id="navbar-example3" class="h-100 flex-column align-items-stretch pe-4 border-end">
+        <nav class="nav nav-pills flex-column">
+          <a class="nav-link" href="#locations">Storage Locations</a>
+          <a class="nav-link" href="#reagents">Reagents</a>
+          <a class="nav-link" href="#tubes">Tubes</a>
+          <a class="nav-link" href="#plates">Plates</a>
+          <a class="nav-link" href="#gels">Gels</a>
+          <a class="nav-link" href="#ladders">Ladders</a>
+          <a class="nav-link" href="#dyes">Loading Dyes</a>
+        </nav>
+      </nav>
+    </div>
+  
+    <div class="col-10">
+      <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true" class="scrollspy-example-2" tabindex="0">
+        <div id="locations">
+          <h4>Storage Locations</h4>
+          <p>...</p>
+        </div>
+        <div id="reagents">
+          <h4>Reagents</h4>
+          <p>...</p>
+        </div>
+        <div id="tubes">
+          <h4>Tubes</h4>
+          <p>...</p>
+        </div>
+        <div id="plates">
+          <h4>Plates</h4>
+          <p>...</p>
+        </div>
+        <div id="gels">
+          <h4>Gels</h4>
+          <p>...</p>
+        </div>
+        <div id="ladders">
+          <h4>Ladders</h4>
+          <p>...</p>
+        </div>
+        <div id="dyes">
+          <h4>Loading Dyes</h4>
+          <p>...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock%}
