@@ -125,7 +125,7 @@
     </div>
     {% endif %}
 
-    <div class="row justify-content-center mb-2">
+    <div class="row justify-content-center">
       <div class="text-center mt-2"> 
         <a class="btn btn-secondary" {% if reagent.pcr_reagent == "PRIMER" %} href="{% url 'reagents' %}?usage={{reagent.usage}}&amp;pcr_reagent=PRIMER" {% else %} href="{% url 'reagents' %}?usage={{reagent.usage}}" {% endif %}>Cancel</a>
         <button class="btn btn-primary" type="submit" name="update">Update Reagent</button>
