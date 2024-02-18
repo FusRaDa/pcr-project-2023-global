@@ -5,7 +5,7 @@
 {% block title %} Add Reagent {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
 
   <div class="row justify-content-center">
     <h3 class="text-center">Add New Reagent</h3>
@@ -16,72 +16,73 @@
     <div class="row justify-content-center mb-2">
 
       <div class="col-sm-3 form-width-18">
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Name</label>
           {{form.name}}
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Brand</label>
           {{form.brand}}
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Lot Number</label>
           {{form.lot_number}}
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Catalog Number</label>
           {{form.catalog_number}}
-        </div>
-
-        <div class="text-center">
-          <label class="form-label">Usage</label>
-          {{form.usage}}
         </div>
       </div>
 
       <div class="col-sm-3 form-width-18">
-        <div class="text-center">
+        <div class="text-center mt-3">
+          <label class="form-label">Usage</label>
+          {{form.usage}}
+        </div>
+
+        <div class="text-center mt-3">
           <label class="form-label">PCR Reagent Type</label>
           {{form.pcr_reagent}}
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Forward Sequence (3' to 5')</label>
           {{form.forward_sequence}}
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Reverse Sequence (5' to 3')</label>
           {{form.reverse_sequence}}
         </div>
+      </div>
 
-        <div class="text-center">
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center mt-3">
           <label class="form-label">Volume Stored</label>
           {{form.volume}}
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Volume Unit</label>
           {{form.unit_volume}}
         </div>
-      </div>
-      
-      <div class="col-sm-3 form-width-18">
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Stock Concentration</label>
           {{form.stock_concentration}}
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Concentration Unit</label>
           {{form.unit_concentration}}
         </div>
-
-        <div class="text-center mb-2">
+      </div>
+      
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center mb-2 mt-3">
           <label class="form-label">Expiration Date</label>
           {{form.exp_date}}
         </div>

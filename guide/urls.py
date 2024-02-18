@@ -10,6 +10,6 @@ urlpatterns = [
   path("terms-conditions/", views.terms_conditions, name='terms_conditions'),
 
   path("guide/", views.guide_page, name='guide_page'),
-  path("guide/inventory-guide", views.inventory_guide, name='inventory_guide'),
+  path("guide/inventory-guide/", views.inventory_guide, name='inventory_guide'),
 
 ]

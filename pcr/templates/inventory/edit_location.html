@@ -5,7 +5,7 @@
 {% block title %} Update Location {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
 
   <div class="row justify-content-center">
     <h3 class="text-center">{{location.name}}</h3>
@@ -16,7 +16,7 @@
     <div class="row justify-content-center">
 
       <div class="col-sm-3 form-width-18">
-        <div class="text-center mx-auto mb-2">
+        <div class="text-center mt-3">
           <label class="form-label">Name</label>
           {{form.name}}
         </div>
@@ -32,10 +32,18 @@
     </div>
     {% endif %}
 
-    <div class="row justify-content-center mb-2">
-      <div class="text-center m">
+    <div class="row justify-content-center mt-2">
+      <div class="text-center">
         <a class="btn btn-secondary" href="{% url 'locations' %}">Cancel</a>
         <button type="submit" class="btn btn-primary" name="update">Update Location</button>
+      </div>
+    </div>
+
+    <div class="row justify-content-center mt-2">
+      <div class="col d-flex justify-content-center">
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">
+          Delete Location
+        </button>
       </div>
     </div>
 
@@ -160,14 +168,6 @@
 
     </div>
 
-  </div>
-
-  <div class="row justify-content-center">
-    <div class="col d-flex justify-content-center">
-      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Location
-      </button>
-    </div>
   </div>
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">

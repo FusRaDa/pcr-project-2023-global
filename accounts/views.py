@@ -79,7 +79,7 @@ def activate(request, uidb64, token):
     user.is_active = True
     user.save()
 
-    create_test_objects(user) # REMOVE THIS FROM PRODUCTION - FOR TESTING PURPOSES ONLY
+    # create_test_objects(user) # REMOVE THIS FROM PRODUCTION - FOR TESTING PURPOSES ONLY
 
     messages.success(request, 'Thank you for your email confirmation. Now you can login your account.')
     return redirect('login')
@@ -110,10 +110,8 @@ def register(request):
       user.save()
       activateEmail(request, user, form.cleaned_data.get('email'))
       return redirect('reagents')
-    
     else:
-      for error in list(form.errors.values()):
-        messages.error(request, error)
+      print(form.errors)
 
   context = {'form': form}
   return render(request, "register.html", context)

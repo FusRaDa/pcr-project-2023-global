@@ -5,7 +5,7 @@
 {% block title %} Edit Plate {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
 
   <div class="row justify-content-center">
     <h3 class="text-center">Updating: {{ plate.name }}</h3>
@@ -16,51 +16,51 @@
     <div class="row justify-content-center mb-2">
 
       <div class="col-sm-3 form-width-18">
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Name</label>
           <input type="text" class="form-control" disabled readonly value="{{plate.name}}">
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Brand</label>
           <input type="text" class="form-control" disabled readonly value="{{plate.brand}}">
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Lot Number</label>
           <input type="text" class="form-control" disabled readonly value="{{plate.lot_number}}">
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Catalog Number</label>
           <input type="text" class="form-control" disabled readonly value="{{plate.catalog_number}}">
         </div>
       </div>
 
       <div class="col-sm-3 form-width-18">
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Size</label>
           <input type="text" class="form-control" disabled readonly value="{{plate.size}}">
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Type</label>
           <input type="text" class="form-control" disabled readonly value="{{plate.type}}">
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Amount Stored</label>
           {{form.amount}}
         </div>
 
-        <div class="text-center">
+        <div class="text-center mb-2 mt-3">
           <label class="form-label">Expiration Date</label>
           {{form.exp_date}}
         </div>
       </div>
 
       <div class="col-sm-3 form-width-18">
-        <div class="card mt-2">
+        <div class="card">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               Locations

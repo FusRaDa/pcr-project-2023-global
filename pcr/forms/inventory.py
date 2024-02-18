@@ -19,6 +19,7 @@ class LocationForm(ModelForm):
       )
 
   def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs)
     self.fields['name'].error_messages = {'max_length': "Location name is too long."}
     self.fields['name'].widget.attrs['placeholder'] = "Name of freezer, bin, drawer, etc..."
@@ -306,11 +307,6 @@ class TubeForm(ModelForm):
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
-    self.fields['name'].widget.attrs['placeholder'] = "General identification of tubes..."
-    self.fields['brand'].widget.attrs['placeholder'] = "Brand/manufacturer of tubes..."
-    self.fields['lot_number'].widget.attrs['placeholder'] = "Lot number of box..."
-    self.fields['catalog_number'].widget.attrs['placeholder'] = "Catalog number of item..."
-    
   class Meta:
     model = Tube
     exclude = ['user', 'last_updated']

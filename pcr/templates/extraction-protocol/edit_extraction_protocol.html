@@ -5,7 +5,7 @@
 {% block title %} Edit Extraction Protocol {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
 
   {% for message in messages %}
   <div class="row">
@@ -21,20 +21,20 @@
 
   <form method="POST" action="">
     {% csrf_token %}
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-2">
       
       <div class="col-sm-3 form-width-18">
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Name</label>
           {{form.name}}
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Type</label>
           {{form.type}}
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Document URL</label>
           {{form.doc_url}}
         </div>

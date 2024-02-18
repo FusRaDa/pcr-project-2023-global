@@ -26,10 +26,10 @@ def locations(request):
 @login_required(login_url='login')
 def create_location(request):
   context = {}
-  form = LocationForm()
+  form = LocationForm(user=request.user)
 
   if request.method == "POST":
-    form = LocationForm(request.POST)
+    form = LocationForm(request.POST, user=request.user)
     if form.is_valid():
       location = form.save(commit=False)
       location.user = request.user
@@ -50,11 +50,11 @@ def edit_location(request, pk):
     messages.error(request, "There is no locaton to edit.")
     return redirect('locations')
   
-  form = LocationForm(instance=location)
+  form = LocationForm(instance=location, user=request.user)
   del_form = DeletionForm(value=location.name)
  
   if 'update' in request.POST:
-    form = LocationForm(request.POST, instance=location)
+    form = LocationForm(request.POST, instance=location, user=request.user)
     if form.is_valid():
       form.save()
       return redirect('locations')

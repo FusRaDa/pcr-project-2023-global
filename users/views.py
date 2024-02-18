@@ -12,11 +12,9 @@ import json
 import stripe
 from djstripe import webhooks as djstripe_hooks
 from djstripe.settings import djstripe_settings
-from djstripe.models import Product, Subscription, Customer, APIKey
+from djstripe.models import Subscription, Customer
 
-from .models import User
-
-from pcr.models.assay import Assay, AssayCode
+from pcr.models.assay import Assay, AssayCode, Control
 from pcr.models.batch import Batch
 from pcr.models.pcr import Process
 from .forms import DeletionForm
@@ -117,20 +115,29 @@ def handle_stripe_sub(request):
 @login_required(login_url='login')
 def profile(request):
   assay_count = Assay.objects.filter(user=request.user).count()
+  control_count = Control.objects.filter(user=request.user).count()
   assay_code_count = AssayCode.objects.filter(user=request.user).count()
   batch_count = Batch.objects.filter(user=request.user).count()
   process_count = Process.objects.filter(user=request.user).count()
 
   limit_assay = LIMITS.ASSAY_LIMIT
+  limit_control = LIMITS.CONTROL_LIMIT
   limit_assay_code = LIMITS.ASSAY_CODE_LIMIT
   limit_batch = LIMITS.BATCH_LIMIT
   limit_process = LIMITS.PROCESS_LIMIT
 
+  max_assay = LIMITS.MAX_ASSAY_LIMIT
+  max_control = LIMITS.MAX_CONTROL_LIMIT
+  max_assay_code = LIMITS.MAX_ASSAY_CODE_LIMIT
+  max_batch = LIMITS.MAX_BATCH_LIMIT
+  max_process = LIMITS.MAX_PROCESS_LIMIT
+
   limits = []
-  limits.append({'name': 'Assays', 'count': assay_count, 'limit': limit_assay, 'premium': "∞"})
-  limits.append({'name': 'Panels', 'count': assay_code_count, 'limit': limit_assay_code, 'premium': "∞"})
-  limits.append({'name': 'Batches', 'count': batch_count, 'limit': limit_batch, 'premium': "∞"})
-  limits.append({'name': 'Processes', 'count': process_count, 'limit': limit_process, 'premium': "∞"})
+  limits.append({'name': 'Assays', 'count': assay_count, 'limit': limit_assay, 'premium': max_assay})
+  limits.append({'name': 'Controls', 'count': control_count, 'limit': limit_control, 'premium': max_control})
+  limits.append({'name': 'Panels', 'count': assay_code_count, 'limit': limit_assay_code, 'premium': max_assay_code})
+  limits.append({'name': 'Batches', 'count': batch_count, 'limit': limit_batch, 'premium': max_batch})
+  limits.append({'name': 'Processes', 'count': process_count, 'limit': limit_process, 'premium': max_process})
 
   clear_batch_form = DeletionForm(value=request.user.email)
   clear_process_form = DeletionForm(value=request.user.email)

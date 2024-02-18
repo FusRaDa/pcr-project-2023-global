@@ -5,7 +5,7 @@
 {% block title %} Profile {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
   <h3 class="text-center">Welcome, {{request.user.username}}</h3>
 
   <div class="row align-items-center justify-content-center">
@@ -27,7 +27,7 @@
           <thead>
             <tr>
               <th scope="col">Limits</th>
-              <th scope="col">Count</th>
+              <th scope="col">Account</th>
               <th scope="col">Freemium</th>
               <th scope="col">Premium</th>
             </tr>

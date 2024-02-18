@@ -5,7 +5,7 @@
 {% block title %} Add Control {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
 
   <div class="row justify-content-center">
     <h3 class="text-center">Add New Control</h3>
@@ -15,34 +15,35 @@
     {% csrf_token %}
     <div class="row justify-content-center">
 
-      <div class="col-sm-3 form-width-18 mb-2">
-        <div class="text-center">
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center mt-3">
           <label class="form-label">Name</label>
           {{form.name}}
         </div>
 
-        <div class="text-center">
-          {{form.is_negative_ctrl}}
-          <label class="form-label">Is this a negative control?</label>
-        </div>
-
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Lot Number</label>
           {{form.lot_number}}
         </div>
 
-        <div class="text-center">
+        <div class="text-center mt-3">
           <label class="form-label">Amount Stored</label>
           {{form.amount}}
         </div>
 
-        <div class="text-center">
-          <label class="form-label">Expiration Date</label>
-          {{form.exp_date}}
+        <div class="text-center mt-3">
+          <label class="form-label">Is this a negative control?</label>
+          {{form.is_negative_ctrl}}
         </div>
+
       </div>
 
       <div class="col-sm-3 form-width-18">
+        <div class="text-center mb-2 mt-3">
+          <label class="form-label">Expiration Date</label>
+          {{form.exp_date}}
+        </div>
+
         <div class="card">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
