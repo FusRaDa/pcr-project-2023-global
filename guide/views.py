@@ -44,3 +44,8 @@ def inventory_guide(request):
   return render(request, 'guides/inventory_guide.html', context)
 
 
+def tests_guide(request):
+  context = {}
+  return render(request, 'guides/tests_guide.html', context)
+
+
