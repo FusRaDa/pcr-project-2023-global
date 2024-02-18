@@ -5,78 +5,71 @@
 {% block title %} Add Contact {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
 
   <div class="row justify-content-center">
-    <h1 class="text-center">The Workflow Guide</h1>
+    <h1 class="text-center">The Workflow</h1>
   </div>
 
-  <div class="row justify-content-center">
-    <h2 class="text-center"><u>Inventory</u></h2>
-    <div class="col-sm-4">
-      <img src="{% static 'images/inventory-img.png' %}"class="card-img-top" alt="...">
-    </div>
-    <h4 class="text-center"><a href="{% url 'inventory_guide' %}">Read Guide</a></h4>
-  </div>
+  <div class="row justify-content-start">
+    {% comment %} <div class="col-sm-3">
+      <h2 class="text-center"><u>Store #1</u></h2>
+        <img src="{% static 'images/store-img.png' %}"class="card-img-top" alt="...">
+      <h4 class="text-center"><a href="#">Read Guide</a></h4>
+    </div> {% endcomment %}
 
-  <div class="row justify-content-center">
-    <h2 class="text-center">🡇</h2>
-    <h2 class="text-center"><u>Tests</u></h2>
-    <div class="col-sm-4">
-      <img src="{% static 'images/tests-img.png' %}"class="card-img-top" alt="...">
+    <div class="col-sm-3">
+      <h3 class="text-center"><u>Inventory #1</u></h3>
+        <a href="{% url 'inventory_guide' %}">
+          <img src="{% static 'images/inventory-img.png' %}"class="card-img-top" alt="...">
+        </a>
+      <h4 class="text-center mb-5"><a href="{% url 'inventory_guide' %}">Read Guide</a></h4>
     </div>
-    <h4 class="text-center"><a href="#">Read Guide</a></h4>
-  </div>
 
-  <div class="row justify-content-center">
-    <h2 class="text-center">🡇</h2>
-    <h2 class="text-center"><u>Protocols</u></h2>
-    <div class="col-sm-4">
-      <img src="{% static 'images/protocols-img.png' %}"class="card-img-top" alt="...">
+    <div class="col-sm-3">
+      <h3 class="text-center"><u>Tests #2</u></h3>
+        <a href="#">
+          <img src="{% static 'images/tests-img.png' %}"class="card-img-top" alt="...">
+        </a>
+      <h4 class="text-center mb-5"><a href="#">Read Guide</a></h4>
     </div>
-    <h4 class="text-center"><a href="#">Read Guide</a></h4>
-  </div>
 
-  <div class="row justify-content-center">
-    <h2 class="text-center">🡇</h2>
-    <h2 class="text-center"><u>Extraction</u></h2>
-    <div class="col-sm-4">
-      <img src="{% static 'images/extraction-img.png' %}"class="card-img-top" alt="...">
+    <div class="col-sm-3">
+      <h3 class="text-center"><u>Protocols #3</u></h3>
+        <a href="#">
+          <img src="{% static 'images/protocols-img.png' %}"class="card-img-top" alt="...">
+        </a>
+      <h4 class="text-center mb-5"><a href="#">Read Guide</a></h4>
     </div>
-    <h4 class="text-center"><a href="#">Read Guide</a></h4>
-  </div>
 
-  <div class="row justify-content-center">
-    <h2 class="text-center">🡇</h2>
-    <h2 class="text-center"><u>PCR</u></h2>
-    <div class="col-sm-4">
-      <img src="{% static 'images/pcr-img.png' %}"class="card-img-top" alt="...">
+    <div class="col-sm-3">
+      <h3 class="text-center"><u>Extraction #4</u></h3>
+        <a href="#">
+          <img src="{% static 'images/extraction-img.png' %}"class="card-img-top" alt="...">
+        </a>
+      <h4 class="text-center mb-5"><a href="#">Read Guide</a></h4>
     </div>
-    <h4 class="text-center"><a href="#">Read Guide</a></h4>
+
+    <div class="col-sm-3">
+      <h3 class="text-center"><u>PCR #5</u></h3>
+        <a href="#">
+          <img src="{% static 'images/pcr-img.png' %}"class="card-img-top" alt="...">
+        </a>
+      <h4 class="text-center mb-5"><a href="#">Read Guide</a></h4>
+    </div>
   </div>
 
   {% comment %} <div class="row justify-content-center">
-    <h1 class="text-center">Latest Patch Updates</h1>
+    <h1 class="text-center">Additional Resources</h1>
   </div>
 
-  <ul class="list-group">
-
-    <li class="list-group-item"> Patch #1 - MM/DD/YYYY
-      <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#patch1" aria-expanded="false" aria-controls="patch1">
-        ⮟
-      </button>
-
-      <div class="collapse active show" id="patch1">
-        <div class="card-body"> 
-          <ul class="list-group">
-            Content Here
-          </ul>
-        </div>
-      </div>
-    </li>
-
-  </ul> {% endcomment %}
-
+  <div class="row justify-content-start">
+    <div class="col-sm-3">
+      <h2 class="text-center"><u>Store #1</u></h2>
+        <img src="{% static 'images/store-img.png' %}"class="card-img-top" alt="...">
+      <h4 class="text-center"><a href="#">Read Guide</a></h4>
+    </div>
+  </div> {% endcomment %}
 
 </div>
 

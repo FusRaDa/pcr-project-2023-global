@@ -61,6 +61,8 @@ class LadderForm(ModelForm):
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
+    self.fields['amount'].widget.attrs['min'] = 0
+
   class Meta:
     model = Ladder
     exclude = ['user', 'last_updated']
@@ -84,6 +86,8 @@ class EditLadderForm(ModelForm):
 
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+    self.fields['amount'].widget.attrs['min'] = 0
 
   class Meta:
     model = Ladder
@@ -122,6 +126,8 @@ class GelForm(ModelForm):
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
+    self.fields['amount'].widget.attrs['min'] = 0
+
   class Meta:
     model = Gel
     exclude = ['user', 'last_updated']
@@ -146,6 +152,8 @@ class EditGelForm(ModelForm):
 
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+    self.fields['amount'].widget.attrs['min'] = 0
 
   class Meta:
     model = Plate
@@ -183,6 +191,8 @@ class DyeForm(ModelForm):
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
+    self.fields['amount'].widget.attrs['min'] = 0
+
   class Meta:
     model = Dye
     exclude = ['user', 'last_updated']
@@ -207,6 +217,8 @@ class EditDyeForm(ModelForm):
 
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+    self.fields['amount'].widget.attrs['min'] = 0
 
   class Meta:
     model = Dye
@@ -246,6 +258,8 @@ class PlateForm(ModelForm):
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
+    self.fields['amount'].widget.attrs['min'] = 0
+
   class Meta:
     model = Plate
     exclude = ['user', 'last_updated']
@@ -270,6 +284,8 @@ class EditPlateForm(ModelForm):
 
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+    self.fields['amount'].widget.attrs['min'] = 0
 
   class Meta:
     model = Plate
@@ -307,6 +323,8 @@ class TubeForm(ModelForm):
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
+    self.fields['amount'].widget.attrs['min'] = 0
+
   class Meta:
     model = Tube
     exclude = ['user', 'last_updated']
@@ -331,6 +349,8 @@ class EditTubeForm(ModelForm):
 
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+    self.fields['amount'].widget.attrs['min'] = 0
 
   class Meta:
     model = Tube
@@ -424,6 +444,9 @@ class ReagentForm(ModelForm):
     self.fields['forward_sequence'].widget.attrs['class'] = 'form-control'
     self.fields['reverse_sequence'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+    self.fields['volume'].widget.attrs['min'] = 0
+    self.fields['stock_concentration'].widget.attrs['min'] = 0
   
   class Meta:
     model = Reagent
@@ -450,6 +473,8 @@ class EditReagentForm(ModelForm):
     self.fields['volume'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
     self.fields['unit_volume'].widget.attrs['class'] = 'form-select'
+
+    self.fields['volume'].widget.attrs['min'] = 0
   
   class Meta:
     model = Reagent
