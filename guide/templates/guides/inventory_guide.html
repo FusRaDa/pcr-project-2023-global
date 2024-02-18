@@ -5,7 +5,7 @@
 {% block title %} Inventory Guide {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
 
   <div class="row justify-content-center">
     <h1 class="text-center">Inventory Guide</h1>
@@ -15,53 +15,127 @@
     <h2 class="text-center">Setting Up Your Inventory</h2>
   </div>
 
-  <div class="row">
-    <div class="col-2">
-      <nav id="navbar-example3" class="h-100 flex-column align-items-stretch pe-4 border-end">
-        <nav class="nav nav-pills flex-column">
-          <a class="nav-link" href="#locations">Storage Locations</a>
-          <a class="nav-link" href="#reagents">Reagents</a>
-          <a class="nav-link" href="#tubes">Tubes</a>
-          <a class="nav-link" href="#plates">Plates</a>
-          <a class="nav-link" href="#gels">Gels</a>
-          <a class="nav-link" href="#ladders">Ladders</a>
-          <a class="nav-link" href="#dyes">Loading Dyes</a>
-        </nav>
-      </nav>
-    </div>
-  
-    <div class="col-10">
-      <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true" class="scrollspy-example-2" tabindex="0">
-        <div id="locations">
-          <h4>Storage Locations</h4>
-          <p>...</p>
+  <div class="row fixed-bottom text-center">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Table of Contents
+    </button>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Table of Contents</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div id="reagents">
-          <h4>Reagents</h4>
-          <p>...</p>
-        </div>
-        <div id="tubes">
-          <h4>Tubes</h4>
-          <p>...</p>
-        </div>
-        <div id="plates">
-          <h4>Plates</h4>
-          <p>...</p>
-        </div>
-        <div id="gels">
-          <h4>Gels</h4>
-          <p>...</p>
-        </div>
-        <div id="ladders">
-          <h4>Ladders</h4>
-          <p>...</p>
-        </div>
-        <div id="dyes">
-          <h4>Loading Dyes</h4>
-          <p>...</p>
+        <div class="modal-body">
+          <nav id="navbar-example3">
+            <nav class="nav nav-pills flex-column">
+              <a class="nav-link" href="#locations">Locations</a>
+              <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-3 my-1" href="#locations-introduction">Introduction</a>
+                <a class="nav-link ms-3 my-1" href="#locations-tutorial-1">Tutorial Steps</a>
+              </nav>
+              <a class="nav-link" href="#reagents">Reagents</a>
+              <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-3 my-1" href="#item-1-1">Introduction</a>
+                <a class="nav-link ms-3 my-1" href="#item-1-2">Tutorial Steps</a>
+              </nav>
+              <a class="nav-link" href="#tubes">Tubes</a>
+              <a class="nav-link" href="#plates">Plates</a>
+              <a class="nav-link" href="#gels">Gels</a>
+              <a class="nav-link" href="#ladders">Ladders</a>
+              <a class="nav-link" href="#dyes">Dyes</a>
+            </nav>
+          </nav>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="row text-center fs-5">
+
+    <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true" class="scrollspy-example-2" tabindex="0">
+
+      <div id="locations" class="mt-3">
+        <h4><u>Locations</u></h4>
+
+        <div id="locations-introduction">
+          <h6>Introduction</h6>
+          <p>Creating storage locations for your inventory is not a necessity but we highly recommend it before adding any of your inventory items. Simply click “Locations” under “Inventory” on the menu and select “Create New Location”. You may then add the name of your location and also include temperature or short description of the location. Of course, you are able to change the name of the location should you wish to do so later on.</p>
+        </div>
+
+        <div id="locations-tutorial-1">
+          <h6>Tutorial Steps</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - Let’s name our first location “PCR Reagents Room” and click “Add New Location”.</li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-locations-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 2 - We will then repeat this process again and create our second location named “Extraction Reagents Room”.</li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-locations-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 3 - Your list of locations should look similar to the following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-locations-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div id="reagents" class="mt-3">
+        <h4><u>Reagents</u></h4>
+        <div id="reagents-introduction">
+          <h6>Introduction</h6>
+          <p>Reagents are necessary for creating your assays and extraction protocols. To add a reagent to the system, click on “Inventory” on the menu and select “Reagents”. Then click on “Add New Reagent” you will see there are several fields to fill. Do not worry, we will walk you through this by first adding reagents from a common extraction kit made by Qiagen. Then adding generic reagents that are most commonly used in PCR assays.</p>
+        </div>
+
+        <div id="reagents-tutorial-1">
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - The QIAmp Fast DNA Stool Mini Kit (LINK HERE) (Cat#51604) contains 6 reagents but requires ethanol (96-100%) by the user.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-reagents.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/additional-inventory.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 2 - Knowing this, let us first lets add InhibitEX Buffer. To do so, click on “Inventory” and select “Reagents”. Click on “Add New Reagent”, set the Name as “InhibitEX Buffer”, Brand as Qiagen, and the Lot Number on the container. If you do have the item on hand then enter the lot number shown otherwise simply set the lot number as “L12341234”.</li>
+            <li class="list-group-item">Step 3 - For the Catalog Number set to “51604” and for the usage set as “EXTRACTION”. Set the Volume Storage and Volume Unit accordingly to what you currently have. In this case, the kit contains 140 milliliters of InhibitEx Buffer. So we will set the volume as “140” and the volume unit as “mL”.</li>
+            <li class="list-group-item">Step 4 - Leave the remaining fields empty (as they are only relevant for reagents used in PCR) except for the Expiration Date and Location. Keep in mind that these two fields are optional although it is highly recommended for time-sensitive products to have an assigned expiration date as well as choosing a storage location to encourage organization in your lab.</li>
+            <li class="list-group-item">Step 5 - In this case, we will leave the Expiration Date empty but set the location to “Extraction Reagents Room”. Note that we will be assigning this location to all extraction reagents as a demonstration. Ideally, each of these reagents require different storage conditions.</li>
+            <li class="list-group-item">Step 6 - Once everything has been confirmed, click “Add Reagent”. Be aware that by doing so, you will no longer be able to modify this reagent except for its Volume Stored, Volume Unit, Expiration Date, and Location.</li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-reagents-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 7 - We will do this exact same process for Buffer AL, Buffer ATE, Proteinase K, and 1L of ethanol. The ethanol will have the Name “Ethanol”, Brand as “Generic”, and Catalog Number as “C12341234”.</li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-reagents-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-reagents-5.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-reagents-6.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-reagents-7.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 8 - Once we get to adding Buffer AW1 and Buffer AW2, you will notice how these reagents are supplied as concentrates. Keep in mind that Qiagen instructs you to add 25 mL of ethanol to the concentrate volume of 19 mL. So when adding this reagent to the system, set the Volume Stored as the total volume of 44 mL. For Buffer AW2, we will set the Volume Stored as the total volume of 43 mL.</li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-reagents-8.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-reagents-9.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 9 - In the reagents page, set Usage to “EXTRACTION” and you should see that your list of reagents should look similar to the following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-reagents-10.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+      </div>
+
+
+      <div id="tubes" class="mt-3">
+        <h4>Tubes</h4>
+        <p>...</p>
+      </div>
+      <div id="plates" class="mt-3">
+        <h4>Plates</h4>
+        <p>...</p>
+      </div>
+      <div id="gels" class="mt-3">
+        <h4>Gels</h4>
+        <p>...</p>
+      </div>
+      <div id="ladders" class="mt-3">
+        <h4>Ladders</h4>
+        <p>...</p>
+      </div>
+      <div id="dyes" class="mt-3">
+        <h4>Dyes</h4>
+        <p>...</p>
+      </div>
+
+    </div>
+
   </div>
 
 </div>

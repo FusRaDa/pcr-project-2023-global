@@ -429,8 +429,6 @@ class ReagentForm(ModelForm):
     super().__init__(*args, **kwargs) 
     self.fields['location'].queryset = Location.objects.filter(user=self.user)
 
-    self.fields['location'].error_messages = {'required': "Select the storage location of this reagent."}
-
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['brand'].widget.attrs['class'] = 'form-control'
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
