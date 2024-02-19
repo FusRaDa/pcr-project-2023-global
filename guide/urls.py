@@ -11,5 +11,6 @@ urlpatterns = [
 
   path("guide/", views.guide_page, name='guide_page'),
   path("guide/inventory-guide/", views.inventory_guide, name='inventory_guide'),
+  path("guide/tests-guide/", views.tests_guide, name='tests_guide'),
 
 ]

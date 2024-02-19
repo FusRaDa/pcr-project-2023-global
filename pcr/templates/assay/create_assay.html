@@ -32,6 +32,9 @@
         </div>
         
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Total volume in each well.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Reaction Volume (&#181;l)</label>
           {{form.reaction_volume}}
         </div>
@@ -39,21 +42,33 @@
 
       <div class="col-sm-3 form-width-18">
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Amount of extracted sample in each well.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Sample Volume (&#181;l)</label>
           {{form.sample_volume}}
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Only required if assay method is PCR. If not, leave empty.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Ladder</label>
           {{form.ladder}}
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="If assay method is PCR, set volume (µl) of ladder used in each gel.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Ladder Volume Per Gel (&#181;l)</label>
           {{form.ladder_volume_per_gel}}
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Are you adding loading dye to the well that has your ladder?">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Dye Used In Ladder?</label>
           {{form.dye_in_ladder}}
         </div>
