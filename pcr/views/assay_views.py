@@ -240,7 +240,7 @@ def fluorescence(request):
     form = SearchFluorescenseForm(request.GET)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
-      fluorescence  = Fluorescence.objects.filter(Q(name__icontains=text_search) | Q(assay__name__icontains=text_search)).distinct().order_by('name')
+      fluorescence  = Fluorescence.objects.filter(user=request.user).filter(Q(name__icontains=text_search) | Q(assay__name__icontains=text_search)).distinct().order_by('name')
 
   paginator = Paginator(fluorescence, 25)
   page_number = request.GET.get("page")
@@ -253,10 +253,10 @@ def fluorescence(request):
 @login_required(login_url='login')
 def create_fluorescence(request):
   context = {}
-  form = FluorescenceForm()
+  form = FluorescenceForm(user=request.user)
 
   if request.method == "POST":
-    form = FluorescenceForm(request.POST)
+    form = FluorescenceForm(request.POST, user=request.user)
     if form.is_valid():
       flourescence = form.save(commit=False)
       flourescence.user = request.user
@@ -277,11 +277,11 @@ def edit_fluorescence(request, pk):
     messages.error(request, "There is no flourescence to edit.")
     return redirect('fluorescence')
   
-  form = FluorescenceForm(instance=fluorescence)
+  form = FluorescenceForm(instance=fluorescence, user=request.user)
   del_form = DeletionForm(value=fluorescence.name)
 
   if 'update' in request.POST:
-    form = FluorescenceForm(request.POST, instance=fluorescence)
+    form = FluorescenceForm(request.POST, instance=fluorescence, user=request.user)
     if form.is_valid():
       form.save()
       return redirect('fluorescence')

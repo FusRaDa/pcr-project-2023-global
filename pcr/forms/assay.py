@@ -17,6 +17,7 @@ class FluorescenceForm(ModelForm):
       )
 
   def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['name'].widget.attrs['class'] = 'form-control'
 
