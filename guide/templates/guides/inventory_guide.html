@@ -81,13 +81,12 @@
   </div>
 
   <div class="row text-center fs-5">
-
-    <div id="introduction" class="mt-3">
-      <h4><u>Introduction</u></h4>
-      <p>Your inventory is the foundation of your lab. Before you take any steps for PCR, it is always a good practice to know what products to use. You want to make sure that you have enough reagents and that they are not pass their expiration date. You will also want to be aware of what items you will be using such as tubes, plates, and gels. PCR can be a demanding process especially when you are doing it on a daily basis. PCRprep is here to assist you and so the foundation of this tool is the inventory you add to your account. In this guide we will show you just how.</p>
-    </div>
-
     <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true" class="scrollspy-example-2" tabindex="0">
+
+      <div id="introduction" class="mt-3">
+        <h4><u>Introduction</u></h4>
+        <p>Your inventory is the foundation of your lab. Before you take any steps for PCR, it is always a good practice to know what products to use. You want to make sure that you have enough reagents and that they are not pass their expiration date. You will also want to be aware of what items you will be using such as tubes, plates, and gels. PCR can be a demanding process especially when you are doing it on a daily basis. PCRprep is here to assist you and so the foundation of this tool is the inventory you add to your account. In this guide we will show you just how.</p>
+      </div>
 
       <div id="locations" class="mt-3">
         <h4><u>Locations</u></h4>
@@ -179,8 +178,10 @@
           <ul class="list-group">
             <li class="list-group-item">Step 1 - To add the Polymerase we will set the Name as “Polymerase”, Brand as “Generic”, Lot Number as “L12341234” and Catalog Number as “C12341234”.</li>
             <li class="list-group-item">Step 2 - The Usage remains as “PCR” and the PCR Reagent Type will be “Polymerase”.</li>
-            <li class="list-group-item">Step 3 - We will set the Volume as “100” and Volume Unit as “µL”.</li>
-            <li class="list-group-item">Step 4 - Stock Concentration will be “5” and Concentration Unit as “U/µL”.</li>
+            <li class="list-group-item">Step 3 - Keep in mind that setting PCR Reagent Type to “Polymerase” is only needed if your polymerase is in the units of “U/µL”. If you polymerase comes as a mixture of other reagents such as dNTP’s and has a concentration in moles, then set PCR Reagent Type as “General”.</li>
+            <li class="list-group-item">Step 4 - This is important to keep note, as “Polymerase” reagents follow a different calculation in the master mix.</li>
+            <li class="list-group-item">Step 5 - We will set the Volume as “100” and Volume Unit as “µL”.</li>
+            <li class="list-group-item">Step 6 - Stock Concentration will be “5” and Concentration Unit as “U/µL”.</li>
             <li class="list-group-item"><img src="{% static 'images/inventory-reagents-16.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>

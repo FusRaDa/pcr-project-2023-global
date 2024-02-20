@@ -30,10 +30,11 @@
         <div class="modal-body">
           <nav id="navbar-example3">
             <nav class="nav nav-pills flex-column">
-              <a class="nav-link" href="#locations">Fluorescence</a>
+              <a class="nav-link" href="#introduction">Introduction</a>
+              <a class="nav-link" href="#fluor">Fluorescence</a>
               <nav class="nav nav-pills flex-column">
-                <a class="nav-link ms-3 my-1" href="#locations-introduction">Introduction</a>
-                <a class="nav-link ms-3 my-1" href="#locations-tutorial-1">Adding Fluorescence</a>
+                <a class="nav-link ms-3 my-1" href="#fluor-introduction">Introduction</a>
+                <a class="nav-link ms-3 my-1" href="#fluor-tutorial-1">Adding Fluorescence</a>
               </nav>
               <a class="nav-link" href="#tubes">Controls</a>
               <nav class="nav nav-pills flex-column">
@@ -61,7 +62,36 @@
   <div class="row text-center fs-5">
     <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true" class="scrollspy-example-2" tabindex="0">
 
+      <div id="introduction" class="mt-3">
+        <h4><u>Introduction</u></h4>
+        <p>Deciding what tests to run for PCR is a core step for analysis. Assays require controls and fluorescence tags (if its for qPCR). In this guide, we will teach you how to add fluorescence, controls, and create assays.</p>
+      </div>
+
+      <div id="fluor" class="mt-3">
+        <h4><u>Fluorescence</u></h4>
+
+        <div id="fluor-introduction" class="mt-3">
+          <h6>Introduction</h6>
+          <p>Fluorescent dyes or probes are used in qPCR to track and analyze data. Assays using the method of qPCR require fluorescence. To add a fluorescence, click on “Tests” and select “Fluorescence”. From there, click on “Add New Fluorescence”. For this tutorial we will make 3 fluorescent dyes.</p>
+        </div>
+
+        <div id="fluor-tutorial-1" class="mt-3">
+          <h6>Adding Fluorescence</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - To add a fluorescence click on “Add New Fluorescence” and set the name as “Fluorescent 1”.</li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-locations-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 2 - We will then repeat this process two more times for “Fluorescent 2” and “Fluorescent 3”.</li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-locations-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-locations-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 3 - Be aware that these names serve as an example. Realistically, actual fluorescent dyes such as FAM and TEX will be used.</li>
+            <li class="list-group-item">Step 4 - Your list of fluorescence should look similar to the following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-locations-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+      </div>
+
       
+
     </div>
   </div>
 

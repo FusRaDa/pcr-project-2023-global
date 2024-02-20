@@ -15,7 +15,7 @@ class FluorescenceForm(ModelForm):
     name = cleaned_data.get('name')
 
     name_exists = Fluorescence.objects.filter(user=self.user, name=name).exists()
-    if name_exists:
+    if name_exists and self.instance.name != name:
       raise ValidationError(
         message=f"Fluorescence with the name: {name} already exists."
       )
@@ -52,7 +52,7 @@ class ControlForm(ModelForm):
     lot_number = cleaned_data.get('lot_number')
 
     lot_number_exists = Control.objects.filter(user=self.user, lot_number=lot_number).exists()
-    if lot_number_exists:
+    if lot_number_exists and self.instance.lot_number != lot_number:
       raise ValidationError(
         message=f"A control with the lot number: {lot_number} already exists."
       )
@@ -105,7 +105,7 @@ class AssayForm(ModelForm):
     dye_in_ladder = cleaned_data.get('dye_in_ladder')
 
     name_exists = Assay.objects.filter(user=self.user, name=name).exists()
-    if name_exists:
+    if name_exists and self.instance.name != name:
       raise ValidationError(
         message=f"Assay with the name: {name} already exists."
       )
@@ -237,6 +237,9 @@ class ReagentAssayForm(ModelForm):
     self.fields['final_concentration'].widget.attrs['class'] = 'form-control'
     self.fields['order'].widget.attrs['class'] = 'form-control'
 
+    if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name:
+      self.fields['final_concentration'].widget.attrs['disabled'] = 'True'
+    
   class Meta:
     model = ReagentAssay
     exclude = ['reagent', 'assay', 'final_concentration_unit']
@@ -273,7 +276,7 @@ class AssayCodeForm(ModelForm):
     qpcr_rna = cleaned_data.get('qpcr_rna')
 
     name_exists = AssayCode.objects.filter(user=self.user, name=name).exists()
-    if name_exists:
+    if name_exists and self.instance.name != name:
       raise ValidationError(
         message=f"Panel with the name: {name} already exists."
       )

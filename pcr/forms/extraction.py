@@ -17,7 +17,7 @@ class ExtractionProtocolForm(ModelForm):
     name = cleaned_data.get('name')
 
     name_exists = ExtractionProtocol.objects.filter(user=self.user, name=name).exists()
-    if name_exists:
+    if name_exists and self.instance.name != name:
       raise ValidationError(
         message=f"Extraction protocol with the name: {name} already exists."
       )

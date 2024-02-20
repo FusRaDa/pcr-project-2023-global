@@ -17,7 +17,7 @@ class LocationForm(ModelForm):
     name = cleaned_data.get('name')
 
     name_exists = Location.objects.filter(user=self.user, name=name).exists()
-    if name_exists:
+    if name_exists and self.instance.name != name:
       raise ValidationError(
         message=f"Location with the name: {name} already exists."
       )
@@ -32,9 +32,7 @@ class LocationForm(ModelForm):
     super().__init__(*args, **kwargs)
     self.fields['name'].error_messages = {'max_length': "Location name is too long."}
     self.fields['name'].widget.attrs['placeholder'] = "Name of freezer, bin, drawer, etc..."
-
-    for visible in self.visible_fields():
-      visible.field.widget.attrs['class'] = 'form-control'
+    self.fields['name'].widget.attrs['class'] = 'form-control'
 
   class Meta:
     model = Location
