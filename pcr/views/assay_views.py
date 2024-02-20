@@ -171,9 +171,14 @@ def add_reagent_assay(request, assay_pk, reagent_pk):
     if not assay.reagents.contains(reagent):
       assay.reagents.add(reagent)
 
-      if reagent.pcr_reagent != Reagent.PCRReagent.WATER:
+      if reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.pcr_reagent != Reagent.PCRReagent.POLYMERASE:
         reagent_assay = ReagentAssay.objects.get(assay=assay, reagent=reagent)
         reagent_assay.final_concentration_unit = reagent.unit_concentration
+        reagent_assay.save()
+
+      if reagent.pcr_reagent == Reagent.PCRReagent.POLYMERASE:
+        reagent_assay = ReagentAssay.objects.get(assay=assay, reagent=reagent)
+        reagent_assay.final_concentration_unit = "U"
         reagent_assay.save()
 
       context = {'assay': assay, 'reagent': reagent}

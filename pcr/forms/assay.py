@@ -235,18 +235,11 @@ class ReagentAssayForm(ModelForm):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.fields['final_concentration'].widget.attrs['class'] = 'form-control'
-    self.fields['final_concentration_unit'].widget.attrs['class'] = 'form-select'
     self.fields['order'].widget.attrs['class'] = 'form-control'
 
-    self.fields['final_concentration_unit'].initial = self.instance.final_concentration_unit
-
-    if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name:
-      self.fields['final_concentration'].widget.attrs['disabled'] = 'True'
-      self.fields['final_concentration_unit'].widget.attrs['disabled'] = 'True'
-    
   class Meta:
     model = ReagentAssay
-    exclude = ['reagent', 'assay']
+    exclude = ['reagent', 'assay', 'final_concentration_unit']
 
 
 class AssayCodeForm(ModelForm):
