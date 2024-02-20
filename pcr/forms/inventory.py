@@ -408,6 +408,11 @@ class ReagentForm(ModelForm):
         message="Select PCR reagent type if reagent usage is for PCR."
       )
     
+    if pcr_reagent == Reagent.PCRReagent.POLYMERASE and unit != Reagent.ConcentrationUnits.UNITS:
+      raise ValidationError(
+        message="Polymerase reagents require a unit of U/\u00B5L. If your polymerase is in a different concentration, set PCR Reagent as General."
+      )
+    
     if pcr_reagent == Reagent.PCRReagent.WATER and (stock != None or unit != None):
       raise ValidationError(
         message="Water for PCR does not require concentration."
