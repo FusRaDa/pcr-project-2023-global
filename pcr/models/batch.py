@@ -21,15 +21,6 @@ class Batch(models.Model):
   is_extracted = models.BooleanField(default=False) # Once set to true, batch and samples can no longer be edited and files for extraction are generated.
 
   date_created = models.DateTimeField(default=now, editable=False)
-  
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'lab_id'], 
-        name='batch_unique',
-        violation_error_message = "A batch with this lab ID already exists."
-      )
-    ]
 
   @property
   def contains_anomaly(self):
@@ -92,15 +83,6 @@ class Sample(models.Model):
   assays = models.ManyToManyField(Assay) # assays assigned to each sample according to AssayList assigned in Batch - users can also edit samples at this stage and add individual assays
 
   batch = models.ForeignKey(Batch, on_delete=models.CASCADE) # automatically assigned to newly created batch - cannot be changed
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'lab_id_num'], 
-        name='user_lab_id_unique',
-        violation_error_message = "A batch with this lab ID already exists.",
-      )
-    ]
 
   @property
   def is_anomaly(self):

@@ -11,6 +11,15 @@ from ..custom.constants import LIMITS
 class FluorescenceForm(ModelForm):
 
   def clean(self):
+    cleaned_data = super().clean()
+    name = cleaned_data.get('name')
+
+    name_exists = Fluorescence.objects.filter(user=self.user, name=name).exists()
+    if name_exists:
+      raise ValidationError(
+        message=f"Fluorescence with the name: {name} already exists."
+      )
+    
     if Fluorescence.objects.filter(user=self.user).count() >= LIMITS.MAX_FLUORESCENCE_LIMIT:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_FLUORESCENCE_LIMIT} fluorescence tags. Should you require more, please contact us!"
@@ -31,7 +40,7 @@ class ControlForm(ModelForm):
   location = forms.ModelMultipleChoiceField(
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
-    required=True)
+    required=False)
   
   exp_date = forms.DateField(
       widget=forms.DateInput(attrs={'type': 'date'}),
@@ -39,6 +48,15 @@ class ControlForm(ModelForm):
       required=False)
   
   def clean(self):
+    cleaned_data = super().clean()
+    lot_number = cleaned_data.get('lot_number')
+
+    lot_number_exists = Control.objects.filter(user=self.user, lot_number=lot_number).exists()
+    if lot_number_exists:
+      raise ValidationError(
+        message=f"A control with the lot number: {lot_number} already exists."
+      )
+
     if not self.user.is_subscribed:
       if Control.objects.filter(user=self.user).count() >= LIMITS.CONTROL_LIMIT:
         raise ValidationError(
@@ -49,7 +67,7 @@ class ControlForm(ModelForm):
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_CONTROL_LIMIT} controls. Should you require more, please contact us!"
       )
-
+ 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -62,7 +80,7 @@ class ControlForm(ModelForm):
   class Meta:
     model = Control
     exclude = ['user']
-
+ 
 
 class AssayForm(ModelForm):
 
@@ -73,6 +91,7 @@ class AssayForm(ModelForm):
   
   def clean(self):
     cleaned_data = super().clean()
+    name = cleaned_data.get('name')
     reaction_volume = cleaned_data.get('reaction_volume')
     sample_volume = cleaned_data.get('sample_volume')
     fluorescence = cleaned_data.get('fluorescence')
@@ -84,6 +103,12 @@ class AssayForm(ModelForm):
     dye = cleaned_data.get('dye')
     dye_volume_per_well = cleaned_data.get('dye_volume_per_well')
     dye_in_ladder = cleaned_data.get('dye_in_ladder')
+
+    name_exists = Assay.objects.filter(user=self.user, name=name).exists()
+    if name_exists:
+      raise ValidationError(
+        message=f"Assay with the name: {name} already exists."
+      )
 
     if not self.user.is_subscribed:
       if Assay.objects.filter(user=self.user).count() >= LIMITS.ASSAY_LIMIT:
@@ -243,10 +268,17 @@ class AssayCodeForm(ModelForm):
   
   def clean(self):
     cleaned_data = super().clean()
+    name = cleaned_data.get('name')
     pcr_dna = cleaned_data.get('pcr_dna')
     pcr_rna = cleaned_data.get('pcr_rna')
     qpcr_dna = cleaned_data.get('qpcr_dna')
     qpcr_rna = cleaned_data.get('qpcr_rna')
+
+    name_exists = AssayCode.objects.filter(user=self.user, name=name).exists()
+    if name_exists:
+      raise ValidationError(
+        message=f"Panel with the name: {name} already exists."
+      )
 
     if not self.user.is_subscribed:
       if AssayCode.objects.filter(user=self.user).count() >= LIMITS.ASSAY_CODE_LIMIT:

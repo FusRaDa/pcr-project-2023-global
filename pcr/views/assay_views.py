@@ -54,7 +54,6 @@ def create_assay(request):
       assay = form.save(commit=False)
       assay.user = request.user
       assay = form.save()
-
       return redirect('edit_assay', assay.pk)
     else:
       print(form.errors)
@@ -71,6 +70,9 @@ def edit_assay(request, pk):
     messages.error(request, "There is no assay to edit.")
     return redirect('assays')
   
+  assay_reagents = assay.reagentassay_set.all().order_by('order')
+  assay_controls = assay.controlassay_set.all().order_by('order')
+
   reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.PCR).exclude(pk__in=assay.reagents.all())
   controls = Control.objects.filter(user=request.user).exclude(pk__in=assay.controls.all())
   
@@ -114,6 +116,7 @@ def edit_assay(request, pk):
   context = {
     'assay': assay, 'form': form, 'del_form': del_form, 
     'search_control_form': search_control_form, 'search_reagent_form': search_reagent_form, 
+    'assay_reagents': assay_reagents, 'assay_controls': assay_controls,
     'controls': controls, 'reagents': reagents,
     }
   return render(request, 'assay/edit_assay.html', context)
@@ -132,7 +135,7 @@ def add_control_assay(request, assay_pk, control_pk):
     if not assay.controls.contains(control):
       assay.controls.add(control)
       context = {'assay': assay, 'control': control}
-      return render(request, 'assay/control_in_assay.html', context)
+      return render(request, 'assay/control_in_assay_sent.html', context)
     
   return HttpResponse(status=200)
 
@@ -174,7 +177,7 @@ def add_reagent_assay(request, assay_pk, reagent_pk):
         reagent_assay.save()
 
       context = {'assay': assay, 'reagent': reagent}
-      return render(request, 'assay/reagent_in_assay.html', context)
+      return render(request, 'assay/reagent_in_assay_sent.html', context)
 
   return HttpResponse(status=200)
 

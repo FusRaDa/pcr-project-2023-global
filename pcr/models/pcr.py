@@ -26,15 +26,6 @@ class ThermalCyclerProtocol(models.Model):
   extension_duration = models.IntegerField(validators=[MinValueValidator(0)]) # seconds
   number_of_cycles = models.IntegerField(validators=[MinValueValidator(0)])
 
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'name'], 
-        name='thermal_cycler_protocol_unique',
-        violation_error_message = "A protocol with this name already exists."
-      )
-    ]
-
   def __str__(self):
     return self.name
 

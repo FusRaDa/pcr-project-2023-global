@@ -30,12 +30,6 @@
           <label class="form-label">Amount Stored (µL)</label>
           {{form.amount}}
         </div>
-
-        <div class="text-center mt-3">
-          {{form.is_negative_ctrl}}
-          <label class="form-label">Is this a negative control?</label>
-        </div>
-
       </div>
 
       <div class="col-sm-3 form-width-18">
@@ -79,7 +73,7 @@
       <div class="row justify-content-center">
         <div class="text-center mt-2"> 
           <a class="btn btn-secondary" href="{% url 'controls' %}">Cancel</a>
-          <button class="btn btn-primary" type="Submit" name="update">Update Tube</button>
+          <button class="btn btn-primary" type="Submit" name="update">Update Control</button>
         </div>
       </div>
 

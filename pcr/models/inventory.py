@@ -15,15 +15,6 @@ class Location(models.Model):
 
   name = models.CharField(blank=False, max_length=25)
 
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'name'], 
-        name='location_unique',
-        violation_error_message = "A location with the same name already exists.",
-      )
-    ]
-  
   def __str__(self):
     return self.name
   

@@ -1,8 +1,8 @@
 <li class="list-group-item">
-  {{control}}
+  {{control.control.name}}
   <button 
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-    hx-post="{% url 'remove_control_assay' assay.pk control.pk %}"
+    hx-post="{% url 'remove_control_assay' assay.pk control.control.pk %}"
     hx-on:click="this.parentNode.remove()"
     hx-target="#controls-list-search"
     hx-swap="beforeend"

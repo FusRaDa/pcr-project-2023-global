@@ -13,6 +13,15 @@ from ..custom.constants import LIMITS
 class LocationForm(ModelForm):
 
   def clean(self):
+    cleaned_data = super().clean()
+    name = cleaned_data.get('name')
+
+    name_exists = Location.objects.filter(user=self.user, name=name).exists()
+    if name_exists:
+      raise ValidationError(
+        message=f"Location with the name: {name} already exists."
+      )
+    
     if Location.objects.filter(user=self.user).count() >= LIMITS.MAX_LOCATION_LIMIT:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_LOCATION_LIMIT} storage locations. Should you require more, please contact us!"

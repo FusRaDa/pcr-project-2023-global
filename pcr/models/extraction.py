@@ -14,7 +14,7 @@ class ExtractionProtocol(models.Model):
     RNA = 'RNA', _('RNA')
     TOTAL_NUCLEIC = 'TOTAL_NUCLEIC', _('Total Nucleic') # Both DNA & RNA
 
-  name = models.CharField(blank=False, unique=True, max_length=75)
+  name = models.CharField(blank=False, max_length=75)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25) # type of genetic material being extracted from samples in batch
   
   tubes = models.ManyToManyField(Tube, through='TubeExtraction')
@@ -33,15 +33,6 @@ class ExtractionProtocol(models.Model):
       if reagent.amount_per_sample == None:
         return False
     return True
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'name'], 
-        name='extraction_protocol_unique',
-        violation_error_message = "An extraction protocol with this name already exists."
-      )
-    ]
 
   def __str__(self):
     return self.name

@@ -17,15 +17,6 @@ class Fluorescence(models.Model):
   # Many-to-many with Assay
   name = models.CharField(blank=False, max_length=25)
 
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'name'], 
-        name='flourescence_unique',
-        violation_error_message = "Flourescense with this name already exists."
-      )
-    ]
-
   def __str__(self):
     return self.name
 
@@ -37,8 +28,6 @@ class Control(models.Model):
   name = models.CharField(blank=False, max_length=25)
   lot_number = models.CharField(blank=False, max_length=25)
   amount = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
-
-  is_negative_ctrl = models.BooleanField(default=False)
 
   exp_date = models.DateField(blank=True, null=True, default=None)
 
@@ -55,15 +44,6 @@ class Control(models.Model):
     if self.exp_date != None and (self.exp_date > timezone.now().date()) and (self.exp_date - timezone.now().date() <= datetime.timedelta(days=30)):
       return True
     return False
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'lot_number'], 
-        name='control_unique',
-        violation_error_message = "Control with this lot number already exists."
-      )
-    ]
 
   def __str__(self):
     return self.name
@@ -116,15 +96,6 @@ class Assay(models.Model):
   def mm_volume(self):
     sub = self.reaction_volume - self.sample_volume
     return sub
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'name', 'method'], 
-        name='assay_unique',
-        violation_error_message = "An assay with this name and method already exists."
-      )
-    ]
 
   def __str__(self):
     return self.name
@@ -196,15 +167,6 @@ class AssayCode(models.Model):
   # AssayList is used to bundle assays together making creating a batch easier rather then selecting all assays
   name = models.CharField(blank=False, max_length=25)
   assays = models.ManyToManyField(Assay)
-
-  class Meta:
-    constraints = [
-      models.UniqueConstraint(
-        fields=['user', 'name'], 
-        name='assay_code_unique',
-        violation_error_message = "An assay list/group with this name already exists."
-      )
-    ]
 
   def __str__(self):
     return self.name

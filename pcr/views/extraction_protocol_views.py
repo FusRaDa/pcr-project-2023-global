@@ -41,10 +41,10 @@ def extraction_protocols(request):
 @login_required(login_url='login')
 def create_extraction_protocol(request):
   context = {}
-  form = ExtractionProtocolForm()
+  form = ExtractionProtocolForm(user=request.user)
 
   if request.method == "POST":
-    form = ExtractionProtocolForm(request.POST)
+    form = ExtractionProtocolForm(request.POST, user=request.user)
     if form.is_valid():
       protocol = form.save(commit=False)
       protocol.user = request.user
@@ -68,13 +68,13 @@ def edit_extraction_protocol(request, pk):
   reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.EXTRACTION).exclude(pk__in=protocol.reagents.all())
   tubes = Tube.objects.filter(user=request.user).exclude(pk__in=protocol.tubes.all())
   
-  form = ExtractionProtocolForm(instance=protocol)
+  form = ExtractionProtocolForm(instance=protocol, user=request.user)
   del_form = DeletionForm(value=protocol.name)
   search_tube_form = TextSearchForm()
   search_reagent_form = TextSearchForm()
 
   if 'update' in request.POST:
-    form = ExtractionProtocolForm(request.POST, instance=protocol)
+    form = ExtractionProtocolForm(request.POST, instance=protocol, user=request.user)
     if form.is_valid():
       form.save()
       return redirect('extraction_protocols')

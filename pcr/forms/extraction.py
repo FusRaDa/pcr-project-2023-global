@@ -13,12 +13,22 @@ from ..custom.constants import LIMITS
 class ExtractionProtocolForm(ModelForm):
 
   def clean(self):
+    cleaned_data = super().clean()
+    name = cleaned_data.get('name')
+
+    name_exists = ExtractionProtocol.objects.filter(user=self.user, name=name).exists()
+    if name_exists:
+      raise ValidationError(
+        message=f"Extraction protocol with the name: {name} already exists."
+      )
+
     if ExtractionProtocol.objects.filter(user=self.user).count() >= LIMITS.MAX_EXTRACTION_PROTOCOL_LIMIT:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_EXTRACTION_PROTOCOL_LIMIT} extraction protocols. Should you require more, please contact us!"
       )
 
   def __init__(self, *args, **kwargs):
+    self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['type'].widget.attrs['class'] = 'form-select'

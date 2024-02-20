@@ -29,10 +29,10 @@ def tcprotocols(request):
 
 @login_required(login_url='login')
 def create_tcprotocol(request):
-  form = ThermalCyclerProtocolForm()
+  form = ThermalCyclerProtocolForm(user=request.user)
   
   if request.method == "POST":
-    form = ThermalCyclerProtocolForm(request.POST)
+    form = ThermalCyclerProtocolForm(request.POST, user=request.user)
     if form.is_valid():
       protocol = form.save(commit=False)
       protocol.user = request.user
@@ -53,11 +53,11 @@ def edit_tcprotocol(request, pk):
     messages.error(request, "There is no thermal cycler protocol to edit.")
     return redirect('tcprotocols')
   
-  form = ThermalCyclerProtocolForm(instance=protocol)
+  form = ThermalCyclerProtocolForm(instance=protocol, user=request.user)
   del_form = DeletionForm(value=protocol.name)
  
   if 'update' in request.POST:
-    form = ThermalCyclerProtocolForm(request.POST, instance=protocol)
+    form = ThermalCyclerProtocolForm(request.POST, instance=protocol, user=request.user)
     if form.is_valid():
       form.save()
       return redirect('tcprotocols')
