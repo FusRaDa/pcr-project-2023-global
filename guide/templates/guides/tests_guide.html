@@ -14,6 +14,56 @@
     <h2 class="text-center">Creating Your Assays</h2>
   </div>
 
+  <div class="row fixed-bottom text-center">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Table of Contents
+    </button>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Table of Contents</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <nav id="navbar-example3">
+            <nav class="nav nav-pills flex-column">
+              <a class="nav-link" href="#locations">Fluorescence</a>
+              <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-3 my-1" href="#locations-introduction">Introduction</a>
+                <a class="nav-link ms-3 my-1" href="#locations-tutorial-1">Adding Fluorescence</a>
+              </nav>
+              <a class="nav-link" href="#tubes">Controls</a>
+              <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-3 my-1" href="#tubes-introduction">Introduction</a>
+                <a class="nav-link ms-3 my-1" href="#tubes-tutorial-1">Adding Negative Control</a>
+                <a class="nav-link ms-3 my-1" href="#tubes-tutorial-1">Adding Assay Controls &amp; Gradients</a>
+              </nav>
+              <a class="nav-link" href="#plates">Assays</a>
+              <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-3 my-1" href="#plates-introduction">Introduction</a>
+                <a class="nav-link ms-3 my-1" href="#plates-tutorial-1">Creating Assay 1 - DNA in qPCR</a>
+                <a class="nav-link ms-3 my-1" href="#plates-tutorial-2">Creating Assay 2 - DNA in qPCR</a>
+                <a class="nav-link ms-3 my-1" href="#plates-tutorial-2">Creating Assay 3 - DNA in qPCR</a>
+                <a class="nav-link ms-3 my-1" href="#plates-tutorial-2">Creating Assay 4 - RNA in qPCR</a>
+                <a class="nav-link ms-3 my-1" href="#plates-tutorial-2">Creating Assay 5 - DNA in PCR</a>
+              </nav>
+              <a class="nav-link" href="#conclusion">Conclusion</a>
+            </nav>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row text-center fs-5">
+    <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true" class="scrollspy-example-2" tabindex="0">
+
+      
+    </div>
+  </div>
 
 </div>
 {% endblock %}

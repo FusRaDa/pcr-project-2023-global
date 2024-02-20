@@ -220,28 +220,33 @@ class ReagentAssayForm(ModelForm):
   def clean(self):
     cleaned_data = super().clean()
     final_concentration = cleaned_data.get('final_concentration')
+    final_concentration_unit = cleaned_data.get('final_concentration_unit')
 
     if self.instance.reagent.pcr_reagent != Reagent.PCRReagent.WATER.name and final_concentration == None:
       raise ValidationError(
         message=f"Reagents ({self.instance.reagent.name}) that are not water must have a final concentration."
       )
     
-    if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name and final_concentration != None:
+    if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name and final_concentration != None or self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name and final_concentration_unit != None:
       raise ValidationError (
         message="Water reagent's final concentration and unit must be left empty."
       )
-    
+ 
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.fields['final_concentration'].widget.attrs['class'] = 'form-control'
+    self.fields['final_concentration_unit'].widget.attrs['class'] = 'form-select'
     self.fields['order'].widget.attrs['class'] = 'form-control'
+
+    self.fields['final_concentration_unit'].initial = self.instance.final_concentration_unit
 
     if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name:
       self.fields['final_concentration'].widget.attrs['disabled'] = 'True'
+      self.fields['final_concentration_unit'].widget.attrs['disabled'] = 'True'
     
   class Meta:
     model = ReagentAssay
-    exclude = ['reagent', 'assay', 'final_concentration_unit']
+    exclude = ['reagent', 'assay']
 
 
 class AssayCodeForm(ModelForm):

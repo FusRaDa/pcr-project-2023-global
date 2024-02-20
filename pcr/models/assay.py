@@ -114,11 +114,11 @@ class ControlAssay(models.Model):
 class ReagentAssay(models.Model):
 
   class ConcentrationUnits(models.TextChoices):
-    MOLES = 'MOLES', _('M')
-    MILLIMOLES = 'MILLIMOLES', _('mM')
-    MICROMOLES = 'MICROMOLES', _('\u00B5M')
-    NANOMOLES = 'NANOMOLES', _('nM')
-    UNITS = 'UNITS', _('U/\u00B5L')
+    MOLES = 'M', _('M')
+    MILLIMOLES = 'mM', _('mM')
+    MICROMOLES = '\u00B5M', _('\u00B5M')
+    NANOMOLES = 'nM', _('nM')
+    UNITS = 'U/\u00B5L', _('U')
     X = 'X', _('X')
 
   reagent = models.ForeignKey(Reagent, on_delete=models.CASCADE)
@@ -145,6 +145,10 @@ class ReagentAssay(models.Model):
       volume = Decimal("{:.2f}".format(inital_volume - sum))
       return volume
     
+    if self.reagent.pcr_reagent == Reagent.PCRReagent.POLYMERASE:
+      volume = self.final_concentration / self.reagent.stock_concentration 
+      return volume
+
     df = self.reagent.stock_concentration / self.final_concentration 
     volume = Decimal("{:.2f}".format(self.assay.reaction_volume / df))
 
