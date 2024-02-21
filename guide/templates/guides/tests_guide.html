@@ -42,14 +42,14 @@
                 <a class="nav-link ms-3 my-1" href="#controls-tutorial-1">Adding Negative Control</a>
                 <a class="nav-link ms-3 my-1" href="#controls-tutorial-2">Adding Assay Controls &amp; Gradients</a>
               </nav>
-              <a class="nav-link" href="#plates">Assays</a>
+              <a class="nav-link" href="#assay">Assays</a>
               <nav class="nav nav-pills flex-column">
-                <a class="nav-link ms-3 my-1" href="#plates-introduction">Introduction</a>
-                <a class="nav-link ms-3 my-1" href="#plates-tutorial-1">Creating Assay 1 - DNA in qPCR</a>
-                <a class="nav-link ms-3 my-1" href="#plates-tutorial-2">Creating Assay 2 - DNA in qPCR</a>
-                <a class="nav-link ms-3 my-1" href="#plates-tutorial-2">Creating Assay 3 - DNA in qPCR</a>
-                <a class="nav-link ms-3 my-1" href="#plates-tutorial-2">Creating Assay 4 - RNA in qPCR</a>
-                <a class="nav-link ms-3 my-1" href="#plates-tutorial-2">Creating Assay 5 - DNA in PCR</a>
+                <a class="nav-link ms-3 my-1" href="#assay-introduction">Introduction</a>
+                <a class="nav-link ms-3 my-1" href="#assay-tutorial-1">Creating Assay 1 - DNA in qPCR</a>
+                <a class="nav-link ms-3 my-1" href="#assay-tutorial-2">Creating Assay 2 - DNA in qPCR</a>
+                <a class="nav-link ms-3 my-1" href="#assay-tutorial-3">Creating Assay 3 - DNA in qPCR</a>
+                <a class="nav-link ms-3 my-1" href="#assay-tutorial-4">Creating Assay 4 - RNA in qPCR</a>
+                <a class="nav-link ms-3 my-1" href="#assay-tutorial-5">Creating Assay 5 - DNA in PCR</a>
               </nav>
               <a class="nav-link" href="#conclusion">Conclusion</a>
             </nav>
@@ -133,15 +133,15 @@
         </div>
       </div>
 
-      <div id="fluor" class="mt-3">
+      <div id="assay" class="mt-3">
         <h4><u>Assays</u></h4>
 
-        <div id="fluor-introduction" class="mt-3">
+        <div id="assay-introduction" class="mt-3">
           <h6>Introduction</h6>
           <p>Deciding what assays to run is one of the core functions in PCR. Your samples may require a large variety of assays and organizing them can be a tedious task. PCRprep is designed specifically to handle this task with great efficiency. To create an assay click on “Tests” and select “Assays”. From the Assays page, click on “Create New Assay”. For this tutorial we will create a total of five assays. First we will make three assays for DNA in qPCR. Then one assay for RNA in qPCR and another one for DNA in PCR.</p>
         </div>
 
-        <div id="fluor-tutorial-1" class="mt-3">
+        <div id="assay-tutorial-1" class="mt-3">
           <h6>Creating Assay 1 DNA in qPCR</h6>
           <ul class="list-group">
             <li class="list-group-item">Step 1 - For the first assay, click on “Create New Assay”, set the name as “Assay 1”, method as “qPCR”, and Type as “DNA”.</li>
@@ -149,27 +149,25 @@
             <li class="list-group-item">Step 3 - Since this assay method is for qPCR we will lave the the rest of the fields empty except for Replicates and Fluorescence.</li>
             <li class="list-group-item">Step 4 - For now, we will leave Replicates as 1 and select “Fluorescent 1” under Fluorescence.</li>
             <li class="list-group-item">Step 5 - We will then click on “Create Assay”.</li>
-            <li class="list-group-item">Step 6 - By doing so, we are able to update the assay with its corresponding controls and reagents as shown below.</li>
-            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 6 - By doing so, we are able to update the assay with its corresponding controls and reagents.</li>
             <li class="list-group-item">Step 7 - Let us add “Control 1” and “NC-H2O” as our controls.</li>
             <li class="list-group-item">Step 8 - Then for reagents, we will select all reagents found in the following image except for the DNA template.</li>
+            <li class="list-group-item" id="mastermix"><img src="{% static 'images/pcr-mastermix.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 9 - You first assay (Assay 1) should look similar to the following image.</li>
-            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/assay-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 10 - Next, let’s assign the final concentration of our reagents by clicking on the blue flask button near “Reagents”.</li>
-            <li class="list-group-item">Step 11 - Let us refer back to the image below to see what the final concentrations are.</li>
-            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 11 - Let us refer back to the <a href="#mastermix">image</a> below to see what the final concentrations are.</li>
             <li class="list-group-item">Step 12 - Let us input the final concentration for each applicable reagent. Note that PCRprep limits you to use the same concentration unit as the stock concentration. You will have to manually convert units accordingly.</li>
             <li class="list-group-item">Step 13 - So for the Buffer, the final concentration is 1X, magnesium chloride is 1.5mM, dNTPs is 0.2mM, Forward Primer is 0.25µM, Reverse Primer is 0.25µM, and Polymerase is 1.25 Units.</li>
-            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 14 - Your final concentrations should look similar to the following image.</li>
-            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/assay-tests-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 15 - You will also notice that you can change the order that the reagents will be displayed.</li>
             <li class="list-group-item">Step 16 - You are also able to change the order of display of controls as well by going back to the assay edit page and clicking on the left-right arrow icon on top of your selected controls.</li>
-            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/assay-tests-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>
 
-        <div id="fluor-tutorial-2" class="mt-3">
+        <div id="assay-tutorial-2" class="mt-3">
           <h6>Creating Assay 2 DNA in qPCR</h6>
           <ul class="list-group">
             <li class="list-group-item">Step 1 - For the second assay, click on “Create New Assay”, set the name as “Assay 2”, method as “qPCR”, and Type as “DNA”.</li>
@@ -178,16 +176,15 @@
             <li class="list-group-item">Step 4 - For now, we will leave Replicates as 1 and select “Fluorescent 2” under Fluorescence.</li>
             <li class="list-group-item">Step 5 - We will then click on “Create Assay”.</li>
             <li class="list-group-item">Step 6 - By doing so, we are able to update the assay with its corresponding controls and reagents as shown below.</li>
-            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 7 - Let us add “Control 2” and “NC-H2O” as our controls.</li>
             <li class="list-group-item">Step 8 - Then for reagents, we will select all reagents found in the following image except for the DNA template.</li>
             <li class="list-group-item">Step 9 - You second assay (Assay 2) should look similar to the following image.</li>
-            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item">Step 10 - We will then assign each reagent the exact same final concentrations to the previous chart (LINK). Of course in a real scenario every assay will have different reagents and final concentrations. But for the sake of this demonstration we will simplify this process.</li>
+            <li class="list-group-item"><img src="{% static 'images/assay-tests-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 10 - We will then assign each reagent the exact same final concentrations according to the <a href="#mastermix">mastermix</a>. Of course in a real scenario every assay will have different reagents and final concentrations. But for the sake of this demonstration we will simplify this process.</li>
           </ul>
         </div>
 
-        <div id="fluor-tutorial-3" class="mt-3">
+        <div id="assay-tutorial-3" class="mt-3">
           <h6>Creating Assay 3 DNA in qPCR</h6>
           <ul class="list-group">
             <li class="list-group-item">Step 1 - For the third assay, click on “Create New Assay”, set the name as “Assay 3”, method as “qPCR”, and Type as “DNA”.</li>
@@ -196,20 +193,57 @@
             <li class="list-group-item">Step 4 - For now, we will leave Replicates as 1 and select “Fluorescent 3” under Fluorescence.</li>
             <li class="list-group-item">Step 5 - We will then click on “Create Assay”.</li>
             <li class="list-group-item">Step 6 - By doing so, we are able to update the assay with its corresponding controls and reagents as shown below.</li>
-            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 7 - Assay 3 will have a gradient and so let us add “Control 3 G1, Control 3 G2, Control 3 G3”, and “NC-H2O” as our controls.</li>
             <li class="list-group-item">Step 8 - Then for reagents, we will select all reagents found in the following image except for the DNA template.</li>
             <li class="list-group-item">Step 9 - You third assay (Assay 3) should look similar to the following image.</li>
-            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item">Step 10 - We will then assign each reagent the exact same final concentrations to the previous chart (LINK).</li>
+            <li class="list-group-item"><img src="{% static 'images/assay-tests-5.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 10 - We will then assign each reagent the exact same final concentrations according to the <a href="#mastermix">mastermix</a>.</li>
           </ul>
         </div>
 
+        <div id="assay-tutorial-4" class="mt-3">
+          <h6>Creating Assay 4 RNA in qPCR</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - For the fourth assay, click on “Create New Assay”, set the name as “Assay 4”, method as “qPCR”, and Type as “RNA”.</li>
+            <li class="list-group-item">Step 2 - We will set the Reaction Volume (µl) as 20 and the Sample Volume (µl) as 2. </li>
+            <li class="list-group-item">Step 3 - Since this assay method is for qPCR we will lave the the rest of the fields empty except for Replicates and Fluorescence.</li>
+            <li class="list-group-item">Step 4 - For now, we will leave Replicates as 1 and select “Fluorescent 1” under Fluorescence.</li>
+            <li class="list-group-item">Step 5 - We will then click on “Create Assay”.</li>
+            <li class="list-group-item">Step 6 - By doing so, we are able to update the assay with its corresponding controls and reagents as shown below.</li>
+            <li class="list-group-item">Step 7 - We will select “Control 4 RNA”, and “NC-H2O” as our controls.</li>
+            <li class="list-group-item">Step 8 - Then for reagents, we will select all reagents found in the following image except for the DNA template.</li>
+            <li class="list-group-item">Step 9 - You fourth assay (Assay 4) should look similar to the following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/assay-tests-6.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 10 - We will then assign each reagent the exact same final concentrations according to the <a href="#mastermix">mastermix</a></li>
+          </ul>
+        </div>
 
+        <div id="assay-tutorial-5" class="mt-3">
+          <h6>Creating Assay 5 DNA in PCR</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - For the fifth and last assay, click on “Create New Assay”, set the name as “Assay 5”, method as “qPCR”, and Type as “DNA”.</li>
+            <li class="list-group-item">Step 2 - We will set the Reaction Volume (µl) as 20 and the Sample Volume (µl) as 2. </li>
+            <li class="list-group-item">Step 3 - Since this assay method is for PCR, gels are required for further analysis. Knowing this, we must set the Ladder as “100bp Low Ladder” and Ladder Volume Per Gel (µl) as 2.</li>
+            <li class="list-group-item">Step 4 - If your ladder requires adding a dye for you to add then check “Dye Used In Ladder?”. Otherwise if your ladder already pre-mixed with dye then leave the box unchecked. In this case, we will check the box.</li>
+            <li class="list-group-item">Step 5 - For Dye select “DNA Gel Loading Dye”, set Dye Volume Per Well (µl) as 1.5, and leave Replicates as 1. We will leave fluorescence empty since this is only for qPCR assays.</li>
+            <li class="list-group-item">Step 6 - We will then click on “Create Assay”.</li>
+            <li class="list-group-item">Step 7 - By doing so, we are able to update the assay with its corresponding controls and reagents as shown below.</li>
+            <li class="list-group-item">Step 8 - We will select “Control 5 PCR”, and “NC-H2O” as our controls.</li>
+            <li class="list-group-item">Step 9 - Then for reagents, we will select the same reagents as the first assay we created.</li>
+            <li class="list-group-item">Step 10 - You fifth assay (Assay 5) should look similar to the following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/assay-tests-7.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 11 - We will then assign each reagent the exact same final concentrations according to the <a href="#mastermix">mastermix</a></li>
+            <li class="list-group-item">Step 12 - Your list of assay should look similar to following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/assay-tests-8.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+        <div id="conclusion" class="mt-3">
+          <h4><u>Conclusion</u></h4>
+          <p>Awesome! Once you have you created assays with controls and reagents, you are now ready to create your protocols. The <a href="#">Protocols section</a> will instruct you how to create thermal cycler protocols, extraction protocols, and panels.</p>
+        </div>
 
       </div>
-
-      
 
     </div>
   </div>
