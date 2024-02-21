@@ -63,7 +63,7 @@
     <div class="col-sm-3 mt-4">
       <h3 class="text-center"><u>Tubes<a href="{% url 'tubes_in_extraction' protocol.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-vial"></i></a></u></h3>
       <ul class="list-group" id="tubes-list">
-        {% for tube in protocol.tubes.all %}
+        {% for tube in protocol_tubes %}
           {% include 'extraction-protocol/tube_in_extraction.html' %}
         {% endfor %}
       </ul>
@@ -87,7 +87,7 @@
     <div class="col-sm-3 mt-4">
       <h3 class="text-center"><u>Reagents<a href="{% url 'reagents_in_extraction' protocol.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></a></u></h3>
       <ul class="list-group" id="reagents-list">
-        {% for reagent in protocol.reagents.all %}
+        {% for reagent in protocol_reagents %}
           {% include 'extraction-protocol/reagent_in_extraction.html' %}
         {% endfor %}
       </ul>

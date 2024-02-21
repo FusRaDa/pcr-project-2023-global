@@ -24,6 +24,9 @@ class ExtractionProtocol(models.Model):
 
   @property
   def is_complete(self):
+    if self.tubes.count() < 1 or self.reagents.count() < 1:
+      return False
+    
     tubes = self.tubeextraction_set.all()
     reagents = self.reagentextraction_set.all()
     for tube in tubes:

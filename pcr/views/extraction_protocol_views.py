@@ -65,6 +65,9 @@ def edit_extraction_protocol(request, pk):
     messages.error(request, "There is no extraction protocol to edit.")
     return redirect('extraction_protocols')
   
+  protocol_reagents = protocol.reagentextraction_set.all().order_by('order')
+  protocol_tubes = protocol.tubeextraction_set.all().order_by('order')
+  
   reagents = Reagent.objects.filter(user=request.user, usage=Reagent.Usages.EXTRACTION).exclude(pk__in=protocol.reagents.all())
   tubes = Tube.objects.filter(user=request.user).exclude(pk__in=protocol.tubes.all())
   
@@ -108,7 +111,7 @@ def edit_extraction_protocol(request, pk):
   context = {
     'form': form, 'protocol': protocol, 'del_form': del_form,
     'tubes': tubes, 'reagents': reagents, 'search_tube_form': search_tube_form,
-    'search_reagent_form': search_reagent_form,
+    'search_reagent_form': search_reagent_form, 'protocol_reagents': protocol_reagents, 'protocol_tubes': protocol_tubes
     }
   return render(request, 'extraction-protocol/edit_extraction_protocol.html', context)
 
@@ -126,7 +129,7 @@ def add_tube_extraction(request, protocol_pk, tube_pk):
     if not protocol.tubes.contains(tube):
       protocol.tubes.add(tube)
       context = {'protocol': protocol, 'tube': tube}
-      return render(request, 'extraction-protocol/tube_in_extraction.html', context)
+      return render(request, 'extraction-protocol/tube_in_extraction_sent.html', context)
 
   return HttpResponse(status=200)
 
@@ -162,7 +165,7 @@ def add_reagent_extraction(request, protocol_pk, reagent_pk):
     if not protocol.reagents.contains(reagent):
       protocol.reagents.add(reagent)
       context = {'protocol': protocol, 'reagent': reagent}
-      return render(request, 'extraction-protocol/reagent_in_extraction.html', context)
+      return render(request, 'extraction-protocol/reagent_in_extraction_sent.html', context)
     
   return HttpResponse(status=200)
 
