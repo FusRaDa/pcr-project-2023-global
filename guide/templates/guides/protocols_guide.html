@@ -1,0 +1,213 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Protocols Guide {% endblock %} 
+
+{% block content %}
+<div class="container mt-3">
+  <div class="row justify-content-center">
+    <h1 class="text-center">Protocols Guide</h1>
+  </div>
+
+  <div class="row justify-content-center">
+    <h2 class="text-center">Adding Your Protocols</h2>
+  </div>
+
+  <div class="row fixed-bottom text-center">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Table of Contents
+    </button>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Table of Contents</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <nav id="navbar-example3">
+            <nav class="nav nav-pills flex-column">
+              <a class="nav-link" href="#introduction">Introduction</a>
+              <a class="nav-link" href="#panels">Panels</a>
+              <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-3 my-1" href="#panels-introduction">Introduction</a>
+                <a class="nav-link ms-3 my-1" href="#panels-tutorial-1">Creating DNA in qPCR Panel</a>
+                <a class="nav-link ms-3 my-1" href="#panels-tutorial-1">Creating RNA in qPCR Panel</a>
+                <a class="nav-link ms-3 my-1" href="#panels-tutorial-1">Creating DNA in PCR Panel</a>
+                <a class="nav-link ms-3 my-1" href="#panels-tutorial-1">Creating All Assays Panel</a>
+              </nav>
+              <a class="nav-link" href="#extractions">Extractions</a>
+              <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-3 my-1" href="#extractions-introduction">Introduction</a>
+                <a class="nav-link ms-3 my-1" href="#extractions-tutorial-1">Adding DNA Extraction Protocol</a>
+                <a class="nav-link ms-3 my-1" href="#extractions-tutorial-2">Adding RNA Extraction Protocol</a>
+                <a class="nav-link ms-3 my-1" href="#extractions-tutorial-2">Adding Total-nucleic Extraction Protocol</a>
+              </nav>
+              <a class="nav-link" href="#thermals">Thermal Cyclers</a>
+              <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-3 my-1" href="#thermals-introduction">Introduction</a>
+                <a class="nav-link ms-3 my-1" href="#thermals-tutorial-1">Adding Thermal Cycler Protocol DNA</a>
+                <a class="nav-link ms-3 my-1" href="#thermals-tutorial-2">Adding Thermal Cycler Protocol RNA</a>
+              </nav>
+              <a class="nav-link" href="#conclusion">Conclusion</a>
+            </nav>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row text-center fs-5">
+    <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true" class="scrollspy-example-2" tabindex="0">
+
+      <div id="introduction" class="mt-3">
+        <h4><u>Introduction</u></h4>
+        <p>Creating protocols for extractions, thermal cyclers, and panels is an essential part of running PCR. Consistency is key in producing the most reliable results. In this guide, we will teach you how to create protocols for extractions, protocols for thermal cycler settings, and panels from your assays.</p>
+      </div>
+
+      <div id="panels" class="mt-3">
+        <h4><u>Panels</u></h4>
+
+        <div id="panels-introduction" class="mt-3">
+          <h6>Introduction</h6>
+          <p>Panels are composed of one or more assays that will be assigned to every sample in a batch. When you create assays, must always create a panel referring to them in order to apply assays to samples. To create a panel, click on “Protocols” on the menu, and select “Panels”. From there, you can then click on “Create New Panel”. For this tutorial, we will be creating 4 panels.</p>
+        </div>
+
+        <div id="panels-tutorial-1" class="mt-3">
+          <h6>Creating DNA in qPCR Panel</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - To create a panel click on “Create New Panel” and set the name as “DNA in qPCR Panel”.</li>
+            <li class="list-group-item">Step 2 - This panel will only contain DNA assays for qPCR. To do so, click on qDNA and select “Assay 1”, “Assay 2”, and “Assay 3”.</li>
+            <li class="list-group-item">Step 3 - Click on “Create Panel”.</li>
+            <li class="list-group-item"><img src="{% static 'images/panel-protocols-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+        <div id="panels-tutorial-2" class="mt-3">
+          <h6>Creating RNA in qPCR Panel</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - To create a panel click on “Create New Panel” and set the name as “RNA in qPCR Panel”.</li>
+            <li class="list-group-item">Step 2 - This panel will only contain DNA assays for qPCR. To do so, click on qRNA and select “Assay 4”.</li>
+            <li class="list-group-item">Step 3 - Click on “Create Panel”.</li>
+            <li class="list-group-item"><img src="{% static 'images/panel-protocols-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+        <div id="panels-tutorial-3" class="mt-3">
+          <h6>Creating DNA in PCR Panel</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - To create a panel click on “Create New Panel” and set the name as “DNA in PCR Panel”.</li>
+            <li class="list-group-item">Step 2 - This panel will only contain DNA assays for PCR. To do so, click on DNA and select “Assay 5”.</li>
+            <li class="list-group-item">Step 3 - Click on “Create Panel”.</li>
+            <li class="list-group-item"><img src="{% static 'images/panel-protocols-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+        <div id="panels-tutorial-3" class="mt-3">
+          <h6>Creating All Assays Panel</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - To create a panel click on “Create New Panel” and set the name as “All Assays Panel”.</li>
+            <li class="list-group-item">Step 2 - This panel will contain all assays we have created for this tutorial.</li>
+            <li class="list-group-item">Step 3 - From DNA to qRNA, we will select all assays. This panel should contain “Assay 1”, “Assay 2”, “Assay 3”, “Assay 4”, and “Assay 5”.</li>
+            <li class="list-group-item">Step 4 - Click on “Create Panel”.</li>
+            <li class="list-group-item"><img src="{% static 'images/panel-protocols-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 5 - Your list of panels should look similar to the following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/panel-protocols-5.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="extractions" class="mt-3">
+        <h4><u>Extractions</u></h4>
+
+        <div id="extractions-introduction" class="mt-3">
+          <h6>Introduction</h6>
+          <p>Extraction protocols is another important component in processing samples for extraction. Deciding what extraction protocol to use for each batch is necessary to produce the best results. To create an Extraction protocol click on “Protocols” and select “Extractions”. From there you can then click on “Add New Protocol”. For this tutorial, we will be adding three extraction protocols. One protocol for extracting DNA, another one for extracting RNA, and one for extracting both DNA &amp; RNA (total-nucleic).</p>
+        </div>
+
+        <div id="extractions-tutorial-1" class="mt-3">
+          <h6>Adding DNA Extraction Protocol</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - To add an extraction protocol click on “Add New Protocol” and set the name as “DNA Extraction Protocol”.</li>
+            <li class="list-group-item">Step 2 - Set the Type as “DNA” and copy/paste the URL of the document containing the steps for your extraction should you have one. Otherwise, leave the field empty.</li>
+            <li class="list-group-item">Step 3 - We will then select all tubes and reagents that we previously created in the <a href="{% url 'inventory_guide'%}">Inventory Guide</a>.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-protocols-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-reagents.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 4 - We must then determine the amount of tubes used per extracted sample. To do so, click on the blue tube icon next to “Tubes”. Note that we can also change the order of the tubes being displayed.</li>
+            <li class="list-group-item">Step 5 - Let us set the amount per sample as “3” for all three of these tubes and then click on “Update Tubes”.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-protocols-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 6 - Next we must determine the volume user per sample for each reagent. To do so, click on the blue flask icon near “Reagents”.</li>
+            <li class="list-group-item">Step 7 - For the sake of simplicity, we will set the volume per sample for all reagents as “100”.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-protocols-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+        <div id="extractions-tutorial-2" class="mt-3">
+          <h6>Adding RNA Extraction Protocol</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - To add an extraction protocol click on “Add New Protocol” and set the name as “RNA Extraction Protocol”.</li>
+            <li class="list-group-item">Step 2 - Set the Type as “RNA” and copy/paste the URL of the document containing the steps for your extraction should you have one. Otherwise, leave the field empty.</li>
+            <li class="list-group-item">Step 3 - We will then select all tubes and reagents that we previously created in the <a href="{% url 'inventory_guide'%}">Inventory Guide</a>. Keep note that this is a demonstration. Realistically, every extraction protocol will differ in what tubes and reagents they use as well as the amounts per sample.</li>
+            <li class="list-group-item">Step 4 - We will do the exact same steps as the previous extraction protocol. Assign “3” as the amount per sample for tubes and “100” for volume per sample for all reagents.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-protocols-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+        <div id="extractions-tutorial-2" class="mt-3">
+          <h6>Adding Total-nucleic Extraction Protocol</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - To add an extraction protocol click on “Add New Protocol” and set the name as “Total-nucleic Extraction Protocol”.</li>
+            <li class="list-group-item">Step 2 - Set the Type as “Total Nucleic” and copy/paste the URL of the document containing the steps for your extraction should you have one. Otherwise, leave the field empty.</li>
+            <li class="list-group-item">Step 3 - We will then select all tubes and reagents that we previously created in the <a href="{% url 'inventory_guide'%}">Inventory Guide</a>. Keep note that this is a demonstration. Realistically, every extraction protocol will differ in what tubes and reagents they use as well as the amounts per sample.</li>
+            <li class="list-group-item">Step 4 - We will do the exact same steps as the first extraction protocol. Assign “3” as the amount per sample for tubes and “100” for volume per sample for all reagents.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-protocols-5.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 5 - Your list of extraction protocols should look similar to the image below.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-protocols-6.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="thermals" class="mt-3">
+        <h4><u>Thermal Cycler</u></h4>
+
+        <div id="thermals-introduction" class="mt-3">
+          <h6>Introduction</h6>
+          <p>Thermal cycler protocols are a major factor in producing the best results for PCR. Having the correct settings for your thermal cycler according to each plate is mandatory. To add a new thermal cycler protocol, click on “Protocols” and select “Thermal Cycler”. From there, click on “Add New Protocol”. For this tutorial, we will add two types of protocols: one for DNA and another for RNA.</p>
+        </div>
+
+        <div id="thermals-tutorial-1" class="mt-3">
+          <h6>Adding Thermal Cycler Protocol DNA</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - To add a thermal cycler protocol click on “Add New Protocol”, set the Name as “Thermal Cycler Protocol DNA”, Type as “DNA”, and Number of Cycles to 30.</li>
+            <li class="list-group-item">Step 2 - Based on the following image from Millipore Sigma, we will set the Denature Temp to 94°C, and Denature Duration to 60 seconds. Annealing Temp will be 55°C with a duration of 120 seconds, and Extension Temp at 72°C with a duration of 180 seconds.</li>
+            <li class="list-group-item">Step 3 - Click on “Add Protocol”.</li>
+            <li class="list-group-item"><img src="{% static 'images/thermal-protocols-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+        <div id="thermals-tutorial-2" class="mt-3">
+          <h6>Adding Thermal Cycler Protocol RNA</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - To add a thermal cycler protocol click on “Add New Protocol”, set the Name as “Thermal Cycler Protocol RNA”, Type as “RNA”, and Number of Cycles to 30.</li>
+            <li class="list-group-item">Step 2 - According to an article by ThermoFisher, we will set the Denature Temp to 70°C, and Denature Duration to 60 seconds. Annealing Temp will be 16°C with a duration of 120 seconds, and Extension Temp at 72°C with a duration of 180 seconds.</li>
+            <li class="list-group-item">Step 3 - Click on “Add Protocol”.</li>
+            <li class="list-group-item"><img src="{% static 'images/thermal-protocols-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 3 - Your list of thermal cycler protocols should look similar to the following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/thermal-protocols-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="conclusion" class="mt-3">
+        <h4><u>Conclusion</u></h4>
+        <p>Excellent! Once all your protocols have been set, you will now be ready to create a batch of samples for extraction. The Batches Guide will teach you how to create a sample batch and assign all protocols necessary.</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -49,3 +49,8 @@ def tests_guide(request):
   return render(request, 'guides/tests_guide.html', context)
 
 
+def protocols_guide(request):
+  context = {}
+  return render(request, 'guides/protocols_guide.html', context)
+
+
