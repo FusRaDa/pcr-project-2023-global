@@ -36,11 +36,11 @@
                 <a class="nav-link ms-3 my-1" href="#fluor-introduction">Introduction</a>
                 <a class="nav-link ms-3 my-1" href="#fluor-tutorial-1">Adding Fluorescence</a>
               </nav>
-              <a class="nav-link" href="#tubes">Controls</a>
+              <a class="nav-link" href="#controls">Controls</a>
               <nav class="nav nav-pills flex-column">
-                <a class="nav-link ms-3 my-1" href="#tubes-introduction">Introduction</a>
-                <a class="nav-link ms-3 my-1" href="#tubes-tutorial-1">Adding Negative Control</a>
-                <a class="nav-link ms-3 my-1" href="#tubes-tutorial-1">Adding Assay Controls &amp; Gradients</a>
+                <a class="nav-link ms-3 my-1" href="#controls-introduction">Introduction</a>
+                <a class="nav-link ms-3 my-1" href="#controls-tutorial-1">Adding Negative Control</a>
+                <a class="nav-link ms-3 my-1" href="#controls-tutorial-2">Adding Assay Controls &amp; Gradients</a>
               </nav>
               <a class="nav-link" href="#plates">Assays</a>
               <nav class="nav nav-pills flex-column">
@@ -79,15 +79,134 @@
           <h6>Adding Fluorescence</h6>
           <ul class="list-group">
             <li class="list-group-item">Step 1 - To add a fluorescence click on “Add New Fluorescence” and set the name as “Fluorescent 1”.</li>
-            <li class="list-group-item"><img src="{% static 'images/inventory-locations-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 2 - We will then repeat this process two more times for “Fluorescent 2” and “Fluorescent 3”.</li>
-            <li class="list-group-item"><img src="{% static 'images/inventory-locations-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item"><img src="{% static 'images/inventory-locations-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item">Step 3 - Be aware that these names serve as an example. Realistically, actual fluorescent dyes such as FAM and TEX will be used.</li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 3 - Be aware that these names serve as an example. Realistically, actual fluorescent dyes such as FAM and TEX would be used.</li>
             <li class="list-group-item">Step 4 - Your list of fluorescence should look similar to the following image.</li>
-            <li class="list-group-item"><img src="{% static 'images/inventory-locations-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>
+      </div>
+
+      <div id="controls" class="mt-3">
+        <h4><u>Controls</u></h4>
+
+        <div id="controls-introduction" class="mt-3">
+          <h6>Introduction</h6>
+          <p>Controls are a necessary component to every assay for analysis. Assays may have multiple controls that serve as a gradient or a single control. To add a control click on “Tests” and select “Controls”. From there, click on “Add New Control”. In this tutorial, we will first create a negative control (water) and then 7 other controls corresponding to different assays.</p>
+        </div>
+
+        <div id="controls-tutorial-1" class="mt-3">
+          <h6>Adding Negative Control</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - Let’s first add our negative control that will only contain water. To do so, click on “Add New Control”, set the Name as “NC-H2O”, Lot Number as “LH2O”, and the Amount (µL) as 200.</li>
+            <li class="list-group-item">Step 2 - We will then repeat this process two more times for “Fluorescent 2” and “Fluorescent 3”.</li>
+            <li class="list-group-item">Step 3 - We will leave the Location empty and because controls tend to be the most time-sensitive components to PCR, we will set the Expiration Date 2 months ahead of today (your day).</li>
+            <li class="list-group-item">Step 4 - Keep in mind that every control must have a different lot number.</li>
+            <li class="list-group-item"><img src="{% static 'images/control-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+        <div id="controls-tutorial-2" class="mt-3">
+          <h6>Adding Assay Controls &amp; Gradients</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - Further in this in tutorial, we will be creating 5 assays and all will have control(s) assigned to them.  All Expiration Dates for the following controls will be 1 day ahead of today (your day) for the sake of this demonstration. We will leave the Location empty.</li>
+            <li class="list-group-item">Step 2 - Let us first create “Control 1” with Lot Number as “L1” and the Amount (µL) as 200.</li>
+            <li class="list-group-item"><img src="{% static 'images/control-tests-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 3 - Second, “Control 2” with Lot Number as “L2” and the Amount (µL) as 200.</li>
+            <li class="list-group-item"><img src="{% static 'images/control-tests-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 4 - Third, “Control 3 G1” with Lot Number as “L3” and the Amount (µL) as 200.</li>
+            <li class="list-group-item"><img src="{% static 'images/control-tests-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 5 - Fourth, “Control 3 G2” with Lot Number as “L4” and the Amount (µL) as 200.</li>
+            <li class="list-group-item"><img src="{% static 'images/control-tests-5.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 6 - Fifth, “Control 3 G3” with Lot Number as “L5” and the Amount (µL) as 200.</li>
+            <li class="list-group-item"><img src="{% static 'images/control-tests-6.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 7 - Sixth, “Control 4 RNA” with Lot Number as “L6” and the Amount (µL) as 200.</li>
+            <li class="list-group-item"><img src="{% static 'images/control-tests-7.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 8 - Seventh, “Control 5 PCR” with Lot Number as “L7” and the Amount (µL) as 200.</li>
+            <li class="list-group-item"><img src="{% static 'images/control-tests-8.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 9 - Your list of controls should look similar to the following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/control-tests-9.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="fluor" class="mt-3">
+        <h4><u>Assays</u></h4>
+
+        <div id="fluor-introduction" class="mt-3">
+          <h6>Introduction</h6>
+          <p>Deciding what assays to run is one of the core functions in PCR. Your samples may require a large variety of assays and organizing them can be a tedious task. PCRprep is designed specifically to handle this task with great efficiency. To create an assay click on “Tests” and select “Assays”. From the Assays page, click on “Create New Assay”. For this tutorial we will create a total of five assays. First we will make three assays for DNA in qPCR. Then one assay for RNA in qPCR and another one for DNA in PCR.</p>
+        </div>
+
+        <div id="fluor-tutorial-1" class="mt-3">
+          <h6>Creating Assay 1 DNA in qPCR</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - For the first assay, click on “Create New Assay”, set the name as “Assay 1”, method as “qPCR”, and Type as “DNA”.</li>
+            <li class="list-group-item">Step 2 - We will set the Reaction Volume (µl) as 20 and the Sample Volume (µl) as 2. </li>
+            <li class="list-group-item">Step 3 - Since this assay method is for qPCR we will lave the the rest of the fields empty except for Replicates and Fluorescence.</li>
+            <li class="list-group-item">Step 4 - For now, we will leave Replicates as 1 and select “Fluorescent 1” under Fluorescence.</li>
+            <li class="list-group-item">Step 5 - We will then click on “Create Assay”.</li>
+            <li class="list-group-item">Step 6 - By doing so, we are able to update the assay with its corresponding controls and reagents as shown below.</li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 7 - Let us add “Control 1” and “NC-H2O” as our controls.</li>
+            <li class="list-group-item">Step 8 - Then for reagents, we will select all reagents found in the following image except for the DNA template.</li>
+            <li class="list-group-item">Step 9 - You first assay (Assay 1) should look similar to the following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 10 - Next, let’s assign the final concentration of our reagents by clicking on the blue flask button near “Reagents”.</li>
+            <li class="list-group-item">Step 11 - Let us refer back to the image below to see what the final concentrations are.</li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 12 - Let us input the final concentration for each applicable reagent. Note that PCRprep limits you to use the same concentration unit as the stock concentration. You will have to manually convert units accordingly.</li>
+            <li class="list-group-item">Step 13 - So for the Buffer, the final concentration is 1X, magnesium chloride is 1.5mM, dNTPs is 0.2mM, Forward Primer is 0.25µM, Reverse Primer is 0.25µM, and Polymerase is 1.25 Units.</li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 14 - Your final concentrations should look similar to the following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 15 - You will also notice that you can change the order that the reagents will be displayed.</li>
+            <li class="list-group-item">Step 16 - You are also able to change the order of display of controls as well by going back to the assay edit page and clicking on the left-right arrow icon on top of your selected controls.</li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+        <div id="fluor-tutorial-2" class="mt-3">
+          <h6>Creating Assay 2 DNA in qPCR</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - For the second assay, click on “Create New Assay”, set the name as “Assay 2”, method as “qPCR”, and Type as “DNA”.</li>
+            <li class="list-group-item">Step 2 - We will set the Reaction Volume (µl) as 20 and the Sample Volume (µl) as 2. </li>
+            <li class="list-group-item">Step 3 - Since this assay method is for qPCR we will lave the the rest of the fields empty except for Replicates and Fluorescence.</li>
+            <li class="list-group-item">Step 4 - For now, we will leave Replicates as 1 and select “Fluorescent 2” under Fluorescence.</li>
+            <li class="list-group-item">Step 5 - We will then click on “Create Assay”.</li>
+            <li class="list-group-item">Step 6 - By doing so, we are able to update the assay with its corresponding controls and reagents as shown below.</li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 7 - Let us add “Control 2” and “NC-H2O” as our controls.</li>
+            <li class="list-group-item">Step 8 - Then for reagents, we will select all reagents found in the following image except for the DNA template.</li>
+            <li class="list-group-item">Step 9 - You second assay (Assay 2) should look similar to the following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 10 - We will then assign each reagent the exact same final concentrations to the previous chart (LINK). Of course in a real scenario every assay will have different reagents and final concentrations. But for the sake of this demonstration we will simplify this process.</li>
+          </ul>
+        </div>
+
+        <div id="fluor-tutorial-3" class="mt-3">
+          <h6>Creating Assay 3 DNA in qPCR</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - For the third assay, click on “Create New Assay”, set the name as “Assay 3”, method as “qPCR”, and Type as “DNA”.</li>
+            <li class="list-group-item">Step 2 - We will set the Reaction Volume (µl) as 20 and the Sample Volume (µl) as 2. </li>
+            <li class="list-group-item">Step 3 - Since this assay method is for qPCR we will lave the the rest of the fields empty except for Replicates and Fluorescence.</li>
+            <li class="list-group-item">Step 4 - For now, we will leave Replicates as 1 and select “Fluorescent 3” under Fluorescence.</li>
+            <li class="list-group-item">Step 5 - We will then click on “Create Assay”.</li>
+            <li class="list-group-item">Step 6 - By doing so, we are able to update the assay with its corresponding controls and reagents as shown below.</li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 7 - Assay 3 will have a gradient and so let us add “Control 3 G1, Control 3 G2, Control 3 G3”, and “NC-H2O” as our controls.</li>
+            <li class="list-group-item">Step 8 - Then for reagents, we will select all reagents found in the following image except for the DNA template.</li>
+            <li class="list-group-item">Step 9 - You third assay (Assay 3) should look similar to the following image.</li>
+            <li class="list-group-item"><img src="{% static 'images/fluor-tests-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 10 - We will then assign each reagent the exact same final concentrations to the previous chart (LINK).</li>
+          </ul>
+        </div>
+
+
+
       </div>
 
       
