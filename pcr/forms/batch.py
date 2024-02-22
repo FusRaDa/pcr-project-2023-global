@@ -164,7 +164,7 @@ class BatchForm(ModelForm):
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['number_of_samples'].widget.attrs['class'] = 'form-control'
     self.fields['number_of_samples'].widget.attrs['min'] = 1
-    self.fields['number_of_samples'].widget.attrs['max'] = LIMITS.SAMPLES_PER_BATCH_LIMIT
+    self.fields['number_of_samples'].widget.attrs['max'] = LIMITS.MAX_SAMPLES_PER_BATCH_LIMIT
     self.fields['lab_id'].widget.attrs['class'] = 'form-control'
 
   class Meta:

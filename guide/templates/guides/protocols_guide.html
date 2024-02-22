@@ -137,10 +137,10 @@
             <li class="list-group-item"><img src="{% static 'images/extraction-protocols-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item"><img src="{% static 'images/extraction-reagents.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 4 - We must then determine the amount of tubes used per extracted sample. To do so, click on the blue tube icon next to “Tubes”. Note that we can also change the order of the tubes being displayed.</li>
-            <li class="list-group-item">Step 5 - Let us set the amount per sample as “3” for all three of these tubes and then click on “Update Tubes”.</li>
+            <li class="list-group-item">Step 5 - Let us set the amount per sample for “2ml Collection Tubes” as “3”, “QIAmp Mini spin columns” as “1”, and “1.7 ml Generic Centrifuge Tube” as “2”.</li>
             <li class="list-group-item"><img src="{% static 'images/extraction-protocols-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 6 - Next we must determine the volume user per sample for each reagent. To do so, click on the blue flask icon near “Reagents”.</li>
-            <li class="list-group-item">Step 7 - For the sake of simplicity, we will set the volume per sample for all reagents as “100”.</li>
+            <li class="list-group-item">Step 7 - We will set Volume Per Sample (µl) for “InhibitEx Buffer” as “1000”, “Buffer AL” as “600”, “Buffer ATE” as “200”, “Proteinase K” as “25”, “Ethanol” as ”600”, “Buffer AW1” as “500”, and “Buffer AW2” as “500”. According to this <a href="https://www.qiagen.com/us/resources/resourcedetail?id=2a3f2c0b-2e8a-49fd-b442-829108ae1a4a&lang=en" target="_blank">Qiagen kit manual</a>.</li>
             <li class="list-group-item"><img src="{% static 'images/extraction-protocols-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>
@@ -151,7 +151,9 @@
             <li class="list-group-item">Step 1 - To add an extraction protocol click on “Add New Protocol” and set the name as “RNA Extraction Protocol”.</li>
             <li class="list-group-item">Step 2 - Set the Type as “RNA” and copy/paste the URL of the document containing the steps for your extraction should you have one. Otherwise, leave the field empty.</li>
             <li class="list-group-item">Step 3 - We will then select all tubes and reagents that we previously created in the <a href="{% url 'inventory_guide'%}">Inventory Guide</a>. Keep note that this is a demonstration. Realistically, every extraction protocol will differ in what tubes and reagents they use as well as the amounts per sample.</li>
-            <li class="list-group-item">Step 4 - We will do the exact same steps as the previous extraction protocol. Assign “3” as the amount per sample for tubes and “100” for volume per sample for all reagents.</li>
+            <li class="list-group-item">Step 4 - We will do the exact same steps as the previous extraction protocol.</li>
+            <li class="list-group-item">Step 5 - For tubes, set the amount per sample for “2ml Collection Tubes” as “3”, “QIAmp Mini spin columns” as “1”, and “1.7 ml Generic Centrifuge Tube” as “2”. </li>
+            <li class="list-group-item">Step 6 - For reagents, we will set Volume Per Sample (µl) for “InhibitEx Buffer” as “1000”, “Buffer AL” as “600”, “Buffer ATE” as “200”, “Proteinase K” as “25”, “Ethanol” as ”600”, “Buffer AW1” as “500”, and “Buffer AW2” as “500”.</li>
             <li class="list-group-item"><img src="{% static 'images/extraction-protocols-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>
@@ -162,9 +164,11 @@
             <li class="list-group-item">Step 1 - To add an extraction protocol click on “Add New Protocol” and set the name as “Total-nucleic Extraction Protocol”.</li>
             <li class="list-group-item">Step 2 - Set the Type as “Total Nucleic” and copy/paste the URL of the document containing the steps for your extraction should you have one. Otherwise, leave the field empty.</li>
             <li class="list-group-item">Step 3 - We will then select all tubes and reagents that we previously created in the <a href="{% url 'inventory_guide'%}">Inventory Guide</a>. Keep note that this is a demonstration. Realistically, every extraction protocol will differ in what tubes and reagents they use as well as the amounts per sample.</li>
-            <li class="list-group-item">Step 4 - We will do the exact same steps as the first extraction protocol. Assign “3” as the amount per sample for tubes and “100” for volume per sample for all reagents.</li>
+            <li class="list-group-item">Step 4 - We will do the exact same steps as the previous extraction protocol.</li>
+            <li class="list-group-item">Step 5 - For tubes, set the amount per sample for “2ml Collection Tubes” as “3”, “QIAmp Mini spin columns” as “1”, and “1.7 ml Generic Centrifuge Tube” as “2”. </li>
+            <li class="list-group-item">Step 6 - For reagents, we will set Volume Per Sample (µl) for “InhibitEx Buffer” as “1000”, “Buffer AL” as “600”, “Buffer ATE” as “200”, “Proteinase K” as “25”, “Ethanol” as ”600”, “Buffer AW1” as “500”, and “Buffer AW2” as “500”.</li>
             <li class="list-group-item"><img src="{% static 'images/extraction-protocols-5.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item">Step 5 - Your list of extraction protocols should look similar to the image below.</li>
+            <li class="list-group-item">Step 7 - Your list of extraction protocols should look similar to the image below.</li>
             <li class="list-group-item"><img src="{% static 'images/extraction-protocols-6.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>
@@ -182,7 +186,7 @@
           <h6>Adding Thermal Cycler Protocol DNA</h6>
           <ul class="list-group">
             <li class="list-group-item">Step 1 - To add a thermal cycler protocol click on “Add New Protocol”, set the Name as “Thermal Cycler Protocol DNA”, Type as “DNA”, and Number of Cycles to 30.</li>
-            <li class="list-group-item">Step 2 - Based on the following image from Millipore Sigma, we will set the Denature Temp to 94°C, and Denature Duration to 60 seconds. Annealing Temp will be 55°C with a duration of 120 seconds, and Extension Temp at 72°C with a duration of 180 seconds.</li>
+            <li class="list-group-item">Step 2 - Based on the following image from <a href="https://www.sigmaaldrich.com/US/en/technical-documents/protocol/genomics/pcr/standard-pcr" target="_blank">Millipore Sigma</a>, we will set the Denature Temp to 94°C, and Denature Duration to 60 seconds. Annealing Temp will be 55°C with a duration of 120 seconds, and Extension Temp at 72°C with a duration of 180 seconds.</li>
             <li class="list-group-item">Step 3 - Click on “Add Protocol”.</li>
             <li class="list-group-item"><img src="{% static 'images/thermal-protocols-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
@@ -192,7 +196,7 @@
           <h6>Adding Thermal Cycler Protocol RNA</h6>
           <ul class="list-group">
             <li class="list-group-item">Step 1 - To add a thermal cycler protocol click on “Add New Protocol”, set the Name as “Thermal Cycler Protocol RNA”, Type as “RNA”, and Number of Cycles to 30.</li>
-            <li class="list-group-item">Step 2 - According to an article by ThermoFisher, we will set the Denature Temp to 70°C, and Denature Duration to 60 seconds. Annealing Temp will be 16°C with a duration of 120 seconds, and Extension Temp at 72°C with a duration of 180 seconds.</li>
+            <li class="list-group-item">Step 2 - According to an article by <a href="https://www.thermofisher.com/us/en/home/references/ambion-tech-support/transcriptome-analysis/general-articles/tips-for-successful-rna-amplification-.html#:~:text=For%20the%20most%20consistent%20results,reach%20the%20target%20temperature%20rapidly" target="_blank">ThermoFisher</a>, we will set the Denature Temp to 70°C, and Denature Duration to 60 seconds. Annealing Temp will be 16°C with a duration of 120 seconds, and Extension Temp at 72°C with a duration of 180 seconds.</li>
             <li class="list-group-item">Step 3 - Click on “Add Protocol”.</li>
             <li class="list-group-item"><img src="{% static 'images/thermal-protocols-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 3 - Your list of thermal cycler protocols should look similar to the following image.</li>

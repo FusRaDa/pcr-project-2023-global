@@ -75,33 +75,6 @@ class LadderForm(ModelForm):
     exclude = ['user', 'last_updated']
 
 
-class EditLadderForm(ModelForm):
-  location = forms.ModelMultipleChoiceField(
-    queryset=None,
-    widget=forms.CheckboxSelectMultiple,
-    required=False)
-  
-  exp_date = forms.DateField(
-    widget=forms.DateInput(attrs={'type': 'date'}),
-    label='Date Start',
-    required=False)
-  
-  def __init__(self, *args, **kwargs):
-    self.user = kwargs.pop('user')
-    super().__init__(*args, **kwargs) 
-    self.fields['location'].queryset = Location.objects.filter(user=self.user)
-
-    self.fields['amount'].widget.attrs['class'] = 'form-control'
-    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
-
-    self.fields['amount'].widget.attrs['min'] = 0
-
-  class Meta:
-    model = Ladder
-    fields = ['amount', 'exp_date', 'location']
-    exclude = ['user', 'last_updated']
-
-
 class GelForm(ModelForm):
 
   location = forms.ModelMultipleChoiceField(
@@ -137,34 +110,6 @@ class GelForm(ModelForm):
 
   class Meta:
     model = Gel
-    exclude = ['user', 'last_updated']
-
-
-class EditGelForm(ModelForm):
-
-  location = forms.ModelMultipleChoiceField(
-    queryset=None,
-    widget=forms.CheckboxSelectMultiple,
-    required=False)
-  
-  exp_date = forms.DateField(
-    widget=forms.DateInput(attrs={'type': 'date'}),
-    label='Date Start',
-    required=False)
-  
-  def __init__(self, *args, **kwargs):
-    self.user = kwargs.pop('user')
-    super().__init__(*args, **kwargs) 
-    self.fields['location'].queryset = Location.objects.filter(user=self.user)
-
-    self.fields['amount'].widget.attrs['class'] = 'form-control'
-    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
-
-    self.fields['amount'].widget.attrs['min'] = 0
-
-  class Meta:
-    model = Plate
-    fields = ['amount', 'exp_date', 'location']
     exclude = ['user', 'last_updated']
 
 
@@ -205,34 +150,6 @@ class DyeForm(ModelForm):
     exclude = ['user', 'last_updated']
 
 
-class EditDyeForm(ModelForm):
-
-  location = forms.ModelMultipleChoiceField(
-    queryset=None,
-    widget=forms.CheckboxSelectMultiple,
-    required=False)
-  
-  exp_date = forms.DateField(
-    widget=forms.DateInput(attrs={'type': 'date'}),
-    label='Date Start',
-    required=False)
-  
-  def __init__(self, *args, **kwargs):
-    self.user = kwargs.pop('user')
-    super().__init__(*args, **kwargs) 
-    self.fields['location'].queryset = Location.objects.filter(user=self.user)
-
-    self.fields['amount'].widget.attrs['class'] = 'form-control'
-    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
-
-    self.fields['amount'].widget.attrs['min'] = 0
-
-  class Meta:
-    model = Dye
-    fields = ['amount', 'exp_date', 'location']
-    exclude = ['user', 'last_updated']
-    
-
 class PlateForm(ModelForm):
 
   location = forms.ModelMultipleChoiceField(
@@ -272,34 +189,6 @@ class PlateForm(ModelForm):
     exclude = ['user', 'last_updated']
 
 
-class EditPlateForm(ModelForm):
-
-  location = forms.ModelMultipleChoiceField(
-    queryset=None,
-    widget=forms.CheckboxSelectMultiple,
-    required=False)
-  
-  exp_date = forms.DateField(
-    widget=forms.DateInput(attrs={'type': 'date'}),
-    label='Date Start',
-    required=False)
-  
-  def __init__(self, *args, **kwargs):
-    self.user = kwargs.pop('user')
-    super().__init__(*args, **kwargs) 
-    self.fields['location'].queryset = Location.objects.filter(user=self.user)
-
-    self.fields['amount'].widget.attrs['class'] = 'form-control'
-    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
-
-    self.fields['amount'].widget.attrs['min'] = 0
-
-  class Meta:
-    model = Plate
-    fields = ['amount', 'exp_date', 'location']
-    exclude = ['user', 'last_updated']
-
-
 class TubeForm(ModelForm):
 
   location = forms.ModelMultipleChoiceField(
@@ -334,34 +223,6 @@ class TubeForm(ModelForm):
 
   class Meta:
     model = Tube
-    exclude = ['user', 'last_updated']
-
-
-class EditTubeForm(ModelForm):
-
-  location = forms.ModelMultipleChoiceField(
-    queryset=None,
-    widget=forms.CheckboxSelectMultiple,
-    required=False)
-  
-  exp_date = forms.DateField(
-    widget=forms.DateInput(attrs={'type': 'date'}),
-    label='Date Start',
-    required=False)
-
-  def __init__(self, *args, **kwargs):
-    self.user = kwargs.pop('user')
-    super().__init__(*args, **kwargs) 
-    self.fields['location'].queryset = Location.objects.filter(user=self.user)
-
-    self.fields['amount'].widget.attrs['class'] = 'form-control'
-    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
-
-    self.fields['amount'].widget.attrs['min'] = 0
-
-  class Meta:
-    model = Tube
-    fields = ['amount', 'exp_date', 'location']
     exclude = ['user', 'last_updated']
 
 
@@ -460,33 +321,4 @@ class ReagentForm(ModelForm):
   
   class Meta:
     model = Reagent
-    exclude = ['user', 'last_updated']
-
-
-class EditReagentForm(ModelForm):
-
-  location = forms.ModelMultipleChoiceField(
-    queryset=None,
-    widget=forms.CheckboxSelectMultiple,
-    required=False)
-  
-  exp_date = forms.DateField(
-    widget=forms.DateInput(attrs={'type': 'date'}),
-    label='Date Start',
-    required=False)
-
-  def __init__(self, *args, **kwargs):
-    self.user = kwargs.pop('user')
-    super().__init__(*args, **kwargs) 
-    self.fields['location'].queryset = Location.objects.filter(user=self.user)
-
-    self.fields['volume'].widget.attrs['class'] = 'form-control'
-    self.fields['exp_date'].widget.attrs['class'] = 'form-control'
-    self.fields['unit_volume'].widget.attrs['class'] = 'form-select'
-
-    self.fields['volume'].widget.attrs['min'] = 0
-  
-  class Meta:
-    model = Reagent
-    fields = ['location', 'volume', 'exp_date', 'unit_volume']
     exclude = ['user', 'last_updated']

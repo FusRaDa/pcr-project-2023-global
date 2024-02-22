@@ -10,7 +10,7 @@ from django.contrib import messages
 from users.models import User
 
 from ..models.inventory import Location, Reagent, Tube, Plate, Gel, Ladder, Dye
-from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, EditGelForm, EditTubeForm, EditPlateForm, EditReagentForm, LadderForm, EditLadderForm, DyeForm, EditDyeForm
+from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, LadderForm, DyeForm
 from ..forms.general import DeletionForm, SearchGelForm, SearchLadderForm, SearchPlateForm, SearchReagentForm, SearchTubeForm, SearchDyeForm
 
 
@@ -127,11 +127,11 @@ def edit_ladder(request, pk):
     messages.error(request, "There is no ladder to edit.")
     return redirect('ladders')
   
-  form = EditLadderForm(user=request.user, instance=ladder)
+  form = LadderForm(user=request.user, instance=ladder)
   del_form = DeletionForm(value=ladder.name)
 
   if 'update' in request.POST:
-    form = EditLadderForm(request.POST, user=request.user, instance=ladder)
+    form = LadderForm(request.POST, user=request.user, instance=ladder)
     if form.is_valid():
       form.save()
       return redirect('ladders')
@@ -206,11 +206,11 @@ def edit_gel(request, pk):
     messages.error(request, "There is no plate to edit.")
     return redirect('gels')
   
-  form = EditGelForm(user=request.user, instance=gel)
+  form = GelForm(user=request.user, instance=gel)
   del_form = DeletionForm(value=gel.name)
 
   if 'update' in request.POST:
-    form = EditGelForm(request.POST, user=request.user, instance=gel)
+    form = GelForm(request.POST, user=request.user, instance=gel)
     if form.is_valid():
       form.save()
       return redirect('gels')
@@ -284,11 +284,11 @@ def edit_dye(request, pk):
     messages.error(request, "There is no dye to edit.")
     return redirect('dyes')
   
-  form = EditDyeForm(user=request.user, instance=dye)
+  form = DyeForm(user=request.user, instance=dye)
   del_form = DeletionForm(value=dye.name)
 
   if 'update' in request.POST:
-    form = EditDyeForm(request.POST, user=request.user, instance=dye)
+    form = DyeForm(request.POST, user=request.user, instance=dye)
     if form.is_valid():
       form.save()
       return redirect('dyes')
@@ -368,11 +368,11 @@ def edit_plate(request, pk):
     messages.error(request, "There is no plate to edit.")
     return redirect('plates')
   
-  form = EditPlateForm(user=request.user, instance=plate)
+  form = PlateForm(user=request.user, instance=plate)
   del_form = DeletionForm(value=plate.name)
 
   if 'update' in request.POST:
-    form = EditPlateForm(request.POST, user=request.user, instance=plate)
+    form = PlateForm(request.POST, user=request.user, instance=plate)
     if form.is_valid():
       form.save()
       return redirect('plates')
@@ -446,11 +446,11 @@ def edit_tube(request, pk):
     messages.error(request, "There is no tube to edit.")
     return redirect('locations')
   
-  form = EditTubeForm(instance=tube, user=request.user)
+  form = TubeForm(instance=tube, user=request.user)
   del_form = DeletionForm(value=tube.name)
 
   if 'update' in request.POST:
-    form = EditTubeForm(request.POST, user=request.user, instance=tube)
+    form = TubeForm(request.POST, user=request.user, instance=tube)
     if form.is_valid():
       form.save()
       return redirect('tubes')
@@ -545,11 +545,11 @@ def edit_reagent(request, pk):
     messages.error(request, "There is no reagent to edit.")
     return redirect('reagents')
   
-  form = EditReagentForm(instance=reagent, user=request.user)
+  form = ReagentForm(instance=reagent, user=request.user)
   del_form = DeletionForm(value=reagent.name)
 
   if 'update' in request.POST:
-    form = EditReagentForm(request.POST, user=request.user, instance=reagent)
+    form = ReagentForm(request.POST, user=request.user, instance=reagent)
     if form.is_valid():
       form.save()
       
