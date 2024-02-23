@@ -62,7 +62,7 @@
           <h6> Creating DNA-qPCR Batch</h6>
           <ul class="list-group">
             <li class="list-group-item">Step 1 - Creating a batch of samples for extraction is the first step to creating paperwork. To create a batch, click on “Extraction” and select “Create Batch”.</li>
-            <li class="list-group-item">Step 2 - Set the Name as “DNA-qPCR Batch” and set the Number of Samples as “10”. <b>Keep in mind that when setting the number of samples, a negative-control sample will be added. So in this case, setting the Number of Samples as “10” will yield a total of 11 samples. This is standard protocol but should you wish to have only 10 samples without a negative-control sample, then set the Number of Samples as “9”.</b></li>
+            <li class="list-group-item">Step 2 - Set the Name as “DNA-qPCR Batch” and set the Number of Samples as “10”. Leave “Add Negative Control” checked as this will create a negative-control sample. This means in total, you will have 11 samples.</li>
             <li class="list-group-item">Step 3 - Next let us set the Lab ID as “AAA”. The lab ID is used to distinguish a batch and its corresponding samples.</li>
             <li class="list-group-item">Step 4 - Then we will select the panel “DNA in qPCR Panel”. Click on “Extractions” and select “DNA Extraction Protocol” as the extraction protocol for this batch.</li>
             <li class="list-group-item"><img src="{% static 'images/extraction-batch-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
@@ -136,14 +136,22 @@
             <li class="list-group-item"><img src="{% static 'images/extraction-batch-14.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 6 - Your list of batches should look similar to the image below.</li>
             <li class="list-group-item"><img src="{% static 'images/extraction-batch-15.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item">Step 7 - <b>Confirm that all your batches are the exact same as the ones in this tutorial. When you have confirmed, go to each batch and click on the green button labeled “Extracted”.</b></li>
+            <li class="list-group-item">Step 7 - <b>Confirm that all your batches are the exact same as the ones in this tutorial. When you have confirmed, go to each batch and click on the green button labeled “Extracted”. By doing so, you inventory will be updated based on the amount of reagents and tubes used.</b></li>
+            <li class="list-group-item">Step 8 - Extraction Reagents Before Processing Batch.</li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-reagents-10.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 9 - Extraction Reagents After Processing Batch. Notice how units have changed to μL.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-16.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 10 - Tubes Before Processing Batch.</li>
+            <li class="list-group-item"><img src="{% static 'images/inventory-tubes-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 11 - Tubes After Processing Batch. In this tutorial, we processed 39 samples in total. As you can see 1 QIAmp Mini Spin Column is used per sample. We originally had 50 but because we had to use 39 for the 39 samples, we now have a remaning number of 11 columns.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-17.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>
       </div>
 
       <div id="conclusion" class="mt-3">
         <h4><u>Conclusion</u></h4>
-        <p>You are well on your way to creating a completed document for PCR paperwork! Once your samples have been extracted, you will now be able to process each sample for PCR. Read the <a href="#">PCR Guide</a> next!</p>
+        <p>You are well on your way to creating a completed document for PCR paperwork! Once your samples have been extracted, you will now be able to process each sample for PCR. Read the <a href="{% url 'pcr_guide' %}">PCR Guide</a> next!</p>
       </div>
 
     </div>

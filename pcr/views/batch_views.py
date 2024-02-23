@@ -128,27 +128,6 @@ def batch_samples(request, pk):
 
     return redirect(request.path_info)
   
-  if 'update_control' in request.POST:
-    if batch.negative_control == True:
-    # Ensure neg ctrl sample has all assays #
-      sample_assays = []  
-      for sample in batch.sample_set.all()[:batch.sample_set.count()-1]:
-        for assay in sample.assays.all():
-          sample_assays.append(assay)
-      set_sample_assays = set(sample_assays)
-
-      neg_sample = batch.sample_set.all().last()
-
-      neg_sample.assays.clear()
-      for assay in set_sample_assays:
-        neg_sample.assays.add(assay)
-      neg_sample.save()
-      # Ensure neg ctrl sample has all assays #
-      return redirect(request.path_info)
-    else:
-      messages.error(request, "There is no negative control in this batch.")
-      return redirect(request.path_info)
-  
   if 'extracted' in request.POST:
     # **VALIDATE** #
     invalid_samples = []
@@ -258,6 +237,22 @@ def sample_assay(request, pk):
       sample.assays.clear()
       for assay in assays:
         sample.assays.add(assay)
+
+      if sample.batch.negative_control == True:
+      # Ensure neg ctrl sample has all assays #
+        sample_assays = []  
+        for sample in sample.batch.sample_set.all()[:sample.batch.sample_set.count()-1]:
+          for assay in sample.assays.all():
+            sample_assays.append(assay)
+        set_sample_assays = set(sample_assays)
+
+        neg_sample = sample.batch.sample_set.all().last()
+
+        neg_sample.assays.clear()
+        for assay in set_sample_assays:
+          neg_sample.assays.add(assay)
+        neg_sample.save()
+        # Ensure neg ctrl sample has all assays #
 
       return redirect('batch_samples', sample.batch.pk)
     else:

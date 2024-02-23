@@ -147,7 +147,7 @@ class ReagentAssay(models.Model):
   
   @property
   def dilution_factor(self):
-    if self.reagent.pcr_reagent == Reagent.PCRReagent.WATER:
+    if self.reagent.pcr_reagent == Reagent.PCRReagent.WATER or self.reagent.pcr_reagent == Reagent.PCRReagent.POLYMERASE:
       return None
     df = Decimal("{:.2f}".format(self.reagent.stock_concentration / self.final_concentration))
     return df
