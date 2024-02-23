@@ -227,6 +227,14 @@
       const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
     </script>
 
+    <script>
+      let tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (!tz) {
+          tz = "UTC"
+      }
+      document.cookie = "mytz=" + tz + ";path=/";
+    </script>
+
   </body>
   
 </html>

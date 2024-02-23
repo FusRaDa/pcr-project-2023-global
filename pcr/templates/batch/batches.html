@@ -15,52 +15,52 @@
   </div>
   {% endfor %}
 
-    <div class="row">
-      <div class="col d-flex justify-content-center"> 
-        <h3 class="text-center">Batches</h3>
-      </div>
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h3 class="text-center">Batches</h3>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col d-flex justify-content-center"> 
-        <a href="{% url 'create_batch'%}">
-          <button type="button" class="btn btn-primary mb-2">Create Batch</button>
-        </a>
-      </div>
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <a href="{% url 'create_batch'%}">
+        <button type="button" class="btn btn-primary mb-2">Create Batch</button>
+      </a>
     </div>
+  </div>
 
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Date Created</th>
-            <th scope="col">Name</th>
-            <th scope="col">Assay Code</th>
-            <th scope="col">Number of Assays</th>
-            <th scope="col">Number of Samples</th>
-            <th scope="col">Total Tests</th>
-            <th scope="col">Extraction Protocol</th>
-            <th scope="col">Lab ID</th>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Date Created</th>
+          <th scope="col">Name</th>
+          <th scope="col">Assay Code</th>
+          <th scope="col">Number of Assays</th>
+          <th scope="col">Number of Samples</th>
+          <th scope="col">Total Tests</th>
+          <th scope="col">Extraction Protocol</th>
+          <th scope="col">Lab ID</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for batch in batches %}
+          <tr class="batch-row" data-href="{% url 'batch_samples' batch.pk %}">
+            <td>{{batch.date_created}}</td>
+            <td>{{batch.name}}</td>
+            <td>{{batch.code}}</td>
+            <td>{{batch.number_of_assays}}</td>
+            <td>{{batch.number_of_samples}}</td>
+            <td>{{batch.total_tests}}</td>
+            <td>{{batch.extraction_protocol}}</td>
+            <td>{{batch.lab_id}}</td>
           </tr>
-        </thead>
+        {% endfor %}
+      </tbody>
 
-        <tbody>
-          {% for batch in batches %}
-            <tr class="batch-row" data-href="{% url 'batch_samples' batch.pk %}">
-              <td>{{batch.date_created}}</td>
-              <td>{{batch.name}}</td>
-              <td>{{batch.code}}</td>
-              <td>{{batch.number_of_assays}}</td>
-              <td>{{batch.number_of_samples}}</td>
-              <td>{{batch.total_tests}}</td>
-              <td>{{batch.extraction_protocol}}</td>
-              <td>{{batch.lab_id}}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-
-      </table>
-    </div>
+    </table>
+  </div>
 
         
 </div>
