@@ -22,6 +22,8 @@ class Batch(models.Model):
 
   date_created = models.DateTimeField(default=now, editable=False)
 
+  negative_control = models.BooleanField(default=True)
+
   @property
   def contains_anomaly(self):
     anomaly_detected = False
@@ -50,10 +52,16 @@ class Batch(models.Model):
 
   @property
   def number_of_samples(self):
-    if self.contains_anomaly:
-      return f"{self.sample_set.count() - 1} + 1(NC) ⚠"
+    if self.negative_control:
+      if self.contains_anomaly:
+        return f"{self.sample_set.count() - 1} + 1(NC) ⚠"
+      else:
+        return f"{self.sample_set.count() - 1} + 1(NC)"
     else:
-      return f"{self.sample_set.count() - 1} + 1(NC)"
+      if self.contains_anomaly:
+        return f"{self.sample_set.count()} ⚠"
+      else:
+        return f"{self.sample_set.count()}"
   
   @property
   def total_samples(self):

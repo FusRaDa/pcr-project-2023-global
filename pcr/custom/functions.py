@@ -6,7 +6,7 @@ import math
 from ..models.inventory import Reagent
 
 
-def create_samples(number_of_samples, lab_id, user):
+def create_samples(number_of_samples, lab_id, user, negative_control):
   batch = Batch.objects.get(user=user, lab_id=lab_id)
   assays = batch.code.assays.all()
   
@@ -22,15 +22,15 @@ def create_samples(number_of_samples, lab_id, user):
 
     sample.assays.add(*assays)
 
-  # create negative control
-  control = Sample.objects.create(
-    user = user,
-    lab_id_num = lab_id + "-" + str(number_of_samples + 1) + " (NC)",
-    sample_id = "NegCtrl-Water",
-    batch = batch,
-  )
+  if negative_control == True:
+    control = Sample.objects.create(
+      user = user,
+      lab_id_num = lab_id + "-" + str(number_of_samples + 1) + " (NC)",
+      sample_id = "NegCtrl-Water",
+      batch = batch,
+    )
 
-  control.assays.add(*assays)
+    control.assays.add(*assays)
 
 def samples_by_assay(samples):
   all_assays = []

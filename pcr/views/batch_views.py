@@ -30,6 +30,7 @@ def create_batch(request):
       extraction_protocol_rna = form.cleaned_data['extraction_protocol_rna']
       extraction_protocol_tn = form.cleaned_data['extraction_protocol_tn']
       lab_id = form.cleaned_data['lab_id']
+      negative_control = form.cleaned_data['negative_control']
 
       batch = form.save(commit=False)
       batch.user = request.user
@@ -54,6 +55,7 @@ def create_batch(request):
         number_of_samples=number_of_samples, 
         lab_id=lab_id, 
         user=request.user,
+        negative_control=negative_control,
       )
 
       return redirect('batch_samples', pk=batch.pk)
@@ -126,8 +128,28 @@ def batch_samples(request, pk):
 
     return redirect(request.path_info)
   
-  if 'extracted' in request.POST:
+  if 'update_control' in request.POST:
+    if batch.negative_control == True:
+    # Ensure neg ctrl sample has all assays #
+      sample_assays = []  
+      for sample in batch.sample_set.all()[:batch.sample_set.count()-1]:
+        for assay in sample.assays.all():
+          sample_assays.append(assay)
+      set_sample_assays = set(sample_assays)
 
+      neg_sample = batch.sample_set.all().last()
+
+      neg_sample.assays.clear()
+      for assay in set_sample_assays:
+        neg_sample.assays.add(assay)
+      neg_sample.save()
+      # Ensure neg ctrl sample has all assays #
+      return redirect(request.path_info)
+    else:
+      messages.error(request, "There is no negative control in this batch.")
+      return redirect(request.path_info)
+  
+  if 'extracted' in request.POST:
     # **VALIDATE** #
     invalid_samples = []
     for sample in samples:
@@ -162,21 +184,6 @@ def batch_samples(request, pk):
     # **VALIDATE** #
       
     batch.is_extracted = True
-
-    # Ensure neg ctrl sample has all assays #
-    # sample_assays = []  
-    # for sample in batch.sample_set.all()[:batch.sample_set.count()-1]:
-    #   for assay in sample.assays.all():
-    #     sample_assays.append(assay)
-    # set_sample_assays = set(sample_assays)
-
-    # neg_sample = batch.sample_set.all().last()
-
-    # neg_sample.assays.clear()
-    # for assay in set_sample_assays:
-    #   neg_sample.assays.add(assay)
-    # neg_sample.save()
-    # Ensure neg ctrl sample has all assays #
 
     for reagent in batch.extraction_protocol.reagentextraction_set.all():
       total_used_reagents = reagent.amount_per_sample * batch.sample_set.count()
@@ -251,21 +258,6 @@ def sample_assay(request, pk):
       sample.assays.clear()
       for assay in assays:
         sample.assays.add(assay)
-
-      # Ensure neg ctrl sample has all assays #
-      sample_assays = []  
-      for sample in sample.batch.sample_set.all()[:sample.batch.sample_set.count()-1]:
-        for assay in sample.assays.all():
-          sample_assays.append(assay)
-      set_sample_assays = set(sample_assays)
-
-      neg_sample = sample.batch.sample_set.all().last()
-
-      neg_sample.assays.clear()
-      for assay in set_sample_assays:
-        neg_sample.assays.add(assay)
-      neg_sample.save()
-      # Ensure neg ctrl sample has all assays #
 
       return redirect('batch_samples', sample.batch.pk)
     else:
