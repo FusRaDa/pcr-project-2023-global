@@ -54,3 +54,13 @@ def protocols_guide(request):
   return render(request, 'guides/protocols_guide.html', context)
 
 
+def extraction_guide(request):
+  context = {}
+  return render(request, 'guides/extraction_guide.html', context)
+
+
+def pcr_guide(request):
+  context = {}
+  return render(request, 'guides/pcr_guide.html', context)
+
+

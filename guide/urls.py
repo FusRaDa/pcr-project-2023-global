@@ -12,6 +12,7 @@ urlpatterns = [
   path("guide/", views.guide_page, name='guide_page'),
   path("guide/inventory-guide/", views.inventory_guide, name='inventory_guide'),
   path("guide/tests-guide/", views.tests_guide, name='tests_guide'),
-  path("guide/protocols_guide.html", views.protocols_guide, name='protocols_guide'),
-
+  path("guide/protocols-guide.html", views.protocols_guide, name='protocols_guide'),
+  path("guide/extraction-guide.html", views.extraction_guide, name='extraction_guide'),
+  path("guide/pcr-guide.html", views.protocols_guide, name='pcr_guide'),
 ]

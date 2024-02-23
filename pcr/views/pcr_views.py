@@ -84,7 +84,7 @@ def extracted_batches(request):
   else:
     process = Process.objects.get(user=request.user, is_processed=False)
 
-  batches = Batch.objects.filter(user=request.user, is_extracted=True).order_by('-date_created')
+  batches = Batch.objects.filter(user=request.user, is_extracted=True).order_by('date_created')
 
   if 'clear' in request.POST:
     process.samples.clear()
@@ -123,7 +123,7 @@ def extracted_batches(request):
         end_date += datetime.timedelta(days=1)
         filters['date_created__range'] = [start_date, end_date]
 
-      batches = Batch.objects.filter(**filters, is_extracted=True, user=request.user).order_by('-date_created')
+      batches = Batch.objects.filter(**filters, is_extracted=True, user=request.user).order_by('date_created')
     else:
       print(form.errors)
 

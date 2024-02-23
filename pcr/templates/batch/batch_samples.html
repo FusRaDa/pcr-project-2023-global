@@ -63,12 +63,6 @@
     </button>
   </div>
 
-  <div class="text-center mb-2">
-    <h6 class="text-danger"> 
-      **Update sample ID's first. If you decide to add an additional assay to a sample, add that assay to the negative control as well.**
-    </h6>
-  </div>
-
   <form action="" method="POST">
     {{ formset.management_form }}
     {% csrf_token %}

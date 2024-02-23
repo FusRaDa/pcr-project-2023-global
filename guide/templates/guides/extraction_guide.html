@@ -1,0 +1,153 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Extraction Guide {% endblock %} 
+
+{% block content %}
+<div class="container mt-3">
+  <div class="row justify-content-center">
+    <h1 class="text-center">Extraction Guide</h1>
+  </div>
+
+  <div class="row justify-content-center">
+    <h2 class="text-center">Creating Extraction Batches</h2>
+  </div>
+
+  <div class="row fixed-bottom text-center">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Table of Contents
+    </button>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Table of Contents</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <nav id="navbar-example3">
+            <nav class="nav nav-pills flex-column">
+              <a class="nav-link" href="#introduction">Introduction</a>
+              <a class="nav-link" href="#batches">Creating Batches</a>
+              <nav class="nav nav-pills flex-column">
+                <a class="nav-link ms-3 my-1" href="#batches-tutorial-1">Creating DNA-qPCR Batch</a>
+                <a class="nav-link ms-3 my-1" href="#batches-tutorial-2">Modifying Samples In DNA-qPCR Batch</a>
+                <a class="nav-link ms-3 my-1" href="#batches-tutorial-3">Creating RNA-qPCR Batch</a>
+                <a class="nav-link ms-3 my-1" href="#batches-tutorial-4">Creating DNA-PCR Batch</a>
+                <a class="nav-link ms-3 my-1" href="#batches-tutorial-5">Creating All Assays Batch</a>
+              </nav>
+              <a class="nav-link" href="#conclusion">Conclusion</a>
+            </nav>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row text-center fs-5">
+    <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-smooth-scroll="true" class="scrollspy-example-2" tabindex="0">
+
+      <div id="introduction" class="mt-3">
+        <h4><u>Introduction</u></h4>
+        <p>Once you have taken the time to setup your inventory, tests, and protocols you are now ready to process samples for extraction. This guide will teach you how to create a batch of samples with their corresponding assays and extraction protocol.</p>
+      </div>
+
+      <div id="batches" class="mt-3">
+        <h4><u>Creating Batches</u></h4>
+
+        <div id="batches-tutorial-1" class="mt-3">
+          <h6> Creating DNA-qPCR Batch</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - Creating a batch of samples for extraction is the first step to creating paperwork. To create a batch, click on “Extraction” and select “Create Batch”.</li>
+            <li class="list-group-item">Step 2 - Set the Name as “DNA-qPCR Batch” and set the Number of Samples as “10”. <b>Keep in mind that when setting the number of samples, a negative-control sample will be added. So in this case, setting the Number of Samples as “10” will yield a total of 11 samples. This is standard protocol but should you wish to have only 10 samples without a negative-control sample, then set the Number of Samples as “9”.</b></li>
+            <li class="list-group-item">Step 3 - Next let us set the Lab ID as “AAA”. The lab ID is used to distinguish a batch and its corresponding samples.</li>
+            <li class="list-group-item">Step 4 - Then we will select the panel “DNA in qPCR Panel”. Click on “Extractions” and select “DNA Extraction Protocol” as the extraction protocol for this batch.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 5 - Click on “Create Batch”.</li>
+            <li class="list-group-item">Step 6 - By doing so, you will now be able to modify each sample of the batch.</li>
+          </ul>
+        </div>
+
+        <div id="batches-tutorial-2" class="mt-3">
+          <h6>Modifying Samples In DNA-qPCR Batch </h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - Our recommended first step in modifying sample is to assign each sample a sample ID. The lab ID is auto-generated for the sake of internal management for each batch. But the sample ID is used to directly identify the actual sample such as the name of the tube it came.</li>
+            <li class="list-group-item">Step 2 - The fastest way to assign each sample a sample ID is to click on “Insert ID’s” and then copy/paste your list of ID’s from your documents such as an Excel spreadsheet. Check to make sure there are no empty rows and then click on “Populate”.</li>
+            <li class="list-group-item">Step 3 - In this case, we will populate our samples with “dna-qpcr-1” to “dna-qpcr-10”.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 4 - Save your sample ID’s by clicking on “Update Sample ID’s”.</li>
+            <li class="list-group-item">Step 5 - Should you wish to change the number of samples click on “Reset Samples” and enter the new number of samples you wish to have in this batch. Let us change the number of samples to 13 which means there will be 14 total samples including the negative-control sample.</li>
+            <li class="list-group-item">Step 6 - Once you click on “Confirm” you must then insert the sample ID’s once again.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 7 - Because of this change we will populate our samples again but with “dna-qpcr-1” to “dna-qpcr-13”.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 8 - We must then click on “Update Sample ID’s” once again.</li>
+            <li class="list-group-item">Step 9 - Let us say that the first sample with lab ID AAA-1 only requires “Assay 1”.</li>
+            <li class="list-group-item">Step 10 - To modify this specific sample click on the blue tube icon and uncheck both “Assay 2” and “Assay 3”. Click on “Update &amp; Edit Quantity.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-5.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 11 - Notice how the sample is highlighted yellow and that are warning signs next to the data for the batch. This sample has been flagged as an anomaly since it does not contain all assays specific to the chosen panel. This simply serves to warn you that not all samples will share the same exact assays as the panel you have chosen for this batch.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-6.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 12 - Next, let us preview the entire batch by clicking on “Preview”.</li>
+            <li class="list-group-item">Step 13 - If you are satisfied with the results, you can go ahead and click on “Print Paperwork”.</li>
+            <li class="list-group-item">Step 14 - By doing so, a new web page will be produced for you to print it. If the styling does not appear in the printed page, refresh the page and press the button again. <b>Remember to close the print page before navigating back in the website.</b></li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-7.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-8.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+        <div id="batches-tutorial-3" class="mt-3">
+          <h6>Creating RNA-qPCR Batch </h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - Let us make our second batch which only contains assays for RNA in qPCR.</li>
+            <li class="list-group-item">Step 2 - Click on “Extraction” and select “Create Batch”.</li>
+            <li class="list-group-item">Step 3 - Set the Name as “RNA-qPCR Batch”, Number of Samples as 5, and Lab ID as AAB.</li>
+            <li class="list-group-item">Step 4 - The Panel selected will be “RNA in qPCR Panel” and the Extraction selected will be “RNA Extraction Protocol”.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-9.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 5 - Click on “Create Batch” and populate the sample ID’s with “rna-qpcr-1” to “rna-qpcr-5”.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-10.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+        <div id="batches-tutorial-4" class="mt-3">
+          <h6>Creating DNA-PCR Batch</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - We will create a third batch that is for DNA in PCR.</li>
+            <li class="list-group-item">Step 2 - Click on “Extraction” and select “Create Batch”.</li>
+            <li class="list-group-item">Step 3 - Set the Name as “DNA-PCR Batch”, Number of Samples as “2”, and Lab ID as AAC.</li>
+            <li class="list-group-item">Step 4 - The Panel selected will be “DNA in PCR Panel” and Extraction selected will be “DNA Extraction Protocol”.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-11.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 5 - Click on “Create Batch” and populate the sample ID’s with “dna-pcr-1” to “dna-pcr-2”.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-12.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+          </ul>
+        </div>
+
+        <div id="batches-tutorial-5" class="mt-3">
+          <h6>Creating All Assays Batch</h6>
+          <ul class="list-group">
+            <li class="list-group-item">Step 1 - We will create our fourth and final batch that is for all 5 assays we created.</li>
+            <li class="list-group-item">Step 2 - Click on “Extraction” and select “Create Batch”.</li>
+            <li class="list-group-item">Step 3 - Set the Name as “All Assays Batch”, Number of Samples as “15”, and Lab ID as AAD.</li>
+            <li class="list-group-item">Step 4 - The Panel selected will be “All Assays Panel” and the Extraction selected will be “Total-nucleic Extraction Protocol”.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-13.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 5 - Click on “Create Batch” and populate the sample ID’s with “all-1” to “all-15”.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-14.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 6 - Your list of batches should look similar to the image below.</li>
+            <li class="list-group-item"><img src="{% static 'images/extraction-batch-15.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 7 - <b>Confirm that all your batches are the exact same as the ones in this tutorial. When you have confirmed, go to each batch and click on the green button labeled “Extracted”.</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="conclusion" class="mt-3">
+        <h4><u>Conclusion</u></h4>
+        <p>You are well on your way to creating a completed document for PCR paperwork! Once your samples have been extracted, you will now be able to process each sample for PCR. Read the <a href="#">PCR Guide</a> next!</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

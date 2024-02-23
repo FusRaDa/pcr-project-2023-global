@@ -13,7 +13,7 @@ from ..custom.functions import create_samples
 
 @login_required(login_url='login')
 def batches(request):
-  batches = Batch.objects.filter(user=request.user, is_extracted=False).order_by('-date_created')
+  batches = Batch.objects.filter(user=request.user, is_extracted=False).order_by('date_created')
   context = {'batches': batches}
   return render(request, 'batch/batches.html', context)
 
@@ -164,18 +164,18 @@ def batch_samples(request, pk):
     batch.is_extracted = True
 
     # Ensure neg ctrl sample has all assays #
-    sample_assays = []  
-    for sample in batch.sample_set.all()[:batch.sample_set.count()-1]:
-      for assay in sample.assays.all():
-        sample_assays.append(assay)
-    set_sample_assays = set(sample_assays)
+    # sample_assays = []  
+    # for sample in batch.sample_set.all()[:batch.sample_set.count()-1]:
+    #   for assay in sample.assays.all():
+    #     sample_assays.append(assay)
+    # set_sample_assays = set(sample_assays)
 
-    neg_sample = batch.sample_set.all().last()
+    # neg_sample = batch.sample_set.all().last()
 
-    neg_sample.assays.clear()
-    for assay in set_sample_assays:
-      neg_sample.assays.add(assay)
-    neg_sample.save()
+    # neg_sample.assays.clear()
+    # for assay in set_sample_assays:
+    #   neg_sample.assays.add(assay)
+    # neg_sample.save()
     # Ensure neg ctrl sample has all assays #
 
     for reagent in batch.extraction_protocol.reagentextraction_set.all():
@@ -251,6 +251,21 @@ def sample_assay(request, pk):
       sample.assays.clear()
       for assay in assays:
         sample.assays.add(assay)
+
+      # Ensure neg ctrl sample has all assays #
+      sample_assays = []  
+      for sample in sample.batch.sample_set.all()[:sample.batch.sample_set.count()-1]:
+        for assay in sample.assays.all():
+          sample_assays.append(assay)
+      set_sample_assays = set(sample_assays)
+
+      neg_sample = sample.batch.sample_set.all().last()
+
+      neg_sample.assays.clear()
+      for assay in set_sample_assays:
+        neg_sample.assays.add(assay)
+      neg_sample.save()
+      # Ensure neg ctrl sample has all assays #
 
       return redirect('batch_samples', sample.batch.pk)
     else:
