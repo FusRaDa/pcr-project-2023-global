@@ -129,9 +129,13 @@ class ReagentAssay(models.Model):
       reagents = self.assay.reagentassay_set.all()
       for reagent in reagents:
         if reagent.reagent.pcr_reagent != Reagent.PCRReagent.WATER:
-          dil_f = reagent.reagent.stock_concentration / reagent.final_concentration
-          vol = reagent.assay.reaction_volume / dil_f
-          sum += vol
+          if reagent.reagent.pcr_reagent == Reagent.PCRReagent.POLYMERASE:
+            vol = reagent.final_concentration / reagent.reagent.stock_concentration
+            sum += vol
+          else:
+            dil_f = reagent.reagent.stock_concentration / reagent.final_concentration
+            vol = reagent.assay.reaction_volume / dil_f
+            sum += vol
       
       volume = Decimal("{:.2f}".format(inital_volume - sum))
       return volume
