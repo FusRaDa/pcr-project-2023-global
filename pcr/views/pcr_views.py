@@ -460,47 +460,48 @@ def process_paperwork(request, pk):
 
     # **RECOLLECT DYES AND LADDERS ** #
     all_dyes = []
-    for gel in pcr_gels_json:
-      for dye in gel['dyes']:
-        dye_obj = dye['dye']
-        total_volume = Decimal(dye['volume_per_well'] * dye['sample_num'])
+    all_ladders = []
+    if pcr_gels_json:
+      for gel in pcr_gels_json:
+        for dye in gel['dyes']:
+          dye_obj = dye['dye']
+          total_volume = Decimal(dye['volume_per_well'] * dye['sample_num'])
 
-        if dye['dye_in_ladder'] == True:
-          total_volume += Decimal(dye['volume_per_well'])
-          
-        exists = False
-        for dict in all_dyes:
-          if dict['dye'].pk == dye_obj.pk:
-            exists = True
-        
-        if exists == False:
-          all_dyes.append({'dye': dye_obj, 'total': total_volume})
-        else:
+          if dye['dye_in_ladder'] == True:
+            total_volume += Decimal(dye['volume_per_well'])
+            
+          exists = False
           for dict in all_dyes:
             if dict['dye'].pk == dye_obj.pk:
-              dict['total'] += total_volume
-              break
-        dye.pop('dye')
-      
-    all_ladders = []
-    for gel in pcr_gels_json:
-      for ladder in gel['ladders']:
-        ladder_obj = ladder['ladder']
-        total_volume = Decimal(ladder['volume_per_gel'])
-
-        exists = False
-        for dict in all_ladders:
-          if dict['ladder'].pk == ladder_obj.pk:
-            exists = True
+              exists = True
+          
+          if exists == False:
+            all_dyes.append({'dye': dye_obj, 'total': total_volume})
+          else:
+            for dict in all_dyes:
+              if dict['dye'].pk == dye_obj.pk:
+                dict['total'] += total_volume
+                break
+          dye.pop('dye')
         
-        if exists == False:
-          all_ladders.append({'ladder': ladder_obj, 'total': total_volume})
-        else:
+      for gel in pcr_gels_json:
+        for ladder in gel['ladders']:
+          ladder_obj = ladder['ladder']
+          total_volume = Decimal(ladder['volume_per_gel'])
+
+          exists = False
           for dict in all_ladders:
             if dict['ladder'].pk == ladder_obj.pk:
-              dict['total'] += total_volume
-              break
-        ladder.pop('ladder')
+              exists = True
+          
+          if exists == False:
+            all_ladders.append({'ladder': ladder_obj, 'total': total_volume})
+          else:
+            for dict in all_ladders:
+              if dict['ladder'].pk == ladder_obj.pk:
+                dict['total'] += total_volume
+                break
+          ladder.pop('ladder')
     # **RECOLLECT DYES AND LADDERS ** #
         
 
@@ -543,7 +544,7 @@ def process_paperwork(request, pk):
         return redirect(request.path_info)
       
       if control_dict['control'].amount - control_dict['total'] < 0:
-        messages.error(request, f"Control: {name} lot#: {lot_number} has an insufficient amount for this process. {reagent_dict['total']}µl is required. Please update inventory or change selection.")
+        messages.error(request, f"Control: {name} lot#: {lot_number} has an insufficient amount for this process. {round(control_dict['total'], 2)}µl is required. Please update inventory or change selection.")
         return redirect(request.path_info)
     # **VALIDATION FOR CONTROLS** #
       
@@ -558,7 +559,7 @@ def process_paperwork(request, pk):
         return redirect(request.path_info)
       
       if reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] < 0:
-        messages.error(request, f"Reagent: {name} lot#: {lot_number} has an insufficient amount for this process. {reagent_dict['total']}µl is required. Please update inventory or change selection.")
+        messages.error(request, f"Reagent: {name} lot#: {lot_number} has an insufficient amount for this process. {round(reagent_dict['total'], 2)}µl is required. Please update inventory or change selection.")
         return redirect(request.path_info)
     # **VALIDATION FOR REAGENTS** #
       
@@ -575,7 +576,7 @@ def process_paperwork(request, pk):
       if dye_dict['dye'].amount - dye_dict['total'] < 0:
         name = dye_dict['dye'].name
         lot_number = dye_dict['dye'].lot_number
-        messages.error(request, f"Dye: {name} lot#: {lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
+        messages.error(request, f"Dye: {name} lot#: {lot_number} has an insufficient amount for this process.  {round(dye_dict['total'], 2)}µl is required. Please update inventory or change selection.")
         return redirect(request.path_info)
       
     for ladder_dict in all_ladders:
@@ -587,7 +588,7 @@ def process_paperwork(request, pk):
         return redirect(request.path_info)
     
       if ladder_dict['ladder'].amount - ladder_dict['total'] < 0:
-        messages.error(request, f"Ladder: {name} lot#: {lot_number} has an insufficient amount for this process. Please update inventory or change selection.")
+        messages.error(request, f"Ladder: {name} lot#: {lot_number} has an insufficient amount for this process.  {round(ladder_dict['total'], 2)}µl is required. Please update inventory or change selection.")
         return redirect(request.path_info)
     # **VALIDATION FOR DYES & LADDERS** #
       
