@@ -46,8 +46,8 @@
 
         <tbody>
           {% for plate in qpcr_plates %}
-            <tr {% if plate.amount < 0 %} class="table-danger" {% endif %}>
-              <td>{{plate.name}}</td>
+            <tr {% if plate.amount < 0 or plate.is_expired %} class="table-danger" {% endif %} {% if plate.month_exp %} class="table-warning" {% endif %}>
+              <td>{{plate.name}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
               <td>{{plate.catalog_number}}</td>
               <td>{{plate.lot_number}}</td>
               <td>{{plate.plate.amount}}</td>
@@ -78,8 +78,8 @@
 
         <tbody>
           {% for plate in pcr_plates %}
-            <tr {% if plate.amount < 0 %} class="table-danger" {% endif %}>
-              <td>{{plate.name}}</td>
+            <tr {% if plate.amount < 0 or plate.is_expired %} class="table-danger" {% endif %} {% if plate.month_exp %} class="table-warning" {% endif %}>
+              <td>{{plate.name}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
               <td>{{plate.catalog_number}}</td>
               <td>{{plate.lot_number}}</td>
               <td>{{plate.plate.amount}}</td>
@@ -110,8 +110,8 @@
 
         <tbody>
           {% for gel in gels %}
-            <tr {% if gel.amount < 0 %} class="table-danger" {% endif %}>
-              <td>{{gel.name}}</td>
+            <tr {% if gel.amount < 0 or gel.is_expired %} class="table-danger" {% endif %} {% if gel.month_exp %} class="table-warning" {% endif %}>
+              <td>{{gel.name}} {% if gel.is_expired %} (EXPIRED) {% endif %} {% if gel.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
               <td>{{gel.catalog_number}}</td>
               <td>{{gel.lot_number}}</td>
               <td>{{gel.gel.amount}}</td>
@@ -124,6 +124,64 @@
       </table>
     </div>
   {% endif %}
+  
+  <h6 class="text-center">Estimated Reagent Usage</h6>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Reagent</th>
+          <th scope="col">Catalog Number</th>
+          <th scope="col">Lot Number</th>
+          <th scope="col">Current Amount (μL)</th>
+          <th scope="col">Amount Used (μL)</th>
+          <th scope="col">Amount Remaining (μL)</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for reagent in reagent_usage %}
+          <tr {% if reagent.reagent.is_expired %} class="table-danger" {% endif %} {% if reagent.reagent.month_exp %} class="table-warning" {% endif %} {% if reagent.usage|round_str:2|remaining_amounts:reagent.reagent.volume_in_microliters < 0 %} class="table-danger" {% endif %}>
+            <td>{{reagent.reagent.name}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{reagent.reagent.catalog_number}}</td>
+            <td>{{reagent.reagent.lot_number}}</td>
+            <td>{{reagent.reagent.volume_in_microliters}}</td>
+            <td>{{reagent.usage|round_str:2}}</td>
+            <td>{{reagent.usage|round_str:2|remaining_amounts:reagent.reagent.volume_in_microliters}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+  <h6 class="text-center">Estimated Control Usage</h6>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Control</th>
+          <th scope="col">Lot Number</th>
+          <th scope="col">Current Amount (μL)</th>
+          <th scope="col">Amount Used (μL)</th>
+          <th scope="col">Amount Remaining (μL)</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for control in control_usage %}
+          <tr {% if control.control.is_expired %} class="table-danger" {% endif %} {% if control.control.month_exp %} class="table-warning" {% endif %} {% if control.usage|round_str:2|remaining_amounts:control.control.amount < 0 %} class="table-danger" {% endif %}>
+            <td>{{control.control.name}} {% if control.control.is_expired %} (EXPIRED) {% endif %} {% if control.control.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{control.control.lot_number}}</td>
+            <td>{{control.control.amount}}</td>
+            <td>{{control.usage|round_str:2}}</td>
+            <td>{{control.usage|round_str:2|remaining_amounts:control.control.amount}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
 
   <div class="modal fade" id="process-modal" tabindex="-1" role="dialog" aria-labelledby="populate-modalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -13202,11 +13260,13 @@
   {% for gel in pcr_gels_json %}
     <div class="container border border-secondary p-3 mb-2 bg-white">
 
-        <div class="table-responsive col-sm-6">
+        <div class="table-responsive col-sm-8">
           <table class="table table-bordered table-text-gel" style="break-inside: avoid">
             <thead>
               <tr>
                 <th scope="col">Dyes</th>
+                <th scope="col">Amount Remaining (μL)</th>
+                <th scope="col">Current Amount (μL)</th>
                 <th scope="col">Usage (μL)</th>
                 <th scope="col">Total Wells</th>
                 <th scope="col">Volume Per Well (μL)</th>
@@ -13215,8 +13275,10 @@
 
             <tbody>
               {% for dye in gel.dyes %}
-                <tr>
-                  <td>{{dye.name}}</td>
+                <tr {% if dye.dye.is_expired %} class="table-danger" {% endif %} {% if dye.dye.month_exp %} class="table-warning" {% endif %}>
+                  <td>{{dye.name}} {% if dye.dye.is_expired %} (EXPIRED) {% endif %} {% if dye.dye.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+                  <td {% if dye.sample_num|add:1|dec_mult:dye.volume_per_well|remaining_amounts:dye.dye.amount < 0 %} class="table-danger" {% endif %}>{% if dye.dye_in_ladder%} {{dye.sample_num|add:1|dec_mult:dye.volume_per_well|remaining_amounts:dye.dye.amount}} {% else %} {{dye.sample_num|dec_mult:dye.volume_per_well|remaining_amounts:dye.dye.amount}} {% endif %}</td>
+                  <td>{{dye.dye.amount}}</td>
                   <td>{% if dye.dye_in_ladder%} {{dye.sample_num|add:1|dec_mult_string:dye.volume_per_well}} {% else %} {{dye.sample_num|dec_mult_string:dye.volume_per_well}} {% endif %}</td>
                   <td>{% if dye.dye_in_ladder %} {{dye.sample_num|add:1}} w/ ladder {% else %} {{dye.sample_num}} {% endif %}</td>
                   <td class="table-success">{{dye.volume_per_well}}</td>
@@ -13227,19 +13289,23 @@
           </table>
         </div>
 
-        <div class="table-responsive col-sm-4">
+        <div class="table-responsive col-sm-8">
           <table class="table table-bordered table-text-gel" style="break-inside: avoid">
             <thead>
               <tr>
                 <th scope="col">Ladders</th>
+                <th scope="col">Amount Remaining (μL)</th>
+                <th scope="col">Current Amount (μL)</th>
                 <th scope="col">Usage (μL)</th>
               </tr>
             </thead>
 
             <tbody>
               {% for ladder in gel.ladders %}
-                <tr>
-                  <td>{{ladder.name}}</td>
+                <tr {% if ladder.ladder.is_expired %} class="table-danger" {% endif %} {% if ladder.ladder.month_exp %} class="table-warning" {% endif %}>
+                  <td>{{ladder.name}} {% if ladder.ladder.is_expired %} (EXPIRED) {% endif %} {% if ladder.ladder.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+                  <td {% if ladder.volume_per_gel|remaining_amounts:ladder.ladder.amount < 0 %} class="table-danger" {% endif %}>{{ladder.volume_per_gel|remaining_amounts:ladder.ladder.amount}}</td>
+                  <td>{{ladder.ladder.amount}}</td>
                   <td class="table-success">{{ladder.volume_per_gel}}</td>
                 </tr>
               {% endfor %}

@@ -261,8 +261,6 @@ def process_paperwork(request, pk):
 
   reagent_usage = []
   control_usage = []
-  ladder_usage = []
-  dye_usage = []
 
   # **GENERATE PLATES FOR qPCR** #
   dna_qpcr_json = None
@@ -307,7 +305,7 @@ def process_paperwork(request, pk):
               if dict['control'].pk == control.pk:
                 dict['usage'] += assay['sample_volume']
                 break
-          
+        
   rna_qpcr_json = None
   if requires_rna_qpcr:
     samples_rna_qpcr = rna_qpcr_samples(assay_samples)
@@ -367,7 +365,7 @@ def process_paperwork(request, pk):
             usage = round((reagent['volume_per_sample'] * (sample_num + 1)), 2)
           else:
             usage = round((reagent['volume_per_sample'] * sample_num), 2)
-
+          
           exists = False
           for dict in reagent_usage:
             if dict['reagent'].pk == reagent['reagent'].pk:
@@ -439,7 +437,7 @@ def process_paperwork(request, pk):
                 dict['usage'] += assay['sample_volume']
                 break
   # **GENERATE PLATES FOR PCR** #
-  
+ 
   # **GENERATE GELS FOR PCR** #
   pcr_gels_json = None
   if requires_dna_pcr or requires_rna_pcr:
@@ -836,7 +834,8 @@ def process_paperwork(request, pk):
     'dna_qpcr_json': dna_qpcr_json, 'rna_qpcr_json': rna_qpcr_json, 
     'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json, 
     'qpcr_plates': qpcr_plates, 'pcr_plates': pcr_plates, 'gels': gels,
-    'pcr_gels_json': pcr_gels_json, 'process': process,
+    'pcr_gels_json': pcr_gels_json, 'process': process, 
+    'reagent_usage': reagent_usage, 'control_usage': control_usage
     }
   return render(request, 'pcr/process_paperwork.html', context)
 
