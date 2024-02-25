@@ -818,6 +818,19 @@ def process_paperwork(request, pk):
     process.plates_for_pcr = pcr_plates
     process.gels = gels
 
+    reagent_usage_json = []
+    for reagent in reagent_usage:
+      reagent_data = {'name': reagent['reagent'].name, 'catalog_number': reagent['reagent'].catalog_number, 'lot_number': reagent['reagent'].lot_number, 'usage': reagent['usage']}
+      reagent_usage_json.append(reagent_data)
+
+    control_usage_json = []
+    for control in control_usage:
+      control_data = {'name': control['control'].name, 'catalog_number': control['control'].catalog_number, 'lot_number': control['control'].lot_number, 'usage': control['usage']}
+      control_usage_json.append(control_data)
+
+    process.reagent_usage = reagent_usage_json
+    process.control_usage = control_usage_json
+
     array = []
     for sample in process.samples.all():
       array.append(sample.batch)
@@ -898,5 +911,6 @@ def pcr_paperwork(request, pk):
     'dna_qpcr_json': process.qpcr_dna_json, 'rna_qpcr_json': process.qpcr_rna_json, 
     'dna_pcr_json': process.pcr_dna_json, 'rna_pcr_json': process.pcr_rna_json, 
     'process': process, 'pcr_gels_json': process.pcr_gels_json,
+    'reagent_usage': process.reagent_usage, 'control_usage': process.control_usage
   }
   return render(request, 'pcr/pcr_paperwork.html', context)

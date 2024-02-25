@@ -33,6 +33,57 @@
   {% endfor %}
  
   <div id="printDivPlates">
+
+    <h6 class="text-center">Estimated Reagent Usage</h6>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Reagent</th>
+            <th scope="col">Catalog Number</th>
+            <th scope="col">Lot Number</th>
+            <th scope="col">Amount Used (μL)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for reagent in reagent_usage %}
+            <tr>
+              <td>{{reagent.name}}</td>
+              <td>{{reagent.catalog_number}}</td>
+              <td>{{reagent.lot_number}}</td>
+              <td>{{reagent.usage|round_str:2}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+
+    <h6 class="text-center">Estimated Control Usage</h6>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Control</th>
+            <th scope="col">Lot Number</th>
+            <th scope="col">Amount Used (μL)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for control in control_usage %}
+            <tr>
+              <td>{{control.name}}</td>
+              <td>{{control.lot_number}}</td>
+              <td>{{control.usage|round_str:2}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+
     {% comment %} Plates for qPCR {% endcomment %}
     {% for plate in dna_qpcr_json %}
       <div class="container border border-secondary p-3 mb-2 bg-white" style="page-break-after: always;">

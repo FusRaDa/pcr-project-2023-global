@@ -70,6 +70,8 @@ class Process(models.Model):
   plates_for_qpcr = models.JSONField(blank=True, null=True, default=None)
   plates_for_pcr = models.JSONField(blank=True, null=True, default=None)
   gels = models.JSONField(blank=True, null=True, default=None)
+  reagent_usage = models.JSONField(blank=True, null=True, default=None)
+  control_usage = models.JSONField(blank=True, null=True, default=None)
 
   batches = models.ManyToManyField(Batch)
 
