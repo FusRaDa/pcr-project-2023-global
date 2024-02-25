@@ -38,8 +38,9 @@
             <th scope="col">Plate</th>
             <th scope="col">Catalog Number</th>
             <th scope="col">Lot Number</th>
-            <th scope="col">Amount Remaining</th>
+            <th scope="col">Current Amount</th>
             <th scope="col">Amount Used</th>
+            <th scope="col">Amount Remaining</th>
           </tr>
         </thead>
 
@@ -49,8 +50,9 @@
               <td>{{plate.name}}</td>
               <td>{{plate.catalog_number}}</td>
               <td>{{plate.lot_number}}</td>
-              <td>{{plate.amount}}</td>
+              <td>{{plate.plate.amount}}</td>
               <td>{{plate.used}}</td>
+              <td>{{plate.amount}}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -68,8 +70,9 @@
             <th scope="col">Plate</th>
             <th scope="col">Catalog Number</th>
             <th scope="col">Lot Number</th>
-            <th scope="col">Amount Remaining</th>
+            <th scope="col">Current Amount</th>
             <th scope="col">Amount Used</th>
+            <th scope="col">Amount Remaining</th>
           </tr>
         </thead>
 
@@ -79,8 +82,9 @@
               <td>{{plate.name}}</td>
               <td>{{plate.catalog_number}}</td>
               <td>{{plate.lot_number}}</td>
-              <td>{{plate.amount}}</td>
+              <td>{{plate.plate.amount}}</td>
               <td>{{plate.used}}</td>
+              <td>{{plate.amount}}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -98,8 +102,9 @@
             <th scope="col">Gel</th>
             <th scope="col">Catalog Number</th>
             <th scope="col">Lot Number</th>
-            <th scope="col">Amount Remaining</th>
+            <th scope="col">Current Amount</th>
             <th scope="col">Amount Used</th>
+            <th scope="col">Amount Remaining</th>
           </tr>
         </thead>
 
@@ -109,8 +114,9 @@
               <td>{{gel.name}}</td>
               <td>{{gel.catalog_number}}</td>
               <td>{{gel.lot_number}}</td>
-              <td>{{gel.amount}}</td>
+              <td>{{gel.gel.amount}}</td>
               <td>{{gel.used}}</td>
+              <td>{{gel.amount}}</td>
             </tr>
           {% endfor %}
         </tbody>

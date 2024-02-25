@@ -259,16 +259,97 @@ def process_paperwork(request, pk):
   for gel in process.gel.all().order_by('size'):
     gels.append({'gel': gel, 'name': gel.name, 'catalog_number': gel.catalog_number, 'lot_number': gel.lot_number, 'size': gel.size, 'amount': gel.amount, 'used': 0})
 
+  reagent_usage = []
+  control_usage = []
+  ladder_usage = []
+  dye_usage = []
+
   # **GENERATE PLATES FOR qPCR** #
   dna_qpcr_json = None
   if requires_dna_qpcr:
     samples_dna_qpcr = dna_qpcr_samples(assay_samples)
     dna_qpcr_json = process_plates(samples_dna_qpcr, qpcr_plates, process.qpcr_dna_protocol, process.min_samples_per_plate_dna_qpcr)
 
+    for plate in dna_qpcr_json:
+      for assay in plate['assays']:
+        sample_num = assay['sample_num']
+        for reagent in assay['reagents']:
+          
+          if process.is_plus_one_well:
+            usage = round((reagent['volume_per_sample'] * (sample_num + 1)), 2)
+          else:
+            usage = round((reagent['volume_per_sample'] * sample_num), 2)
+
+          exists = False
+          for dict in reagent_usage:
+            if dict['reagent'].pk == reagent['reagent'].pk:
+              exists = True
+
+          if exists == False:
+            reagent_usage.append({'reagent': reagent['reagent'], 'usage': usage})
+          else:
+            for dict in reagent_usage:
+              if dict['reagent'].pk == reagent['reagent'].pk:
+                dict['usage'] += usage
+                break
+
+        for control in assay['controls']:
+          exists = False
+          for dict in control_usage:
+            if dict['control'].pk == control.pk:
+              exists = True
+              break
+          
+          if exists == False:
+            control_usage.append({'control': control, 'usage': assay['sample_volume']})
+          else:
+            for dict in control_usage:
+              if dict['control'].pk == control.pk:
+                dict['usage'] += assay['sample_volume']
+                break
+          
   rna_qpcr_json = None
   if requires_rna_qpcr:
     samples_rna_qpcr = rna_qpcr_samples(assay_samples)
     rna_qpcr_json = process_plates(samples_rna_qpcr, qpcr_plates, process.qpcr_rna_protocol, process.min_samples_per_plate_rna_qpcr)
+
+    for plate in rna_qpcr_json:
+      for assay in plate['assays']:
+        sample_num = assay['sample_num']
+        for reagent in assay['reagents']:
+          
+          if process.is_plus_one_well:
+            usage = round((reagent['volume_per_sample'] * (sample_num + 1)), 2)
+          else:
+            usage = round((reagent['volume_per_sample'] * sample_num), 2)
+
+          exists = False
+          for dict in reagent_usage:
+            if dict['reagent'].pk == reagent['reagent'].pk:
+              exists = True
+
+          if exists == False:
+            reagent_usage.append({'reagent': reagent['reagent'], 'usage': usage})
+          else:
+            for dict in reagent_usage:
+              if dict['reagent'].pk == reagent['reagent'].pk:
+                dict['usage'] += usage
+                break
+
+        for control in assay['controls']:
+          exists = False
+          for dict in control_usage:
+            if dict['control'].pk == control.pk:
+              exists = True
+              break
+          
+          if exists == False:
+            control_usage.append({'control': control, 'usage': assay['sample_volume']})
+          else:
+            for dict in control_usage:
+              if dict['control'].pk == control.pk:
+                dict['usage'] += assay['sample_volume']
+                break
   # **GENERATE PLATES FOR qPCR** #
     
   # **GENERATE PLATES FOR PCR** #
@@ -277,10 +358,86 @@ def process_paperwork(request, pk):
     samples_dna_pcr = dna_pcr_samples(assay_samples)
     dna_pcr_json = process_plates(samples_dna_pcr, pcr_plates, process.pcr_dna_protocol, process.min_samples_per_plate_dna_pcr)
 
+    for plate in dna_pcr_json:
+      for assay in plate['assays']:
+        sample_num = assay['sample_num']
+        for reagent in assay['reagents']:
+          
+          if process.is_plus_one_well:
+            usage = round((reagent['volume_per_sample'] * (sample_num + 1)), 2)
+          else:
+            usage = round((reagent['volume_per_sample'] * sample_num), 2)
+
+          exists = False
+          for dict in reagent_usage:
+            if dict['reagent'].pk == reagent['reagent'].pk:
+              exists = True
+
+          if exists == False:
+            reagent_usage.append({'reagent': reagent['reagent'], 'usage': usage})
+          else:
+            for dict in reagent_usage:
+              if dict['reagent'].pk == reagent['reagent'].pk:
+                dict['usage'] += usage
+                break
+
+        for control in assay['controls']:
+          exists = False
+          for dict in control_usage:
+            if dict['control'].pk == control.pk:
+              exists = True
+              break
+          
+          if exists == False:
+            control_usage.append({'control': control, 'usage': assay['sample_volume']})
+          else:
+            for dict in control_usage:
+              if dict['control'].pk == control.pk:
+                dict['usage'] += assay['sample_volume']
+                break
+
   rna_pcr_json = None
   if requires_rna_pcr:
     samples_rna_pcr = rna_pcr_samples(assay_samples)
     rna_pcr_json = process_plates(samples_rna_pcr, pcr_plates, process.pcr_rna_protocol, process.min_samples_per_plate_rna_pcr)
+
+    for plate in rna_pcr_json:
+      for assay in plate['assays']:
+        sample_num = assay['sample_num']
+        for reagent in assay['reagents']:
+          
+          if process.is_plus_one_well:
+            usage = round((reagent['volume_per_sample'] * (sample_num + 1)), 2)
+          else:
+            usage = round((reagent['volume_per_sample'] * sample_num), 2)
+
+          exists = False
+          for dict in reagent_usage:
+            if dict['reagent'].pk == reagent['reagent'].pk:
+              exists = True
+
+          if exists == False:
+            reagent_usage.append({'reagent': reagent['reagent'], 'usage': usage})
+          else:
+            for dict in reagent_usage:
+              if dict['reagent'].pk == reagent['reagent'].pk:
+                dict['usage'] += usage
+                break
+
+        for control in assay['controls']:
+          exists = False
+          for dict in control_usage:
+            if dict['control'].pk == control.pk:
+              exists = True
+              break
+          
+          if exists == False:
+            control_usage.append({'control': control, 'usage': assay['sample_volume']})
+          else:
+            for dict in control_usage:
+              if dict['control'].pk == control.pk:
+                dict['usage'] += assay['sample_volume']
+                break
   # **GENERATE PLATES FOR PCR** #
   
   # **GENERATE GELS FOR PCR** #
@@ -307,6 +464,7 @@ def process_paperwork(request, pk):
             for dict in all_controls:
               if dict['control'].pk == control.pk:
                 exists = True
+                break
             
             if exists == False:
               all_controls.append({'control': control, 'total': total_volume})
@@ -326,6 +484,7 @@ def process_paperwork(request, pk):
             for dict in all_reagents:
               if dict['reagent'].pk == reagent_obj.pk:
                 exists = True
+                break
             
             if exists == False:
               all_reagents.append({'reagent': reagent_obj, 'total' : total_volume, 'volume_per_sample': volume_per_sample})
@@ -347,6 +506,7 @@ def process_paperwork(request, pk):
             for dict in all_controls:
               if dict['control'].pk == control.pk:
                 exists = True
+                break
             
             if exists == False:
               all_controls.append({'control': control, 'total': total_volume})
@@ -366,6 +526,7 @@ def process_paperwork(request, pk):
             for dict in all_reagents:
               if dict['reagent'].pk == reagent_obj.pk:
                 exists = True
+                break
             
             if exists == False:
               all_reagents.append({'reagent': reagent_obj, 'total' : total_volume, 'volume_per_sample': volume_per_sample})
@@ -387,6 +548,7 @@ def process_paperwork(request, pk):
             for dict in all_controls:
               if dict['control'].pk == control.pk:
                 exists = True
+                break
             
             if exists == False:
               all_controls.append({'control': control, 'total': total_volume})
@@ -406,6 +568,7 @@ def process_paperwork(request, pk):
             for dict in all_reagents:
               if dict['reagent'].pk == reagent_obj.pk:
                 exists = True
+                break
             
             if exists == False:
               all_reagents.append({'reagent': reagent_obj, 'total' : total_volume, 'volume_per_sample': volume_per_sample})
@@ -427,6 +590,7 @@ def process_paperwork(request, pk):
             for dict in all_controls:
               if dict['control'].pk == control.pk:
                 exists = True
+                break
             
             if exists == False:
               all_controls.append({'control': control, 'total': total_volume})
@@ -446,6 +610,7 @@ def process_paperwork(request, pk):
             for dict in all_reagents:
               if dict['reagent'].pk == reagent_obj.pk:
                 exists = True
+                break
             
             if exists == False:
               all_reagents.append({'reagent': reagent_obj, 'total' : total_volume, 'volume_per_sample': volume_per_sample})
@@ -474,6 +639,7 @@ def process_paperwork(request, pk):
           for dict in all_dyes:
             if dict['dye'].pk == dye_obj.pk:
               exists = True
+              break
           
           if exists == False:
             all_dyes.append({'dye': dye_obj, 'total': total_volume})
@@ -493,6 +659,7 @@ def process_paperwork(request, pk):
           for dict in all_ladders:
             if dict['ladder'].pk == ladder_obj.pk:
               exists = True
+              break
           
           if exists == False:
             all_ladders.append({'ladder': ladder_obj, 'total': total_volume})
@@ -732,6 +899,5 @@ def pcr_paperwork(request, pk):
     'dna_qpcr_json': process.qpcr_dna_json, 'rna_qpcr_json': process.qpcr_rna_json, 
     'dna_pcr_json': process.pcr_dna_json, 'rna_pcr_json': process.pcr_rna_json, 
     'process': process, 'pcr_gels_json': process.pcr_gels_json,
-    'pcr_plates': process.plates_for_pcr, 'qpcr_plates': process.plates_for_qpcr, 'gels': process.gels
   }
   return render(request, 'pcr/pcr_paperwork.html', context)
