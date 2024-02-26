@@ -46,7 +46,7 @@
 
         <tbody>
           {% for plate in qpcr_plates %}
-            <tr {% if plate.amount < 0 or plate.is_expired %} class="table-danger" {% endif %} {% if plate.month_exp %} class="table-warning" {% endif %}>
+            <tr class="row-link {% if plate.amount < 0 or plate.is_expired %} table-danger {% endif %} {% if plate.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.plate.pk %}">
               <td>{{plate.name}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
               <td>{{plate.catalog_number}}</td>
               <td>{{plate.lot_number}}</td>
@@ -78,7 +78,7 @@
 
         <tbody>
           {% for plate in pcr_plates %}
-            <tr {% if plate.amount < 0 or plate.is_expired %} class="table-danger" {% endif %} {% if plate.month_exp %} class="table-warning" {% endif %}>
+          <tr class="row-link {% if plate.amount < 0 or plate.is_expired %} table-danger {% endif %} {% if plate.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.plate.pk %}">
               <td>{{plate.name}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
               <td>{{plate.catalog_number}}</td>
               <td>{{plate.lot_number}}</td>
@@ -110,7 +110,7 @@
 
         <tbody>
           {% for gel in gels %}
-            <tr {% if gel.amount < 0 or gel.is_expired %} class="table-danger" {% endif %} {% if gel.month_exp %} class="table-warning" {% endif %}>
+            <tr class="row-link {% if gel.amount < 0 or gel.is_expired %} table-danger {% endif %} {% if gel.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_gel' gel.gel.pk %}">
               <td>{{gel.name}} {% if gel.is_expired %} (EXPIRED) {% endif %} {% if gel.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
               <td>{{gel.catalog_number}}</td>
               <td>{{gel.lot_number}}</td>
@@ -141,7 +141,7 @@
 
       <tbody>
         {% for reagent in reagent_usage %}
-          <tr {% if reagent.reagent.is_expired %} class="table-danger" {% endif %} {% if reagent.reagent.month_exp %} class="table-warning" {% endif %} {% if reagent.usage|round_str:2|remaining_amounts:reagent.reagent.volume_in_microliters < 0 %} class="table-danger" {% endif %}>
+          <tr class="row-link {% if reagent.reagent.is_expired %} table-danger {% endif %} {% if reagent.reagent.month_exp %} table-warning {% endif %} {% if reagent.usage|round_str:2|remaining_amounts:reagent.reagent.volume_in_microliters < 0 %} table-danger {% endif %}" data-href="{% url 'edit_reagent' reagent.reagent.pk %}">
             <td>{{reagent.reagent.name}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{reagent.reagent.catalog_number}}</td>
             <td>{{reagent.reagent.lot_number}}</td>
@@ -170,7 +170,7 @@
 
       <tbody>
         {% for control in control_usage %}
-          <tr {% if control.control.is_expired %} class="table-danger" {% endif %} {% if control.control.month_exp %} class="table-warning" {% endif %} {% if control.usage|round_str:2|remaining_amounts:control.control.amount < 0 %} class="table-danger" {% endif %}>
+          <tr class="row-link {% if control.control.is_expired %} table-danger {% endif %} {% if control.control.month_exp %} table-warning {% endif %} {% if control.usage|round_str:2|remaining_amounts:control.control.amount < 0 %} table-danger {% endif %}" data-href="{% url 'edit_control' control.control.pk %}">
             <td>{{control.control.name}} {% if control.control.is_expired %} (EXPIRED) {% endif %} {% if control.control.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{control.control.lot_number}}</td>
             <td>{{control.control.amount}}</td>
@@ -13877,4 +13877,12 @@
   {% comment %} Gels for PCR {% endcomment %}
 
 </div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".row-link").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
 {% endblock %}

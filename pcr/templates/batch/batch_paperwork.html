@@ -24,7 +24,7 @@
     {% if not batch.is_extracted %}
       <h6 class="text-center">Estimated Reagent Usage</h6>
       <div class="table-responsive">
-        <table class="table table-bordered table-text-mm" style="break-inside: avoid">
+        <table class="table table-bordered table-text-mm table-hover" style="break-inside: avoid">
           <thead>
             <tr>
               <th scope="col">Reagent</th>
@@ -39,7 +39,7 @@
 
           <tbody>
             {% for reagent in protocol.reagentextraction_set.all|dictsort:"order" %}
-              <tr {% if reagent.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:reagent.reagent.volume_in_microliters < 0 %} class="table-danger" {% endif %} {% if reagent.reagent.is_expired %} class="table-danger" {% endif %} {% if reagent.reagent.month_exp %} class="table-warning" {% endif %}>
+              <tr class="row-link {% if reagent.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:reagent.reagent.volume_in_microliters < 0 %} table-danger {% endif %} {% if reagent.reagent.is_expired %} table-danger {% endif %} {% if reagent.reagent.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_reagent' reagent.reagent.pk %}">
                 <td>{{reagent}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %} {% if reagent.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:reagent.reagent.volume_in_microliters < 0 %} (INSUFFICIENT) {% endif %}</td>
                 <td>{{reagent.reagent.catalog_number}}</td>
                 <td>{{reagent.reagent.lot_number}}</td>
@@ -56,7 +56,7 @@
       
       <h6 class="text-center">Estimated Tube Usage</h6>
       <div class="table-responsive">
-        <table class="table table-bordered table-text-mm" style="break-inside: avoid">
+        <table class="table table-bordered table-text-mm table-hover" style="break-inside: avoid">
           <thead>
             <tr>
               <th scope="col" class="col-sm-2">Tube</th>
@@ -71,7 +71,7 @@
 
           <tbody>
             {% for tube in protocol.tubeextraction_set.all|dictsort:"order" %}
-              <tr {% if tube.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:tube.tube.amount < 0 %} class="table-danger" {% endif %} {% if tube.tube.is_expired %} class="table-danger" {% endif %} {% if tube.tube.month_exp %} class="table-warning" {% endif %}>
+              <tr class="row-link {% if tube.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:tube.tube.amount < 0 %} table-danger {% endif %} {% if tube.tube.is_expired %} table-danger {% endif %} {% if tube.tube.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_tube' tube.tube.pk %}">
                 <td>{{tube}} {% if tube.tube.is_expired %} (EXPIRED) {% endif %} {% if tube.tube.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %} {% if tube.amount_per_sample|dec_mult:batch.total_samples|remaining_amounts:tube.tube.amount < 0 %} (INSUFFICIENT) {% endif %}</td>
                 <td>{{tube.tube.catalog_number}}</td>
                 <td>{{tube.tube.lot_number}}</td>
@@ -208,5 +208,13 @@
   }
 
   button.addEventListener("click", printDiv);
+</script>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".row-link").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
 </script>
 {% endblock %}
