@@ -31,13 +31,12 @@
           <nav id="navbar-example3">
             <nav class="nav nav-pills flex-column">
               <a class="nav-link" href="#introduction">Introduction</a>
-              <a class="nav-link" href="#batches">Creating Batches</a>
+              <a class="nav-link" href="#samples">Processing Samples</a>
               <nav class="nav nav-pills flex-column">
-                <a class="nav-link ms-3 my-1" href="#batches-tutorial-1">Creating DNA-qPCR Batch</a>
-                <a class="nav-link ms-3 my-1" href="#batches-tutorial-2">Modifying Samples In DNA-qPCR Batch</a>
-                <a class="nav-link ms-3 my-1" href="#batches-tutorial-3">Creating RNA-qPCR Batch</a>
-                <a class="nav-link ms-3 my-1" href="#batches-tutorial-4">Creating DNA-PCR Batch</a>
-                <a class="nav-link ms-3 my-1" href="#batches-tutorial-5">Creating All Assays Batch</a>
+                <a class="nav-link ms-3 my-1" href="#samples-tutorial-1">Processing DNA-qPCR Batch</a>
+                <a class="nav-link ms-3 my-1" href="#samples-tutorial-2">Processing RNA-qPCR Batch</a>
+                <a class="nav-link ms-3 my-1" href="#samples-tutorial-3">Processing All Assays Batch</a>
+                <a class="nav-link ms-3 my-1" href="#samples-tutorial-4">View &amp; Print Paperwork</a>
               </nav>
               <a class="nav-link" href="#conclusion">Conclusion</a>
             </nav>
@@ -52,149 +51,94 @@
 
       <div id="introduction" class="mt-3">
         <h4><u>Introduction</u></h4>
-        <p>Creating protocols for extractions, thermal cyclers, and panels is an essential part of running PCR. Consistency is key in producing the most reliable results. In this guide, we will teach you how to create protocols for extractions, protocols for thermal cycler settings, and panels from your assays.</p>
+        <p>When your batch of samples have been extracted you are now able to process your samples for PCR paperwork. This paperwork will include the plate sample-alignment, master mixes, reagent usage, To begin processing samples, you must ensure that your batches have been extracted. Click on “PCR” on the top menu to get started. In this tutorial, we will teach you how to process the four batches we created from the PCR Guide.</p>
       </div>
 
-      <div id="panels" class="mt-3">
-        <h4><u>Panels</u></h4>
+      <div id="samples" class="mt-3">
+        <h4><u>Processing Samples</u></h4>
 
-        <div id="panels-introduction" class="mt-3">
-          <h6>Introduction</h6>
-          <p>Panels are composed of one or more assays that will be assigned to every sample in a batch. When you create assays, must always create a panel referring to them in order to apply assays to samples. To create a panel, click on “Protocols” on the menu, and select “Panels”. From there, you can then click on “Create New Panel”. For this tutorial, we will be creating 4 panels.</p>
-        </div>
-
-        <div id="panels-tutorial-1" class="mt-3">
-          <h6>Creating DNA in qPCR Panel</h6>
+        <div id="samples-tutorial-1" class="mt-3">
+          <h6>Processing DNA-qPCR Batch</h6>
           <ul class="list-group">
-            <li class="list-group-item">Step 1 - To create a panel click on “Create New Panel” and set the name as “DNA in qPCR Panel”.</li>
-            <li class="list-group-item">Step 2 - This panel will only contain DNA assays for qPCR. To do so, click on qDNA and select “Assay 1”, “Assay 2”, and “Assay 3”.</li>
-            <li class="list-group-item">Step 3 - Click on “Create Panel”.</li>
+            <li class="list-group-item">Step 1 - Referring from the PCR Guide, we created 4 batches. </li>
+            <li class="list-group-item">Step 2 - Let us first process samples in the DNA-qPCR Batch which contains the lab “AAA”.</li>
+            <li class="list-group-item">Step 3 - To do so, find the batch with the lab ID “AAA” and click on “Add All”.</li>
+            <li class="list-group-item">Step 4 - If you click the blue downward arrow under “Add All” you may choose to add each sample individually.</li>
+            <li class="list-group-item">Step 5 - When you have selected your samples, click on “Review Process” at the top.</li>
+            <li class="list-group-item">Step 6 - Your samples will then be organized by assay. </li>
+            <li class="list-group-item">Step 7 - Let us set the Name of this process as “DNA-qPCR Process”, and since this this batch only contains DNA for qPCR, we will set the thermal cycler settings for “DNA qPCR” as “Thermal Cycler Protocol DNA.</li>
+            <li class="list-group-item">Step 8 - We must then select the plates we will use for qPCR. Let us select “96W Plate-Lot#:L12341234”.</li>
+            <li class="list-group-item">Step 9 - We do not need to select PCR Plates or Gels since this process does not contain any assays for PCR.</li>
+            <li class="list-group-item">Step 10 - We will skip the next four settings for now, and leave “Calculate w/ 1+ Well?” checked.</li>
+            <li class="list-group-item">Step 11 - Click on “Update &amp; Review” to see review the generated paperwork.</li>
+            <li class="list-group-item">Step 12 - You will notice that all your samples and controls have been loading and organized into your selected plate. Notice how sample AAA-1 is only present for Assay 1.</li>
+            <li class="list-group-item">Step 13 - Your list of primers are shown as well as your selected thermal cycler protocol.</li>
+            <li class="list-group-item">Step 14 - You will also notice that you master mixes for each assay has been calculated for you.</li>
+            <li class="list-group-item">Step 15 - Once you have reviewed the results, click on “Confirm PCR Paperwork” and confirm. </li>
+            <li class="list-group-item">Step 16 - You will notice that you will not be allowed to continue the process due to using expired controls for this process.</li>
+            <li class="list-group-item">Step 17 - For the sake of this demonstration, we have updated each control&apos;s expiration date a month ahead. Of course, in a real setting you must create a new control and assign to each assay that requires them.</li>
             <li class="list-group-item"><img src="{% static 'images/panel-protocols-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>
 
-        <div id="panels-tutorial-2" class="mt-3">
-          <h6>Creating RNA in qPCR Panel</h6>
+        <div id="samples-tutorial-2" class="mt-3">
+          <h6>Processing RNA-qPCR Batch</h6>
           <ul class="list-group">
-            <li class="list-group-item">Step 1 - To create a panel click on “Create New Panel” and set the name as “RNA in qPCR Panel”.</li>
-            <li class="list-group-item">Step 2 - This panel will only contain DNA assays for qPCR. To do so, click on qRNA and select “Assay 4”.</li>
-            <li class="list-group-item">Step 3 - Click on “Create Panel”.</li>
+            <li class="list-group-item">Step 1 - Next, let&apos;s process two batches: RNA-qPCR Batch (AAB) and DNA-PCR Batch (AAC).</li>
+            <li class="list-group-item">Step 2 - You are able to combine as many batches or samples into one process but be aware that this will produce larger documents. </li>
+            <li class="list-group-item">Step 3 - We will then click on “Add All” for batches AAB and AAC.</li>
+            <li class="list-group-item">Step 4 - Then click on “Review Process” to view and sort our selected samples.</li>
+            <li class="list-group-item">Step 5 - You will notice that this process will be handling RNA and DNA for both PCR and qPCR.</li>
+            <li class="list-group-item">Step 6 - Let us set the Name as “DNA-PCR RNA-qPCR Process”.</li>
+            <li class="list-group-item">Step 7 - Set the thermal cycler protocols for RNA qPCR as “Thermal Cycler Protocol RNA” and DNA PCR as “Thermal Cycler Protocol DNA”.</li>
+            <li class="list-group-item">Step 8 - For our qPCR and PCR plates, let&apos;s select the 96-well plates. We will also select the 24-well gels since we are running assays for PCR.</li>
+            <li class="list-group-item">Step 9 - Click on “Update &amp; Review” and you can see samples for Assay 4 and Assay 5 are not in one plate. The reason for this is that Assay 4 is for RNA while Assay 5 is for DNA.</li>
+            <li class="list-group-item">Step 10 - Having such few samples in a large plate can be quite a waste so let us select a smaller plate.</li>
+            <li class="list-group-item">Step 11 - To do so, click on “Go Back” and select “48W Plate-Lot#12341234” for qPCR and PCR plates. Then click on “Update & Review”.</li>
+            <li class="list-group-item">Step 12 - Now you can see that PCRprep chooses the most viable plate for your samples.</li>
+            <li class="list-group-item">Step 13 - You will notice that because Assay 5 is for PCR, it has produced a list of samples for you to load in your gels.</li>
+            <li class="list-group-item">Step 14 - When you are satisfied with the results, click on “Confirm PCR Paperwork” and confirm.</li>
             <li class="list-group-item"><img src="{% static 'images/panel-protocols-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>
 
-        <div id="panels-tutorial-3" class="mt-3">
-          <h6>Creating DNA in PCR Panel</h6>
+        <div id="samples-tutorial-3" class="mt-3">
+          <h6>Processing All Assays Batch</h6>
           <ul class="list-group">
-            <li class="list-group-item">Step 1 - To create a panel click on “Create New Panel” and set the name as “DNA in PCR Panel”.</li>
-            <li class="list-group-item">Step 2 - This panel will only contain DNA assays for PCR. To do so, click on DNA and select “Assay 5”.</li>
-            <li class="list-group-item">Step 3 - Click on “Create Panel”.</li>
+            <li class="list-group-item">Step 1 - The last batch of samples we will process is from “All Assays Batch” with lab ID AAD. </li>
+            <li class="list-group-item">Step 2 - Find the batch with the lab ID AAD and click on “Add All”.</li>
+            <li class="list-group-item">Step 3 - Then let&apos;s review the process by clicking on “Review Process”.</li>
+            <li class="list-group-item">Step 4 - You will immediately see that this batch has 16 samples that all require 5 assays to be tested.</li>
+            <li class="list-group-item">Step 5 - Let&apos;s set the Name as “All Assays Process”. We will set DNA PCR and DNA qPCR as “Thermal Cycler Protocol DNA” and RNA qPCR as “Thermal Cycler Protocol RNA”.</li>
+            <li class="list-group-item">Step 6 - Let&apos;s select all available plates and gels. </li>
+            <li class="list-group-item">Step 7 - Then click on “Update &amp; Review”.</li>
+            <li class="list-group-item">Step 8 - As you can see samples for Assay 1, Assay 2, and Assay 3 are all in one plate since they are DNA in qPCR.</li>
+            <li class="list-group-item">Step 9 - Here you can see your calculated master mixes for the plate.</li>
+            <li class="list-group-item">Step 10 - Next, you have samples for Assay 4 which are in another smaller plate since these samples are RNA in qPCR.</li>
+            <li class="list-group-item">Step 11 - The last plate contains samples for Assay 5 which is DNA in PCR. This means gels are also required to analyze your results.</li>
+            <li class="list-group-item">Step 12 - When you are satisfied with the results, click on “Confirm PCR Paperwork” and confirm.</li>
+            <li class="list-group-item">Step 13 - You will be given an error message notifying you that the amount of magnesium chloride will not suffice for this process. The process requires 142.8μL of magnesium chloride.</li>
+            <li class="list-group-item">Step 14 - For the sake of this demonstration let us update magnesium&apos;s volume stored to 500μL.</li>
+            <li class="list-group-item">Step 15 - Let then click on “Confirm PCR Paperwork” once again. The process is now valid.</li>
             <li class="list-group-item"><img src="{% static 'images/panel-protocols-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>
 
-        <div id="panels-tutorial-3" class="mt-3">
-          <h6>Creating All Assays Panel</h6>
+        <div id="samples-tutorial-4" class="mt-3">
+          <h6>View &amp; Print Paperwork</h6>
           <ul class="list-group">
-            <li class="list-group-item">Step 1 - To create a panel click on “Create New Panel” and set the name as “All Assays Panel”.</li>
-            <li class="list-group-item">Step 2 - This panel will contain all assays we have created for this tutorial.</li>
-            <li class="list-group-item">Step 3 - From DNA to qRNA, we will select all assays. This panel should contain “Assay 1”, “Assay 2”, “Assay 3”, “Assay 4”, and “Assay 5”.</li>
-            <li class="list-group-item">Step 4 - Click on “Create Panel”.</li>
-            <li class="list-group-item"><img src="{% static 'images/panel-protocols-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item">Step 5 - Your list of panels should look similar to the following image.</li>
+            <li class="list-group-item">Step 1 - To view and print your paperwork. </li>
+            <li class="list-group-item">Step 2 - Your list of processes should look similar to the image below.</li>
+            <li class="list-group-item">Step 3 - Click on “Paperwork” on the menu and select which paperwork process you wish to print.</li>
+            <li class="list-group-item">Step 4 - Let us click on “All Assays Process” where we can see print our plates and gels. We may also refer to the extraction batches involve should we wish to print them as well.</li>
             <li class="list-group-item"><img src="{% static 'images/panel-protocols-5.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-          </ul>
-        </div>
-      </div>
-
-      <div id="extractions" class="mt-3">
-        <h4><u>Extractions</u></h4>
-
-        <div id="extractions-introduction" class="mt-3">
-          <h6>Introduction</h6>
-          <p>Extraction protocols is another important component in processing samples for extraction. Deciding what extraction protocol to use for each batch is necessary to produce the best results. To create an Extraction protocol click on “Protocols” and select “Extractions”. From there you can then click on “Add New Protocol”. For this tutorial, we will be adding three extraction protocols. One protocol for extracting DNA, another one for extracting RNA, and one for extracting both DNA &amp; RNA (total-nucleic).</p>
-        </div>
-
-        <div id="extractions-tutorial-1" class="mt-3">
-          <h6>Adding DNA Extraction Protocol</h6>
-          <ul class="list-group">
-            <li class="list-group-item">Step 1 - To add an extraction protocol click on “Add New Protocol” and set the name as “DNA Extraction Protocol”.</li>
-            <li class="list-group-item">Step 2 - Set the Type as “DNA” and copy/paste the URL of the document containing the steps for your extraction should you have one. Otherwise, leave the field empty.</li>
-            <li class="list-group-item">Step 3 - We will then select all tubes and reagents that we previously created in the <a href="{% url 'inventory_guide'%}">Inventory Guide</a>.</li>
-            <li class="list-group-item"><img src="{% static 'images/extraction-protocols-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item"><img src="{% static 'images/extraction-reagents.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item">Step 4 - We must then determine the amount of tubes used per extracted sample. To do so, click on the blue tube icon next to “Tubes”. Note that we can also change the order of the tubes being displayed.</li>
-            <li class="list-group-item">Step 5 - Let us set the amount per sample for “2ml Collection Tubes” as “3”, “QIAmp Mini spin columns” as “1”, and “1.7 ml Generic Centrifuge Tube” as “2”.</li>
-            <li class="list-group-item"><img src="{% static 'images/extraction-protocols-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item">Step 6 - Next we must determine the volume user per sample for each reagent. To do so, click on the blue flask icon near “Reagents”.</li>
-            <li class="list-group-item">Step 7 - We will set Volume Per Sample (µl) for “InhibitEx Buffer” as “1000”, “Buffer AL” as “600”, “Buffer ATE” as “200”, “Proteinase K” as “25”, “Ethanol” as ”600”, “Buffer AW1” as “500”, and “Buffer AW2” as “500”. According to this <a href="https://www.qiagen.com/us/resources/resourcedetail?id=2a3f2c0b-2e8a-49fd-b442-829108ae1a4a&lang=en" target="_blank">Qiagen kit manual</a>.</li>
-            <li class="list-group-item"><img src="{% static 'images/extraction-protocols-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-          </ul>
-        </div>
-
-        <div id="extractions-tutorial-2" class="mt-3">
-          <h6>Adding RNA Extraction Protocol</h6>
-          <ul class="list-group">
-            <li class="list-group-item">Step 1 - To add an extraction protocol click on “Add New Protocol” and set the name as “RNA Extraction Protocol”.</li>
-            <li class="list-group-item">Step 2 - Set the Type as “RNA” and copy/paste the URL of the document containing the steps for your extraction should you have one. Otherwise, leave the field empty.</li>
-            <li class="list-group-item">Step 3 - We will then select all tubes and reagents that we previously created in the <a href="{% url 'inventory_guide'%}">Inventory Guide</a>. Keep note that this is a demonstration. Realistically, every extraction protocol will differ in what tubes and reagents they use as well as the amounts per sample.</li>
-            <li class="list-group-item">Step 4 - We will do the exact same steps as the previous extraction protocol.</li>
-            <li class="list-group-item">Step 5 - For tubes, set the amount per sample for “2ml Collection Tubes” as “3”, “QIAmp Mini spin columns” as “1”, and “1.7 ml Generic Centrifuge Tube” as “2”. </li>
-            <li class="list-group-item">Step 6 - For reagents, we will set Volume Per Sample (µl) for “InhibitEx Buffer” as “1000”, “Buffer AL” as “600”, “Buffer ATE” as “200”, “Proteinase K” as “25”, “Ethanol” as ”600”, “Buffer AW1” as “500”, and “Buffer AW2” as “500”.</li>
-            <li class="list-group-item"><img src="{% static 'images/extraction-protocols-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-          </ul>
-        </div>
-
-        <div id="extractions-tutorial-2" class="mt-3">
-          <h6>Adding Total-nucleic Extraction Protocol</h6>
-          <ul class="list-group">
-            <li class="list-group-item">Step 1 - To add an extraction protocol click on “Add New Protocol” and set the name as “Total-nucleic Extraction Protocol”.</li>
-            <li class="list-group-item">Step 2 - Set the Type as “Total Nucleic” and copy/paste the URL of the document containing the steps for your extraction should you have one. Otherwise, leave the field empty.</li>
-            <li class="list-group-item">Step 3 - We will then select all tubes and reagents that we previously created in the <a href="{% url 'inventory_guide'%}">Inventory Guide</a>. Keep note that this is a demonstration. Realistically, every extraction protocol will differ in what tubes and reagents they use as well as the amounts per sample.</li>
-            <li class="list-group-item">Step 4 - We will do the exact same steps as the previous extraction protocol.</li>
-            <li class="list-group-item">Step 5 - For tubes, set the amount per sample for “2ml Collection Tubes” as “3”, “QIAmp Mini spin columns” as “1”, and “1.7 ml Generic Centrifuge Tube” as “2”. </li>
-            <li class="list-group-item">Step 6 - For reagents, we will set Volume Per Sample (µl) for “InhibitEx Buffer” as “1000”, “Buffer AL” as “600”, “Buffer ATE” as “200”, “Proteinase K” as “25”, “Ethanol” as ”600”, “Buffer AW1” as “500”, and “Buffer AW2” as “500”.</li>
-            <li class="list-group-item"><img src="{% static 'images/extraction-protocols-5.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item">Step 7 - Your list of extraction protocols should look similar to the image below.</li>
-            <li class="list-group-item"><img src="{% static 'images/extraction-protocols-6.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-          </ul>
-        </div>
-      </div>
-
-      <div id="thermals" class="mt-3">
-        <h4><u>Thermal Cycler</u></h4>
-
-        <div id="thermals-introduction" class="mt-3">
-          <h6>Introduction</h6>
-          <p>Thermal cycler protocols are a major factor in producing the best results for PCR. Having the correct settings for your thermal cycler according to each plate is mandatory. To add a new thermal cycler protocol, click on “Protocols” and select “Thermal Cycler”. From there, click on “Add New Protocol”. For this tutorial, we will add two types of protocols: one for DNA and another for RNA.</p>
-        </div>
-
-        <div id="thermals-tutorial-1" class="mt-3">
-          <h6>Adding Thermal Cycler Protocol DNA</h6>
-          <ul class="list-group">
-            <li class="list-group-item">Step 1 - To add a thermal cycler protocol click on “Add New Protocol”, set the Name as “Thermal Cycler Protocol DNA”, Type as “DNA”, and Number of Cycles to 30.</li>
-            <li class="list-group-item">Step 2 - Based on the following image from <a href="https://www.sigmaaldrich.com/US/en/technical-documents/protocol/genomics/pcr/standard-pcr" target="_blank">Millipore Sigma</a>, we will set the Denature Temp to 94°C, and Denature Duration to 60 seconds. Annealing Temp will be 55°C with a duration of 120 seconds, and Extension Temp at 72°C with a duration of 180 seconds.</li>
-            <li class="list-group-item">Step 3 - Click on “Add Protocol”.</li>
-            <li class="list-group-item"><img src="{% static 'images/thermal-protocols-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-          </ul>
-        </div>
-
-        <div id="thermals-tutorial-2" class="mt-3">
-          <h6>Adding Thermal Cycler Protocol RNA</h6>
-          <ul class="list-group">
-            <li class="list-group-item">Step 1 - To add a thermal cycler protocol click on “Add New Protocol”, set the Name as “Thermal Cycler Protocol RNA”, Type as “RNA”, and Number of Cycles to 30.</li>
-            <li class="list-group-item">Step 2 - According to an article by <a href="https://www.thermofisher.com/us/en/home/references/ambion-tech-support/transcriptome-analysis/general-articles/tips-for-successful-rna-amplification-.html#:~:text=For%20the%20most%20consistent%20results,reach%20the%20target%20temperature%20rapidly" target="_blank">ThermoFisher</a>, we will set the Denature Temp to 70°C, and Denature Duration to 60 seconds. Annealing Temp will be 16°C with a duration of 120 seconds, and Extension Temp at 72°C with a duration of 180 seconds.</li>
-            <li class="list-group-item">Step 3 - Click on “Add Protocol”.</li>
-            <li class="list-group-item"><img src="{% static 'images/thermal-protocols-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item">Step 3 - Your list of thermal cycler protocols should look similar to the following image.</li>
-            <li class="list-group-item"><img src="{% static 'images/thermal-protocols-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>
       </div>
 
       <div id="conclusion" class="mt-3">
         <h4><u>Conclusion</u></h4>
-        <p>Excellent! Once all your protocols have been set, you will now be ready to create a batch of samples for extraction. The <a href="{% url 'extraction_guide'%}">Extraction Guide</a> will teach you how to create a sample batch and assign all protocols necessary.</p>
+        <p>This is the end of the tutorial and as you can see, PCRprep can be a very useful tool in managing your inventory, assays, and paperwork. This tool also serves as a guide in using the most viable products in hand to assure that you produce the best PCR results. If you have any questions or wish to share your feedback, please let us know! It is our priority to make PCRprep the best tool for your needs.</p>
       </div>
 
     </div>

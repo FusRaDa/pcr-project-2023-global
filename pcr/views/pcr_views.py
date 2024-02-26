@@ -757,6 +757,43 @@ def process_paperwork(request, pk):
         return redirect(request.path_info)
     # **VALIDATION FOR DYES & LADDERS** #
       
+    process.is_processed = True
+    process.date_processed = timezone.now()
+
+    process.pcr_dna_json = dna_pcr_json
+    process.pcr_rna_json = rna_pcr_json
+    process.pcr_gels_json = pcr_gels_json
+
+    process.qpcr_dna_json = dna_qpcr_json
+    process.qpcr_rna_json = rna_qpcr_json
+
+    process.plates_for_qpcr = qpcr_plates
+    process.plates_for_pcr = pcr_plates
+    process.gels = gels
+
+    reagent_usage_json = []
+    for reagent in reagent_usage:
+      reagent_data = {'name': reagent['reagent'].name, 'catalog_number': reagent['reagent'].catalog_number, 'lot_number': reagent['reagent'].lot_number, 'usage': reagent['usage']}
+      reagent_usage_json.append(reagent_data)
+
+    control_usage_json = []
+    for control in control_usage:
+      control_data = {'name': control['control'].name, 'lot_number': control['control'].lot_number, 'usage': control['usage']}
+      control_usage_json.append(control_data)
+
+    process.reagent_usage = reagent_usage_json
+    process.control_usage = control_usage_json
+
+    array = []
+    for sample in process.samples.all():
+      array.append(sample.batch)
+    batches = list(set(array))
+
+    process.batches.clear()
+    for batch in batches:
+      process.batches.add(batch)
+    
+    process.save()
 
     # **UPDATE ALL PLATES AND GELS IN DB** #
     for plate in qpcr_plates:
@@ -803,44 +840,7 @@ def process_paperwork(request, pk):
       ladder_dict['ladder'].amount -= ladder_dict['total']
       ladder_dict['ladder'].save()
     # **FINAL UPDATE OF ALL DYES & LADDERS IN DB** #
-
-    process.is_processed = True
-    process.date_processed = timezone.now()
-
-    process.pcr_dna_json = dna_pcr_json
-    process.pcr_rna_json = rna_pcr_json
-    process.pcr_gels_json = pcr_gels_json
-
-    process.qpcr_dna_json = dna_qpcr_json
-    process.qpcr_rna_json = rna_qpcr_json
-
-    process.plates_for_qpcr = qpcr_plates
-    process.plates_for_pcr = pcr_plates
-    process.gels = gels
-
-    reagent_usage_json = []
-    for reagent in reagent_usage:
-      reagent_data = {'name': reagent['reagent'].name, 'catalog_number': reagent['reagent'].catalog_number, 'lot_number': reagent['reagent'].lot_number, 'usage': reagent['usage']}
-      reagent_usage_json.append(reagent_data)
-
-    control_usage_json = []
-    for control in control_usage:
-      control_data = {'name': control['control'].name, 'catalog_number': control['control'].catalog_number, 'lot_number': control['control'].lot_number, 'usage': control['usage']}
-      control_usage_json.append(control_data)
-
-    process.reagent_usage = reagent_usage_json
-    process.control_usage = control_usage_json
-
-    array = []
-    for sample in process.samples.all():
-      array.append(sample.batch)
-    batches = list(set(array))
-
-    process.batches.clear()
-    for batch in batches:
-      process.batches.add(batch)
-    
-    process.save()
+      
     return redirect('processes')
 
   context = {
