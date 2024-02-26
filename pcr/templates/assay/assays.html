@@ -7,10 +7,9 @@
 {% block content %}
 <div class="container mt-3">
 
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h3 class="text-center">Assays</h3>
-    </div>
+  <div class="row justify-content-center">
+    <h3 class="text-center">Assays</h3>
+    <a href="{% url 'tests_guide' %}" target="_blank" class="text-center">Tests Guide</a>
   </div>
 
   {% if messages %}
@@ -21,7 +20,7 @@
   </div>
   {% endif %}
 
-  <div class="justify-content-center mb-2">
+  <div class="justify-content-center mb-2 mt-3">
     <div class="col d-flex justify-content-center">
       <a href="{% url 'create_assay' %}">
         <button type="button" class="btn btn-primary">

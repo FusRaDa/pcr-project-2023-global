@@ -8,8 +8,9 @@
 {% block content %}
 <div class="container mt-3">
 
-  <div class="row">
-    <h5 class="text-center">PCR Paperwork</h5>
+  <div class="row justify-content-center">
+    <h5 class="text-center">{{process.name}}</h5>
+    <a href="{% url 'pcr_guide' %}" target="_blank" class="text-center">PCR Guide</a>
   </div>
 
   <div class="row justify-content-center">

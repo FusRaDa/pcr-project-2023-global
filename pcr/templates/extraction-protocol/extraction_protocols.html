@@ -7,13 +7,12 @@
 {% block content %}
 <div class="container mt-3">
 
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h3 class="text-center">Extraction Protocols</h3>
-    </div>
+  <div class="row justify-content-center">
+    <h3 class="text-center">Extraction Protocols</h3>
+    <a href="{% url 'protocols_guide' %}" target="_blank" class="text-center">Protocols Guide</a>
   </div>
 
-  <div class="justify-content-center mb-2">
+  <div class="justify-content-center mb-2 mt-3">
     <div class="col d-flex justify-content-center">
       <a href="{% url 'create_extraction_protocol' %}">
         <button type="button" class="btn btn-primary">

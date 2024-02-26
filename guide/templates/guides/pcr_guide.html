@@ -55,29 +55,35 @@
       </div>
 
       <div id="samples" class="mt-3">
-        <h4><u>Processing Samples</u></h4>
+        <h4><u>Processing Batches</u></h4>
 
         <div id="samples-tutorial-1" class="mt-3">
           <h6>Processing DNA-qPCR Batch</h6>
           <ul class="list-group">
             <li class="list-group-item">Step 1 - Referring from the PCR Guide, we created 4 batches. </li>
             <li class="list-group-item">Step 2 - Let us first process samples in the DNA-qPCR Batch which contains the lab “AAA”.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 3 - To do so, find the batch with the lab ID “AAA” and click on “Add All”.</li>
             <li class="list-group-item">Step 4 - If you click the blue downward arrow under “Add All” you may choose to add each sample individually.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 5 - When you have selected your samples, click on “Review Process” at the top.</li>
-            <li class="list-group-item">Step 6 - Your samples will then be organized by assay. </li>
+            <li class="list-group-item">Step 6 - Your samples will then be organized by assay.</li>
             <li class="list-group-item">Step 7 - Let us set the Name of this process as “DNA-qPCR Process”, and since this this batch only contains DNA for qPCR, we will set the thermal cycler settings for “DNA qPCR” as “Thermal Cycler Protocol DNA.</li>
             <li class="list-group-item">Step 8 - We must then select the plates we will use for qPCR. Let us select “96W Plate-Lot#:L12341234”.</li>
             <li class="list-group-item">Step 9 - We do not need to select PCR Plates or Gels since this process does not contain any assays for PCR.</li>
             <li class="list-group-item">Step 10 - We will skip the next four settings for now, and leave “Calculate w/ 1+ Well?” checked.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 11 - Click on “Update &amp; Review” to see review the generated paperwork.</li>
             <li class="list-group-item">Step 12 - You will notice that all your samples and controls have been loading and organized into your selected plate. Notice how sample AAA-1 is only present for Assay 1.</li>
             <li class="list-group-item">Step 13 - Your list of primers are shown as well as your selected thermal cycler protocol.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 14 - You will also notice that you master mixes for each assay has been calculated for you.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-5.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 15 - Once you have reviewed the results, click on “Confirm PCR Paperwork” and confirm. </li>
             <li class="list-group-item">Step 16 - You will notice that you will not be allowed to continue the process due to using expired controls for this process.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-6.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 17 - For the sake of this demonstration, we have updated each control&apos;s expiration date a month ahead. Of course, in a real setting you must create a new control and assign to each assay that requires them.</li>
-            <li class="list-group-item"><img src="{% static 'images/panel-protocols-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 18 - When you are satisfied with the results, click on “Confirm PCR Paperwork” and confirm. This will update your inventory and save your paperwork for printing.</li>
           </ul>
         </div>
 
@@ -87,40 +93,55 @@
             <li class="list-group-item">Step 1 - Next, let&apos;s process two batches: RNA-qPCR Batch (AAB) and DNA-PCR Batch (AAC).</li>
             <li class="list-group-item">Step 2 - You are able to combine as many batches or samples into one process but be aware that this will produce larger documents. </li>
             <li class="list-group-item">Step 3 - We will then click on “Add All” for batches AAB and AAC.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-7.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 4 - Then click on “Review Process” to view and sort our selected samples.</li>
             <li class="list-group-item">Step 5 - You will notice that this process will be handling RNA and DNA for both PCR and qPCR.</li>
             <li class="list-group-item">Step 6 - Let us set the Name as “DNA-PCR RNA-qPCR Process”.</li>
             <li class="list-group-item">Step 7 - Set the thermal cycler protocols for RNA qPCR as “Thermal Cycler Protocol RNA” and DNA PCR as “Thermal Cycler Protocol DNA”.</li>
             <li class="list-group-item">Step 8 - For our qPCR and PCR plates, let&apos;s select the 96-well plates. We will also select the 24-well gels since we are running assays for PCR.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-8.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 9 - Click on “Update &amp; Review” and you can see samples for Assay 4 and Assay 5 are not in one plate. The reason for this is that Assay 4 is for RNA while Assay 5 is for DNA.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-9.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-10.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 10 - Having such few samples in a large plate can be quite a waste so let us select a smaller plate.</li>
-            <li class="list-group-item">Step 11 - To do so, click on “Go Back” and select “48W Plate-Lot#12341234” for qPCR and PCR plates. Then click on “Update & Review”.</li>
+            <li class="list-group-item">Step 11 - To do so, click on “Go Back” and select “48W Plate-Lot#12341234” for qPCR and PCR plates. Then click on “Update &amp; Review”.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-11.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 12 - Now you can see that PCRprep chooses the most viable plate for your samples.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-12.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-13.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 13 - You will notice that because Assay 5 is for PCR, it has produced a list of samples for you to load in your gels.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-14.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 14 - When you are satisfied with the results, click on “Confirm PCR Paperwork” and confirm.</li>
-            <li class="list-group-item"><img src="{% static 'images/panel-protocols-2.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>
 
         <div id="samples-tutorial-3" class="mt-3">
           <h6>Processing All Assays Batch</h6>
           <ul class="list-group">
-            <li class="list-group-item">Step 1 - The last batch of samples we will process is from “All Assays Batch” with lab ID AAD. </li>
+            <li class="list-group-item">Step 1 - The last batch of samples we will process is from “All Assays Batch” with lab ID "AAD".</li>
             <li class="list-group-item">Step 2 - Find the batch with the lab ID AAD and click on “Add All”.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-15.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 3 - Then let&apos;s review the process by clicking on “Review Process”.</li>
             <li class="list-group-item">Step 4 - You will immediately see that this batch has 16 samples that all require 5 assays to be tested.</li>
             <li class="list-group-item">Step 5 - Let&apos;s set the Name as “All Assays Process”. We will set DNA PCR and DNA qPCR as “Thermal Cycler Protocol DNA” and RNA qPCR as “Thermal Cycler Protocol RNA”.</li>
             <li class="list-group-item">Step 6 - Let&apos;s select all available plates and gels. </li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-16.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 7 - Then click on “Update &amp; Review”.</li>
             <li class="list-group-item">Step 8 - As you can see samples for Assay 1, Assay 2, and Assay 3 are all in one plate since they are DNA in qPCR.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-17.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 9 - Here you can see your calculated master mixes for the plate.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-18.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 10 - Next, you have samples for Assay 4 which are in another smaller plate since these samples are RNA in qPCR.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-19.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 11 - The last plate contains samples for Assay 5 which is DNA in PCR. This means gels are also required to analyze your results.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-20.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-21.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 12 - When you are satisfied with the results, click on “Confirm PCR Paperwork” and confirm.</li>
             <li class="list-group-item">Step 13 - You will be given an error message notifying you that the amount of magnesium chloride will not suffice for this process. The process requires 142.8μL of magnesium chloride.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-22.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 14 - For the sake of this demonstration let us update magnesium&apos;s volume stored to 500μL.</li>
-            <li class="list-group-item">Step 15 - Let then click on “Confirm PCR Paperwork” once again. The process is now valid.</li>
-            <li class="list-group-item"><img src="{% static 'images/panel-protocols-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-23.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item">Step 15 - Let us then click on “Confirm PCR Paperwork” once again. The process is now valid.</li>
           </ul>
         </div>
 
@@ -129,9 +150,11 @@
           <ul class="list-group">
             <li class="list-group-item">Step 1 - To view and print your paperwork. </li>
             <li class="list-group-item">Step 2 - Your list of processes should look similar to the image below.</li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-24.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 3 - Click on “Paperwork” on the menu and select which paperwork process you wish to print.</li>
             <li class="list-group-item">Step 4 - Let us click on “All Assays Process” where we can see print our plates and gels. We may also refer to the extraction batches involve should we wish to print them as well.</li>
-            <li class="list-group-item"><img src="{% static 'images/panel-protocols-5.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-25.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
+            <li class="list-group-item"><img src="{% static 'images/pcr-process-26.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
         </div>
       </div>

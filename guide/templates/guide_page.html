@@ -13,9 +13,11 @@
 
   <div class="row justify-content-start">
     {% comment %} <div class="col-sm-3">
-      <h2 class="text-center"><u>Store #1</u></h2>
-        <img src="{% static 'images/store-img.png' %}"class="card-img-top" alt="...">
-      <h4 class="text-center"><a href="#">Read Guide</a></h4>
+      <h3 class="text-center"><u>Store</u></h3>
+        <a href="#">
+          <img src="{% static 'images/store-img.png' %}"class="card-img-top" alt="...">
+        </a>
+      <h4 class="text-center mb-5"><a href="#">Read Guide</a></h4>
     </div> {% endcomment %}
 
     <div class="col-sm-3">
@@ -57,19 +59,15 @@
         </a>
       <h4 class="text-center mb-5"><a href="{% url 'pcr_guide' %}">Read Guide</a></h4>
     </div>
-  </div>
 
-  {% comment %} <div class="row justify-content-center">
-    <h1 class="text-center">Additional Resources</h1>
+    {% comment %} <div class="col-sm-3">
+      <h3 class="text-center"><u>Latest Updates &amp; Features</u></h3>
+        <a href="#">
+          <img src="{% static 'images/pcr-img.png' %}"class="card-img-top" alt="...">
+        </a>
+      <h4 class="text-center mb-5"><a href="#">Read Notes</a></h4>
+    </div> {% endcomment %}
   </div>
-
-  <div class="row justify-content-start">
-    <div class="col-sm-3">
-      <h2 class="text-center"><u>Store #1</u></h2>
-        <img src="{% static 'images/store-img.png' %}"class="card-img-top" alt="...">
-      <h4 class="text-center"><a href="#">Read Guide</a></h4>
-    </div>
-  </div> {% endcomment %}
 
 </div>
 

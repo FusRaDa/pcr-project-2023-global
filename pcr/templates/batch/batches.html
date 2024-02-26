@@ -7,6 +7,11 @@
 {% block content %}
 <div class="container mt-3">
 
+  <div class="row justify-content-center">
+    <h3 class="text-center">Batches</h3>
+    <a href="{% url 'extraction_guide' %}" target="_blank" class="text-center">Extraction Guide</a>
+  </div>
+
   {% for message in messages %}
   <div class="row">
     <div class="col d-flex justify-content-center"> 
@@ -15,13 +20,7 @@
   </div>
   {% endfor %}
 
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h3 class="text-center">Batches</h3>
-    </div>
-  </div>
-
-  <div class="row">
+  <div class="row mt-3">
     <div class="col d-flex justify-content-center"> 
       <a href="{% url 'create_batch'%}">
         <button type="button" class="btn btn-primary mb-2">Create Batch</button>

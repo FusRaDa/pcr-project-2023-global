@@ -7,8 +7,9 @@
 {% block content %}
 <div class="container mt-3">
 
-  <div class="text-center">
+  <div class="row justify-content-center">
     <h3>Updating {{sample.lab_id_num}}</h3>
+    <a href="{% url 'extraction_guide' %}" target="_blank" class="text-center">Extraction Guide</a>
   </div>
 
   <form method="POST" action="">
