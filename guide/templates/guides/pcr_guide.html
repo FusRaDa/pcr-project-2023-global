@@ -51,7 +51,7 @@
 
       <div id="introduction" class="mt-3">
         <h4><u>Introduction</u></h4>
-        <p>When your batch of samples have been extracted you are now able to process your samples for PCR paperwork. This paperwork will include the plate sample-alignment, master mixes, reagent usage, To begin processing samples, you must ensure that your batches have been extracted. Click on “PCR” on the top menu to get started. In this tutorial, we will teach you how to process the four batches we created from the PCR Guide.</p>
+        <p>When your batch of samples have been extracted you are now able to process your samples for PCR paperwork. To begin processing samples, you must ensure that your batches have been extracted. Click on “PCR” on the top menu to get started. In this tutorial, we will teach you how to process the four batches we created from the <a href="{% url 'extraction_guide'%}">Extraction Guide</a>.</p>
       </div>
 
       <div id="samples" class="mt-3">
@@ -60,7 +60,7 @@
         <div id="samples-tutorial-1" class="mt-3">
           <h6>Processing DNA-qPCR Batch</h6>
           <ul class="list-group">
-            <li class="list-group-item">Step 1 - Referring from the PCR Guide, we created 4 batches. </li>
+            <li class="list-group-item">Step 1 - Referring from the <a href="{% url 'extraction_guide'%}">Extraction Guide</a>, we created 4 batches. </li>
             <li class="list-group-item">Step 2 - Let us first process samples in the DNA-qPCR Batch which contains the lab “AAA”.</li>
             <li class="list-group-item"><img src="{% static 'images/pcr-process-1.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 3 - To do so, find the batch with the lab ID “AAA” and click on “Add All”.</li>
@@ -73,8 +73,8 @@
             <li class="list-group-item">Step 9 - We do not need to select PCR Plates or Gels since this process does not contain any assays for PCR.</li>
             <li class="list-group-item">Step 10 - We will skip the next four settings for now, and leave “Calculate w/ 1+ Well?” checked.</li>
             <li class="list-group-item"><img src="{% static 'images/pcr-process-3.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
-            <li class="list-group-item">Step 11 - Click on “Update &amp; Review” to see review the generated paperwork.</li>
-            <li class="list-group-item">Step 12 - You will notice that all your samples and controls have been loading and organized into your selected plate. Notice how sample AAA-1 is only present for Assay 1.</li>
+            <li class="list-group-item">Step 11 - Click on “Update &amp; Review” to review the generated paperwork.</li>
+            <li class="list-group-item">Step 12 - You will notice that all your samples and controls have been loaded and organized into your selected plate. Notice how sample AAA-1 is only present for Assay 1.</li>
             <li class="list-group-item">Step 13 - Your list of primers are shown as well as your selected thermal cycler protocol.</li>
             <li class="list-group-item"><img src="{% static 'images/pcr-process-4.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 14 - You will also notice that you master mixes for each assay has been calculated for you.</li>
@@ -152,7 +152,7 @@
             <li class="list-group-item">Step 2 - Your list of processes should look similar to the image below.</li>
             <li class="list-group-item"><img src="{% static 'images/pcr-process-24.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item">Step 3 - Click on “Paperwork” on the menu and select which paperwork process you wish to print.</li>
-            <li class="list-group-item">Step 4 - Let us click on “All Assays Process” where we can see print our plates and gels. We may also refer to the extraction batches involve should we wish to print them as well.</li>
+            <li class="list-group-item">Step 4 - Let us click on “All Assays Process” where we can see print our plates and gels. We may also refer to the extraction batches involved should we wish to print them as well.</li>
             <li class="list-group-item"><img src="{% static 'images/pcr-process-25.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
             <li class="list-group-item"><img src="{% static 'images/pcr-process-26.png' %}"class="img-fluid border border-2 border-primary mt-2" alt="..."></li>
           </ul>
