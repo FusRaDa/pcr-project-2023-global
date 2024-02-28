@@ -31,7 +31,6 @@ class LocationForm(ModelForm):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs)
     self.fields['name'].error_messages = {'max_length': "Location name is too long."}
-    self.fields['name'].widget.attrs['placeholder'] = "Name of freezer, bin, drawer, etc..."
     self.fields['name'].widget.attrs['class'] = 'form-control'
 
   class Meta:

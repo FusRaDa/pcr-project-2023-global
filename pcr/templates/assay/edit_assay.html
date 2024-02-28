@@ -23,16 +23,25 @@
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Is this assay qualitative (PCR) or quantitative (qPCR)?">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Method</label>
           {{form.method}}
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="What genetic material are you testing?">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Type</label>
           {{form.type}}
         </div>
         
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Total volume in each well.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Reaction Volume (&#181;l)</label>
           {{form.reaction_volume}}
         </div>
@@ -40,21 +49,33 @@
 
       <div class="col-sm-3 form-width-18">
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Amount of extracted sample in each well.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Sample Volume (&#181;l)</label>
           {{form.sample_volume}}
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Only required if assay method is PCR. If not, leave empty.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Ladder</label>
           {{form.ladder}}
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="If assay method is PCR, set volume (µl) of ladder used in each gel.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Ladder Volume Per Gel (&#181;l)</label>
           {{form.ladder_volume_per_gel}}
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Are you adding loading dye to the well that has your ladder?">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Dye Used In Ladder?</label>
           {{form.dye_in_ladder}}
         </div>
@@ -62,16 +83,25 @@
 
       <div class="col-sm-3 form-width-18">
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Only required if your assay method is PCR.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Dye</label>
           {{form.dye}}
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Volume of loading dye added to each well.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Dye Volume Per Well (&#181;l)</label>
           {{form.dye_volume_per_well}}
         </div>
 
         <div class="text-center mb-2 mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="How many times do you wish to test this assay?">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Replicates</label>
           {{form.multiplicates}}
         </div>
@@ -81,6 +111,9 @@
         <div class="card">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
+              <span class="d-inline-block float-start me-1" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Required if your assay method is qPCR.">
+                <i class="fa-solid fa-circle-info"></i>
+              </span>
               Fluorescence
               <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#fluor-collapse" aria-expanded="true" aria-controls="fluor-collapse">
                 ⮝

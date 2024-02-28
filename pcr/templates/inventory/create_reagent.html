@@ -40,21 +40,33 @@
 
       <div class="col-sm-3 form-width-18">
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Is this reagent used for PCR or extraction?">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Usage</label>
           {{form.usage}}
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="If this reagent is for PCR, is it a primer, diluent (such as water), or a polymerase with a concentration unit of U/μL? If not, select General">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">PCR Reagent Type</label>
           {{form.pcr_reagent}}
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="If this reagent is a forward primer or a mix of both forward and reverse primers you may fill this field with a valid sequence.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Forward Sequence (3' to 5')</label>
           {{form.forward_sequence}}
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="If this reagent is a reverse primer or a mix of both forward and reverse primers you may fill this field with a valid sequence.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Reverse Sequence (5' to 3')</label>
           {{form.reverse_sequence}}
         </div>
@@ -72,11 +84,17 @@
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Required if reagent is for PCR.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Stock Concentration</label>
           {{form.stock_concentration}}
         </div>
 
         <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Required if reagent is for PCR.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
           <label class="form-label">Concentration Unit</label>
           {{form.unit_concentration}}
         </div>
