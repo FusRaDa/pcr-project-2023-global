@@ -31,7 +31,7 @@ def subscription_confirm(request):
   # get the session id from the URL and retrieve the session object from Stripe
   session_id = request.GET.get("session_id")
   if session_id == None:
-     return redirect('batches')
+    return redirect('batches')
  
   session = stripe.checkout.Session.retrieve(session_id)
 

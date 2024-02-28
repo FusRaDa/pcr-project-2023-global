@@ -168,7 +168,7 @@ PASSWORD_RESET_TIMEOUT = 14400
 # Stripe
 STRIPE_LIVE_SECRET_KEY = os.getenv('STRIPE_LIVE_SECRET_KEY')
 STRIPE_TEST_SECRET_KEY = os.getenv('STRIPE_TEST_SECRET_KEY')
-STRIPE_LIVE_MODE = os.getenv('STRIPE_LIVE_MODE') # Change to True in production
+STRIPE_LIVE_MODE = os.getenv('STRIPE_LIVE_MODE', "False") # Change to True in production
 DJSTRIPE_WEBHOOK_SECRET = os.getenv('DJSTRIPE_WEBHOOK_SECRET') # Get it from the section in the Stripe dashboard where you added the webhook endpoint
 DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"

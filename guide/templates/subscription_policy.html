@@ -1,6 +1,17 @@
 {% extends "base.html" %} 
 
 {% load static %}
+
+{% block seo %}
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HEJQ4PHVWX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HEJQ4PHVWX');
+</script>
+{% endblock %}
                                                                                                                                                                                                                               
 {% block title %} Subscription Policy {% endblock %} 
 
