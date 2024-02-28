@@ -81,7 +81,7 @@ def activate(request, uidb64, token):
 
     # create_test_objects(user) # REMOVE THIS FROM PRODUCTION - FOR TESTING PURPOSES ONLY
 
-    messages.success(request, 'Thank you for your email confirmation. Now you can login your account.')
+    messages.success(request, 'Thank you for your email confirmation. Now you can login to your account.')
     return redirect('login')
   else:
     messages.error(request, 'Activation link is invalid!')
