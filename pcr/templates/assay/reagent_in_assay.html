@@ -1,5 +1,5 @@
 <li class="list-group-item">
-  {{reagent.reagent.name}}
+  {{reagent}}
   <button 
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
     hx-post="{% url 'remove_reagent_assay' assay.pk reagent.reagent.pk %}"

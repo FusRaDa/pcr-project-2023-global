@@ -155,7 +155,7 @@
 
   <div class="row justify-content-center mt-4">
 
-    <div class="col-sm-2 mt-4">
+    <div class="col-sm-3 mt-4">
       <h3 class="text-center"><u>Controls<a href="{% url 'controls_in_assay' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-arrows-left-right"></i></a></u></h3>
       <ul class="list-group" id="controls-list">
         {% for control in assay_controls %}
@@ -164,7 +164,7 @@
       </ul>
     </div>
 
-    <div class="col-sm-2 mt-4">
+    <div class="col-sm-3 mt-4">
       <form class="gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
         <div class="input-group">
           {{search_control_form.text_search}}
@@ -179,7 +179,7 @@
       </ul>
     </div>
 
-    <div class="col-sm-4 mt-4">
+    <div class="col-sm-3 mt-4">
       <h3 class="text-center"><u>Reagents<a href="{% url 'reagents_in_assay' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></a></u></h3>
       <ul class="list-group" id="reagents-list">
         {% for reagent in assay_reagents %}
@@ -188,7 +188,7 @@
       </ul>
     </div>
 
-    <div class="col-sm-4 mt-4">
+    <div class="col-sm-3 mt-4">
       <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
         <div class="input-group">
           {{search_reagent_form.text_search}}

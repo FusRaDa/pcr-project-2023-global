@@ -46,7 +46,7 @@ class Control(models.Model):
     return False
 
   def __str__(self):
-    return self.name
+    return f"{self.name}-Lot#:{self.lot_number}"
 
 
 class Assay(models.Model):

@@ -93,7 +93,7 @@
 
   </form>
 
-  <div class="row justify-content-center">
+  {% comment %} <div class="row justify-content-center">
     <div class="col-sm-4">
 
       {% if tube.extractionprotocol_set.all %}
@@ -122,9 +122,9 @@
       {% endif %}
 
     </div>
-  </div>
+  </div> {% endcomment %}
 
-  <div class="row justify-content-center">
+  <div class="row justify-content-center mt-2">
     <div class="col d-flex justify-content-center">
       <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">
         Delete Tube
