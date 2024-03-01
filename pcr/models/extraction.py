@@ -14,7 +14,7 @@ class ExtractionProtocol(models.Model):
     RNA = 'RNA', _('RNA')
     TOTAL_NUCLEIC = 'TOTAL_NUCLEIC', _('Total Nucleic') # Both DNA & RNA
 
-  name = models.CharField(blank=False, max_length=75)
+  name = models.CharField(blank=False, max_length=100)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25) # type of genetic material being extracted from samples in batch
   
   tubes = models.ManyToManyField(Tube, through='TubeExtraction')

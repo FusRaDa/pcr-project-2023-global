@@ -13,7 +13,7 @@ from users.models import User
 class Location(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  name = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=100)
 
   def __str__(self):
     return self.name
@@ -22,10 +22,10 @@ class Location(models.Model):
 class Ladder(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  name = models.CharField(blank=False, max_length=25)
-  brand = models.CharField(blank=True, max_length=25)
-  lot_number = models.CharField(blank=False, max_length=25)
-  catalog_number = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=100)
+  brand = models.CharField(blank=True, max_length=100)
+  lot_number = models.CharField(blank=False, max_length=100)
+  catalog_number = models.CharField(blank=False, max_length=100)
 
   location = models.ManyToManyField(Location)
 
@@ -57,10 +57,10 @@ class Ladder(models.Model):
 class Dye(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  name = models.CharField(blank=False, max_length=25)
-  brand = models.CharField(blank=True, max_length=25)
-  lot_number = models.CharField(blank=False, max_length=25)
-  catalog_number = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=100)
+  brand = models.CharField(blank=True, max_length=100)
+  lot_number = models.CharField(blank=False, max_length=100)
+  catalog_number = models.CharField(blank=False, max_length=100)
 
   location = models.ManyToManyField(Location)
 
@@ -92,10 +92,10 @@ class Dye(models.Model):
 class Plate(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  name = models.CharField(blank=False, max_length=25)
-  brand = models.CharField(blank=True, max_length=25)
-  lot_number = models.CharField(blank=False, max_length=25)
-  catalog_number = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=100)
+  brand = models.CharField(blank=True, max_length=100)
+  lot_number = models.CharField(blank=False, max_length=100)
+  catalog_number = models.CharField(blank=False, max_length=100)
 
   location = models.ManyToManyField(Location)
 
@@ -140,10 +140,10 @@ class Plate(models.Model):
 class Gel(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  name = models.CharField(blank=False, max_length=25)
-  brand = models.CharField(blank=True, max_length=25)
-  lot_number = models.CharField(blank=False, max_length=25)
-  catalog_number = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=100)
+  brand = models.CharField(blank=True, max_length=100)
+  lot_number = models.CharField(blank=False, max_length=100)
+  catalog_number = models.CharField(blank=False, max_length=100)
 
   location = models.ManyToManyField(Location)
 
@@ -182,10 +182,10 @@ class Gel(models.Model):
 class Tube(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  name = models.CharField(blank=False, max_length=25)
-  brand = models.CharField(blank=True, max_length=25)
-  lot_number = models.CharField(blank=False, max_length=25)
-  catalog_number = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=100)
+  brand = models.CharField(blank=True, max_length=100)
+  lot_number = models.CharField(blank=False, max_length=100)
+  catalog_number = models.CharField(blank=False, max_length=100)
 
   location = models.ManyToManyField(Location)
 
@@ -241,10 +241,10 @@ class Reagent(models.Model):
     POLYMERASE = 'POLYMERASE', _('Polymerase') #used as units/micro-liter
     WATER = 'WATER', _('Water')
 
-  name = models.CharField(blank=False, max_length=50)
-  brand = models.CharField(blank=True, max_length=25)
-  lot_number = models.CharField(blank=False, max_length=25)
-  catalog_number = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=100)
+  brand = models.CharField(blank=True, max_length=100)
+  lot_number = models.CharField(blank=False, max_length=100)
+  catalog_number = models.CharField(blank=False, max_length=100)
   location = models.ManyToManyField(Location)
 
   usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.PCR, max_length=25)
@@ -257,8 +257,8 @@ class Reagent(models.Model):
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)
 
-  forward_sequence = models.CharField(blank=True, null=True, max_length=50) # 3 to 5
-  reverse_sequence = models.CharField(blank=True, null=True, max_length=50) # 5 to 3
+  forward_sequence = models.CharField(blank=True, null=True, max_length=100) # 3 to 5
+  reverse_sequence = models.CharField(blank=True, null=True, max_length=100) # 5 to 3
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)

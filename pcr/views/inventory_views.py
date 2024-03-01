@@ -516,6 +516,7 @@ def create_reagent(request):
       fseq = form.cleaned_data['forward_sequence']
       rseq = form.cleaned_data['reverse_sequence']
       usage = form.cleaned_data['usage']
+      pcr_reagent = form.cleaned_data['pcr_reagent']
 
       if fseq:
         reagent.forward_sequence = fseq.upper()
@@ -526,7 +527,12 @@ def create_reagent(request):
       reagent = form.save()
 
       base_url = reverse('reagents')
-      query_string = urlencode({'usage': usage})
+
+      if pcr_reagent == Reagent.PCRReagent.PRIMER:
+        query_string = urlencode({'usage': usage, 'pcr_reagent': pcr_reagent})
+      else:
+        query_string = urlencode({'usage': usage})
+      
       url = '{}?{}'.format(base_url, query_string)
 
       return redirect(url)

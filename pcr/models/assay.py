@@ -15,7 +15,7 @@ class Fluorescence(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   # Many-to-many with Assay
-  name = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=100)
 
   def __str__(self):
     return self.name
@@ -25,8 +25,8 @@ class Control(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   # Many-to-many with Assay
-  name = models.CharField(blank=False, max_length=25)
-  lot_number = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=100)
+  lot_number = models.CharField(blank=False, max_length=100)
   amount = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
 
   exp_date = models.DateField(blank=True, null=True, default=None)
@@ -61,7 +61,7 @@ class Assay(models.Model):
     DNA = 'DNA', _('DNA') # PCR
     RNA = 'RNA', _('RNA') # RT-PCR
 
-  name = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=100)
   method = models.CharField(choices=Methods.choices, blank=False, default=Methods.PCR, max_length=25)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.DNA, max_length=25)
 
@@ -164,7 +164,7 @@ class AssayCode(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   # AssayList is used to bundle assays together making creating a batch easier rather then selecting all assays
-  name = models.CharField(blank=False, max_length=25)
+  name = models.CharField(blank=False, max_length=100)
   assays = models.ManyToManyField(Assay)
 
   def __str__(self):

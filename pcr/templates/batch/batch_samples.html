@@ -9,7 +9,7 @@
 
   <div class="row justify-content-center">
     <h3 class="text-center">Batch Samples</h3>
-    <a href="{% url 'extraction_guide' %}" target="_blank" class="text-center">Extraction Guide</a>
+    <p class="text-center"><a href="{% url 'extraction_guide' %}" target="_blank" class="text-center">Extraction Guide</a></p>
   </div>
 
   {% for message in messages %}
@@ -55,7 +55,7 @@
   </div>
 
   <div class="text-center mb-2">
-    <a href="{% url 'batch_paperwork' batch.pk %}" target="_blank" class="btn btn-info">Preview</a>
+    <a href="{% url 'batch_paperwork' batch.pk %}" class="btn btn-info">Preview</a>
     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#number-samples" id="reset">
       Reset Samples
     </button>
