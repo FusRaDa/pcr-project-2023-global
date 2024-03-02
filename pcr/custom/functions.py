@@ -38,9 +38,10 @@ def samples_by_assay(samples):
     for assay in sample.assays.all():
       all_assays.append(assay)
   assays = list(set(all_assays))
-  
+  sorted_assays = sorted(assays, key=lambda x: x.name, reverse=True)
+
   assay_samples = []
-  for assay in assays:
+  for assay in sorted_assays:
     x = {assay:[]}
     for sample in samples:
       if sample.assays.contains(assay):
@@ -55,9 +56,10 @@ def samples_by_assay_multiplicates(samples):
     for assay in sample.assays.all():
       all_assays.append(assay)
   assays = list(set(all_assays))
-  
+  sorted_assays = sorted(assays, key=lambda x: x.name, reverse=True)
+
   assay_samples = []
-  for assay in assays:
+  for assay in sorted_assays:
     
     multiplicates = assay.multiplicates
     while multiplicates > 0:
