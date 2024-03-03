@@ -34,7 +34,7 @@ urlpatterns = [
   path('create-reagent-store/', items_views.create_reagent, name='create_reagent_store'),
   path('edit-reagent-store/<int:pk>/', items_views.edit_reagent, name='edit_reagent_store'),
 
-  path('store/', orders_views.store, name='store'),
+  path('', orders_views.store, name='store'),
   path('add-kit-to-order/<int:order_pk>/<int:kit_pk>/', orders_views.add_kit_to_order, name='add_kit_to_order'),
   path('remove-kit-from-order/<int:order_pk>/<int:kit_pk>/', orders_views.remove_kit_from_order, name='remove_kit_from_order'),
 
