@@ -38,7 +38,7 @@ def samples_by_assay(samples):
     for assay in sample.assays.all():
       all_assays.append(assay)
   assays = list(set(all_assays))
-  sorted_assays = sorted(assays, key=lambda x: x.name, reverse=True)
+  sorted_assays = sorted(assays, key=lambda x: x.name, reverse=False)
 
   assay_samples = []
   for assay in sorted_assays:
@@ -56,7 +56,7 @@ def samples_by_assay_multiplicates(samples):
     for assay in sample.assays.all():
       all_assays.append(assay)
   assays = list(set(all_assays))
-  sorted_assays = sorted(assays, key=lambda x: x.name, reverse=True)
+  sorted_assays = sorted(assays, key=lambda x: x.name, reverse=False)
 
   assay_samples = []
   for assay in sorted_assays:
