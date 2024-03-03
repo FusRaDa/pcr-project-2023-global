@@ -30,8 +30,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
                             
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False")
-DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False")
+DEBUG = os.getenv("DEBUG", "False") == "True"
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
 
 ALLOWED_HOSTS = []
@@ -106,18 +106,18 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 
 if DEVELOPMENT_MODE is True:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
+  DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
+  }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if os.getenv("DATABASE_URL", None) is None:
-        raise Exception("DATABASE_URL environment variable not defined")
-    DATABASES = {
-        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-    }
+  if os.getenv("DATABASE_URL", None) is None:
+    raise Exception("DATABASE_URL environment variable not defined")
+  DATABASES = {
+    "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+  }
 
 
 # Password validation
@@ -155,7 +155,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -187,7 +187,7 @@ PASSWORD_RESET_TIMEOUT = 14400
 # Stripe
 STRIPE_LIVE_SECRET_KEY = os.getenv('STRIPE_LIVE_SECRET_KEY')
 STRIPE_TEST_SECRET_KEY = os.getenv('STRIPE_TEST_SECRET_KEY')
-STRIPE_LIVE_MODE = os.getenv('STRIPE_LIVE_MODE', "False") # Change to True in production
+STRIPE_LIVE_MODE = os.getenv('STRIPE_LIVE_MODE', "False") == "True" # Change to True in production
 DJSTRIPE_WEBHOOK_SECRET = os.getenv('DJSTRIPE_WEBHOOK_SECRET') # Get it from the section in the Stripe dashboard where you added the webhook endpoint
 DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
