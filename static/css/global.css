@@ -1,0 +1,73 @@
+.errorlist li{
+  list-style-type: none;
+  color: red;
+}
+
+.messages {
+  color: red;
+}
+
+.form-width-18 {
+  width: 18rem;
+}
+
+.input-group-kit {
+  width: 40%;
+}
+
+.input-group-price {
+  width: 40%;
+}
+
+.input-group-process {
+  width: 100px;
+}
+
+.input-group-min {
+  width: 80%;
+}
+
+.kit-card {
+  width: 250px;
+}
+
+/* These styles should ONLY apply to process_paperwork.html AND pcr_paperwork.html */
+.table-text {
+  font-size: 8px;
+}		
+
+.table-text-tcp {
+  font-size: 8px;
+}
+
+.table-text-mm {
+  font-size: 10px;
+}
+
+.table-text-gel {
+  font-size: 10px;
+}
+
+.table-text-384 {
+  font-size: 6px;
+}
+
+.plate-col-384 {
+  width: 4.2%;
+}
+
+.plate-row {
+  height: 45px;
+}
+
+.table-width-8 {
+  width: 100px;
+}
+
+.table-width-24 {
+  width: 300px;
+}
+
+.table-width-48 {
+  width: 600px;
+}
