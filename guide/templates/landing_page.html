@@ -59,8 +59,10 @@
       </div>
 
       <div class="col-sm-6">
-        <button type="button" class="btn btn-warning btn-sm float-end">Play Slideshow</button>
-        <img src="/static/images/pcr-prep-diagram.png" class="img-fluid" alt="">
+        <button type="button" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modal1">
+          View Slides
+        </button>
+        <img src="/static/images/locations-slide.png" class="img-fluid" alt="">
       </div>
     </div>
 
@@ -76,8 +78,10 @@
       </div>
 
       <div class="col-sm-6">
-        <button type="button" class="btn btn-warning btn-sm float-end">Play Slideshow</button>
-        <img src="/static/images/pcr-prep-diagram.png" class="img-fluid" alt="">
+        <button type="button" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modal2">
+          View Slides
+        </button>
+        <img src="/static/images/assays-slide.png" class="img-fluid" alt="">
       </div>
     </div>
 
@@ -93,8 +97,10 @@
       </div>
 
       <div class="col-sm-6">
-        <button type="button" class="btn btn-warning btn-sm float-end">Play Slideshow</button>
-        <img src="/static/images/pcr-prep-diagram.png" class="img-fluid" alt="">
+        <button type="button" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modal3">
+          View Slides
+        </button>
+        <img src="/static/images/panels-slide.png" class="img-fluid" alt="">
       </div>
     </div>
 
@@ -102,7 +108,7 @@
 
     <div class="row mt-3 d-flex align-items-center">
       <div class="col-sm-6">
-        <h4 class="text-warning">Extraction - Batch</h4>
+        <h4 class="text-warning">Extraction</h4>
         <p class="text-light">When your inventory, tests, and protocols have been set you can now begin creating batches of samples for extraction.</p>
         <p class="text-light">Creating a batch requires you to give it a name, number of samples for extraction, and lab ID which must be composed of three capitalized English letters.</p>
         <p class="text-light">You must then select a panel to decide what assays are required for the samples. Then according to what type of assays (RNA, DNA, or both) you choose, you must select an extraction protocol appropriate to extracting that genetic material.</p>
@@ -110,25 +116,10 @@
       </div>
 
       <div class="col-sm-6">
-        <button type="button" class="btn btn-warning btn-sm float-end">Play Slideshow</button>
-        <img src="/static/images/pcr-prep-diagram.png" class="img-fluid" alt="">
-      </div>
-    </div>
-
-    <hr class="text-warning">
-
-    <div class="row mt-3 d-flex align-items-center">
-      <div class="col-sm-6">
-        <h4 class="text-warning">Extraction - Samples</h4>
-        <p class="text-light">When the batch is created, you are then able to assign each sample a sample ID. Note how PCRprep adds an additional sample that serves as a negative control.</p>
-        <p class="text-light">If you wish to change the number of samples you have in the batch, simply select “Reset Samples” and select a new number of samples you wish to have in the batch.</p>
-        <p class="text-light">Should a sample require more assays to test, you are able to individually change each sample to what assays they require.</p>
-        <p class="text-light">When all samples have been confirmed for extraction you may then generate and review paperwork for extraction. Once you have extracted the samples, select “Extracted” to update your inventory based on the calculated usage, and move the samples up for PCR.</p>
-      </div>
-
-      <div class="col-sm-6">
-        <button type="button" class="btn btn-warning btn-sm float-end">Play Slideshow</button>
-        <img src="/static/images/pcr-prep-diagram.png" class="img-fluid" alt="">
+        <button type="button" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modal4">
+          View Slides
+        </button>
+        <img src="/static/images/batch-samples-slide.png" class="img-fluid" alt="">
       </div>
     </div>
 
@@ -144,11 +135,260 @@
       </div>
 
       <div class="col-sm-6">
-        <button type="button" class="btn btn-warning btn-sm float-end">Play Slideshow</button>
-        <img src="/static/images/pcr-prep-diagram.png" class="img-fluid" alt="">
+        <button type="button" class="btn btn-warning btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modal5">
+          View Slides
+        </button>
+        <img src="/static/images/process-samples-slide.png" class="img-fluid" alt="">
       </div>
     </div>
 
   </div> 
+
+  <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Inventory</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="container">
+            <div id="carouselExampleCaptions" class="carousel carousel-dark slide">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="5" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="6" aria-label="Slide 3"></button>
+              </div>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="/static/images/locations-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/reagents-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/tubes-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/plates-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/gels-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/dyes-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/ladders-slide.png" class="img-fluid" alt="">
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Tests(Assays)</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="container">
+            <div id="carouselExampleCaptions1" class="carousel carousel-dark slide">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              </div>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="/static/images/assays-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/controls-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/fluorescence-slide.png" class="img-fluid" alt="">
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Protocols</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="container">
+            <div id="carouselExampleCaptions2" class="carousel carousel-dark slide">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              </div>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="/static/images/panels-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/extraction-protocols-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/thermal-cycler-protocol-slide.png" class="img-fluid" alt="">
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Extraction</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="container">
+            <div id="carouselExampleCaptions3" class="carousel carousel-dark slide">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions3" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions3" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              </div>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="/static/images/batch-samples-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/batch-paperwork-slide.png" class="img-fluid" alt="">
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions3" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions3" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Extraction - Samples</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="container">
+            <div id="carouselExampleCaptions4" class="carousel carousel-dark slide">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions4" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions4" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions4" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions4" data-bs-slide-to="3" aria-label="Slide 4"></button>
+              </div>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="/static/images/process-samples-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/review-process-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/process-paperwork-1-slide.png" class="img-fluid" alt="">
+                </div>
+                <div class="carousel-item">
+                  <img src="/static/images/process-paperwork-2-slide.png" class="img-fluid" alt="">
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions4" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions4" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 {% endblock %}
