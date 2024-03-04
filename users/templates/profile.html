@@ -11,24 +11,29 @@
   <div class="row align-items-center justify-content-center">
 
     {% comment %} TEST {% endcomment %}
-    <div class="col-sm-3">
-      {% if not request.user.is_subscribed %}
+    {% if request.user.is_staff %}
+      <div class="col-sm-3">
+        {% if not request.user.is_subscribed %}
+          <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+          <stripe-pricing-table 
+            pricing-table-id="prctbl_1OqSDYFtbvVO8zYHZ9Bve9Za"
+            publishable-key="pk_test_51N1uCqFtbvVO8zYHs2K1VeLXwu8jW8gid7eUyN3pkKI9r5vpNVI6RGeQ4MZW8ySmPHPdDCz92mYhjDW4wEd3YP4x00xKLD9CPD"
+            client-reference-id="{{ request.user.id }}">
+          </stripe-pricing-table>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="col-sm-3">
+        {% if not request.user.is_subscribed %}
         <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
-        <stripe-pricing-table pricing-table-id="prctbl_1OqSDYFtbvVO8zYHZ9Bve9Za"
-        publishable-key="pk_test_51N1uCqFtbvVO8zYHs2K1VeLXwu8jW8gid7eUyN3pkKI9r5vpNVI6RGeQ4MZW8ySmPHPdDCz92mYhjDW4wEd3YP4x00xKLD9CPD">
+        <stripe-pricing-table 
+          pricing-table-id="prctbl_1OqRkaFtbvVO8zYHmljOlFHP"
+          publishable-key="pk_live_51N1uCqFtbvVO8zYH9Sp3KxVxH6qeysPIS3UmNuWGNNacUvIgcrTBU61YdTZXYH8HkFawCANT39QQVFGS6Jv353hc00Rpxfk9GW"
+          client-reference-id="{{ request.user.id }}">
         </stripe-pricing-table>
-      {% endif %}
-    </div>
-
-    {% comment %} LIVE {% endcomment %}
-    {% comment %} <div class="col-sm-3">
-      {% if not request.user.is_subscribed %}
-      <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
-      <stripe-pricing-table pricing-table-id="prctbl_1OqRkaFtbvVO8zYHmljOlFHP"
-      publishable-key="pk_live_51N1uCqFtbvVO8zYH9Sp3KxVxH6qeysPIS3UmNuWGNNacUvIgcrTBU61YdTZXYH8HkFawCANT39QQVFGS6Jv353hc00Rpxfk9GW">
-      </stripe-pricing-table>
-      {% endif %}
-    </div> {% endcomment %}
+        {% endif %}
+      </div>
+    {% endif %}
 
     <div class="col-sm-4">
       <div class="table-responsive">
