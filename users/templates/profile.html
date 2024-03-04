@@ -13,36 +13,24 @@
     {% comment %} TEST {% endcomment %}
     {% if request.user.is_staff %}
       <div class="col-sm-3">
-        {% if not request.user.is_subscribed %}
-          <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
-          <stripe-pricing-table 
-            pricing-table-id="prctbl_1OqSDYFtbvVO8zYHZ9Bve9Za"
-            publishable-key="pk_test_51N1uCqFtbvVO8zYHs2K1VeLXwu8jW8gid7eUyN3pkKI9r5vpNVI6RGeQ4MZW8ySmPHPdDCz92mYhjDW4wEd3YP4x00xKLD9CPD"
-            client-reference-id="{{ request.user.id }}">
-          </stripe-pricing-table>
-        {% endif %}
-      </div>
-      <div class="col-sm-3">
-        {% if not request.user.is_subscribed %}
-          <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
-          <stripe-pricing-table 
-            pricing-table-id="prctbl_1OqTEGFtbvVO8zYHLBO82W2w"
-            publishable-key="pk_test_51N1uCqFtbvVO8zYHs2K1VeLXwu8jW8gid7eUyN3pkKI9r5vpNVI6RGeQ4MZW8ySmPHPdDCz92mYhjDW4wEd3YP4x00xKLD9CPD"
-            client-reference-id="{{ request.user.id }}">
-          </stripe-pricing-table>
-        {% endif %}
-      </div>
-    {% else %}
-      <div class="col-sm-3">
-        {% if not request.user.is_subscribed %}
         <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
         <stripe-pricing-table 
-          pricing-table-id="prctbl_1OqRkaFtbvVO8zYHmljOlFHP"
-          publishable-key="pk_live_51N1uCqFtbvVO8zYH9Sp3KxVxH6qeysPIS3UmNuWGNNacUvIgcrTBU61YdTZXYH8HkFawCANT39QQVFGS6Jv353hc00Rpxfk9GW"
+          pricing-table-id="prctbl_1OqjRvKzHgiG3d1So38tBpVs"
+          publishable-key="pk_test_51OqjAoKzHgiG3d1SXCqRYMuVKxFY8k3c54Nsn4qZBG956ThbgPfyQ70xmR6OAM8HS0GwVnl5ZeKhZ5WppzCQ9oZc00NNHIB3GC"
           client-reference-id="{{ request.user.id }}">
         </stripe-pricing-table>
-        {% endif %}
       </div>
+    {% else %}
+        {% if not request.user.is_subscribed %}
+        <div class="col-sm-3">
+          <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+          <stripe-pricing-table 
+            pricing-table-id="prctbl_1OqRkaFtbvVO8zYHmljOlFHP"
+            publishable-key="pk_live_51N1uCqFtbvVO8zYH9Sp3KxVxH6qeysPIS3UmNuWGNNacUvIgcrTBU61YdTZXYH8HkFawCANT39QQVFGS6Jv353hc00Rpxfk9GW"
+            client-reference-id="{{ request.user.id }}">
+          </stripe-pricing-table>
+        </div>
+        {% endif %}
     {% endif %}
 
     <div class="col-sm-4">
