@@ -55,6 +55,15 @@ class Kit(models.Model):
   @property
   def review_num(self):
     return self.review_set.count()
+  
+  @property
+  def abs_url(self):
+    try:
+      url = self.logo.url
+      abs = url.replace("/main", "")
+      return abs
+    except ValueError:
+      return '/static/kits/default-kit.png'
     
   def __str__(self):
     return f"{self.name}-{self.catalog_number}"
