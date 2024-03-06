@@ -20,7 +20,7 @@ class FluorescenceForm(ModelForm):
         message=f"Fluorescence with the name: {name} already exists."
       )
     
-    if Fluorescence.objects.filter(user=self.user).count() >= LIMITS.MAX_FLUORESCENCE_LIMIT:
+    if Fluorescence.objects.filter(user=self.user).count() >= LIMITS.MAX_FLUORESCENCE_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_FLUORESCENCE_LIMIT} fluorescence tags. Should you require more, please contact us!"
       )
@@ -58,12 +58,12 @@ class ControlForm(ModelForm):
       )
 
     if not self.user.is_subscribed:
-      if Control.objects.filter(user=self.user).count() >= LIMITS.CONTROL_LIMIT:
+      if Control.objects.filter(user=self.user).count() >= LIMITS.CONTROL_LIMIT and self.instance.pk == None:
         raise ValidationError(
           message=f"You have reached the maximum number of {LIMITS.CONTROL_LIMIT} controls. Consider upgrading or deleting your controls."
         )
       
-    if Control.objects.filter(user=self.user).count() >= LIMITS.MAX_CONTROL_LIMIT:
+    if Control.objects.filter(user=self.user).count() >= LIMITS.MAX_CONTROL_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_CONTROL_LIMIT} controls. Should you require more, please contact us!"
       )
@@ -113,12 +113,12 @@ class AssayForm(ModelForm):
       )
 
     if not self.user.is_subscribed:
-      if Assay.objects.filter(user=self.user).count() >= LIMITS.ASSAY_LIMIT:
+      if Assay.objects.filter(user=self.user).count() >= LIMITS.ASSAY_LIMIT and self.instance.pk == None:
         raise ValidationError(
           message=f"You have reached the maximum number of {LIMITS.ASSAY_LIMIT} assays. Consider upgrading or deleting your assays."
         )
       
-    if Assay.objects.filter(user=self.user).count() >= LIMITS.MAX_ASSAY_LIMIT:
+    if Assay.objects.filter(user=self.user).count() >= LIMITS.MAX_ASSAY_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_ASSAY_LIMIT} assays. Should you require more, please contact us!"
       )
@@ -291,12 +291,12 @@ class AssayCodeForm(ModelForm):
       )
 
     if not self.user.is_subscribed:
-      if AssayCode.objects.filter(user=self.user).count() >= LIMITS.ASSAY_CODE_LIMIT:
+      if AssayCode.objects.filter(user=self.user).count() >= LIMITS.ASSAY_CODE_LIMIT and self.instance.pk == None:
         raise ValidationError(
           message=f"You have reached the maximum number of {LIMITS.ASSAY_CODE_LIMIT} panels. Consider upgrading or deleting your panels."
         )
       
-    if AssayCode.objects.filter(user=self.user).count() >= LIMITS.MAX_ASSAY_CODE_LIMIT:
+    if AssayCode.objects.filter(user=self.user).count() >= LIMITS.MAX_ASSAY_CODE_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_ASSAY_CODE_LIMIT} panels. Should you require more, please contact us!"
       )

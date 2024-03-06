@@ -21,7 +21,7 @@ class ThermalCyclerProtocolForm(ModelForm):
         message=f"Thermal cycler protocol with the name: {name} already exists."
       )
     
-    if ThermalCyclerProtocol.objects.filter(user=self.user).count() >= LIMITS.MAX_THERMAL_CYCLER_PROTOCOL_LIMIT:
+    if ThermalCyclerProtocol.objects.filter(user=self.user).count() >= LIMITS.MAX_THERMAL_CYCLER_PROTOCOL_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_THERMAL_CYCLER_PROTOCOL_LIMIT} thermal cycler protocols. Should you require more, please contact us!"
       )

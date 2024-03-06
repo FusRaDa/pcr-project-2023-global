@@ -22,7 +22,7 @@ class LocationForm(ModelForm):
         message=f"Location with the name: {name} already exists."
       )
     
-    if Location.objects.filter(user=self.user).count() >= LIMITS.MAX_LOCATION_LIMIT:
+    if Location.objects.filter(user=self.user).count() >= LIMITS.MAX_LOCATION_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_LOCATION_LIMIT} storage locations. Should you require more, please contact us!"
       )
@@ -50,7 +50,7 @@ class LadderForm(ModelForm):
     required=False)
   
   def clean(self):
-    if Ladder.objects.filter(user=self.user).count() >= LIMITS.MAX_LADDER_LIMIT:
+    if Ladder.objects.filter(user=self.user).count() >= LIMITS.MAX_LADDER_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_LADDER_LIMIT} ladders. Should you require more, please contact us!"
       )
@@ -87,7 +87,7 @@ class GelForm(ModelForm):
     required=False)
   
   def clean(self):
-    if Gel.objects.filter(user=self.user).count() >= LIMITS.MAX_GEL_LIMIT:
+    if Gel.objects.filter(user=self.user).count() >= LIMITS.MAX_GEL_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_GEL_LIMIT} gels. Should you require more, please contact us!"
       )
@@ -125,7 +125,7 @@ class DyeForm(ModelForm):
     required=False)
   
   def clean(self):
-    if Dye.objects.filter(user=self.user).count() >= LIMITS.MAX_DYE_LIMIT:
+    if Dye.objects.filter(user=self.user).count() >= LIMITS.MAX_DYE_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_DYE_LIMIT} dyes. Should you require more, please contact us!"
       )
@@ -162,7 +162,7 @@ class PlateForm(ModelForm):
     required=False)
   
   def clean(self):
-    if Plate.objects.filter(user=self.user).count() >= LIMITS.MAX_PLATE_LIMIT:
+    if Plate.objects.filter(user=self.user).count() >= LIMITS.MAX_PLATE_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_PLATE_LIMIT} plates. Should you require more, please contact us!"
       )
@@ -201,7 +201,7 @@ class TubeForm(ModelForm):
     required=False)
   
   def clean(self):
-    if Tube.objects.filter(user=self.user).count() >= LIMITS.MAX_TUBE_LIMIT:
+    if Tube.objects.filter(user=self.user).count() >= LIMITS.MAX_TUBE_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_TUBE_LIMIT} tubes. Should you require more, please contact us!"
       )
@@ -246,7 +246,7 @@ class ReagentForm(ModelForm):
     forward_sequence = cleaned_data.get('forward_sequence')
     reverse_sequence = cleaned_data.get('reverse_sequence')
 
-    if Reagent.objects.filter(user=self.user).count() >= LIMITS.MAX_REAGENT_LIMIT:
+    if Reagent.objects.filter(user=self.user).count() >= LIMITS.MAX_REAGENT_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_REAGENT_LIMIT} reagents. Should you require more, please contact us!"
       )

@@ -22,7 +22,7 @@ class ExtractionProtocolForm(ModelForm):
         message=f"Extraction protocol with the name: {name} already exists."
       )
 
-    if ExtractionProtocol.objects.filter(user=self.user).count() >= LIMITS.MAX_EXTRACTION_PROTOCOL_LIMIT:
+    if ExtractionProtocol.objects.filter(user=self.user).count() >= LIMITS.MAX_EXTRACTION_PROTOCOL_LIMIT and self.instance.pk == None:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_EXTRACTION_PROTOCOL_LIMIT} extraction protocols. Should you require more, please contact us!"
       )

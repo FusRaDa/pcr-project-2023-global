@@ -34,6 +34,8 @@ def assays(request):
       if type:
         filters['type'] = type
       assays = Assay.objects.filter(user=request.user, **filters).order_by('name')
+    else:
+      print(form.errors)
 
   paginator = Paginator(assays, 25)
   page_number = request.GET.get("page")
@@ -249,6 +251,8 @@ def fluorescence(request):
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       fluorescence  = Fluorescence.objects.filter(user=request.user).filter(Q(name__icontains=text_search) | Q(assay__name__icontains=text_search)).distinct().order_by('name')
+    else:
+      print(form.errors)
 
   paginator = Paginator(fluorescence, 25)
   page_number = request.GET.get("page")
@@ -323,7 +327,9 @@ def controls(request):
       if location:
         filters['location'] = location
       controls = Control.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(lot_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
-  
+    else:
+      print(form.errors)
+
   paginator = Paginator(controls, 25)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
