@@ -1,12 +1,12 @@
-# This files keeps all enums as limits to how many object can be created per user. Premium tier will be unlimited!
+# This files keeps all enums as limits to how many object can be created per user. Premium tier will have higher limits!
 
 class LIMITS:
   # DEPENDANT LIMITS
-  ASSAY_LIMIT = 10
-  CONTROL_LIMIT = 50
-  ASSAY_CODE_LIMIT = 20
-  BATCH_LIMIT = 500
-  PROCESS_LIMIT = 500
+  ASSAY_LIMIT = 5
+  CONTROL_LIMIT = 25
+  ASSAY_CODE_LIMIT = 10
+  BATCH_LIMIT = 30
+  PROCESS_LIMIT = 10
 
   # INDEPENDANT LIMITS
   MAX_ASSAY_LIMIT = 1000
