@@ -770,9 +770,21 @@ def process_paperwork(request, pk):
     process.qpcr_dna_json = dna_qpcr_json
     process.qpcr_rna_json = rna_qpcr_json
 
-    process.plates_for_qpcr = qpcr_plates
-    process.plates_for_pcr = pcr_plates
-    process.gels = gels
+    qpcr_plates_json = []
+    for plate in qpcr_plates:
+      qpcr_plates_json.append({'name': plate['name'], 'catalog_number': plate['catalog_number'], 'lot_number': plate['lot_number'], 'size': plate['size'], 'amount': plate['amount'], 'used': plate['used']})
+
+    pcr_plates_json = []
+    for plate in pcr_plates:
+      pcr_plates_json.append({'name': plate['name'], 'catalog_number': plate['catalog_number'], 'lot_number': plate['lot_number'], 'size': plate['size'], 'amount': plate['amount'], 'used': plate['used']})
+
+    gels_json = []
+    for gel in gels:
+      gels_json.append({'name': gel['name'], 'catalog_number': gel['catalog_number'], 'lot_number': gel['lot_number'], 'size': gel['size'], 'amount': gel['amount'], 'used': gel['used']})
+
+    process.plates_for_qpcr = qpcr_plates_json
+    process.plates_for_pcr = pcr_plates_json
+    process.gels = gels_json
 
     reagent_usage_json = []
     for reagent in reagent_usage:
