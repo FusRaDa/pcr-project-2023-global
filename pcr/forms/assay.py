@@ -76,6 +76,8 @@ class ControlForm(ModelForm):
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+
+    self.fields['amount'].widget.attrs['min'] = 0
     
   class Meta:
     model = Control
@@ -131,7 +133,7 @@ class AssayForm(ModelForm):
         message="qPCR assays do not require a ladder."
       )
     
-    if ladder_volume_per_gel == 0 and method == Assay.Methods.PCR:
+    if ladder_volume_per_gel <= 0 and method == Assay.Methods.PCR:
       raise ValidationError(
         message="PCR assays must contain a ladder volume per gel."
       )
@@ -151,7 +153,7 @@ class AssayForm(ModelForm):
         message="qPCR assays do not require a loading gel dye."
       )
     
-    if dye_volume_per_well == 0 and method == Assay.Methods.PCR:
+    if dye_volume_per_well <= 0 and method == Assay.Methods.PCR:
       raise ValidationError(
         message="PCR assays must contain a loading gel dye volume per well."
       )
@@ -198,7 +200,14 @@ class AssayForm(ModelForm):
     self.fields['dye'].widget.attrs['class'] = 'form-select'
     self.fields['dye_volume_per_well'].widget.attrs['class'] = 'form-control'
     self.fields['multiplicates'].widget.attrs['class'] = 'form-control'
-    
+
+    self.fields['sample_volume'].widget.attrs['min'] = 0
+    self.fields['reaction_volume'].widget.attrs['min'] = 0
+    self.fields['ladder_volume_per_gel'].widget.attrs['min'] = 0
+    self.fields['dye_volume_per_well'].widget.attrs['min'] = 0
+    self.fields['multiplicates'].widget.attrs['min'] = 1
+    self.fields['multiplicates'].widget.attrs['max'] = 10
+
   class Meta:
     model = Assay
     exclude = ['user', 'controls', 'reagents']

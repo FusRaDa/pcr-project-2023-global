@@ -287,13 +287,14 @@ class ReagentForm(ModelForm):
       )
     
     valid_seq = re.compile('[^GUACT]')
-    if forward_sequence and valid_seq.search(forward_sequence.upper()) is not None:
+    if forward_sequence and valid_seq.search(forward_sequence) is not None:
       raise ValidationError(
-        message="Forward sequence for primer contains invalid characters."
+        message="Forward sequence for primer contains invalid characters. Base pair letters must be capitalized."
       )
-    if reverse_sequence and valid_seq.search(reverse_sequence.upper()) is not None:
+    
+    if reverse_sequence and valid_seq.search(reverse_sequence) is not None:
       raise ValidationError(
-        message="Reverse sequence for primer contains invalid characters."
+        message="Reverse sequence for primer contains invalid characters. Base pair letters must be capitalized."
       )
     
   def __init__(self, *args, **kwargs):

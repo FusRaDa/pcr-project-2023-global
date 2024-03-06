@@ -118,7 +118,7 @@ def profile(request):
   control_count = Control.objects.filter(user=request.user).count()
   assay_code_count = AssayCode.objects.filter(user=request.user).count()
   batch_count = Batch.objects.filter(user=request.user).count()
-  process_count = Process.objects.filter(user=request.user).count()
+  process_count = Process.objects.filter(user=request.user, is_processed=True).count()
 
   limit_assay = LIMITS.ASSAY_LIMIT
   limit_control = LIMITS.CONTROL_LIMIT
