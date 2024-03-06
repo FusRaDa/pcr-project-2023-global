@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import RestrictedError
 from django.db.models import Q
 from django.db.models import F
 from django.contrib import messages
@@ -28,7 +29,7 @@ def extraction_protocols(request):
       filters = {}
       if type:
         filters['type'] = type
-      protocols = ExtractionProtocol.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(tubes__name__icontains=text_search) | Q(reagents__name__icontains=text_search)).distinct().order_by('name')
+      protocols = ExtractionProtocol.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(tubes__name__icontains=text_search) | Q(reagents__name__icontains=text_search)).distinct().order_by('name')
 
   paginator = Paginator(protocols, 25)
   page_number = request.GET.get("page")
@@ -87,8 +88,12 @@ def edit_extraction_protocol(request, pk):
   if 'delete' in request.POST:
     del_form = DeletionForm(request.POST, value=protocol.name)
     if del_form.is_valid():
-      protocol.delete()
-      return redirect('extraction_protocols')
+      try:
+        protocol.delete()
+        return redirect('extraction_protocols')
+      except RestrictedError:
+        messages.error(request, f"{protocol.name} cannot be deleted since it is being used in a batch.")
+        return redirect('extraction_protocols')
     else:
       print(del_form.errors)
 

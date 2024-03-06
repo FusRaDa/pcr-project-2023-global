@@ -124,6 +124,7 @@ def batch_samples(request, pk):
         number_of_samples=number_of_samples, 
         lab_id=lab_id, 
         user=request.user,
+        negative_control=batch.negative_control
       )
 
     return redirect(request.path_info)

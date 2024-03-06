@@ -33,7 +33,7 @@ def assays(request):
         filters['method'] = method
       if type:
         filters['type'] = type
-      assays = Assay.objects.filter(**filters, user=request.user).order_by('name')
+      assays = Assay.objects.filter(user=request.user, **filters).order_by('name')
 
   paginator = Paginator(assays, 25)
   page_number = request.GET.get("page")
@@ -322,7 +322,7 @@ def controls(request):
       filters = {}
       if location:
         filters['location'] = location
-      controls = Control.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(lot_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+      controls = Control.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(lot_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
   
   paginator = Paginator(controls, 25)
   page_number = request.GET.get("page")

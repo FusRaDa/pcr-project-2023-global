@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import RestrictedError
 from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -20,7 +21,7 @@ def assay_codes(request):
     form = SearchAssayCodeForm(request.GET)
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
-      assay_codes  = AssayCode.objects.filter(Q(name__icontains=text_search) | Q(assays__name__icontains=text_search)).distinct().order_by('name')
+      assay_codes  = AssayCode.objects.filter(user=request.user).filter(Q(name__icontains=text_search) | Q(assays__name__icontains=text_search)).distinct().order_by('name')
 
   paginator = Paginator(assay_codes, 25)
   page_number = request.GET.get("page")
@@ -95,8 +96,12 @@ def edit_assay_code(request, pk):
   if 'delete' in request.POST:
     del_form = DeletionForm(request.POST, value=code.name)
     if del_form.is_valid():
-      code.delete()
-      return redirect('assay_codes')
+      try:
+        code.delete()
+        return redirect('assay_codes')
+      except RestrictedError:
+        messages.error(request, f"{code.name} cannot be deleted since it is being used in a batch.")
+        return redirect('assay_codes')
     else:
       messages.error(request, "Invalid assay code name entered, please try again.")
       print(del_form.errors)

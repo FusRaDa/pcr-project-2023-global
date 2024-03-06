@@ -89,7 +89,7 @@ def ladders(request):
       filters = {}
       if location:
         filters['location'] = location
-      ladders = Ladder.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+      ladders = Ladder.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -168,7 +168,7 @@ def gels(request):
         filters['location'] = location
       if size:
         filters['size'] = size
-      gels = Gel.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+      gels = Gel.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -246,7 +246,7 @@ def dyes(request):
       if location:
         filters['location'] = location
 
-      dyes = Dye.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+      dyes = Dye.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -330,7 +330,7 @@ def plates(request):
       if type:
         filters['type'] = type
 
-      plates = Plate.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+      plates = Plate.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -407,7 +407,7 @@ def tubes(request):
       filters = {}
       if location:
         filters['location'] = location
-      tubes = Tube.objects.filter(**filters, user=request.user).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+      tubes = Tube.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -491,7 +491,7 @@ def reagents(request):
         filters['usage'] = usage
       if pcr_reagent:
         filters['pcr_reagent'] = pcr_reagent
-      reagents = Reagent.objects.filter(**filters, user=request.user).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F('exp_date').asc(nulls_last=True))
+      reagents = Reagent.objects.filter(user=request.user, **filters).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F('exp_date').asc(nulls_last=True))
     else:
       print(form.errors)
 

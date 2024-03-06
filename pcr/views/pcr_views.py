@@ -4,12 +4,11 @@ from django.utils import timezone
 import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import F
+from django.db.models import RestrictedError
 from django.http import HttpResponse
 from django.contrib import messages
 from django.core.paginator import Paginator
 from decimal import Decimal
-from users.models import User
 
 from ..forms.general import DeletionForm, SearchProcessForm, SearchBatchForm
 from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
@@ -67,8 +66,12 @@ def edit_tcprotocol(request, pk):
   if 'delete' in request.POST:
     del_form = DeletionForm(request.POST, value=protocol.name)
     if del_form.is_valid():
-      protocol.delete()
-      return redirect('tcprotocols')
+      try:
+        protocol.delete()
+        return redirect('tcprotocols')
+      except RestrictedError:
+        messages.error(request, f"{protocol.name} cannot be deleted since it is being used in a PCR process.")
+        return redirect('tcprotocols')
     else:
       print(del_form.errors)
 
@@ -123,7 +126,7 @@ def extracted_batches(request):
         end_date += datetime.timedelta(days=1)
         filters['date_created__range'] = [start_date, end_date]
 
-      batches = Batch.objects.filter(**filters, is_extracted=True, user=request.user).order_by('date_created')
+      batches = Batch.objects.filter(user=request.user, is_extracted=True, **filters).order_by('date_created')
     else:
       print(form.errors)
 
@@ -887,7 +890,7 @@ def processes(request):
         end_date += datetime.timedelta(days=1)
         filters['date_processed__range'] = [start_date, end_date]
 
-      processes = Process.objects.filter(**filters, is_processed=True, user=request.user).order_by('-date_processed')
+      processes = Process.objects.filter(user=request.user, is_processed=True, **filters).order_by('-date_processed')
     else:
       print(form.errors)
 
