@@ -123,7 +123,7 @@
               <div class="collapse" id="ladder-collapse-{{location.pk}}">
                 <div class="card-body"> 
                   <ul class="list-group">
-                    {% for ladder in location.gel_set.all %}
+                    {% for ladder in location.ladder_set.all %}
                     <li class="list-group-item">{{ladder}}</li>
                     {% endfor %}
                   </ul>
@@ -142,7 +142,7 @@
               <div class="collapse" id="dye-collapse-{{location.pk}}">
                 <div class="card-body"> 
                   <ul class="list-group">
-                    {% for dye in location.gel_set.all %}
+                    {% for dye in location.dye_set.all %}
                     <li class="list-group-item">{{dye}}</li>
                     {% endfor %}
                   </ul>
