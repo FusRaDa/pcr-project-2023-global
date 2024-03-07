@@ -58,27 +58,27 @@ class BatchForm(ModelForm):
     extraction_protocol_tn = cleaned_data.get('extraction_protocol_tn')
 
     if not self.user.is_subscribed:
-      if Control.objects.filter(user=self.user).count() >= LIMITS.CONTROL_LIMIT:
+      if Control.objects.filter(user=self.user).count() > LIMITS.CONTROL_LIMIT:
         raise ValidationError(
           message=f"You have reached the maximum number of {LIMITS.CONTROL_LIMIT} controls. Consider upgrading or deleting your controls."
         )
       
-      if Assay.objects.filter(user=self.user).count() >= LIMITS.ASSAY_LIMIT:
+      if Assay.objects.filter(user=self.user).count() > LIMITS.ASSAY_LIMIT:
         raise ValidationError(
           message=f"You have reached the maximum number of {LIMITS.ASSAY_LIMIT} assays. Consider upgrading or deleting your assays."
         )
       
-      if AssayCode.objects.filter(user=self.user).count() >= LIMITS.ASSAY_CODE_LIMIT:
+      if AssayCode.objects.filter(user=self.user).count() > LIMITS.ASSAY_CODE_LIMIT:
         raise ValidationError(
           message=f"You have reached the maximum number of {LIMITS.ASSAY_CODE_LIMIT} panels. Consider upgrading or deleting your panels."
         )
       
-      if Batch.objects.filter(user=self.user).count() >= LIMITS.BATCH_LIMIT:
+      if Batch.objects.filter(user=self.user).count() > LIMITS.BATCH_LIMIT:
         raise ValidationError(
           message=f"You have reached the maximum number of {LIMITS.BATCH_LIMIT} batches. Consider upgrading or deleting your batches."
         )
     
-    if Batch.objects.filter(user=self.user).count() >= LIMITS.MAX_BATCH_LIMIT:
+    if Batch.objects.filter(user=self.user).count() > LIMITS.MAX_BATCH_LIMIT:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_BATCH_LIMIT} batches. Should you require more, please contact us!"
       )
@@ -89,9 +89,9 @@ class BatchForm(ModelForm):
       )
 
     valid_lab_id = re.compile('^[A-Z]+$')
-    if valid_lab_id.match(lab_id.upper()) is None:
+    if valid_lab_id.match(lab_id) is None:
       raise ValidationError(
-        message="Lab ID contains must only contain English letters."
+        message="Lab ID must contain three capitalized English letters."
       )
 
     if Batch.objects.filter(user=self.user, lab_id=lab_id).exists():
