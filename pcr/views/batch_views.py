@@ -35,8 +35,6 @@ def create_batch(request):
       batch = form.save(commit=False)
       batch.user = request.user
 
-      batch.lab_id = lab_id.upper()
-
       if extraction_protocol_dna:
         batch.extraction_protocol = extraction_protocol_dna
 
