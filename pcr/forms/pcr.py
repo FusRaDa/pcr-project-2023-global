@@ -228,9 +228,13 @@ class ProcessForm(ModelForm):
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
+    self.fields['pcr_dna_protocol'].queryset = ThermalCyclerProtocol.objects.filter(user=self.user, type=ThermalCyclerProtocol.Types.DNA)
+    self.fields['pcr_rna_protocol'].queryset = ThermalCyclerProtocol.objects.filter(user=self.user, type=ThermalCyclerProtocol.Types.RNA)
+    self.fields['qpcr_dna_protocol'].queryset = ThermalCyclerProtocol.objects.filter(user=self.user, type=ThermalCyclerProtocol.Types.DNA)
+    self.fields['qpcr_rna_protocol'].queryset = ThermalCyclerProtocol.objects.filter(user=self.user, type=ThermalCyclerProtocol.Types.RNA)
+
     self.fields['qpcr_plate'].queryset = Plate.objects.filter(user=self.user, type=Plate.Types.qPCR)
     self.fields['pcr_plate'].queryset = Plate.objects.filter(user=self.user, type=Plate.Types.PCR)
-
     self.fields['gel'].queryset = Gel.objects.filter(user=self.user)
 
     self.fields['name'].widget.attrs['class'] = 'form-control'
