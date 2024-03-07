@@ -557,6 +557,12 @@ def edit_reagent(request, pk):
   if 'update' in request.POST:
     form = ReagentForm(request.POST, user=request.user, instance=reagent)
     if form.is_valid():
+
+      if reagent.forward_sequence:
+        reagent.forward_sequence = reagent.forward_sequence.upper()
+      if reagent.reverse_sequence:
+        reagent.reverse_sequence = reagent.reverse_sequence.upper()
+
       form.save()
       
       base_url = reverse('reagents')
