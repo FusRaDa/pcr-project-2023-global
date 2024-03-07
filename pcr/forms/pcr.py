@@ -39,6 +39,14 @@ class ThermalCyclerProtocolForm(ModelForm):
     self.fields['extension_duration'].widget.attrs['class'] = 'form-control'
     self.fields['number_of_cycles'].widget.attrs['class'] = 'form-control'
 
+    self.fields['denature_temp'].widget.attrs['min'] = 0
+    self.fields['denature_duration'].widget.attrs['min'] = 0
+    self.fields['anneal_temp'].widget.attrs['min'] = 0
+    self.fields['anneal_duration'].widget.attrs['min'] = 0
+    self.fields['extension_temp'].widget.attrs['min'] = 0
+    self.fields['extension_duration'].widget.attrs['min'] = 0
+    self.fields['number_of_cycles'].widget.attrs['min'] = 0
+
   class Meta:
     model = ThermalCyclerProtocol
     exclude = ['user']
