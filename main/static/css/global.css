@@ -31,7 +31,7 @@
   width: 250px;
 }
 
-/* These styles should ONLY apply to process_paperwork.html AND pcr_paperwork.html */
+/* These styles should ONLY apply to batch_paperwork AND process_paperwork.html AND pcr_paperwork.html */
 .table-text {
   font-size: 8px;
 }		
@@ -71,3 +71,5 @@
 .table-width-48 {
   width: 600px;
 }
+
+/* .table-text {font-size: 8px;} .table-text-tcp {font-size: 8px;} .table-text-mm{font-size: 10px;} .table-text-gel {font-size: 10px;} .table-text-384 {font-size: 6px;} .plate-col-384 {width: 4.2%;} .plate-row {height: 45px;} .table-width-8 {width: 100px;} .table-width-24 {width: 300px;} .table-width-48 {width: 600px;} */
