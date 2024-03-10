@@ -1,0 +1,25 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Password Reset Complete {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="my-5">
+
+    <div class="d-flex justify-content-center">
+      <h1 class="text-center">Oops something went wrong! Please contact us at pcrprep@gmail.com</h1>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <a href="{% url 'landing_page' %}">
+        <img src="{% static 'images/pcr-prep-logo.png' %}"class="img-thumbnail" alt="...">
+      </a>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

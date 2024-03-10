@@ -161,6 +161,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 
 # Custom settings
+handler404 = 'accounts.views.custom_404'
+handler500 = 'accounts.views.custom_500'
 
 # Custom user extension
 AUTH_USER_MODEL = 'users.User'
