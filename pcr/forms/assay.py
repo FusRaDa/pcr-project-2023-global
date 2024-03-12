@@ -246,6 +246,9 @@ class ReagentAssayForm(ModelForm):
     self.fields['final_concentration'].widget.attrs['class'] = 'form-control'
     self.fields['order'].widget.attrs['class'] = 'form-control'
 
+    self.fields['final_concentration'].widget.attrs['required'] = 'True'
+    self.fields['order'].widget.attrs['required'] = 'True'
+
     if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name:
       self.fields['final_concentration'].widget.attrs['disabled'] = 'True'
     
