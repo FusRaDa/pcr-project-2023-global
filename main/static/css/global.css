@@ -27,6 +27,10 @@
   width: 80%;
 }
 
+.input-group-loading {
+  width: 60%;
+}
+
 .kit-card {
   width: 250px;
 }

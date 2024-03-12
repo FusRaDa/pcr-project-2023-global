@@ -693,13 +693,13 @@ def load_gel(all_samples, gels, minimum_samples_in_gel):
   return gel_dict, all_samples
 
 
-def process_plates(all_samples, plates, protocol, minimum_samples_in_plate):
+def process_plates(all_samples, plates, protocol, minimum_samples_in_plate, loading_method):
   qpcr_data = []
 
   is_empty = False
   while not is_empty:
  
-    plate_dict, all_samples = load_plate(all_samples, plates, protocol, minimum_samples_in_plate)
+    plate_dict, all_samples = load_plate(all_samples, plates, protocol, minimum_samples_in_plate, loading_method)
     qpcr_data.append(plate_dict)
 
     # check if all samples for each assay is empty if not continue the process of making plates
