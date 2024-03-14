@@ -537,7 +537,7 @@ def organized_plate(all_samples, plate, samples_data, primers_data, assays_data,
           samples.remove(sample)
 
 
-def compressed_plate(all_samples, samples_data, primers_data, assays_data, minimum_samples_in_plate, remaining_wells, position):
+def compressed_plate(all_samples, plate, samples_data, primers_data, assays_data, minimum_samples_in_plate, remaining_wells, position):
   for data in all_samples:
 
     if remaining_wells == 0:
@@ -565,6 +565,18 @@ def compressed_plate(all_samples, samples_data, primers_data, assays_data, minim
             loaded_samples.append(sample)
             samples_data['samples'].update(sample)
 
+          for control in assay.controlassay_set.all().order_by('order'):
+            position += 1
+            control_data = {f"well{position}": {
+              'color': control_color,
+              'lab_id': control.control.name,
+              'sample_id': control.control.lot_number,
+              'assay': assay.name
+            }}
+            samples_data['samples'].update(control_data)
+
+          remaining_wells = plate.size - position
+          
           assay_dict = {
             'name': assay.name,
             'sample_num': num_samples + control_wells,
@@ -618,7 +630,7 @@ def compressed_plate(all_samples, samples_data, primers_data, assays_data, minim
         else:
           # create validation for minimum_samples_in_plate where it cannot be negative or greater than smallest plate size. 
           if minimum_samples_in_plate + control_wells <= remaining_wells:
-            
+
             num_samples = 0
             for sample in samples[:remaining_wells - control_wells]:
               num_samples += 1
@@ -627,6 +639,16 @@ def compressed_plate(all_samples, samples_data, primers_data, assays_data, minim
               del sample[None]
               loaded_samples.append(sample)
               samples_data['samples'].update(sample)
+
+            for control in assay.controlassay_set.all().order_by('order'):
+              position += 1
+              control_data = {f"well{position}": {
+                'color': control_color,
+                'lab_id': control.control.name,
+                'sample_id': control.control.lot_number,
+                'assay': assay.name
+              }}
+              samples_data['samples'].update(control_data)
             
             assay_dict = {
               'name': assay.name,
@@ -678,15 +700,6 @@ def compressed_plate(all_samples, samples_data, primers_data, assays_data, minim
 
             assays_data['assays'].append(assay_dict)
 
-            for control in assay.controlassay_set.all().order_by('order'):
-              position += 1
-              control_data = {f"well{position}": {
-                'color': control_color,
-                'lab_id': control.control.name,
-                'sample_id': control.control.lot_number,
-                'assay': assay.name
-              }}
-              samples_data['samples'].update(control_data)
             remaining_wells = 0
           else:
             remaining_wells = 0
@@ -974,6 +987,7 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate, loading_
   if loading_method == Process.LoadingMethod.COMPRESSED:
     compressed_plate(
       all_samples=all_samples,
+      plate=plate,
       samples_data=samples_data,
       primers_data=primers_data,
       assays_data=assays_data,
