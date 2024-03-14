@@ -269,7 +269,7 @@ def process_paperwork(request, pk):
   dna_qpcr_json = None
   if requires_dna_qpcr:
     samples_dna_qpcr = dna_qpcr_samples(assay_samples)
-    dna_qpcr_json = process_plates(samples_dna_qpcr, qpcr_plates, process.qpcr_dna_protocol, process.min_samples_per_plate_dna_qpcr)
+    dna_qpcr_json = process_plates(samples_dna_qpcr, qpcr_plates, process.qpcr_dna_protocol, process.min_samples_per_plate_dna_qpcr, process.loading_method_qdna)
 
     for plate in dna_qpcr_json:
       for assay in plate['assays']:
@@ -312,7 +312,7 @@ def process_paperwork(request, pk):
   rna_qpcr_json = None
   if requires_rna_qpcr:
     samples_rna_qpcr = rna_qpcr_samples(assay_samples)
-    rna_qpcr_json = process_plates(samples_rna_qpcr, qpcr_plates, process.qpcr_rna_protocol, process.min_samples_per_plate_rna_qpcr)
+    rna_qpcr_json = process_plates(samples_rna_qpcr, qpcr_plates, process.qpcr_rna_protocol, process.min_samples_per_plate_rna_qpcr, process.loading_method_qrna)
 
     for plate in rna_qpcr_json:
       for assay in plate['assays']:
@@ -357,7 +357,7 @@ def process_paperwork(request, pk):
   dna_pcr_json = None
   if requires_dna_pcr:
     samples_dna_pcr = dna_pcr_samples(assay_samples)
-    dna_pcr_json = process_plates(samples_dna_pcr, pcr_plates, process.pcr_dna_protocol, process.min_samples_per_plate_dna_pcr)
+    dna_pcr_json = process_plates(samples_dna_pcr, pcr_plates, process.pcr_dna_protocol, process.min_samples_per_plate_dna_pcr, process.loading_method_dna)
 
     for plate in dna_pcr_json:
       for assay in plate['assays']:
@@ -400,7 +400,7 @@ def process_paperwork(request, pk):
   rna_pcr_json = None
   if requires_rna_pcr:
     samples_rna_pcr = rna_pcr_samples(assay_samples)
-    rna_pcr_json = process_plates(samples_rna_pcr, pcr_plates, process.pcr_rna_protocol, process.min_samples_per_plate_rna_pcr)
+    rna_pcr_json = process_plates(samples_rna_pcr, pcr_plates, process.pcr_rna_protocol, process.min_samples_per_plate_rna_pcr, process.loading_method_rna)
 
     for plate in rna_pcr_json:
       for assay in plate['assays']:

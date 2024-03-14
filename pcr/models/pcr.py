@@ -35,6 +35,15 @@ class Process(models.Model):
 
   name = models.CharField(blank=True, null=True, default=None, max_length=100)
 
+  class LoadingMethod(models.TextChoices):
+    ORGANIZED = 'ORGANIZED', _('Organized')
+    COMPRESSED = 'COMPRESSED', _('Compressed')
+
+  loading_method_dna = models.CharField(choices=LoadingMethod.choices, blank=False, default=LoadingMethod.ORGANIZED, max_length=25)
+  loading_method_rna = models.CharField(choices=LoadingMethod.choices, blank=False, default=LoadingMethod.ORGANIZED, max_length=25)
+  loading_method_qdna = models.CharField(choices=LoadingMethod.choices, blank=False, default=LoadingMethod.ORGANIZED, max_length=25)
+  loading_method_qrna = models.CharField(choices=LoadingMethod.choices, blank=False, default=LoadingMethod.ORGANIZED, max_length=25)
+
   is_plus_one_well = models.BooleanField(default=True)
 
   pcr_dna_protocol = models.ForeignKey(ThermalCyclerProtocol, on_delete=models.RESTRICT, related_name='pcr_dna', blank=True, null=True, default=None)

@@ -252,6 +252,11 @@ class ProcessForm(ModelForm):
     self.fields['qpcr_dna_protocol'].widget.attrs['class'] = 'form-select'
     self.fields['qpcr_rna_protocol'].widget.attrs['class'] = 'form-select'
 
+    self.fields['loading_method_dna'].widget.attrs['class'] = 'form-select'
+    self.fields['loading_method_rna'].widget.attrs['class'] = 'form-select'
+    self.fields['loading_method_qdna'].widget.attrs['class'] = 'form-select'
+    self.fields['loading_method_qrna'].widget.attrs['class'] = 'form-select'
+
     self.fields['min_samples_per_plate_dna_qpcr'].widget.attrs['class'] = 'form-control'
     self.fields['min_samples_per_plate_rna_qpcr'].widget.attrs['class'] = 'form-control'
     self.fields['min_samples_per_plate_dna_pcr'].widget.attrs['class'] = 'form-control'

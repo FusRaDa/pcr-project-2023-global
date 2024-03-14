@@ -4,6 +4,7 @@ from ..models.inventory import Plate
 import math
 
 from ..models.inventory import Reagent
+from ..models.pcr import Process
 
 
 def create_samples(number_of_samples, lab_id, user, negative_control):
@@ -292,29 +293,9 @@ def choose_gel(all_samples, gels):
     chosen_gel = rev_list[0]['gel']
   
   return chosen_gel, gels
-  
 
-def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
-  plate, list = choose_plate(all_samples, plates)
 
-  plate_data = {'size': plate.size}
-  protocol_data = {'protocol': {
-    'name': protocol.name,
-    'denature_temp': round(float(protocol.denature_temp), 2),
-    'denature_duration': protocol.denature_duration,
-    'anneal_temp': round(float(protocol.anneal_temp), 2),
-    'anneal_duration': protocol.anneal_duration,
-    'extension_temp': round(float(protocol.extension_temp), 2),
-    'extension_duration': protocol.extension_duration,
-    'number_of_cycles': protocol.number_of_cycles
-  }}
-  assays_data = {'assays': []}
-  samples_data = {'samples': {}}
-  primers_data = {'primers': []}
-
-  remaining_wells = plate.size
-  position = 0
-
+def organized_plate(all_samples, plate, samples_data, primers_data, assays_data, minimum_samples_in_plate, remaining_wells, position):
   for data in all_samples:
 
     if remaining_wells == 0:
@@ -555,6 +536,466 @@ def load_plate(all_samples, plates, protocol, minimum_samples_in_plate):
         for sample in loaded_samples:
           samples.remove(sample)
 
+
+def compressed_plate(all_samples, plate, samples_data, primers_data, assays_data, minimum_samples_in_plate, remaining_wells, position):
+  for data in all_samples:
+
+    if remaining_wells == 0:
+      break
+    
+    for assay, samples in data.items():
+
+      if len(samples) != 0:
+
+        loaded_samples = [] # collect keys to delete later after samples have been added to the json file
+        control_color = samples[0][None]['color']
+        
+        sample_wells = len(samples)
+        control_wells = assay.controls.count()
+        total_wells = sample_wells + control_wells
+
+        if total_wells < remaining_wells: # LOGIC HELP
+
+          num_samples = 0
+          for sample in samples:
+            num_samples += 1
+            position += 1
+            sample[f"well{position}"] = sample[None]
+            del sample[None]
+            loaded_samples.append(sample)
+            samples_data['samples'].update(sample)
+
+          for control in assay.controlassay_set.all().order_by('order'):
+            position += 1
+            control_data = {f"well{position}": {
+              'color': control_color,
+              'lab_id': control.control.name,
+              'sample_id': control.control.lot_number,
+              'assay': assay.name
+            }}
+            samples_data['samples'].update(control_data)
+
+          remaining_wells = plate.size - position
+          
+          assay_dict = {
+            'name': assay.name,
+            'sample_num': num_samples + control_wells,
+            'sample_volume': round(float(assay.sample_volume), 2),
+            'reaction_volume': round(float(assay.reaction_volume), 2),
+            'mm_volume': round(float(assay.mm_volume), 2),
+            'fluorescence': [],
+            'controls': assay.controls.all(),
+            'reagents': [],
+          }
+
+          for fluor in assay.fluorescence.all():
+            assay_dict['fluorescence'].append(fluor.name)
+          
+          for reagent in assay.reagentassay_set.all().order_by('order'):
+            stock_concentration = None
+            if reagent.reagent.stock_concentration:
+              stock_concentration = round(float(reagent.reagent.stock_concentration), 2)
+
+            final_stock_concentration = None
+            if reagent.final_concentration:
+              final_stock_concentration = round(float(reagent.final_concentration), 2)
+
+            dilution_factor = None
+            if reagent.dilution_factor:
+              dilution_factor = round(float(reagent.dilution_factor), 2)
+
+            assay_dict['reagents'].append({
+              'reagent': reagent.reagent,
+              'name': reagent.reagent.name,
+              'volume_per_sample': round(float(reagent.volume_per_sample), 2),
+              'stock_concentration': stock_concentration,
+              'unit_concentration': reagent.reagent.unit_concentration,
+              'final_stock_concentration': final_stock_concentration,
+              'final_unit_concentration': reagent.final_concentration_unit,
+              'dilution_factor': dilution_factor,
+            })
+
+            if reagent.reagent.pcr_reagent == Reagent.PCRReagent.PRIMER:
+              primer_dict = {
+                'pk': reagent.reagent.pk, 
+                'name': reagent.reagent.name, 
+                'forward_sequence': reagent.reagent.forward_sequence, 
+                'reverse_sequence': reagent.reagent.reverse_sequence, 
+                'assay': assay.name
+              }
+              primers_data['primers'].append(primer_dict)
+
+          assays_data['assays'].append(assay_dict)
+
+        else:
+          # create validation for minimum_samples_in_plate where it cannot be negative or greater than smallest plate size. 
+          if minimum_samples_in_plate + control_wells <= remaining_wells:
+
+            num_samples = 0
+            for sample in samples[:remaining_wells - control_wells]:
+              num_samples += 1
+              position += 1
+              sample[f"well{position}"] = sample[None]
+              del sample[None]
+              loaded_samples.append(sample)
+              samples_data['samples'].update(sample)
+
+            for control in assay.controlassay_set.all().order_by('order'):
+              position += 1
+              control_data = {f"well{position}": {
+                'color': control_color,
+                'lab_id': control.control.name,
+                'sample_id': control.control.lot_number,
+                'assay': assay.name
+              }}
+              samples_data['samples'].update(control_data)
+            
+            assay_dict = {
+              'name': assay.name,
+              'sample_num': num_samples + control_wells,
+              'sample_volume': round(float(assay.sample_volume), 2),
+              'reaction_volume': round(float(assay.reaction_volume), 2),
+              'mm_volume': round(float(assay.mm_volume), 2),
+              'fluorescence': [],
+              'controls': assay.controls.all(),
+              'reagents': [],
+            }
+
+            for fluor in assay.fluorescence.all():
+              assay_dict['fluorescence'].append(fluor.name)
+            
+            for reagent in assay.reagentassay_set.all().order_by('order'):
+              stock_concentration = None
+              if reagent.reagent.stock_concentration:
+                stock_concentration = round(float(reagent.reagent.stock_concentration), 2)
+
+              final_stock_concentration = None
+              if reagent.final_concentration:
+                final_stock_concentration = round(float(reagent.final_concentration), 2)
+
+              dilution_factor = None
+              if reagent.dilution_factor:
+                dilution_factor = round(float(reagent.dilution_factor), 2)
+
+              assay_dict['reagents'].append({
+                'reagent': reagent.reagent,
+                'name': reagent.reagent.name,
+                'volume_per_sample': round(float(reagent.volume_per_sample), 2),
+                'stock_concentration': stock_concentration,
+                'unit_concentration': reagent.reagent.unit_concentration,
+                'final_stock_concentration': final_stock_concentration,
+                'final_unit_concentration': reagent.final_concentration_unit,
+                'dilution_factor': dilution_factor,
+              })
+
+              if reagent.reagent.pcr_reagent == Reagent.PCRReagent.PRIMER:
+                primer_dict = {
+                'pk': reagent.reagent.pk, 
+                'name': reagent.reagent.name, 
+                'forward_sequence': reagent.reagent.forward_sequence, 
+                'reverse_sequence': reagent.reagent.reverse_sequence, 
+                'assay': assay.name
+                }
+                primers_data['primers'].append(primer_dict)
+
+            assays_data['assays'].append(assay_dict)
+
+            remaining_wells = 0
+          else:
+            remaining_wells = 0
+         
+        # remove samples from list that have already been loaded into plate
+        for sample in loaded_samples:
+          samples.remove(sample)
+
+
+def load_plate(all_samples, plates, protocol, minimum_samples_in_plate, loading_method):
+  plate, list = choose_plate(all_samples, plates)
+
+  plate_data = {'size': plate.size}
+  protocol_data = {'protocol': {
+    'name': protocol.name,
+    'denature_temp': round(float(protocol.denature_temp), 2),
+    'denature_duration': protocol.denature_duration,
+    'anneal_temp': round(float(protocol.anneal_temp), 2),
+    'anneal_duration': protocol.anneal_duration,
+    'extension_temp': round(float(protocol.extension_temp), 2),
+    'extension_duration': protocol.extension_duration,
+    'number_of_cycles': protocol.number_of_cycles
+  }}
+  assays_data = {'assays': []}
+  samples_data = {'samples': {}}
+  primers_data = {'primers': []}
+
+  remaining_wells = plate.size
+  position = 0
+
+  # # refactor into separate function
+  # for data in all_samples:
+
+  #   if remaining_wells == 0:
+  #     break
+    
+  #   for assay, samples in data.items():
+
+  #     if len(samples) != 0:
+
+  #       loaded_samples = [] # collect keys to delete later after samples have been added to the json file
+  #       control_color = samples[0][None]['color']
+        
+  #       sample_wells = len(samples)
+  #       control_wells = assay.controls.count()
+  #       total_wells = sample_wells + control_wells
+
+  #       if total_wells < remaining_wells: # LOGIC HELP
+
+  #         num_samples = 0
+  #         for sample in samples:
+  #           num_samples += 1
+  #           position += 1
+  #           sample[f"well{position}"] = sample[None]
+  #           del sample[None]
+  #           loaded_samples.append(sample)
+  #           samples_data['samples'].update(sample)
+
+  #         assay_dict = {
+  #           'name': assay.name,
+  #           'sample_num': num_samples + control_wells,
+  #           'sample_volume': round(float(assay.sample_volume), 2),
+  #           'reaction_volume': round(float(assay.reaction_volume), 2),
+  #           'mm_volume': round(float(assay.mm_volume), 2),
+  #           'fluorescence': [],
+  #           'controls': assay.controls.all(),
+  #           'reagents': [],
+  #         }
+
+  #         for fluor in assay.fluorescence.all():
+  #           assay_dict['fluorescence'].append(fluor.name)
+          
+  #         for reagent in assay.reagentassay_set.all().order_by('order'):
+  #           stock_concentration = None
+  #           if reagent.reagent.stock_concentration:
+  #             stock_concentration = round(float(reagent.reagent.stock_concentration), 2)
+
+  #           final_stock_concentration = None
+  #           if reagent.final_concentration:
+  #             final_stock_concentration = round(float(reagent.final_concentration), 2)
+
+  #           dilution_factor = None
+  #           if reagent.dilution_factor:
+  #             dilution_factor = round(float(reagent.dilution_factor), 2)
+
+  #           assay_dict['reagents'].append({
+  #             'reagent': reagent.reagent,
+  #             'name': reagent.reagent.name,
+  #             'volume_per_sample': round(float(reagent.volume_per_sample), 2),
+  #             'stock_concentration': stock_concentration,
+  #             'unit_concentration': reagent.reagent.unit_concentration,
+  #             'final_stock_concentration': final_stock_concentration,
+  #             'final_unit_concentration': reagent.final_concentration_unit,
+  #             'dilution_factor': dilution_factor,
+  #           })
+
+  #           if reagent.reagent.pcr_reagent == Reagent.PCRReagent.PRIMER:
+  #             primer_dict = {
+  #               'pk': reagent.reagent.pk, 
+  #               'name': reagent.reagent.name, 
+  #               'forward_sequence': reagent.reagent.forward_sequence, 
+  #               'reverse_sequence': reagent.reagent.reverse_sequence, 
+  #               'assay': assay.name
+  #             }
+  #             primers_data['primers'].append(primer_dict)
+
+  #         assays_data['assays'].append(assay_dict)
+
+  #         # add validation if plate size is insufficient to even hold only one assay w/ controls
+  #         if plate.size == Plate.Sizes.EIGHT:
+  #           wells_in_row = 1
+
+  #         if plate.size == Plate.Sizes.TWENTY_FOUR:
+  #           wells_in_row = 3
+
+  #         if plate.size == Plate.Sizes.FOURTY_EIGHT:
+  #           wells_in_row = 6 
+
+  #         if plate.size == Plate.Sizes.NINETY_SIX:
+  #           wells_in_row = 12
+
+  #         if plate.size == Plate.Sizes.THREE_HUNDRED_EIGHTY_FOUR:
+  #           wells_in_row = 24
+
+  #         # find what row last sample is located in and how many available wells are in that row
+  #         row = math.floor(position / wells_in_row) + 1
+  #         if position % wells_in_row == 0: # if position is the last on the row make sure it is assigned to the proper row
+  #           row -= 1
+  #         rem_wells_in_row = (row * wells_in_row) - position
+
+  #         # if there is enough room in the same row add controls
+  #         if control_wells <= rem_wells_in_row:
+  #           block = (row * wells_in_row)
+  #           start = block - control_wells
+  #           cwells = []
+  #           for n in range(start + 1, block + 1):
+  #             cwells.append(n)
+          
+  #           zip_data = zip(assay.controlassay_set.all().order_by('order'), cwells)
+      
+  #           for control, well in zip_data:
+  #             control_data = {f"well{well}": {
+  #               'color': control_color,
+  #               'lab_id': control.control.name,
+  #               'sample_id': control.control.lot_number,
+  #               'assay': assay.name
+  #             }}
+  #             samples_data['samples'].update(control_data)
+
+  #           remaining_wells = (plate.size - block)
+  #           position = block
+          
+  #         else:
+  #           # move to next row only if plate size is not 8 - since there is no "row"
+  #           if plate.size != Plate.Sizes.EIGHT:
+  #             row += 1
+  #             block = (row * wells_in_row)
+  #             start = block - control_wells
+  #             cwells = []
+  #             for n in range(start + 1, block + 1):
+  #               cwells.append(n)
+
+  #             zip_data = zip(assay.controlassay_set.all().order_by('order'), cwells)
+        
+  #             for control, well in zip_data:
+  #               control_data = {f"well{well}": {
+  #                 'color': control_color,
+  #                 'lab_id': control.control.name,
+  #                 'sample_id': control.control.lot_number,
+  #                 'assay': assay.name
+  #               }}
+  #               samples_data['samples'].update(control_data)
+
+  #             remaining_wells = (plate.size - block)
+  #             position = block
+
+  #           # FOR 8-WELL PLATE ONLY TO ADD CONTROLS #
+  #           else:
+  #             for control in assay.controlassay_set.all().order_by('order'):
+  #               position += 1
+  #               control_data = {f"well{position}": {
+  #                 'color': control_color,
+  #                 'lab_id': control.control.name,
+  #                 'sample_id': control.control.lot_number,
+  #                 'assay': assay.name
+  #               }}
+  #               samples_data['samples'].update(control_data)
+  #             remaining_wells -= position
+  #           # FOR 8-WELL PLATE ONLY TO ADD CONTROLS #
+              
+  #       # comment - if assay samples wont fit in remaining wells... (total wells > remaining_wells)
+  #       else:
+  #         # create validation for minimum_samples_in_plate where it cannot be negative or greater than smallest plate size. 
+  #         if minimum_samples_in_plate + control_wells <= remaining_wells:
+            
+  #           num_samples = 0
+  #           for sample in samples[:remaining_wells - control_wells]:
+  #             num_samples += 1
+  #             position += 1
+  #             sample[f"well{position}"] = sample[None]
+  #             del sample[None]
+  #             loaded_samples.append(sample)
+  #             samples_data['samples'].update(sample)
+            
+  #           assay_dict = {
+  #             'name': assay.name,
+  #             'sample_num': num_samples + control_wells,
+  #             'sample_volume': round(float(assay.sample_volume), 2),
+  #             'reaction_volume': round(float(assay.reaction_volume), 2),
+  #             'mm_volume': round(float(assay.mm_volume), 2),
+  #             'fluorescence': [],
+  #             'controls': assay.controls.all(),
+  #             'reagents': [],
+  #           }
+
+  #           for fluor in assay.fluorescence.all():
+  #             assay_dict['fluorescence'].append(fluor.name)
+            
+  #           for reagent in assay.reagentassay_set.all().order_by('order'):
+  #             stock_concentration = None
+  #             if reagent.reagent.stock_concentration:
+  #               stock_concentration = round(float(reagent.reagent.stock_concentration), 2)
+
+  #             final_stock_concentration = None
+  #             if reagent.final_concentration:
+  #               final_stock_concentration = round(float(reagent.final_concentration), 2)
+
+  #             dilution_factor = None
+  #             if reagent.dilution_factor:
+  #               dilution_factor = round(float(reagent.dilution_factor), 2)
+
+  #             assay_dict['reagents'].append({
+  #               'reagent': reagent.reagent,
+  #               'name': reagent.reagent.name,
+  #               'volume_per_sample': round(float(reagent.volume_per_sample), 2),
+  #               'stock_concentration': stock_concentration,
+  #               'unit_concentration': reagent.reagent.unit_concentration,
+  #               'final_stock_concentration': final_stock_concentration,
+  #               'final_unit_concentration': reagent.final_concentration_unit,
+  #               'dilution_factor': dilution_factor,
+  #             })
+
+  #             if reagent.reagent.pcr_reagent == Reagent.PCRReagent.PRIMER:
+  #               primer_dict = {
+  #               'pk': reagent.reagent.pk, 
+  #               'name': reagent.reagent.name, 
+  #               'forward_sequence': reagent.reagent.forward_sequence, 
+  #               'reverse_sequence': reagent.reagent.reverse_sequence, 
+  #               'assay': assay.name
+  #               }
+  #               primers_data['primers'].append(primer_dict)
+
+  #           assays_data['assays'].append(assay_dict)
+
+  #           for control in assay.controlassay_set.all().order_by('order'):
+  #             position += 1
+  #             control_data = {f"well{position}": {
+  #               'color': control_color,
+  #               'lab_id': control.control.name,
+  #               'sample_id': control.control.lot_number,
+  #               'assay': assay.name
+  #             }}
+  #             samples_data['samples'].update(control_data)
+  #           remaining_wells = 0
+  #         else:
+  #           remaining_wells = 0
+         
+  #       # remove samples from list that have already been loaded into plate
+  #       for sample in loaded_samples:
+  #         samples.remove(sample)
+  # # refactor into separate function
+  
+  if loading_method == Process.LoadingMethod.ORGANIZED:
+    organized_plate(
+      all_samples=all_samples,
+      plate=plate,
+      samples_data=samples_data,
+      primers_data=primers_data,
+      assays_data=assays_data,
+      minimum_samples_in_plate=minimum_samples_in_plate,
+      remaining_wells=remaining_wells,
+      position=position,
+    )
+
+  if loading_method == Process.LoadingMethod.COMPRESSED:
+    compressed_plate(
+      all_samples=all_samples,
+      plate=plate,
+      samples_data=samples_data,
+      primers_data=primers_data,
+      assays_data=assays_data,
+      minimum_samples_in_plate=minimum_samples_in_plate,
+      remaining_wells=remaining_wells,
+      position=position,
+    )
+
   sorted_primers_data = [dict(tupleized) for tupleized in set(tuple(item.items()) for item in primers_data['primers'])]
   primers_data['primers'].clear()
   primers_data['primers'] = sorted_primers_data
@@ -693,13 +1134,13 @@ def load_gel(all_samples, gels, minimum_samples_in_gel):
   return gel_dict, all_samples
 
 
-def process_plates(all_samples, plates, protocol, minimum_samples_in_plate):
+def process_plates(all_samples, plates, protocol, minimum_samples_in_plate, loading_method):
   qpcr_data = []
 
   is_empty = False
   while not is_empty:
  
-    plate_dict, all_samples = load_plate(all_samples, plates, protocol, minimum_samples_in_plate)
+    plate_dict, all_samples = load_plate(all_samples, plates, protocol, minimum_samples_in_plate, loading_method)
     qpcr_data.append(plate_dict)
 
     # check if all samples for each assay is empty if not continue the process of making plates
