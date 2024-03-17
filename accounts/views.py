@@ -52,7 +52,7 @@ def loginPage(request):
 
 # this function is to send the activation email
 def activateEmail(request, user, to_email):
-  mail_subject = 'Activate your user account.'
+  mail_subject = 'Welcome to PCRprep!'
   message = render_to_string('template_activate_account.html', {
     'user': user.username,
     'domain': get_current_site(request).domain,
