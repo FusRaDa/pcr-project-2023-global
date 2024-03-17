@@ -7,6 +7,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 
 from .decorators import unauthenticated_user
 from users.models import User
@@ -104,12 +106,18 @@ def register(request):
       if User.objects.filter(email=email).exists():
         messages.error(request, 'This email already exists, would you like to reset your password?')
         return redirect('login')
+      
+      try:
+        validate_email(email)
+      except ValidationError:
+        messages.error(request, 'This is an invalid email. Please try again.')
+        return redirect('register')
 
       user = form.save(commit=False)
       user.is_active=False
       user.save()
-      activateEmail(request, user, form.cleaned_data.get('email'))
-      return redirect('reagents')
+      activateEmail(request, user, email)
+      return redirect('login')
     else:
       print(form.errors)
 
