@@ -77,26 +77,35 @@
 
         <h6 class="text-center">Thermal Cyler Protocols</h6>
 
+        {% if process.is_dna_qpcr %}
         <div class="input-group mb-2">
           <div class="input-group-text input-group-process">DNA qPCR</div>
           {{form.qpcr_dna_protocol}}
         </div>
+        {% endif %}
 
+        {% if process.is_rna_qpcr %}
         <div class="input-group mb-2">
           <div class="input-group-text input-group-process">RNA qPCR</div>
           {{form.qpcr_rna_protocol}}
         </div>
+        {% endif %}
 
+        {% if process.is_dna_pcr %}
         <div class="input-group mb-2">
           <div class="input-group-text input-group-process">DNA PCR</div>
           {{form.pcr_dna_protocol}}
         </div>
-
+        {% endif %}
+        
+        {% if process.is_rna_pcr %}
         <div class="input-group mb-2">
           <div class="input-group-text input-group-process">RNA PCR</div>
           {{form.pcr_rna_protocol}}
         </div>
-
+        {% endif %}
+        
+        {% if process.is_dna_qpcr or process.is_rna_qpcr %}
         <div class="card mt-2">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -119,7 +128,9 @@
             </div>
           </ul>
         </div>
+        {% endif %}
 
+        {% if process.is_dna_pcr or process.is_rna_pcr %}
         <div class="card mt-2">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -142,27 +153,37 @@
             </div>
           </ul>
         </div>
+        {% endif %}
 
+        {% if process.is_dna_qpcr %}
         <div class="input-group mb-2 mt-2">
           <div class="input-group-text input-group-loading">Loading Method (qPCR - DNA)</div>
           {{form.loading_method_qdna}}
         </div>
+        {% endif %}
 
+        {% if process.is_rna_qpcr %}
         <div class="input-group mb-2">
           <div class="input-group-text input-group-loading">Loading Method (qPCR - RNA)</div>
           {{form.loading_method_qrna}}
         </div>
+        {% endif %}
 
+        {% if process.is_dna_pcr %}
         <div class="input-group mb-2">
           <div class="input-group-text input-group-loading">Loading Method (PCR - DNA)</div>
           {{form.loading_method_dna}}
         </div>
+        {% endif %}
 
+        {% if process.is_rna_pcr %}
         <div class="input-group mb-2">
           <div class="input-group-text input-group-loading">Loading Method (PCR - RNA)</div>
           {{form.loading_method_rna}}
         </div>
+        {% endif %}
 
+        {% if process.is_dna_pcr or process.is_rna_pcr %}
         <div class="card mt-2">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -185,31 +206,42 @@
             </div>
           </ul>
         </div>
+        {% endif %}
 
+        {% if process.is_dna_qpcr %}
         <div class="input-group mb-2 mt-2">
           <div class="input-group-text input-group-min">Min. Samples In Plate (qPCR - DNA)</div>
           {{form.min_samples_per_plate_dna_qpcr}}
         </div>
+        {% endif %}
 
+        {% if process.is_rna_qpcr %}
         <div class="input-group mb-2">
           <div class="input-group-text input-group-min">Min. Samples In Plate (qPCR - RNA)</div>
           {{form.min_samples_per_plate_rna_qpcr}}
         </div>
+        {% endif %}
 
+        {% if process.is_dna_pcr %}
         <div class="input-group mb-2">
           <div class="input-group-text input-group-min">Min. Samples In Plate (PCR - DNA)</div>
           {{form.min_samples_per_plate_dna_pcr}}
         </div>
+        {% endif %}
 
+        {% if process.is_rna_pcr %}
         <div class="input-group mb-2">
           <div class="input-group-text input-group-min">Min. Samples In Plate (PCR - RNA)</div>
           {{form.min_samples_per_plate_rna_pcr}}
         </div>
+        {% endif %}
 
+        {% if process.is_dna_pcr or process.is_rna_pcr %}
         <div class="input-group mb-2">
           <div class="input-group-text input-group-min">Min. Samples In Gel</div>
           {{form.min_samples_per_gel}}
         </div>
+        {% endif %}
 
         <div class="text-center mb-2">
           <label class="form-label">Calculate w/ +1 Well?</label>

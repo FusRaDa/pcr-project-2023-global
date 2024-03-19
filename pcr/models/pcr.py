@@ -6,6 +6,7 @@ from users.models import User
 
 from .batch import Sample, Batch
 from .inventory import Plate, Gel
+from .assay import Assay
 
 
 class ThermalCyclerProtocol(models.Model):
@@ -92,13 +93,59 @@ class Process(models.Model):
     for batch in self.batches.all():
       lab_ids_array.append(batch.lab_id)
     return lab_ids_array
-
+  
   @property
   def panels(self):
     panels_array = []
     for batch in self.batches.all():
       panels_array.append(batch.code)
-    return panels_array
+    panels = list(set(panels_array))
+    return panels
+  
+  @property
+  def selected_panels(self):
+    arr = []
+    for sample in self.samples.all():
+      arr.append(sample.batch)
+    batches = list(set(arr))
+
+    panels_array = []
+    for batch in batches:
+      panels_array.append(batch.code)
+    panels = list(set(panels_array))
+    return panels
+  
+  @property
+  def is_dna_pcr(self):
+    for panel in self.selected_panels:
+      for assay in panel.assays.all():
+        if assay.type == Assay.Types.DNA and assay.method == Assay.Methods.PCR:
+          return True
+    return False
+  
+  @property
+  def is_rna_pcr(self):
+    for panel in self.selected_panels:
+      for assay in panel.assays.all():
+        if assay.type == Assay.Types.RNA and assay.method == Assay.Methods.PCR:
+          return True
+    return False
+  
+  @property
+  def is_dna_qpcr(self):
+    for panel in self.selected_panels:
+      for assay in panel.assays.all():
+        if assay.type == Assay.Types.DNA and assay.method == Assay.Methods.qPCR:
+          return True
+    return False
+  
+  @property
+  def is_rna_qpcr(self):
+    for panel in self.selected_panels:
+      for assay in panel.assays.all():
+        if assay.type == Assay.Types.RNA and assay.method == Assay.Methods.qPCR:
+          return True
+    return False
 
   def __str__(self):
     return f"Process by {self.user}"

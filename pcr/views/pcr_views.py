@@ -219,7 +219,7 @@ def review_process(request, pk):
     else:
       print(form.errors)
   
-  context = {'form': form, 'assay_samples': assay_samples, 'process':  process}
+  context = {'form': form, 'assay_samples': assay_samples, 'process': process}
   return render(request, 'pcr/review_process.html', context)
 
 
