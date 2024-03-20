@@ -19,7 +19,6 @@
           publishable-key="pk_test_51OqjAoKzHgiG3d1SXCqRYMuVKxFY8k3c54Nsn4qZBG956ThbgPfyQ70xmR6OAM8HS0GwVnl5ZeKhZ5WppzCQ9oZc00NNHIB3GC"
           client-reference-id="{{ request.user.id }}">
         </stripe-pricing-table>
-
       </div>
     {% comment %} LIVE {% endcomment %}
     {% else %}
@@ -27,7 +26,7 @@
         <div class="col-sm-3">
           <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
           <stripe-pricing-table 
-            pricing-table-id="prctbl_1Oqk7kKzHgiG3d1SZSF36PPy"
+            pricing-table-id="prctbl_1OwOxuKzHgiG3d1SuTUQAkyn"
             publishable-key="pk_live_51OqjAoKzHgiG3d1SKGdiS2m6TYgYTU92WW6Qb72qTCirFVGXXjVK72TG3HTFJR3ydE733KRMZqXy2SGdxS2SN8AL00Rk6UqV6u"
             client-reference-id="{{ request.user.id }}">
           </stripe-pricing-table>
@@ -76,8 +75,9 @@
         <div class="card-body">
           <a href="{% url 'reset_password' %}" class="btn btn-primary btn-sm">Reset Password</a>
 
+          {% comment %} USE LIVE LINK IN PRODUCTION {% endcomment %}
           {% if request.user.is_subscribed %}
-            <a href="{% url 'subscription_details' %}" class="btn btn-success btn-sm float-end">Manage Subscription</a>
+            <a href="https://billing.stripe.com/p/login/8wM6qs8excFB2iY8ww" class="btn btn-success btn-sm float-end">Manage Subscription</a>
           {% endif %}
 
         </div>

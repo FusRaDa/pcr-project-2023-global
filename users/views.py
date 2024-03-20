@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponse
 from django.contrib.auth import get_user_model
-from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
@@ -55,20 +54,6 @@ def subscription_confirm(request):
   return redirect('batches')
 
   
-@login_required(login_url='login')
-def create_portal_session(request):
-  try:
-    stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
-    portal_session = stripe.billing_portal.Session.create(
-      customer=request.user.customer.id,
-      return_url=f"{get_current_site(request).domain}/subscription-details/",
-      # return_url="https://127.0.0.1:8000/subscription-details/",
-    )
-    return HttpResponseRedirect(portal_session.url)
-  except AttributeError:
-    return redirect('profile')
-
-
 # Stripe webhook
 # set the only two events in stripe dashboard when live
 @csrf_exempt
