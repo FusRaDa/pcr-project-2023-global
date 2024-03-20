@@ -15,11 +15,13 @@
       <div class="col-sm-3">
         <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
         <stripe-pricing-table 
-          pricing-table-id="prctbl_1OqjyKKzHgiG3d1SEjOMVFH1"
+          pricing-table-id="prctbl_1OwNxLKzHgiG3d1SoaYR9ljg"
           publishable-key="pk_test_51OqjAoKzHgiG3d1SXCqRYMuVKxFY8k3c54Nsn4qZBG956ThbgPfyQ70xmR6OAM8HS0GwVnl5ZeKhZ5WppzCQ9oZc00NNHIB3GC"
           client-reference-id="{{ request.user.id }}">
         </stripe-pricing-table>
+
       </div>
+    {% comment %} LIVE {% endcomment %}
     {% else %}
         {% if not request.user.is_subscribed %}
         <div class="col-sm-3">
