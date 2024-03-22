@@ -70,12 +70,12 @@ class CreateUserForm(UserCreationForm):
     self.fields['password2'].widget.attrs['class'] = 'form-control'
     self.fields['password2'].widget.attrs['id'] = 'password2'
 
-    self.fields['username'].widget.attrs['placeholder'] = 'Your unique username...'
-    self.fields['first_name'].widget.attrs['placeholder'] = 'Your first name...'
-    self.fields['last_name'].widget.attrs['placeholder'] = 'Your last name...'
-    self.fields['email'].widget.attrs['placeholder'] = 'Your email...'
-    self.fields['password1'].widget.attrs['placeholder'] = 'Enter password...'
-    self.fields['password2'].widget.attrs['placeholder'] = 'Enter password again...'
+    self.fields['username'].widget.attrs['placeholder'] = ''
+    self.fields['first_name'].widget.attrs['placeholder'] = ''
+    self.fields['last_name'].widget.attrs['placeholder'] = ''
+    self.fields['email'].widget.attrs['placeholder'] = ''
+    self.fields['password1'].widget.attrs['placeholder'] = ''
+    self.fields['password2'].widget.attrs['placeholder'] = ''
 
   class Meta: 
     model = User
