@@ -19,6 +19,12 @@ from .forms import CreateUserForm, LoginUserForm
 from .functions import create_test_objects
 from analytics.functions import record_user_login
 
+from pcr.models.assay import Assay, AssayCode, Control
+from pcr.models.batch import Batch
+from pcr.models.pcr import Process
+
+from pcr.custom.constants import LIMITS
+
 
 # login user with their username or email and password
 @unauthenticated_user
@@ -94,6 +100,24 @@ def activate(request, uidb64, token):
 # register new user
 @unauthenticated_user
 def register(request):
+  limit_assay = LIMITS.ASSAY_LIMIT
+  limit_control = LIMITS.CONTROL_LIMIT
+  limit_assay_code = LIMITS.ASSAY_CODE_LIMIT
+  limit_batch = LIMITS.BATCH_LIMIT
+  limit_process = LIMITS.PROCESS_LIMIT
+
+  max_assay = LIMITS.MAX_ASSAY_LIMIT
+  max_control = LIMITS.MAX_CONTROL_LIMIT
+  max_assay_code = LIMITS.MAX_ASSAY_CODE_LIMIT
+  max_batch = LIMITS.MAX_BATCH_LIMIT
+  max_process = LIMITS.MAX_PROCESS_LIMIT
+
+  limits = []
+  limits.append({'name': 'Assays', 'limit': limit_assay, 'premium': max_assay})
+  limits.append({'name': 'Controls', 'limit': limit_control, 'premium': max_control})
+  limits.append({'name': 'Panels', 'limit': limit_assay_code, 'premium': max_assay_code})
+  limits.append({'name': 'Batches', 'limit': limit_batch, 'premium': max_batch})
+  limits.append({'name': 'Processes', 'limit': limit_process, 'premium': max_process})
   
   form = CreateUserForm()
 
@@ -121,7 +145,7 @@ def register(request):
     else:
       print(form.errors)
 
-  context = {'form': form}
+  context = {'form': form, 'limits': limits}
   return render(request, "register.html", context)
   
 

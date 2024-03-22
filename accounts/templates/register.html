@@ -58,7 +58,8 @@
 							<h2>Do you perform PCR on a daily basis and spend hours creating paperwork?</h2>
 						</header>
 						<div class="content">
-							<p><strong>Lorem ipsum dolor</strong> sit amet consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor amet fermentum. Nullam venenatis erat id vehicula ultrices sed ultricies condimentum. Magna sed etiam consequat, et lorem adipiscing sed nulla. Volutpat nisl et tempus et dolor libero, feugiat magna tempus, sed et lorem adipiscing.</p>
+							<p><strong>Extraction &amp; PCR Paperwork:</strong> Diagnostic labs have one common goal: accuracy and speed of results. Having lab technicians spend several hours of their shift on paperwork (especially if they’re a new hire) can slow down the process of bringing faster results to your clients. PCRprep aims to create a simple and effective interface that allows lab workers to generate paperwork within minutes. This allows you to focus more of your efforts on the physical process and less on the logistics.</p>
+              <span class="image main"><img src="{% static 'images/assay-tests-1.PNG'%}" alt=""/></span>
 						</div>
 					</section>
         <!-- Section -->
@@ -69,7 +70,7 @@
 							<h2>Do you process hundreds of samples a week and run multiple assays?</h2>
 						</header>
 						<div class="content">
-							<p><strong>Lorem ipsum dolor</strong> sit amet consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor amet fermentum. Nullam venenatis erat id vehicula ultrices sed ultricies condimentum. Magna sed etiam consequat, et lorem adipiscing sed nulla. Volutpat nisl et tempus et dolor libero, feugiat magna tempus, sed et lorem adipiscing.</p>
+							<p><strong>Assay &amp; Panel Management:</strong> Running a diagnostic lab will most likely require you to keep record of all available tests that you can run as well as develop new ones along the way. PCRprep allows you design your own assays and bundle them up into one panel. You may find yourself overwhelmed from a client requesting a large panel of tests in which they send you many samples on a daily basis. Fortunately, PCRprep helps you keep track of your existing assays to create new panels and get straight generating paperwork with little hassle.</p>
 						</div>
 					</section>
         <!-- Section -->
@@ -77,10 +78,10 @@
         <!-- Section -->
 					<section id="first">
 						<header>
-							<h2>Have you accidently used an expired reagent and had to redo the entire plate?</h2>
+							<h2>Have you accidently used an expired control causing you to reload the entire plate?</h2>
 						</header>
 						<div class="content">
-							<p><strong>Lorem ipsum dolor</strong> sit amet consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor amet fermentum. Nullam venenatis erat id vehicula ultrices sed ultricies condimentum. Magna sed etiam consequat, et lorem adipiscing sed nulla. Volutpat nisl et tempus et dolor libero, feugiat magna tempus, sed et lorem adipiscing.</p>
+							<p><strong>Process Validation:</strong> Mistakes happen all the time but it’s always best to reduce the chances. PCRprep automatically validates your paperwork. Any process from extraction to PCR that involves an insufficient amount or expired item will prevent you from creating paperwork. In the case of extraction, you will not be able to process the batch for PCR. For PCR, you will not be able to confirm or print the paperwork.</p>
 						</div>
 					</section>
         <!-- Section -->
@@ -91,7 +92,39 @@
 							<h2>Do you find it difficult to manage inventory and tend to run out of stock?</h2>
 						</header>
 						<div class="content">
-							<p><strong>Lorem ipsum dolor</strong> sit amet consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor amet fermentum. Nullam venenatis erat id vehicula ultrices sed ultricies condimentum. Magna sed etiam consequat, et lorem adipiscing sed nulla. Volutpat nisl et tempus et dolor libero, feugiat magna tempus, sed et lorem adipiscing.</p>
+							<p><strong>Inventory Management &amp; Analytics:</strong> PCRprep automatically keeps track of your inventory usage when you are generating paperwork for extraction and PCR. Reports allow you to easily manage items and decide what needs to be re-supplied or removed.</p>
+						</div>
+					</section>
+        <!-- Section -->
+
+        <!-- Section -->
+					<section id="first">
+						<header>
+							<h2>Implement Without The Investment</h2>
+						</header>
+						<div class="content">
+							<p><strong>Start As A Free User:</strong> Below you can see the limits you have as a free user. Later on, should you find PCRprep to be worth the investment you upgrade to premium limits for $300 per month.</p>
+
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Limits</th>
+                      <th scope="col">Freemium</th>
+                      <th scope="col">Premium</th>
+                    </tr>
+                  </thead>
+        
+                  <tbody>
+                    {% for limit in limits %}
+                      <tr>
+                        <td>{{limit.name}}</td>
+                        <td>{{limit.limit}}</td>
+                        <td>{{limit.premium}}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
 						</div>
 					</section>
         <!-- Section -->
@@ -99,7 +132,7 @@
 				<!-- Section -->
 					<section>
 						<header>
-							<h2>Implement This Workflow Today</h2>
+							<h2>Register &amp; Start Today</h2>
 						</header>
 						<div class="content">
 
