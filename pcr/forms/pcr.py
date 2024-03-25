@@ -269,6 +269,36 @@ class ProcessForm(ModelForm):
     self.fields['min_samples_per_plate_rna_pcr'].widget.attrs['min'] = 0
     self.fields['min_samples_per_gel'].widget.attrs['min'] = 0
 
+    self.fields['min_samples_per_plate_dna_qpcr'].required = False
+    self.fields['min_samples_per_plate_rna_qpcr'].required = False
+    self.fields['min_samples_per_plate_dna_pcr'].required = False
+    self.fields['min_samples_per_plate_rna_pcr'].required = False
+
+    self.fields['loading_method_dna'].required = False
+    self.fields['loading_method_rna'].required = False
+    self.fields['loading_method_qdna'].required = False
+    self.fields['loading_method_qrna'].required = False
+
+    self.fields['min_samples_per_gel'].required = False
+
+    if self.instance.is_dna_pcr:
+      self.fields['min_samples_per_plate_dna_pcr'].required = True
+      self.fields['loading_method_dna'].required = True
+      self.fields['min_samples_per_gel'].required = True
+
+    if self.instance.is_rna_pcr:
+      self.fields['min_samples_per_plate_rna_pcr'].required = True
+      self.fields['loading_method_rna'].required = True
+      self.fields['min_samples_per_gel'].required = True
+
+    if self.instance.is_dna_qpcr:
+      self.fields['min_samples_per_plate_dna_qpcr'].required = True
+      self.fields['loading_method_qdna'].required = True
+
+    if self.instance.is_rna_qpcr:
+      self.fields['min_samples_per_plate_rna_qpcr'].required = True
+      self.fields['loading_method_qrna'].required = True
+
   class Meta:
     model = Process
     exclude = ['user', 'samples', 'is_processed', 'date_processed', 'pcr_dna_json', 'pcr_rna_json', 'qpcr_dna_json', 'qpcr_rna_json', 'batches']
