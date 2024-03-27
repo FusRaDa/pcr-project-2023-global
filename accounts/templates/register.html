@@ -44,7 +44,7 @@
 						</header>
 						<div class="content d-flex align-items-center justify-content-center">
               <div>
-                <iframe class="border border-4 border-warning" width="100%" height="500px" src="https://www.youtube.com/embed/IJtDBgoFGRQ?si=DV06_kRjMrdHIIhe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe class="border border-4 border-warning" width="100%" height="400rem" src="https://www.youtube.com/embed/IJtDBgoFGRQ?si=DV06_kRjMrdHIIhe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <p><strong>Laboratory Information System Tailored For PCR:</strong> PCRprep is an information system specifically designed for PCR workflow. We want you to focus more on the physical tasks of PCR with less worry knowing that PCRprep has you covered on the logistics.  Logistics are automatically handled by updating your inventory count, managing assays, creating protocols, and generating paperwork.</p>
               </div>
 						</div>
@@ -57,7 +57,9 @@
 						</header>
 						<div class="content">
 							<p><strong>Extraction &amp; PCR Paperwork:</strong> Diagnostic labs have one common goal: accuracy and speed of results. Having lab technicians spend several hours of their shift on paperwork (especially if they’re a new hire) can slow down the process of bringing faster results to your clients. PCRprep aims to create a simple and effective interface that allows lab workers to generate paperwork within minutes. This allows you to focus more of your efforts on the physical process and less on the logistics.</p>
-              <span class="image main"><img src="{% static 'images/assay-tests-1.PNG'%}" alt=""/></span>
+              <ul class="actions">
+                <li><a class="button large" data-bs-toggle="modal" data-bs-target="#modal1">View Example</a></li>
+              </ul>
 						</div>
 					</section>
         <!-- Section -->
@@ -65,10 +67,13 @@
         <!-- Section -->
 					<section id="second">
 						<header>
-							<h2>Do you process hundreds of samples a week and run multiple assays?</h2>
+							<h2>Have you accidently used an expired control causing you to reload the entire plate?</h2>
 						</header>
 						<div class="content">
-							<p><strong>Assay &amp; Panel Management:</strong> Running a diagnostic lab will most likely require you to keep record of all available tests that you can run as well as develop new ones along the way. PCRprep allows you design your own assays and bundle them up into one panel. You may find yourself overwhelmed from a client requesting a large panel of tests in which they send you many samples on a daily basis. Fortunately, PCRprep helps you keep track of your existing assays to create new panels and get straight generating paperwork with little hassle.</p>
+							<p><strong>Process Validation:</strong> Mistakes happen all the time but it’s always best to reduce the chances. PCRprep automatically validates your paperwork. Any process from extraction to PCR that involves an insufficient amount or expired item will prevent you from creating paperwork. In the case of extraction, you will not be able to process the batch for PCR. For PCR, you will not be able to confirm or print the paperwork.</p>
+              <ul class="actions">
+                <li><a class="button large" data-bs-toggle="modal" data-bs-target="#modal2">View Example</a></li>
+              </ul>
 						</div>
 					</section>
         <!-- Section -->
@@ -76,10 +81,13 @@
         <!-- Section -->
 					<section id="third">
 						<header>
-							<h2>Have you accidently used an expired control causing you to reload the entire plate?</h2>
+							<h2>Do you process hundreds of samples a week and run multiple assays?</h2>
 						</header>
 						<div class="content">
-							<p><strong>Process Validation:</strong> Mistakes happen all the time but it’s always best to reduce the chances. PCRprep automatically validates your paperwork. Any process from extraction to PCR that involves an insufficient amount or expired item will prevent you from creating paperwork. In the case of extraction, you will not be able to process the batch for PCR. For PCR, you will not be able to confirm or print the paperwork.</p>
+							<p><strong>Assay &amp; Panel Management:</strong> Running a diagnostic lab will most likely require you to keep record of all available tests that you can run as well as develop new ones along the way. PCRprep allows you design your own assays and bundle them up into one panel. You may find yourself overwhelmed from a client requesting a large panel of tests in which they send you many samples on a daily basis. Fortunately, PCRprep helps you keep track of your existing assays to create new panels and get straight generating paperwork with little hassle.</p>
+              <ul class="actions">
+                <li><a class="button large" data-bs-toggle="modal" data-bs-target="#modal3">View Example</a></li>
+              </ul>
 						</div>
 					</section>
         <!-- Section -->
@@ -91,6 +99,9 @@
 						</header>
 						<div class="content">
 							<p><strong>Inventory Management &amp; Analytics:</strong> PCRprep automatically keeps track of your inventory usage when you are generating paperwork for extraction and PCR. Reports allow you to easily manage items and decide what needs to be re-supplied or removed.</p>
+              <ul class="actions">
+                <li><a class="button large" data-bs-toggle="modal" data-bs-target="#modal4">View Example</a></li>
+              </ul>
 						</div>
 					</section>
         <!-- Section -->
@@ -247,16 +258,92 @@
 
 				<div class="copyright text-center">&copy; 2024 PCRprep. All rights reserved by Radatech</div>
 
+        <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body d-flex justify-content-center align-items-center">
+
+                <img src="{% static 'gifs/pcrprep-gif1.gif'%}" class="img-fluid" alt="...">
+               
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body d-flex justify-content-center align-items-center">
+
+                <img src="{% static 'gifs/pcrprep-gif2.gif'%}" class="img-fluid" alt="...">
+               
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="modal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body d-flex justify-content-center align-items-center">
+
+                <img src="{% static 'gifs/pcrprep-gif3.gif'%}" class="img-fluid" alt="...">
+               
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="modal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body d-flex justify-content-center align-items-center">
+
+                <img src="{% static 'gifs/pcrprep-gif4.gif'%}" class="img-fluid" alt="...">
+               
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
 			</div>
 
 		<!-- Scripts -->
-			<script src="{% static 'js/jquery.min.js' %}"></script>
-			<script src="{% static 'js/jquery.scrolly.min.js'%}"></script>
-			<script src="{% static 'js/browser.min.js'%}"></script>
-			<script src="{% static 'js/breakpoints.min.js'%}"></script>
-			<script src="{% static 'js/util.js'%}"></script>
-			<script src="{% static 'js/main.js'%}"></script>
-      <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery.scrolly.min.js'%}"></script>
+    <script src="{% static 'js/browser.min.js'%}"></script>
+    <script src="{% static 'js/breakpoints.min.js'%}"></script>
+    <script src="{% static 'js/util.js'%}"></script>
+    <script src="{% static 'js/main.js'%}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
 	</body>
 </html>
