@@ -14,4 +14,7 @@ urlpatterns = [
   path("guide/protocols-guide/", views.protocols_guide, name='protocols_guide'),
   path("guide/extraction-guide/", views.extraction_guide, name='extraction_guide'),
   path("guide/pcr-guide/", views.pcr_guide, name='pcr_guide'),
+
+  path("articles/", views.articles_page, name='articles_page'),
+  path("articles/pcrmastermix/", views.pcrmastermix_article, name='pcrmastermix_article'),
 ]

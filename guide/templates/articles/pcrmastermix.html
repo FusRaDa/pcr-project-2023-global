@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block seo %}
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HEJQ4PHVWX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HEJQ4PHVWX');
+</script>
+{% endblock %}
+
+{% block title %} Automatically Calculate PCR Master Mix with PCRprep {% endblock %} 
+
+{% block content %}
+<div class="container mt-3">
+
+  <div class="row justify-content-center">
+    <h1 class="text-center">About Us</h1>
+  </div>
+
+  <div class="row justify-content-center">
+    <h2 class="text-center">Development &amp; Contact Info</h2>
+  </div>
+
+
+</div>
+{% endblock %}

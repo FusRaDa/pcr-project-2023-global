@@ -56,3 +56,13 @@ def pcr_guide(request):
   return render(request, 'guides/pcr_guide.html', context)
 
 
+def articles_page(request):
+  context = {}
+  return render(request, 'articles.html', context)
+
+
+def pcrmastermix_article(request):
+  context = {}
+  return render(request, 'articles/pcrmastermix.html', context)
+
+
