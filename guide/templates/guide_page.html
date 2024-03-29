@@ -25,43 +25,58 @@
   <div class="row justify-content-start">
     
     <div class="col-sm-3">
-      <h3 class="text-center"><u>Inventory #1</u></h3>
-        <a href="{% url 'inventory_guide' %}">
-          <img src="{% static 'images/inventory-img.png' %}"class="card-img-top" alt="...">
-        </a>
-      <h4 class="text-center mb-5"><a href="{% url 'inventory_guide' %}">Read Guide</a></h4>
+      <div class="card">
+        <img src="{% static 'images/inventory-img.png' %}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Inventory #1</h5>
+          <p class="card-text">Learn to how setup your inventory...</p>
+          <a href="{% url 'inventory_guide' %}" class="btn btn-primary float-end">Read Guide</a>
+        </div>
+      </div>
     </div>
 
     <div class="col-sm-3">
-      <h3 class="text-center"><u>Tests #2</u></h3>
-        <a href="{% url 'tests_guide' %}">
-          <img src="{% static 'images/tests-img.png' %}"class="card-img-top" alt="...">
-        </a>
-      <h4 class="text-center mb-5"><a href="{% url 'tests_guide' %}">Read Guide</a></h4>
+      <div class="card">
+        <img src="{% static 'images/tests-img.png' %}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Tests #2</h5>
+          <p class="card-text">Learn how to create assays...</p>
+          <a href="{% url 'tests_guide' %}" class="btn btn-primary float-end">Read Guide</a>
+        </div>
+      </div>
     </div>
 
     <div class="col-sm-3">
-      <h3 class="text-center"><u>Protocols #3</u></h3>
-        <a href="{% url 'protocols_guide' %}">
-          <img src="{% static 'images/protocols-img.png' %}"class="card-img-top" alt="...">
-        </a>
-      <h4 class="text-center mb-5"><a href="{% url 'protocols_guide' %}">Read Guide</a></h4>
+      <div class="card">
+        <img src="{% static 'images/inventory-img.png' %}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Protocols #3</h5>
+          <p class="card-text">Learn how to add protocols...</p>
+          <a href="{% url 'protocols_guide' %}" class="btn btn-primary float-end">Read Guide</a>
+        </div>
+      </div>
     </div>
 
     <div class="col-sm-3">
-      <h3 class="text-center"><u>Extraction #4</u></h3>
-        <a href="{% url 'extraction_guide' %}">
-          <img src="{% static 'images/extraction-img.png' %}"class="card-img-top" alt="...">
-        </a>
-      <h4 class="text-center mb-5"><a href="{% url 'extraction_guide' %}">Read Guide</a></h4>
+      <div class="card">
+        <img src="{% static 'images/extraction-img.png' %}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Extraction #4</h5>
+          <p class="card-text">Generate paperwork for extraction...</p>
+          <a href="{% url 'extraction_guide' %}" class="btn btn-primary float-end">Read Guide</a>
+        </div>
+      </div>
     </div>
 
     <div class="col-sm-3">
-      <h3 class="text-center"><u>PCR #5</u></h3>
-        <a href="{% url 'pcr_guide' %}">
-          <img src="{% static 'images/pcr-img.png' %}"class="card-img-top" alt="...">
-        </a>
-      <h4 class="text-center mb-5"><a href="{% url 'pcr_guide' %}">Read Guide</a></h4>
+      <div class="card">
+        <img src="{% static 'images/pcr-img.png' %}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">PCR #5</h5>
+          <p class="card-text">Generate paperwork for PCR...</p>
+          <a href="{% url 'pcr_guide' %}" class="btn btn-primary float-end">Read Guide</a>
+        </div>
+      </div>
     </div>
 
   </div>

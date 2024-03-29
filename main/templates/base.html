@@ -6,6 +6,7 @@
   <head>
     <!-- Google & SEO -->
     {% block seo %} {% endblock%}
+    {% block meta %} {% endblock %}
     
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -211,6 +212,7 @@
           <li class="nav-item"><a href="{% url 'about_page' %}" class="nav-link px-2 text-body-secondary"><u>About</u></a></li>
           <li class="nav-item"><a href="{% url 'faq_page' %}" class="nav-link px-2 text-body-secondary"><u>FAQs</u></a></li>
           <li class="nav-item"><a href="{% url 'guide_page' %}" class="nav-link px-2 text-body-secondary"><u>Guide</u></a></li>
+          <li class="nav-item"><a href="{% url 'articles_page' %}" class="nav-link px-2 text-body-secondary"><u>Articles</u></a></li>
           <li class="nav-item"><a href="{% url 'create_contact' %}" class="nav-link px-2 text-body-secondary"><u>Affiliate Partnership</u></a></li>
           <li class="nav-item"><a href="{% url 'privacy_policy' %}" class="nav-link px-2 text-body-secondary"><u>Privacy</u></a></li>
           <li class="nav-item"><a href="{% url 'subscription_policy' %}" class="nav-link px-2 text-body-secondary"><u>Subscription</u></a></li>

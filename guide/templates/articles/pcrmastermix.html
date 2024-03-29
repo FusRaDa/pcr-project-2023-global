@@ -13,19 +13,214 @@
 </script>
 {% endblock %}
 
+{% block meta %}
+<meta name="description" content="In this article, we will first go over the basics of creating a master mix and then introduce you to PCRprep that will automatically generate calculations for you.">
+<meta name="keywords" content="PCR, Master, Mix"/>
+{% endblock %}
+
 {% block title %} Automatically Calculate PCR Master Mix with PCRprep {% endblock %} 
 
 {% block content %}
 <div class="container mt-3">
 
-  <div class="row justify-content-center">
-    <h1 class="text-center">About Us</h1>
+  <div class="row justify-content-center mb-2">
+    <h1 class="text-center">How To Calculate PCR Master Mix</h1>
+    <h2 class="text-center">Learn how PCRprep can calculate for you</h2>
   </div>
 
-  <div class="row justify-content-center">
-    <h2 class="text-center">Development &amp; Contact Info</h2>
+  <p class="fs-5" style="text-indent: 2em;">Are you a lab technician or a student learning polymerase chain reaction? Is PCR a procedure you see yourself doing on a daily basis? Or perhaps you are looking for ways to make the process easier for yourself? You are probably aware that PCR requires calculations on the amount of reagents you should be using based on their concentrations and number of samples you are running. A table of these calculations is called a master mix. In this article, we will first go over the basics of creating a master mix and then introduce you to PCRprep that will automatically generate calculations for you.<p>
+
+  <p class="fs-5" style="text-indent: 2em;">As you know may already know there are many types of reagents you will be using for PCR. You may have buffers in the concentration of “X” or in millimoles (mM) in which magnesium chloride is a common buffer used. You will also need a source of base pairs to synthesize new DNA which is commonly referred to as dNTPs.<p>
+
+  <p class="fs-5 mb-4" style="text-indent: 2em;">Then you will your forward and reverse primers. Sometimes you may have to calculate for both primers separately or if you a mixture of both forward and reverse, then you calculate for one reagent. You will then need a polymerase such as the DNA polymerase that often comes in the concentration of units per microliter (U/µl). Last but not least, you will a diluent which is often assigned as PCR-grade water.<p>
+
+  <p class="text-center"><u class="fs-4">Formula #1 ➤ Calculations for buffers, dNTPs, and primers (any reagent that is not a polymerase or a diluent)</u></p>
+  <ol class="list-group list-group-numbered fs-5 mb-5">
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Make sure stock concentration and final concentration are of the unit and calculate the dilution factor (df) by dividing stock concentration (sc) by the final concentration (fc):</div>
+        <ul>
+          <li>sc ÷ fc = df</li>
+          <li>25mM ÷ 1.5mM = 16.66</li>
+        </ul>
+      </div>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Calculate volume needed per sample/well (sv) by dividing the reaction volume (rv) by the dilution factor calculated previously (df):</div>
+        <ul>
+          <li>rv ÷ dv = sv</li>
+          <li>50µl ÷ 16.66 = 3.00µl</li>
+        </ul>
+      </div>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Calculate the total volume of reagent (tv) needed in you master mix by multiplying the needed volume per sample/well (sv) by the number of samples you are testing (sn). It is also good practice to calculate with an additional well.</div>
+        <ul>
+          <li>sv × sn = tv</li>
+          <li>3.00µl × (5 samples + 1 extra) = 18µl</li>
+        </ul>
+      </div>
+    </li>
+  </ol>
+
+  <p class="text-center"><u class="fs-4">Formula #2 ➤ Calculations for polymerase (any reagent with the unit Units/µl)</u></p>
+  <ol class="list-group list-group-numbered fs-5 mb-5">
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Calculate volume needed per well/sample (sv) by dividing final concentration (fc) in the unit of “Units” by stock concentration (sc) in the unit of Units/µl:</div>
+        <ul>
+          <li>fc ÷ sc = sv</li>
+          <li>25 Units ÷ 5 Units/µl = 0.25µl</li>
+        </ul>
+      </div>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Calculate the total volume of reagent (tv) needed in you master mix by multiplying the needed volume per sample/well (sv) by the number of samples you are testing (sn). It is also good practice to calculate with an additional well:</div>
+        <ul>
+          <li>sv × sn = tv</li>
+          <li>25µl × (5 samples + 1 extra) = 1.5µl</li>
+        </ul>
+      </div>
+    </li>
+  </ol>
+
+  <p class="text-center"><u class="fs-4">Formula #3 ➤ Calculations for diluents (such as PCR-grade water)</u></p>
+  <ol class="list-group list-group-numbered fs-5 mb-5">
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Calculate the volume of diluent needed per well/sample (dv) by subtracting the reaction volume (rv) by each volume of reagents needed per well/sample (sv) that is not a diluent:</div>
+        <ul>
+          <li>rv - (sv1 + sv2 + sv3…) = dv</li>
+          <li>50µl - (5µl + 3µl + 1µl + 1.25µl + 1.2 µl + 0.25µl + 0.5µl) = 37.75µl</li>
+        </ul>
+      </div>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Calculate the total volume of diluents (tv) needed in you master mix by multiplying the needed volume per sample/well (dv) by the number of samples you are testing (sn). It is also good practice to calculate with an additional well:</div>
+        <ul>
+          <li>dv × sn = tv</li>
+          <li>75µl × (5 samples + 1 extra) = 226.5µl</li>
+        </ul>
+      </div>
+    </li>
+  </ol>
+
+  <p class="text-center"><u class="fs-4">Finished Example ➤ Reaction Volume: 50µl ↔ Sample Volume: 0.5µl ↔ Number of samples: 5</u></p>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <td>Formula #1</td>
+          <td>Reagent</td>
+          <td>Master Mix Volume + 1 (µl)</td>
+          <td>Master Mix Volume (µl)</td>
+          <td>Volume Per Well (µl)</td>
+          <td>Dilution Factor</td>
+          <td>Stock Concentration</td>
+          <td>Final Concentration</td>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td>1</td>
+          <td>Buffer</td>
+          <td>30</td>
+          <td>25</td>
+          <td>5</td>
+          <td>10</td>
+          <td>10X</td>
+          <td>1X</td>
+        </tr>
+
+        <tr>
+          <td>1</td>
+          <td>MgCl2</td>
+          <td>18</td>
+          <td>15</td>
+          <td>3</td>
+          <td>16.66</td>
+          <td>25 mM</td>
+          <td>1.5 mM</td>
+        </tr>
+
+        <tr>
+          <td>1</td>
+          <td>dNTPs</td>
+          <td>6</td>
+          <td>5</td>
+          <td>1</td>
+          <td>50</td>
+          <td>10 mM</td>
+          <td>0.2 mM</td>
+        </tr>
+
+        <tr>
+          <td>1</td>
+          <td>Forward Primer</td>
+          <td>7.5</td>
+          <td>6.25</td>
+          <td>1.25</td>
+          <td>40</td>
+          <td>10 mM</td>
+          <td>0.25 mM</td>
+        </tr>
+
+        <tr>
+          <td>1</td>
+          <td>Reverse Primer</td>
+          <td>7.5</td>
+          <td>6.25</td>
+          <td>1.25</td>
+          <td>40</td>
+          <td>10 mM</td>
+          <td>0.25 mM</td>
+        </tr>
+
+        <tr>
+          <td>2</td>
+          <td>Polymerase</td>
+          <td>1.5</td>
+          <td>1.25</td>
+          <td>0.25</td>
+          <td>------</td>
+          <td>5 Units/ µl</td>
+          <td>1.25 Units</td>
+        </tr>
+
+        <tr>
+          <td>------</td>
+          <td>Template DNA (sample)</td>
+          <td>------</td>
+          <td>------</td>
+          <td>0.5</td>
+          <td>------</td>
+          <td>------</td>
+          <td>------</td>
+        </tr>
+
+        <tr>
+          <td>3</td>
+          <td>PCR-grade water</td>
+          <td>226.5</td>
+          <td>188.75</td>
+          <td>37.75</td>
+          <td>------</td>
+          <td>------</td>
+          <td>------</td>
+        </tr>
+       
+      </tbody>
+    </table>
   </div>
 
+  <p class="text-center"><u class="fs-4">Conclusion</u></p>
+  <p class="fs-5 mb-4" style="text-indent: 2em;">Now that you know how to manually calculate a master mix for PCR. Let us introduce you to PCRprep! PCRprep is a free laboratory information system specifically tailored for PCR. This tool keeps track of your inventory, allows you to manage your assays/panels with ease, and generate paperwork from extraction to PCR. Register below to get started today!<p>
+  <div class="text-center"><a href="{% url 'register' %}" class="btn btn-warning btn-lg">Register For Free</a></div>
 
 </div>
 {% endblock %}

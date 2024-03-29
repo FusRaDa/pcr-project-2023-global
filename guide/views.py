@@ -58,7 +58,7 @@ def pcr_guide(request):
 
 def articles_page(request):
   context = {}
-  return render(request, 'articles.html', context)
+  return render(request, 'articles_page.html', context)
 
 
 def pcrmastermix_article(request):
