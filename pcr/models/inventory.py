@@ -29,8 +29,9 @@ class Ladder(models.Model):
 
   location = models.ManyToManyField(Location)
 
-  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0) # microliters
+  threshold = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0)], default=0) # microliters
+  threshold_diff = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True, default=None) # amount - amount_used - threshold
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -64,8 +65,9 @@ class Dye(models.Model):
 
   location = models.ManyToManyField(Location)
 
-  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0) # microliters
+  threshold = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0)], default=0) # microliters
+  threshold_diff = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True, default=None) # amount - amount_used - threshold
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -113,7 +115,9 @@ class Plate(models.Model):
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.PCR, max_length=25)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+
+  threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  threshold_diff = models.IntegerField(blank=True, null=True, default=None) # amount - amount_used - threshold
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -155,7 +159,8 @@ class Gel(models.Model):
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.TWENTY_FOUR, blank=False)
 
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  threshold_diff = models.IntegerField(blank=True, null=True, default=None) # amount - amount_used - threshold
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -190,7 +195,8 @@ class Tube(models.Model):
   location = models.ManyToManyField(Location)
 
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  threshold_diff = models.IntegerField(blank=True, null=True, default=None) # amount - amount_used - threshold
  
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -252,7 +258,10 @@ class Reagent(models.Model):
  
   volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12, default=0)
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
-  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0) # in microliters
+
+  threshold = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0)], default=0)
+  threshold_diff = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True, default=None) # amount - amount_used - threshold in microliters
+  threshold_unit = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
 
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)

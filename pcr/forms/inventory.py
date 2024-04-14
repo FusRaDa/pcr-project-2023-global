@@ -65,13 +65,15 @@ class LadderForm(ModelForm):
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
     self.fields['amount'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
 
   class Meta:
     model = Ladder
-    exclude = ['user', 'last_updated']
+    exclude = ['user', 'last_updated', 'threshold_diff']
 
 
 class GelForm(ModelForm):
@@ -103,13 +105,15 @@ class GelForm(ModelForm):
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['size'].widget.attrs['class'] = 'form-select'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
     self.fields['amount'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
 
   class Meta:
     model = Gel
-    exclude = ['user', 'last_updated']
+    exclude = ['user', 'last_updated', 'threshold_diff']
 
 
 class DyeForm(ModelForm):
@@ -140,13 +144,15 @@ class DyeForm(ModelForm):
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
     self.fields['amount'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
 
   class Meta:
     model = Dye
-    exclude = ['user', 'last_updated']
+    exclude = ['user', 'last_updated', 'threshold_diff']
 
 
 class PlateForm(ModelForm):
@@ -179,13 +185,15 @@ class PlateForm(ModelForm):
     self.fields['size'].widget.attrs['class'] = 'form-select'
     self.fields['type'].widget.attrs['class'] = 'form-select'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
     self.fields['amount'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
 
   class Meta:
     model = Plate
-    exclude = ['user', 'last_updated']
+    exclude = ['user', 'last_updated', 'threshold_diff']
 
 
 class TubeForm(ModelForm):
@@ -216,13 +224,15 @@ class TubeForm(ModelForm):
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
     self.fields['amount'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
 
   class Meta:
     model = Tube
-    exclude = ['user', 'last_updated']
+    exclude = ['user', 'last_updated', 'threshold_diff']
 
 
 class ReagentForm(ModelForm):
@@ -316,9 +326,13 @@ class ReagentForm(ModelForm):
     self.fields['reverse_sequence'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold_unit'].widget.attrs['class'] = 'form-select'
+
     self.fields['volume'].widget.attrs['min'] = 0
     self.fields['stock_concentration'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
   
   class Meta:
     model = Reagent
-    exclude = ['user', 'last_updated']
+    exclude = ['user', 'last_updated', 'threshold_diff']
