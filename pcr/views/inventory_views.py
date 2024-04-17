@@ -109,6 +109,15 @@ def create_ladder(request):
     form = LadderForm(request.POST, user=request.user)
     if form.is_valid():
       ladder = form.save(commit=False)
+
+      amount = form.cleaned_data['amount']
+      threshold = form.cleaned_data['threshold']
+
+      if threshold > 0:
+        ladder.threshold_diff = amount - threshold
+      else:
+        ladder.threshold_diff = None
+      
       ladder.user = request.user
       ladder = form.save()
       return redirect('ladders')
@@ -133,6 +142,15 @@ def edit_ladder(request, pk):
   if 'update' in request.POST:
     form = LadderForm(request.POST, user=request.user, instance=ladder)
     if form.is_valid():
+
+      amount = form.cleaned_data['amount']
+      threshold = form.cleaned_data['threshold']
+
+      if threshold > 0:
+        ladder.threshold_diff = amount - threshold
+      else:
+        ladder.threshold_diff = None
+
       form.save()
       return redirect('ladders')
     else:
@@ -188,6 +206,15 @@ def create_gel(request):
     form = GelForm(request.POST, user=request.user)
     if form.is_valid():
       gel = form.save(commit=False)
+
+      amount = form.cleaned_data['amount']
+      threshold = form.cleaned_data['threshold']
+
+      if threshold > 0:
+        gel.threshold_diff = amount - threshold
+      else:
+        gel.threshold_diff = None
+
       gel.user = request.user
       gel = form.save()
       return redirect('gels')
@@ -203,7 +230,7 @@ def edit_gel(request, pk):
   try:
     gel = Gel.objects.get(user=request.user, pk=pk)
   except ObjectDoesNotExist:
-    messages.error(request, "There is no plate to edit.")
+    messages.error(request, "There is no gel to edit.")
     return redirect('gels')
   
   form = GelForm(user=request.user, instance=gel)
@@ -212,6 +239,15 @@ def edit_gel(request, pk):
   if 'update' in request.POST:
     form = GelForm(request.POST, user=request.user, instance=gel)
     if form.is_valid():
+
+      amount = form.cleaned_data['amount']
+      threshold = form.cleaned_data['threshold']
+
+      if threshold > 0:
+        gel.threshold_diff = amount - threshold
+      else:
+        gel.threshold_diff = None
+
       form.save()
       return redirect('gels')
     else:
@@ -266,6 +302,15 @@ def create_dye(request):
     form = DyeForm(request.POST, user=request.user)
     if form.is_valid():
       dye = form.save(commit=False)
+
+      amount = form.cleaned_data['amount']
+      threshold = form.cleaned_data['threshold']
+
+      if threshold > 0:
+        dye.threshold_diff = amount - threshold
+      else:
+        dye.threshold_diff = None
+
       dye.user = request.user
       dye = form.save()
       return redirect('dyes')
@@ -290,6 +335,15 @@ def edit_dye(request, pk):
   if 'update' in request.POST:
     form = DyeForm(request.POST, user=request.user, instance=dye)
     if form.is_valid():
+
+      amount = form.cleaned_data['amount']
+      threshold = form.cleaned_data['threshold']
+
+      if threshold > 0:
+        dye.threshold_diff = amount - threshold
+      else:
+        dye.threshold_diff = None
+
       form.save()
       return redirect('dyes')
     else:
@@ -350,6 +404,15 @@ def create_plate(request):
     form = PlateForm(request.POST, user=request.user)
     if form.is_valid():
       plate = form.save(commit=False)
+
+      amount = form.cleaned_data['amount']
+      threshold = form.cleaned_data['threshold']
+
+      if threshold > 0:
+        plate.threshold_diff = amount - threshold
+      else:
+        plate.threshold_diff = None
+
       plate.user = request.user
       plate = form.save()
       return redirect('plates')
@@ -374,6 +437,15 @@ def edit_plate(request, pk):
   if 'update' in request.POST:
     form = PlateForm(request.POST, user=request.user, instance=plate)
     if form.is_valid():
+
+      amount = form.cleaned_data['amount']
+      threshold = form.cleaned_data['threshold']
+
+      if threshold > 0:
+        plate.threshold_diff = amount - threshold
+      else:
+        plate.threshold_diff = None
+
       form.save()
       return redirect('plates')
     else:
@@ -428,6 +500,15 @@ def create_tube(request):
     form = TubeForm(request.POST, user=request.user)
     if form.is_valid():
       tube = form.save(commit=False)
+
+      amount = form.cleaned_data['amount']
+      threshold = form.cleaned_data['threshold']
+
+      if threshold > 0:
+        tube.threshold_diff = amount - threshold
+      else:
+        tube.threshold_diff = None
+
       tube.user = request.user
       tube = form.save()
       return redirect('tubes')
@@ -452,6 +533,15 @@ def edit_tube(request, pk):
   if 'update' in request.POST:
     form = TubeForm(request.POST, user=request.user, instance=tube)
     if form.is_valid():
+
+      amount = form.cleaned_data['amount']
+      threshold = form.cleaned_data['threshold']
+
+      if threshold > 0:
+        tube.threshold_diff = amount - threshold
+      else:
+        tube.threshold_diff = None
+
       form.save()
       return redirect('tubes')
     else:
@@ -518,10 +608,33 @@ def create_reagent(request):
       usage = form.cleaned_data['usage']
       pcr_reagent = form.cleaned_data['pcr_reagent']
 
+      volume = form.cleaned_data['volume']
+      unit_volume = form.cleaned_data['unit_volume'] 
+
+      threshold = form.cleaned_data['threshold']
+      threshold_unit = form.cleaned_data['threshold_unit']
+
       if fseq:
         reagent.forward_sequence = fseq.upper()
       if rseq:
         reagent.reverse_sequence = rseq.upper()
+      
+      if unit_volume == Reagent.VolumeUnits.LITER:
+        volume_in_microliters = volume * 1000000
+      if unit_volume == Reagent.VolumeUnits.MILLILITER:
+        volume_in_microliters = volume * 1000
+      if unit_volume == Reagent.VolumeUnits.MICROLITER:
+        volume_in_microliters = volume
+
+      if threshold > 0:
+        if threshold_unit == Reagent.VolumeUnits.LITER:
+          reagent.threshold_diff = volume_in_microliters - (threshold * 1000000)
+        if threshold_unit == Reagent.VolumeUnits.MILLILITER:
+          reagent.threshold_diff = volume_in_microliters - (threshold * 1000)
+        if threshold_unit == Reagent.VolumeUnits.MICROLITER:
+          reagent.threshold_diff = volume_in_microliters - threshold
+      else:
+        reagent.threshold_diff = None
 
       reagent.user = request.user
       reagent = form.save()
@@ -558,10 +671,33 @@ def edit_reagent(request, pk):
     form = ReagentForm(request.POST, user=request.user, instance=reagent)
     if form.is_valid():
 
+      volume = form.cleaned_data['volume']
+      unit_volume = form.cleaned_data['unit_volume'] 
+
+      threshold = form.cleaned_data['threshold']
+      threshold_unit = form.cleaned_data['threshold_unit']
+
       if reagent.forward_sequence:
         reagent.forward_sequence = reagent.forward_sequence.upper()
       if reagent.reverse_sequence:
         reagent.reverse_sequence = reagent.reverse_sequence.upper()
+
+      if unit_volume == Reagent.VolumeUnits.LITER:
+        volume_in_microliters = volume * 1000000
+      if unit_volume == Reagent.VolumeUnits.MILLILITER:
+        volume_in_microliters = volume * 1000
+      if unit_volume == Reagent.VolumeUnits.MICROLITER:
+        volume_in_microliters = volume
+
+      if threshold > 0:
+        if threshold_unit == Reagent.VolumeUnits.LITER:
+          reagent.threshold_diff = volume_in_microliters - (threshold * 1000000)
+        if threshold_unit == Reagent.VolumeUnits.MILLILITER:
+          reagent.threshold_diff = volume_in_microliters - (threshold * 1000)
+        if threshold_unit == Reagent.VolumeUnits.MICROLITER:
+          reagent.threshold_diff = volume_in_microliters - threshold
+      else:
+        reagent.threshold_diff = None
 
       form.save()
       

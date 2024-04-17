@@ -295,6 +295,15 @@ class Reagent(models.Model):
       return Decimal(self.volume * 1000)
     if self.unit_volume == Reagent.VolumeUnits.MICROLITER:
       return Decimal(self.volume)
+    
+  @property
+  def threshold_in_microliters(self):
+    if self.threshold_unit == Reagent.VolumeUnits.LITER:
+      return Decimal(self.volume * 1000000)
+    if self.threshold_unit == Reagent.VolumeUnits.MILLILITER:
+      return Decimal(self.volume * 1000)
+    if self.threshold_unit == Reagent.VolumeUnits.MICROLITER:
+      return Decimal(self.volume)
 
   def __str__(self):
     return f"{self.name}-Lot#:{self.lot_number}"
