@@ -260,8 +260,8 @@ class Reagent(models.Model):
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
 
   threshold = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0)], default=0)
-  threshold_diff = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True, default=None) # amount - amount_used - threshold in microliters
-  threshold_unit = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
+  threshold_diff = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True, default=None) # volume_in_microliters - volume_used - threshold in microliters
+  threshold_unit = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25) # in microliters
 
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)

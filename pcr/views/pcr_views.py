@@ -810,37 +810,54 @@ def process_paperwork(request, pk):
     
     process.save()
 
-    # **UPDATE ALL PLATES AND GELS IN DB** #
+    # **FINAL UPDATE OF ALL PLATES AND GELS IN DB** #
     for plate in qpcr_plates:
+
+      if plate['plate'].threshold > 0:
+        plate['plate'].threshold_diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+
       plate['plate'].amount -= plate['used']
       plate['plate'].save()
       plate.pop('plate')
 
     for plate in pcr_plates:
+
+      if plate['plate'].threshold > 0:
+        plate['plate'].threshold_diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+
       plate['plate'].amount -= plate['used']
       plate['plate'].save()
       plate.pop('plate')
 
     for gel in gels:
+
+      if plate['plate'].threshold > 0:
+        plate['plate'].threshold_diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+
       gel['gel'].amount -= gel['used']
       gel['gel'].save()
       gel.pop('gel')
-    # **UPDATE ALL PLATES AND GELS IN DB** #
+    # **FINAL UPDATE OF ALL PLATES AND GELS IN DB** #
       
 
-    # **FINAL UPDATE OF ALL REAGENTS IN DB** #
+    # **FINAL UPDATE OF ALL CONTROLS IN DB** #
     for control_dict in all_controls:
       control_dict['control'].amount -= Decimal(control_dict['total'])
       control_dict['control'].save()
-    # **FINAL UPDATE OF ALL REAGENTS IN DB** #
+    # **FINAL UPDATE OF ALL CONTROLS IN DB** #
       
 
     # **FINAL UPDATE OF ALL REAGENTS IN DB** #
     for reagent_dict in all_reagents:
+
+      if reagent_dict['reagent'].threshold > 0:
+        reagent_dict['reagent'].threshold_diff = Decimal(reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] - reagent_dict['reagent'].threshold_in_microliters)
+
       if process.is_plus_one_well == True:
         reagent_dict['reagent'].volume = Decimal(reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] - reagent_dict['volume_per_sample'])
       else:
         reagent_dict['reagent'].volume = Decimal(reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'])
+
       reagent_dict['reagent'].unit_volume = Reagent.VolumeUnits.MICROLITER
       reagent_dict['reagent'].save()
     # **FINAL UPDATE OF ALL REAGENTS IN DB** #
@@ -848,10 +865,18 @@ def process_paperwork(request, pk):
 
     # **FINAL UPDATE OF ALL DYES & LADDERS IN DB** #
     for dye_dict in all_dyes:
+
+      if dye_dict['dye'].threshold > 0:
+        dye_dict['dye'].threshold_diff = Decimal(dye_dict['amount'] - dye_dict['total'] - dye_dict['dye'].threshold)
+
       dye_dict['dye'].amount -= dye_dict['total']
       dye_dict['dye'].save()
 
     for ladder_dict in all_ladders:
+
+      if ladder_dict['ladder'].threshold > 0:
+        ladder_dict['ladder'].threshold_diff = Decimal(ladder_dict['amount'] - ladder_dict['total'] - ladder_dict['ladder'].threshold)
+
       ladder_dict['ladder'].amount -= ladder_dict['total']
       ladder_dict['ladder'].save()
     # **FINAL UPDATE OF ALL DYES & LADDERS IN DB** #
