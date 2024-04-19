@@ -1,0 +1,37 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Inventory Dashboard {% endblock %} 
+
+{% block content %}
+<div class="container mt-3">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">Inventory Dashboard</h3>
+    <p class="text-center"><a href="{% url 'inventory_guide' %}" target="_blank" class="text-center">Welcome back, {{request.user.username}}</a></p>
+  </div>
+
+  {% for message in messages %}
+  <div class="row">
+    <div class="col d-flex justify-content-center"> 
+      <h5 class="messages">{{ message }}</h5>
+    </div>
+  </div>
+  {% endfor %}
+
+
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".link-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
+{% endblock %}
+
+
+
+

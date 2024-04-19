@@ -90,8 +90,5 @@ def reagents_display(request):
 def inventory_report(request):
  
   context = {}
-  return render(request, 'dashboard/inventory_report.html', context)
-
-
-
+  return render(request, 'dashboard/inventory_dashboard.html', context)
 # **REPORT VIEWS** #
