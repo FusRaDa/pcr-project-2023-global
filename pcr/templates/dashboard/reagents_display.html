@@ -44,7 +44,7 @@
 
       <tbody>
         {% for reagent in page_obj %}
-          <tr class="link-row" data-href="{% url 'edit_reagent' reagent.pk %}">
+          <tr class="link-row {% if reagent.threshold_diff is not None and reagent.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_reagent' reagent.pk %}">
             <td>{{reagent.name}}</td>
             <td>{{reagent.volume}} {{reagent.unit_volume}}</td>
             <td>{{reagent.lot_number}}</td>

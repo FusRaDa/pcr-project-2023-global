@@ -42,7 +42,7 @@
 
       <tbody>
         {% for tube in page_obj %}
-          <tr class="link-row" data-href="{% url 'edit_tube' tube.pk %}">
+          <tr class="link-row {% if tube.threshold_diff is not None and tube.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_tube' tube.pk %}">
             <td>{{tube.name}}</td>
             <td>{{tube.amount}}</td>
             <td>{{tube.lot_number}}</td>

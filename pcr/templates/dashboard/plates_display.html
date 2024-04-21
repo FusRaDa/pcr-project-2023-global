@@ -42,7 +42,7 @@
 
       <tbody>
         {% for plate in page_obj %}
-          <tr class="link-row" data-href="{% url 'edit_plate' plate.pk %}">
+          <tr class="link-row {% if plate.threshold_diff is not None and plate.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.pk %}">
             <td>{{plate.name}}</td>
             <td>{{plate.amount}}</td>
             <td>{{plate.lot_number}}</td>

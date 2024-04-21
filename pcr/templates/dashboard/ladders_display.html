@@ -42,7 +42,7 @@
 
       <tbody>
         {% for ladder in page_obj %}
-          <tr class="link-row" data-href="{% url 'edit_ladder' ladder.pk %}">
+          <tr class="link-row {% if ladder.threshold_diff is not None and ladder.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_ladder' ladder.pk %}">
             <td>{{ladder.name}}</td>
             <td>{{ladder.amount}}</td>
             <td>{{ladder.lot_number}}</td>

@@ -42,7 +42,7 @@
 
       <tbody>
         {% for dye in page_obj %}
-          <tr class="link-row" data-href="{% url 'edit_dye' dye.pk %}">
+          <tr class="link-row {% if dye.threshold_diff is not None and dye.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_dye' dye.pk %}">
             <td>{{dye.name}}</td>
             <td>{{dye.amount}}</td>
             <td>{{dye.lot_number}}</td>
