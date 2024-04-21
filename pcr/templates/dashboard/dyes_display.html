@@ -3,7 +3,30 @@
   <h5 class="text-center">Dyes</h5>
 
   <div class="text-center mb-1">
-    <a class="btn btn-primary btn-sm" href="{% url 'dyes' %}" role="button">Manage Dyes</a>
+    <a class="btn btn-primary btn-sm position-relative" href="{% url 'dyes' %}" role="button">Manage Dyes
+
+      {% if is_low and not is_expired %}
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        Low
+        <span class="visually-hidden">unread messages</span>
+      </span>
+      {% endif %}
+
+      {% if is_expired and not is_low %}
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        Expired
+        <span class="visually-hidden">unread messages</span>
+      </span>
+      {% endif %}
+
+      {% if is_low and is_expired %}
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        Low &amp; Expired
+        <span class="visually-hidden">unread messages</span>
+      </span>
+      {% endif %}
+
+    </a>
   </div>
 
   <div class="table-responsive">

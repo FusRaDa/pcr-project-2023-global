@@ -12,13 +12,11 @@
     <h4 class="text-center">Welcome back {{request.user.first_name}} {{request.user.last_name}}</h4>
   </div>
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
-    </div>
+  {% if message %}
+  <div class="alert alert-danger text-center" role="alert">
+    {{message}}
   </div>
-  {% endfor %}
+  {% endif %}
 
   <div class="row gap-2 mt-3">
     <div id="reagents-display" class="col" hx-get="{% url 'reagents_display' %}" hx-trigger="load">Loading...</div>
