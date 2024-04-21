@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import batch_views, assay_code_views, extraction_protocol_views, assay_views, inventory_views, pcr_views
+from .views import batch_views, assay_code_views, extraction_protocol_views, assay_views, inventory_views, pcr_views, dashboard_views
 
 
 urlpatterns = [
@@ -72,15 +72,23 @@ urlpatterns = [
 
   path("tcprotocols/", pcr_views.tcprotocols, name='tcprotocols'),
   path("create-tcprotocol/", pcr_views.create_tcprotocol, name='create_tcprotocol'),
-  path("edit_tcprotocol/<int:pk>/", pcr_views.edit_tcprotocol, name='edit_tcprotocol'),
+  path("edit-tcprotocol/<int:pk>/", pcr_views.edit_tcprotocol, name='edit_tcprotocol'),
 
   path("extracted-batches/", pcr_views.extracted_batches, name='extracted_batches'),
   path("add-batch-samples/<int:process_pk>/<int:batch_pk>/", pcr_views.add_batch_samples, name='add_batch_samples'),
   path("add-sample-to-process/<int:process_pk>/<int:sample_pk>/", pcr_views.add_sample_to_process, name='add_sample_to_process'),
   path("remove-sample-from-process/<int:process_pk>/<int:sample_pk>/", pcr_views.remove_sample_from_process, name='remove_sample_from_process'),
   path("review-process/<int:pk>/", pcr_views.review_process, name='review_process'),
-  path("process_paperwork/<int:pk>/", pcr_views.process_paperwork, name='process_paperwork'),
+  path("process-paperwork/<int:pk>/", pcr_views.process_paperwork, name='process_paperwork'),
 
   path('processes/', pcr_views.processes, name='processes'),
-  path('pcr_paperwork/<int:pk>/', pcr_views.pcr_paperwork, name='pcr_paperwork'),
+  path('pcr-paperwork/<int:pk>/', pcr_views.pcr_paperwork, name='pcr_paperwork'),
+
+  path('ladders-display/', dashboard_views.ladders_display, name='ladders_display'),
+  path('dyes-display/', dashboard_views.dyes_display, name='dyes_display'),
+  path('plates-display/', dashboard_views.plates_display, name='plates_display'),
+  path('gels-display/', dashboard_views.gels_display, name='gels_display'),
+  path('tubes-display/', dashboard_views.tubes_display, name='tubes_display'),
+  path('reagents-display/', dashboard_views.reagents_display, name='reagents_display'),
+  path('dashboard/', dashboard_views.inventory_report, name='inventory_report'),
 ]

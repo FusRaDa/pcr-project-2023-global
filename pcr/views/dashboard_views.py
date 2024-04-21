@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
-from ..models.inventory import Location, Reagent, Tube, Plate, Gel, Ladder, Dye
+from ..models.inventory import Reagent, Tube, Plate, Gel, Ladder, Dye
 
 
 # **INVENTORY PARTIALS** #
