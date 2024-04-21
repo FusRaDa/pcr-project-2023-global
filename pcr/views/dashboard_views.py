@@ -3,6 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
 from ..models.inventory import Reagent, Tube, Plate, Gel, Ladder, Dye
+from ..models.assay import Assay
+from ..models.batch import Batch
+from ..models.pcr import Process
 
 
 # **INVENTORY PARTIALS** #
@@ -11,7 +14,7 @@ def ladders_display(request):
   user = request.user
   ladders = Ladder.objects.filter(user=user).order_by('threshold_diff')
 
-  paginator = Paginator(ladders, 25)
+  paginator = Paginator(ladders, 3)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -24,7 +27,7 @@ def dyes_display(request):
   user = request.user
   dyes = Dye.objects.filter(user=user).order_by('threshold_diff')
 
-  paginator = Paginator(dyes, 25)
+  paginator = Paginator(dyes, 3)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -37,7 +40,7 @@ def plates_display(request):
   user = request.user
   plates = Plate.objects.filter(user=user).order_by('threshold_diff')
 
-  paginator = Paginator(plates, 25)
+  paginator = Paginator(plates, 3)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -50,7 +53,7 @@ def gels_display(request):
   user = request.user
   gels = Gel.objects.filter(user=user).order_by('threshold_diff')
 
-  paginator = Paginator(gels, 25)
+  paginator = Paginator(gels, 3)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -63,7 +66,7 @@ def tubes_display(request):
   user = request.user
   tubes = Tube.objects.filter(user=user).order_by('threshold_diff')
 
-  paginator = Paginator(tubes, 25)
+  paginator = Paginator(tubes, 3)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -76,7 +79,7 @@ def reagents_display(request):
   user = request.user
   reagents = Reagent.objects.filter(user=user).order_by('threshold_diff')
 
-  paginator = Paginator(reagents, 25)
+  paginator = Paginator(reagents, 3)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 

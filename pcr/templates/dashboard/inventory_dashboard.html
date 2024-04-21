@@ -20,7 +20,23 @@
   </div>
   {% endfor %}
 
-  <div hx-get="{% url 'ladders_display' %}" hx-trigger="load">Get Some HTML</div>
+  <div class="row gap-2 mt-3">
+    <div class="col" hx-get="{% url 'reagents_display' %}" hx-trigger="load">Loading...</div>
+
+    <div class="col" hx-get="{% url 'tubes_display' %}" hx-trigger="load">Loading...</div>
+  </div>
+
+  <div class="row gap-2 mt-3">
+    <div class="col" hx-get="{% url 'plates_display' %}" hx-trigger="load">Loading...</div>
+
+    <div class="col" hx-get="{% url 'gels_display' %}" hx-trigger="load">Loading...</div>
+  </div>
+
+  <div class="row gap-2 mt-3">
+    <div class="col" hx-get="{% url 'ladders_display' %}" hx-trigger="load">Loading...</div>
+
+    <div class="col" hx-get="{% url 'dyes_display' %}" hx-trigger="load">Loading...</div>
+  </div>
 
 
 </div>
