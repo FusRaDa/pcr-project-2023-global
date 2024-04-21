@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import F
 
 from ..models.inventory import Reagent, Tube, Plate, Gel, Ladder, Dye
 from ..models.assay import Assay
@@ -12,9 +13,9 @@ from ..models.pcr import Process
 @login_required(login_url='login')
 def ladders_display(request):
   user = request.user
-  ladders = Ladder.objects.filter(user=user).order_by('threshold_diff')
+  ladders = Ladder.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
 
-  paginator = Paginator(ladders, 3)
+  paginator = Paginator(ladders, 5)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -25,9 +26,9 @@ def ladders_display(request):
 @login_required(login_url='login')
 def dyes_display(request):
   user = request.user
-  dyes = Dye.objects.filter(user=user).order_by('threshold_diff')
+  dyes = Dye.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
 
-  paginator = Paginator(dyes, 3)
+  paginator = Paginator(dyes, 5)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -38,9 +39,9 @@ def dyes_display(request):
 @login_required(login_url='login')
 def plates_display(request):
   user = request.user
-  plates = Plate.objects.filter(user=user).order_by('threshold_diff')
+  plates = Plate.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
 
-  paginator = Paginator(plates, 3)
+  paginator = Paginator(plates, 5)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -51,9 +52,9 @@ def plates_display(request):
 @login_required(login_url='login')
 def gels_display(request):
   user = request.user
-  gels = Gel.objects.filter(user=user).order_by('threshold_diff')
+  gels = Gel.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
 
-  paginator = Paginator(gels, 3)
+  paginator = Paginator(gels, 5)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -64,9 +65,9 @@ def gels_display(request):
 @login_required(login_url='login')
 def tubes_display(request):
   user = request.user
-  tubes = Tube.objects.filter(user=user).order_by('threshold_diff')
+  tubes = Tube.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
 
-  paginator = Paginator(tubes, 3)
+  paginator = Paginator(tubes, 5)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 
@@ -77,9 +78,9 @@ def tubes_display(request):
 @login_required(login_url='login')
 def reagents_display(request):
   user = request.user
-  reagents = Reagent.objects.filter(user=user).order_by('threshold_diff')
+  reagents = Reagent.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
 
-  paginator = Paginator(reagents, 3)
+  paginator = Paginator(reagents, 5)
   page_number = request.GET.get("page")
   page_obj = paginator.get_page(page_number)
 

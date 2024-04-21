@@ -21,21 +21,21 @@
   {% endfor %}
 
   <div class="row gap-2 mt-3">
-    <div class="col" hx-get="{% url 'reagents_display' %}" hx-trigger="load">Loading...</div>
+    <div id="reagents-display" class="col" hx-get="{% url 'reagents_display' %}" hx-trigger="load">Loading...</div>
 
-    <div class="col" hx-get="{% url 'tubes_display' %}" hx-trigger="load">Loading...</div>
+    <div id="tubes-display" class="col" hx-get="{% url 'tubes_display' %}" hx-trigger="load">Loading...</div>
   </div>
 
   <div class="row gap-2 mt-3">
-    <div class="col" hx-get="{% url 'plates_display' %}" hx-trigger="load">Loading...</div>
+    <div id="plates-display" class="col" hx-get="{% url 'plates_display' %}" hx-trigger="load">Loading...</div>
 
-    <div class="col" hx-get="{% url 'gels_display' %}" hx-trigger="load">Loading...</div>
+    <div id="gels-display" class="col" hx-get="{% url 'gels_display' %}" hx-trigger="load">Loading...</div>
   </div>
 
   <div class="row gap-2 mt-3">
-    <div class="col" hx-get="{% url 'ladders_display' %}" hx-trigger="load">Loading...</div>
+    <div id="ladders-display" class="col" hx-get="{% url 'ladders_display' %}" hx-trigger="load">Loading...</div>
 
-    <div class="col" hx-get="{% url 'dyes_display' %}" hx-trigger="load">Loading...</div>
+    <div id="dyes-display" class="col" hx-get="{% url 'dyes_display' %}" hx-trigger="load">Loading...</div>
   </div>
 
 
