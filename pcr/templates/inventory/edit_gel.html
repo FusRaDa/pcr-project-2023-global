@@ -114,6 +114,35 @@
     </div>
   </div>
 
+  <div class="row justify-content-center mt-3">
+    <h4 class="text-center">Correlations</h4>
+
+    <div class="col-sm-6">
+      {% if gel.process_set.all %}
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+
+          <thead>
+            <tr>
+              <th scope="col" class="col-sm-3">PCR Processes</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for process in gel.process_set.all %}
+            <tr class="link-row" {% if process.is_processed %} data-href="{% url 'pcr_paperwork' process.pk %}" {% else %} data-href="{% url 'process_paperwork' process.pk %}" {% endif %}>
+              <td>{{process.name}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -172,7 +201,7 @@
   });
 
   jQuery(document).ready(function($) {
-    $(".batch-row").click(function() {
+    $(".link-row").click(function() {
         window.location = $(this).data("href");
     });
   });

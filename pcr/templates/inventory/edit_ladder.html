@@ -109,6 +109,35 @@
     </div>
   </div>
 
+  <div class="row justify-content-center mt-3">
+    <h4 class="text-center">Correlations</h4>
+
+    <div class="col-sm-6">
+      {% if ladder.assay_set.all %}
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+
+          <thead>
+            <tr>
+              <th scope="col" class="col-sm-3">Assays</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for ladder in ladder.assay_set.all %}
+            <tr class="link-row" data-href="{% url 'edit_assay' assay.pk %}">
+              <td>{{assay.name}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -163,6 +192,12 @@
   $('.btn-arrow').click(function(){
     $(this).text(function(i,old){
       return old=='⮟' ?  '⮝' : '⮟';
+    });
+  });
+
+  jQuery(document).ready(function($) {
+    $(".link-row").click(function() {
+        window.location = $(this).data("href");
     });
   });
 </script>

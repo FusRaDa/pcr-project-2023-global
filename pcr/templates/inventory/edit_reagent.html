@@ -166,26 +166,32 @@
 
   </form>
 
-  {% comment %} <div class="row justify-content-center">
-    <div class="col-sm-6">
+  <div class="row justify-content-center">
+    <div class="col d-flex justify-content-center">
+      <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
+        Delete Reagent
+      </button>
+    </div>
+  </div>
 
+  <div class="row justify-content-center mt-3">
+    <h4 class="text-center">Correlations</h4>
+
+    <div class="col-sm-6">
       {% if reagent.extractionprotocol_set.all %}
-      <h5 class="text-center">Protocols</h5>
       <div class="table-responsive">
         <table class="table table-bordered table-hover">
 
           <thead>
             <tr>
-              <th scope="col" class="col-sm-3">Name</th>
-              <th scope="col" class="col-sm-3">Type</th>
+              <th scope="col" class="col-sm-3">Extraction Protocols</th>
             </tr>
           </thead>
 
           <tbody>
             {% for protocol in reagent.extractionprotocol_set.all %}
-            <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
+            <tr class="link-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
               <td>{{protocol.name}}</td>
-              <td>{{protocol.type}}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -195,43 +201,19 @@
       {% endif %}
 
       {% if reagent.assay_set.all %}
-      <h5 class="text-center">Assays</h5>
       <div class="table-responsive">
         <table class="table table-bordered table-hover">
 
           <thead>
             <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Type</th>
-              <th scope="col">Method</th>
-              <th scope="col">Reaction Volume (&#181;L)</th>
-              <th scope="col">Sample Volume (&#181;L)</th>
-              <th scope="col">Flourescence</th>
+              <th scope="col">Assays</th>
             </tr>
           </thead>
 
           <tbody>
             {% for assay in reagent.assay_set.all %}
-            <tr class="reagent-row" data-href="{% url 'edit_assay' assay.pk %}">
+            <tr class="link-row" data-href="{% url 'edit_assay' assay.pk %}">
               <td>{{assay.name}}</td>
-              <td>{{assay.type}}</td>
-              <td>{{assay.method}}</td>
-              <td>{{assay.reaction_volume}}</td>
-              <td>{{assay.sample_volume}}</td>
-       
-              <td>
-                {% for fluor in assay.fluorescence.all %}
-                  {% if assay.location.all|length > 1 %}
-                  <span>
-                    {{fluor}} |
-                  </span>
-                  {% else %}
-                  <span>
-                    {{fluor}}
-                  </span>
-                  {% endif %}
-                {% endfor %}
-              </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -240,14 +222,6 @@
       </div>
       {% endif %}
 
-    </div>
-  </div> {% endcomment %}
-
-  <div class="row justify-content-center">
-    <div class="col d-flex justify-content-center">
-      <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Reagent
-      </button>
     </div>
   </div>
 
@@ -308,7 +282,7 @@
     });
 
     jQuery(document).ready(function($) {
-      $(".reagent-row").click(function() {
+      $(".link-row").click(function() {
           window.location = $(this).data("href");
       });
     });

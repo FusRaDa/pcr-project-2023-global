@@ -101,26 +101,32 @@
 
   </form>
 
-  {% comment %} <div class="row justify-content-center">
-    <div class="col-sm-4">
+  <div class="row justify-content-center mt-2">
+    <div class="col d-flex justify-content-center">
+      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">
+        Delete Tube
+      </button>
+    </div>
+  </div>
 
+  <div class="row justify-content-center mt-3">
+    <h4 class="text-center">Correlations</h4>
+
+    <div class="col-sm-6">
       {% if tube.extractionprotocol_set.all %}
-      <h5 class="text-center">Protocols</h5>
       <div class="table-responsive">
         <table class="table table-bordered table-hover">
 
           <thead>
             <tr>
-              <th scope="col" class="col-sm-3">Name</th>
-              <th scope="col" class="col-sm-3">Type</th>
+              <th scope="col" class="col-sm-3">Extraction Protocols</th>
             </tr>
           </thead>
 
           <tbody>
             {% for protocol in tube.extractionprotocol_set.all %}
-            <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
+            <tr class="link-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
               <td>{{protocol.name}}</td>
-              <td>{{protocol.type}}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -129,14 +135,6 @@
       </div>
       {% endif %}
 
-    </div>
-  </div> {% endcomment %}
-
-  <div class="row justify-content-center mt-2">
-    <div class="col d-flex justify-content-center">
-      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Tube
-      </button>
     </div>
   </div>
 
@@ -199,7 +197,7 @@
   });
 
   jQuery(document).ready(function($) {
-    $(".batch-row").click(function() {
+    $(".link-row").click(function() {
         window.location = $(this).data("href");
     });
   });

@@ -67,7 +67,7 @@
           <tr class="tube-row {% if tube.is_expired %} table-danger {% endif %} {% if tube.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_tube' tube.pk %}">
             <td>{{tube.exp_date}} {% if tube.is_expired %} (EXPIRED) {% endif %} {% if tube.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %} </td>
             <td>{{tube.last_updated}}</td>
-            <td>{% if tube.tubeextraction_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{tube.name}}</td>
+            <td>{% if tube.extractionprotocol_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{tube.name}}</td>
             <td>{{tube.brand}}</td>
             <td>{{tube.catalog_number}}</td>
             <td>{{tube.lot_number}}</td>
