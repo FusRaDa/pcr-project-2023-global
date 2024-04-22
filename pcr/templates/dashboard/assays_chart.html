@@ -1,0 +1,72 @@
+<div class="container mt-3 border border-3 border-secondary h-100">
+  <h5 class="text-center">Most Used Assays</h5>
+  <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+</div>
+
+<script>
+  var canvasP = document.getElementById("myChart");
+
+  var xValues = {{names|safe}};
+  var yValues = {{numbers|safe}};
+  var barColors = [
+    '#ff80ed',
+    '#065535',
+    '#133337',
+    '#ffc0cb',
+    '#008080',
+    '#ff0000',
+    '#e6e6fa',
+    '#ffd700',
+    '#00ffff',
+    '#ffa500',
+    '#0000ff',
+    '#b0e0e6',
+    '#40e0d0',
+    '#ff7373',
+    '#d3ffce',
+    '#666666',
+    '#bada55',
+    '#003366',
+    '#ffb6c1',
+    '#800000',
+    '#800080',
+    '#00ff00',
+    '#333333',
+    '#ff7f50',
+    '#008000',
+  ];
+
+  var myPieChart = new Chart("myChart", {
+    type: "pie",
+    data: {
+      labels: xValues,
+      datasets: [{
+        label: "Samples",
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: "World Wide Wine Production 2018"
+      }
+    }
+  });
+
+  canvasP.onclick = function(e) {
+    var slice = myPieChart.getElementsAtEventForMode(e, 'nearest', {intersect: true}, true);
+    if (!slice.length) return; // return if not clicked on slice
+    var label = myPieChart.data.labels[slice[0].index];
+
+    dict = {{assays_dict|safe}};
+
+    window.location.href = dict[label]
+  }
+
+  jQuery(document).ready(function($) {
+    $(".link-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>

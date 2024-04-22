@@ -33,7 +33,7 @@
   <div class="row justify-content-center mt-2">
     {% for location in locations %}
 
-      <div class="col-sm-3 form-width-18 mb-2">
+      <div class="col-sm-3 mb-2">
         <div class="card">
           <div class="card-header">
             {{location.name}}
@@ -50,7 +50,7 @@
                 <div class="card-body"> 
                   <ul class="list-group">
                     {% for plate in location.plate_set.all %}
-                    <li class="list-group-item">{{plate}}</li>
+                    <li class="list-group-item">{{plate}} <a href="{% url 'edit_plate' plate.pk %}" class="btn btn-primary btn-sm float-end">Manage</a></li>
                     {% endfor %}
                   </ul>
                 </div>
@@ -68,7 +68,7 @@
                 <div class="card-body"> 
                   <ul class="list-group">
                     {% for tube in location.tube_set.all %}
-                    <li class="list-group-item">{{tube}}</li>
+                    <li class="list-group-item">{{tube}} <a href="{% url 'edit_tube' tube.pk %}" class="btn btn-primary btn-sm float-end">Manage</a></li>
                     {% endfor %}
                   </ul>
                 </div>
@@ -86,7 +86,7 @@
                 <div class="card-body"> 
                   <ul class="list-group">
                     {% for reagent in location.reagent_set.all %}
-                    <li class="list-group-item">{{reagent}}</li>
+                    <li class="list-group-item">{{reagent}} <a href="{% url 'edit_reagent' reagent.pk %}" class="btn btn-primary btn-sm float-end">Manage</a></li>
                     {% endfor %}
                   </ul>
                 </div>

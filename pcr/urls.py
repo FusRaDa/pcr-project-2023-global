@@ -90,5 +90,9 @@ urlpatterns = [
   path('gels-display/', dashboard_views.gels_display, name='gels_display'),
   path('tubes-display/', dashboard_views.tubes_display, name='tubes_display'),
   path('reagents-display/', dashboard_views.reagents_display, name='reagents_display'),
+
+  path('assays-chart/', dashboard_views.assays_chart, name='assays_chart'),
+  path('panels-chart/', dashboard_views.panels_chart, name='panels_chart'),
+
   path('dashboard/', dashboard_views.inventory_report, name='inventory_report'),
 ]

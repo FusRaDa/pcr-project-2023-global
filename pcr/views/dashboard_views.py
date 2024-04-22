@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import F
@@ -166,6 +167,31 @@ def reagents_display(request):
   return render(request, 'dashboard/reagents_display.html', context)
 # **INVENTORY PARTIALS** #
 
+# **TESTS PARTIALS** #
+@login_required(login_url='login')
+def assays_chart(request):
+  assays = Assay.objects.filter(user=request.user).order_by('name')
+
+  names = []
+  numbers = []
+  assays_dict = {}
+
+  for assay in assays:
+    names.append(assay.name)
+    numbers.append(assay.sample_set.count())
+    url = reverse('edit_assay', kwargs={'pk': assay.pk})
+    assays_dict[assay.name] = url
+
+  context = {'names': names, 'numbers': numbers, 'assays_dict': assays_dict}
+  return render(request, 'dashboard/assays_chart.html', context)
+
+
+@login_required(login_url='login')
+def panels_chart(request):
+  
+  context = {}
+  return render(request, 'dashboard/panels_chart.html', context)
+# **TESTS PARTIALS** #
 
 # **REPORT VIEWS** #
 @login_required(login_url='login')
