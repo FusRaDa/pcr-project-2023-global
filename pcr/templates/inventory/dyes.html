@@ -68,7 +68,7 @@
           <tr class="dye-row {% if dye.is_expired %} table-danger {% endif %} {% if dye.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_dye' dye.pk %}">
             <td>{{dye.exp_date}} {% if dye.is_expired %} (EXPIRED) {% endif %} {% if dye.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{dye.last_updated}}</td>
-            <td>{{dye.name}}</td>
+            <td>{% if dye.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{dye.name}}</td>
             <td>{{dye.brand}}</td>
             <td>{{dye.catalog_number}}</td>
             <td>{{dye.lot_number}}</td>

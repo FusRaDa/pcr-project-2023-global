@@ -62,8 +62,8 @@
       <tbody>
         {% for control in page_obj %}
           <tr class="tube-row {% if control.is_expired %} table-danger {% endif %} {% if control.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_control' control.pk %}">
-            <td>{{control.exp_date}}</td>
-            <td>{{control.name}} {% if control.is_expired %} (EXPIRED) {% endif %} {% if control.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{control.exp_date}} {% if control.is_expired %} (EXPIRED) {% endif %} {% if control.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{% if control.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{control.name}}</td>
             <td>{{control.lot_number}}</td>
             <td>{{control.amount}}</td>
 
