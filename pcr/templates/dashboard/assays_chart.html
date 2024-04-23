@@ -4,11 +4,11 @@
 </div>
 
 <script>
-  var canvasP = document.getElementById("myChart-assay");
+  var canvasPAssay = document.getElementById("myChart-assay");
 
-  var xValues = {{names|safe}};
-  var yValues = {{numbers|safe}};
-  var barColors = [
+  var xValuesAssay = {{names_assays|safe}};
+  var yValuesAssay = {{numbers_assays|safe}};
+  var barColorsAssay = [
     '#ff80ed',
     '#065535',
     '#133337',
@@ -36,14 +36,14 @@
     '#008000',
   ];
 
-  var myPieChart = new Chart("myChart-assay", {
+  var myPieChartAssay = new Chart("myChart-assay", {
     type: "pie",
     data: {
-      labels: xValues,
+      labels: xValuesAssay,
       datasets: [{
         label: "Samples",
-        backgroundColor: barColors,
-        data: yValues
+        backgroundColor: barColorsAssay,
+        data: yValuesAssay
       }]
     },
     options: {
@@ -54,13 +54,13 @@
     }
   });
 
-  canvasP.onclick = function(e) {
-    var slice = myPieChart.getElementsAtEventForMode(e, 'nearest', {intersect: true}, true);
+  canvasPAssay.onclick = function(e) {
+    var slice = myPieChartAssay.getElementsAtEventForMode(e, 'nearest', {intersect: true}, true);
     if (!slice.length) return; // return if not clicked on slice
-    var label = myPieChart.data.labels[slice[0].index];
+    var labelAssay = myPieChartAssay.data.labels[slice[0].index];
 
-    dict = {{assays_dict|safe}};
+    dictAssay = {{assays_dict|safe}};
 
-    window.location.href = dict[label]
+    window.location.href = dictAssay[labelAssay]
   }
 </script>

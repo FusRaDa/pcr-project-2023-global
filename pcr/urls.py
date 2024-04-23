@@ -84,14 +84,16 @@ urlpatterns = [
   path('processes/', pcr_views.processes, name='processes'),
   path('pcr-paperwork/<int:pk>/', pcr_views.pcr_paperwork, name='pcr_paperwork'),
 
+  path('controls-display/', dashboard_views.controls_display, name='controls_display'),
+  path('batches-display/', dashboard_views.batches_display, name='batches_display'),
+  path('processes-display/', dashboard_views.processes_display, name='processes_display'),
+
   path('ladders-display/', dashboard_views.ladders_display, name='ladders_display'),
   path('dyes-display/', dashboard_views.dyes_display, name='dyes_display'),
   path('plates-display/', dashboard_views.plates_display, name='plates_display'),
   path('gels-display/', dashboard_views.gels_display, name='gels_display'),
   path('tubes-display/', dashboard_views.tubes_display, name='tubes_display'),
   path('reagents-display/', dashboard_views.reagents_display, name='reagents_display'),
-
-  path('controls-display/', dashboard_views.controls_display, name='controls_display'),
 
   path('assays-chart/', dashboard_views.assays_chart, name='assays_chart'),
   path('panels-chart/', dashboard_views.panels_chart, name='panels_chart'),

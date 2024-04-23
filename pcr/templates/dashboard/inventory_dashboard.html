@@ -19,6 +19,14 @@
   {% endif %}
 
   <div class="row gap-2 mt-3">
+    <div class="col" hx-get="{% url 'batches_display' %}" hx-trigger="load">Loading...</div>
+
+    <div class="col" hx-get="{% url 'processes_display' %}" hx-trigger="load">Loading...</div>
+
+    <div class="col" hx-get="{% url 'controls_display' %}" hx-trigger="load">Loading...</div>
+  </div>
+
+  <div class="row gap-2 mt-3">
     <div class="col" hx-get="{% url 'reagents_display' %}" hx-trigger="load">Loading...</div>
 
     <div class="col" hx-get="{% url 'tubes_display' %}" hx-trigger="load">Loading...</div>
@@ -37,13 +45,9 @@
   </div>
 
   <div class="row gap-2 mt-3">
-
-    <div class="col" hx-get="{% url 'controls_display' %}" hx-trigger="load">Loading...</div>
-
     <div class="col" hx-get="{% url 'assays_chart' %}" hx-trigger="load">Loading...</div>
 
     <div class="col" hx-get="{% url 'panels_chart' %}" hx-trigger="load">Loading...</div>
-
   </div>
 
 </div>

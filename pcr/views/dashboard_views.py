@@ -6,6 +6,8 @@ from django.db.models import F
 
 from ..models.inventory import Reagent, Tube, Plate, Gel, Ladder, Dye
 from ..models.assay import Assay, AssayCode, Control
+from ..models.batch import Batch
+from ..models.pcr import Process
 
 
 # **INVENTORY PARTIALS** #
@@ -167,17 +169,17 @@ def controls_display(request):
 def assays_chart(request):
   assays = Assay.objects.filter(user=request.user).order_by('name')
 
-  names = []
-  numbers = []
+  names_assays = []
+  numbers_assays = []
   assays_dict = {}
 
   for assay in assays:
-    names.append(assay.name)
-    numbers.append(assay.sample_set.count())
+    names_assays.append(assay.name)
+    numbers_assays.append(assay.sample_set.count())
     url = reverse('edit_assay', kwargs={'pk': assay.pk})
     assays_dict[assay.name] = url
 
-  context = {'names': names, 'numbers': numbers, 'assays_dict': assays_dict}
+  context = {'names_assays': names_assays, 'numbers_assays': numbers_assays, 'assays_dict': assays_dict}
   return render(request, 'dashboard/assays_chart.html', context)
 
 
@@ -185,19 +187,54 @@ def assays_chart(request):
 def panels_chart(request):
   assays_codes = AssayCode.objects.filter(user=request.user).order_by('name')
 
-  names = []
-  numbers = []
-  assays_dict = {}
+  names_codes = []
+  numbers_codes = []
+  assay_codes_dict = {}
 
   for code in assays_codes:
-    names.append(code.name)
-    numbers.append(code.batch_set.count())
+    names_codes.append(code.name)
+    numbers_codes.append(code.batch_set.count())
     url = reverse('edit_assay_code', kwargs={'pk': code.pk})
-    assays_dict[code.name] = url
+    assay_codes_dict[code.name] = url
 
-  context = {'names': names, 'numbers': numbers, 'assays_dict': assays_dict}
+  context = {'names_codes': names_codes, 'numbers_codes': numbers_codes, 'assay_codes_dict': assay_codes_dict}
   return render(request, 'dashboard/panels_chart.html', context)
 # **TESTS PARTIALS** #
+
+
+# **PROCESS & BATCH** #
+@login_required(login_url='login')
+def batches_display(request):
+  user = request.user
+  batches = Batch.objects.filter(user=user).order_by('-date_created')
+
+  in_que = False
+
+  for batch in batches:
+    if batch.is_extracted == False:
+      in_que = True
+      break
+
+  context = {'batches': batches[:10], 'in_que': in_que}
+  return render(request, 'dashboard/batches_display.html', context)
+
+
+@login_required(login_url='login')
+def processes_display(request):
+  user = request.user
+  processes = Process.objects.filter(user=user).order_by(F('date_processed').asc(nulls_last=False))
+
+  in_que = False
+
+  for process in processes:
+    if process.is_processed == False:
+      in_que = True
+      break
+
+  context = {'processes': processes[:10], 'in_que': in_que}
+  return render(request, 'dashboard/processes_display.html', context)
+# **PROCESS & BATCH** #
+
 
 # **REPORT VIEWS** #
 @login_required(login_url='login')

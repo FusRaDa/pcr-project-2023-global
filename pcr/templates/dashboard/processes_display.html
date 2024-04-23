@@ -1,0 +1,66 @@
+<div class="container mt-3 border border-3 border-secondary h-100">
+
+  <h5 class="text-center">PCR Processes</h5>
+
+  <div class="text-center mb-1">
+    <a class="btn btn-primary btn-sm position-relative" href="{% url 'controls' %}" role="button">Manage Processes
+
+      {% if in_que %}
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+        In Queue
+        <span class="visually-hidden">unread messages</span>
+      </span>
+      {% endif %}
+
+    </a>
+  </div>
+
+  <div class="table-responsive">
+
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Lab ID(s)</th>
+          <th scope="col">Panel(s)</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for process in processes %}
+          <tr class="link-row {% if not process.is_processed %} table-success {% endif %}" {% if not process.is_processed %} data-href="{% url 'review_process' process.pk %}" {% else %} data-href="{% url 'pcr_paperwork' process.pk %}" {% endif %}>
+            <td>{% if process.name %} {{process.name}} {% else %} In process...{% endif %}</td>
+            <td>
+              {% if process.lab_ids %}
+                {% for id in process.lab_ids %}
+                <span class="badge text-bg-primary">{{id}}</span>
+                {% endfor %}
+              {% else %}
+                ------
+              {% endif %}
+            </td>
+            <td>
+              {% if process.panels %}
+                {% for code in process.panels %}
+                <span class="badge text-bg-success">{{code}}</span>
+                {% endfor %}
+              {% else %}
+                ------
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".link-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
