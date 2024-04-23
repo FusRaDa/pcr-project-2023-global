@@ -3,6 +3,9 @@ from zipfile import ZipFile
 import random
 import string
 import os
+import shutil
+
+from django.core.files.storage import default_storage
 
 from pcr.models.inventory import Tube, Plate, Reagent, Gel
 
@@ -14,45 +17,25 @@ def generate_random_file_name(length):
 
 
 def generate_order_files(order, inputs):
-  path = 'static/orders/'
+  folder = 'orders/'
 
   brand_arr = []
   for kit in order.kits.all():
     brand_arr.append(kit.brand)
-
   brands = set(brand_arr)
-
-  files = []
-  for brand in brands:
-
-    with open(path + f"{brand}_order_list_{order.pk}.csv", 'w', newline='') as file:
-      writer = csv.writer(file)
-      field = ['Catalog number', 'Quantity']
-
-      writer.writerow(field)
-      for input in inputs:   
-        if input['brand'] == brand.name:
-          writer.writerow([input['catalog_number'], input['amount']])
-    
-    files.append(file.name)
 
   rdm = generate_random_file_name(8)
   date = order.date_processed.strftime("%Y_%m_%d")
-  file_name = f"{order.user}_order_{date}_{rdm}.zip"
+  file_name = f"{order.user}_order_{date}_{rdm}.xlsx"
+  full_path = folder + file_name
 
-  with ZipFile(path + file_name, 'w') as zipf:
+  with default_storage.open(full_path, 'w') as file:
 
-    for file in files:
-      arcname = file.rsplit('/', 1)[-1]
-      zipf.write(file, arcname=arcname)
-      os.remove(file)
+    for brand in brands:
+      pass # generate xlsx
 
-  local_file = open(path + file_name, 'rb')
-  order.orders_file.save(file_name, local_file)
-  local_file.close()
-
-  os.remove(path + file_name)
-
+  order.orders_file = full_path
+  order.save()
 
 
 def kit_to_inventory(kit, user, lot_number):
