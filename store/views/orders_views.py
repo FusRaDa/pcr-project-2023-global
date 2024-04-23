@@ -25,8 +25,7 @@ from ..forms.general import SearchStoreForm, ItemLotNumberForm
 from pcr.models.inventory import Plate, Tube, Reagent
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def store(request):
   orders = Order.objects.filter(user=request.user, has_ordered=False)
   if not orders.exists():
@@ -34,7 +33,7 @@ def store(request):
   else:
     order = Order.objects.get(user=request.user, has_ordered=False)
 
-  kits = Kit.objects.all().order_by('name')
+  kits = Kit.objects.all().exclude(pk__in=order.kits.all()).order_by('name')
 
   form = SearchStoreForm()
   if request.method == 'GET':
@@ -51,7 +50,11 @@ def store(request):
       if tags:
         filters['tags__in'] = tags
 
-      kits = Kit.objects.filter(**filters).filter(Q(name__icontains=text_search) | Q(description__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(price)
+      if not price:
+        kits = Kit.objects.filter(**filters).filter(Q(name__icontains=text_search) | Q(description__icontains=text_search) | Q(catalog_number__icontains=text_search)).exclude(pk__in=order.kits.all()).order_by('name')
+      else:
+        kits = Kit.objects.filter(**filters).filter(Q(name__icontains=text_search) | Q(description__icontains=text_search) | Q(catalog_number__icontains=text_search)).exclude(pk__in=order.kits.all()).order_by(price)
+  
     else:
       print(form.errors)
 
@@ -63,8 +66,7 @@ def store(request):
   return render(request, 'orders/store.html', context)
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def add_kit_to_order(request, order_pk, kit_pk):
   try:
     order = Order.objects.get(user=request.user, pk=order_pk, has_ordered=False)
@@ -83,8 +85,7 @@ def add_kit_to_order(request, order_pk, kit_pk):
       return render(request, 'partials/kit_order.html', context)
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def remove_kit_from_order(request, order_pk, kit_pk):
   try:
     order = Order.objects.get(user=request.user, pk=order_pk, has_ordered=False)
@@ -99,8 +100,7 @@ def remove_kit_from_order(request, order_pk, kit_pk):
   return HttpResponse(status=200)
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def review_order(request, pk):
   try:
     order = Order.objects.get(user=request.user, has_ordered=False, pk=pk)
@@ -169,16 +169,14 @@ def review_order(request, pk):
   return render(request, 'orders/review_order.html', context)
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def orders(request):
   orders = Order.objects.filter(user=request.user, has_ordered=True).order_by('-date_processed')
   context = {'orders': orders}
   return render(request, 'orders/orders.html', context)
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def view_order(request, pk):
   try:
     order = Order.objects.get(user=request.user, has_ordered=True, pk=pk)
@@ -194,8 +192,7 @@ def view_order(request, pk):
   return render(request, 'orders/view_order.html', context)
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def copy_order(request, pk):
   try:
     past_order = Order.objects.get(user=request.user, pk=pk)
@@ -217,8 +214,7 @@ def copy_order(request, pk):
   return redirect('store')
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def add_to_inventory(request, order_pk, kit_pk):
   try:
     order = Order.objects.get(user=request.user, pk=order_pk)
