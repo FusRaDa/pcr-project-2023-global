@@ -5,9 +5,7 @@ from django.core.paginator import Paginator
 from django.db.models import F
 
 from ..models.inventory import Reagent, Tube, Plate, Gel, Ladder, Dye
-from ..models.assay import Assay
-from ..models.batch import Batch
-from ..models.pcr import Process
+from ..models.assay import Assay, AssayCode, Control
 
 
 # **INVENTORY PARTIALS** #
@@ -28,12 +26,8 @@ def ladders_display(request):
     if ladder.is_expired or ladder.month_exp:
       is_expired = True
       break
-    
-  paginator = Paginator(ladders, 5)
-  page_number = request.GET.get("page")
-  page_obj = paginator.get_page(page_number)
 
-  context = {'page_obj': page_obj, 'is_low': is_low, 'is_expired': is_expired}
+  context = {'ladders': ladders[:5], 'is_low': is_low, 'is_expired': is_expired}
   return render(request, 'dashboard/ladders_display.html', context)
 
 
@@ -41,7 +35,6 @@ def ladders_display(request):
 def dyes_display(request):
   user = request.user
   dyes = Dye.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
-
   is_low = False
   is_expired = False
 
@@ -55,11 +48,7 @@ def dyes_display(request):
       is_expired = True
       break
 
-  paginator = Paginator(dyes, 5)
-  page_number = request.GET.get("page")
-  page_obj = paginator.get_page(page_number)
-
-  context = {'page_obj': page_obj, 'is_low': is_low, 'is_expired': is_expired}
+  context = {'dyes': dyes[:5], 'is_low': is_low, 'is_expired': is_expired}
   return render(request, 'dashboard/dyes_display.html', context)
 
 
@@ -81,11 +70,7 @@ def plates_display(request):
       is_expired = True
       break
 
-  paginator = Paginator(plates, 5)
-  page_number = request.GET.get("page")
-  page_obj = paginator.get_page(page_number)
-
-  context = {'page_obj': page_obj, 'is_low': is_low, 'is_expired': is_expired}
+  context = {'plates': plates[:5], 'is_low': is_low, 'is_expired': is_expired}
   return render(request, 'dashboard/plates_display.html', context)
 
 
@@ -107,11 +92,7 @@ def gels_display(request):
       is_expired = True
       break
 
-  paginator = Paginator(gels, 5)
-  page_number = request.GET.get("page")
-  page_obj = paginator.get_page(page_number)
-
-  context = {'page_obj': page_obj, 'is_low': is_low, 'is_expired': is_expired}
+  context = {'gels': gels[:5], 'is_low': is_low, 'is_expired': is_expired}
   return render(request, 'dashboard/gels_display.html', context)
 
 
@@ -133,11 +114,7 @@ def tubes_display(request):
       is_expired = True
       break
 
-  paginator = Paginator(tubes, 5)
-  page_number = request.GET.get("page")
-  page_obj = paginator.get_page(page_number)
-
-  context = {'page_obj': page_obj, 'is_low': is_low, 'is_expired': is_expired}
+  context = {'tubes': tubes[:5], 'is_low': is_low, 'is_expired': is_expired}
   return render(request, 'dashboard/tubes_display.html', context)
 
 
@@ -159,15 +136,33 @@ def reagents_display(request):
       is_expired = True
       break
 
-  paginator = Paginator(reagents, 5)
-  page_number = request.GET.get("page")
-  page_obj = paginator.get_page(page_number)
-
-  context = {'page_obj': page_obj, 'is_low': is_low, 'is_expired': is_expired}
+  context = {'reagents': reagents[:5], 'is_low': is_low, 'is_expired': is_expired}
   return render(request, 'dashboard/reagents_display.html', context)
 # **INVENTORY PARTIALS** #
 
 # **TESTS PARTIALS** #
+@login_required(login_url='login')
+def controls_display(request):
+  user = request.user
+  controls = Control.objects.filter(user=user).order_by('amount')
+
+  is_low = False
+  is_expired = False
+
+  for control in controls:
+    if control.amount <= 100:
+      is_low = True
+      break
+
+  for control in controls:
+    if control.is_expired or control.month_exp:
+      is_expired = True
+      break
+
+  context = {'controls': controls[:10], 'is_low': is_low, 'is_expired': is_expired}
+  return render(request, 'dashboard/controls_display.html', context)
+
+
 @login_required(login_url='login')
 def assays_chart(request):
   assays = Assay.objects.filter(user=request.user).order_by('name')
@@ -188,8 +183,19 @@ def assays_chart(request):
 
 @login_required(login_url='login')
 def panels_chart(request):
-  
-  context = {}
+  assays_codes = AssayCode.objects.filter(user=request.user).order_by('name')
+
+  names = []
+  numbers = []
+  assays_dict = {}
+
+  for code in assays_codes:
+    names.append(code.name)
+    numbers.append(code.batch_set.count())
+    url = reverse('edit_assay_code', kwargs={'pk': code.pk})
+    assays_dict[code.name] = url
+
+  context = {'names': names, 'numbers': numbers, 'assays_dict': assays_dict}
   return render(request, 'dashboard/panels_chart.html', context)
 # **TESTS PARTIALS** #
 
@@ -203,6 +209,7 @@ def inventory_report(request):
   gels = Gel.objects.filter(user=request.user)
   tubes = Tube.objects.filter(user=request.user)
   reagents = Reagent.objects.filter(user=request.user)
+  controls = Control.objects.filter(user=request.user)
 
   ladders_warn = False
   dyes_warn = False
@@ -210,35 +217,41 @@ def inventory_report(request):
   gels_warn = False
   tubes_warn = False
   reagents_warn = False
+  controls_warn = False
 
   for ladder in ladders:
-    if ladder.is_expired or (ladder.threshold_diff is not None and ladder.threshold_diff <= 0):
+    if ladder.is_expired or ladder.month_exp or (ladder.threshold_diff is not None and ladder.threshold_diff <= 0):
       ladders_warn = True
       break
 
   for dye in dyes:
-    if dye.is_expired or (dye.threshold_diff is not None and dye.threshold_diff <= 0):
+    if dye.is_expired or dye.month_exp or (dye.threshold_diff is not None and dye.threshold_diff <= 0):
       dyes_warn = True
       break
 
   for plate in plates:
-    if plate.is_expired or (plate.threshold_diff is not None and plate.threshold_diff <= 0):
+    if plate.is_expired or plate.month_exp or (plate.threshold_diff is not None and plate.threshold_diff <= 0):
       plates_warn = True
       break
 
   for gel in gels:
-    if gel.is_expired or (gel.threshold_diff is not None and gel.threshold_diff <= 0):
+    if gel.is_expired or gel.month_exp or (gel.threshold_diff is not None and gel.threshold_diff <= 0):
       gels_warn = True
       break
 
   for tube in tubes:
-    if tube.is_expired or (tube.threshold_diff is not None and tube.threshold_diff <= 0):
+    if tube.is_expired or tube.month_exp or (tube.threshold_diff is not None and tube.threshold_diff <= 0):
       tubes_warn = True
       break
 
   for reagent in reagents:
-    if reagent.is_expired or (reagent.threshold_diff is not None and reagent.threshold_diff <= 0):
+    if reagent.is_expired or reagent.month_exp or (reagent.threshold_diff is not None and reagent.threshold_diff <= 0):
       reagents_warn = True
+      break
+
+  for control in controls:
+    if control.is_expired or control.month_exp or control.amount <= 100:
+      controls_warn = True
       break
 
   message = None
@@ -262,6 +275,9 @@ def inventory_report(request):
 
     if reagents_warn:
       message += "reagents, "
+
+    if controls_warn:
+      message += "controls, "
 
     message += "require your attention!"
 

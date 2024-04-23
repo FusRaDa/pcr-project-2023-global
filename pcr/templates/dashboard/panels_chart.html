@@ -1,10 +1,10 @@
 <div class="container mt-3 border border-3 border-secondary h-100">
-  <h5 class="text-center">Most Used Assays</h5>
-  <canvas id="myChart-assay" style="width:100%;max-width:600px"></canvas>
+  <h5 class="text-center">Most Used Panels</h5>
+  <canvas id="myChart-panel" style="width:100%;max-width:600px"></canvas>
 </div>
 
 <script>
-  var canvasP = document.getElementById("myChart-assay");
+  var canvasP = document.getElementById("myChart-panel");
 
   var xValues = {{names|safe}};
   var yValues = {{numbers|safe}};
@@ -36,12 +36,12 @@
     '#008000',
   ];
 
-  var myPieChart = new Chart("myChart-assay", {
+  var myPieChart = new Chart("myChart-panel", {
     type: "pie",
     data: {
       labels: xValues,
       datasets: [{
-        label: "Samples",
+        label: "Batches",
         backgroundColor: barColors,
         data: yValues
       }]

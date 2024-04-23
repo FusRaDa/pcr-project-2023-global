@@ -1,11 +1,11 @@
 <div class="container mt-3 border border-3 border-secondary h-100">
 
-  <h5 class="text-center">Gels</h5>
+  <h5 class="text-center">Controls</h5>
 
   <div class="text-center mb-1">
-    <a class="btn btn-primary btn-sm position-relative" href="{% url 'gels' %}" role="button">Manage Gels
+    <a class="btn btn-primary btn-sm position-relative" href="{% url 'controls' %}" role="button">Manage Controls
 
-      {% if is_low and not is_expired %}
+      {% if is_expired %}
       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
         Low
         <span class="visually-hidden">unread messages</span>
@@ -35,17 +35,17 @@
       <thead>
         <tr>
           <th scope="col">Name</th>
-          <th scope="col">Amount</th>
+          <th scope="col">Amount (µL)</th>
           <th scope="col">Lot Number</th>
         </tr>
       </thead>
 
       <tbody>
-        {% for gel in gels %}
-          <tr class="link-row {% if gel.threshold_diff is not None and gel.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_gel' gel.pk %}">
-            <td>{{gel.name}}</td>
-            <td>{{gel.amount}}</td>
-            <td>{{gel.lot_number}}</td>
+        {% for control in controls %}
+          <tr class="link-row {% if control.amount <= 100 %} table-warning {% endif %}" data-href="{% url 'edit_control' control.pk %}">
+            <td>{{control.name}}</td>
+            <td>{{control.amount}}</td>
+            <td>{{control.lot_number}}</td>
           </tr>
         {% endfor %}
       </tbody>

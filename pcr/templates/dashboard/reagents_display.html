@@ -16,14 +16,14 @@
 
       {% if is_expired and not is_low %}
       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-        Expired
+        Exp
         <span class="visually-hidden">unread messages</span>
       </span>
       {% endif %}
 
       {% if is_low and is_expired %}
       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-        Low &amp; Expired
+        Low &amp; Exp
         <span class="visually-hidden">unread messages</span>
       </span>
       {% endif %}
@@ -43,7 +43,7 @@
       </thead>
 
       <tbody>
-        {% for reagent in page_obj %}
+        {% for reagent in reagents %}
           <tr class="link-row {% if reagent.threshold_diff is not None and reagent.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_reagent' reagent.pk %}">
             <td>{{reagent.name}}</td>
             <td>{{reagent.volume}} {{reagent.unit_volume}}</td>

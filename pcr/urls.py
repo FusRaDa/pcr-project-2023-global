@@ -21,7 +21,7 @@ urlpatterns = [
 
   path("assay-codes/", assay_code_views.assay_codes, name='assay_codes'),
   path("create-assay-code/", assay_code_views.create_assay_code, name='create_assay_code'),
-  path("assay-code/<int:pk>/", assay_code_views.edit_assay_code, name='edit_assay_code'),
+  path("edit-assay-code/<int:pk>/", assay_code_views.edit_assay_code, name='edit_assay_code'),
 
   path("assays/", assay_views.assays, name='assays'),
   path("create-assay/", assay_views.create_assay, name='create_assay'),
@@ -90,6 +90,8 @@ urlpatterns = [
   path('gels-display/', dashboard_views.gels_display, name='gels_display'),
   path('tubes-display/', dashboard_views.tubes_display, name='tubes_display'),
   path('reagents-display/', dashboard_views.reagents_display, name='reagents_display'),
+
+  path('controls-display/', dashboard_views.controls_display, name='controls_display'),
 
   path('assays-chart/', dashboard_views.assays_chart, name='assays_chart'),
   path('panels-chart/', dashboard_views.panels_chart, name='panels_chart'),
