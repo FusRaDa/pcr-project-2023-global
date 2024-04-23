@@ -64,7 +64,7 @@
 
     <p class="card-text">{{kit.description}}</p>
 
-    <a href="{% url 'reviews' kit.pk %}" class="btn btn-warning btn-sm float-start">Reviews/Details</a>
+    <a href="{% url 'reviews' kit.pk %}" class="btn btn-secondary btn-sm float-start">Reviews/Details</a>
 
     <button
       hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
@@ -72,7 +72,8 @@
       hx-target="#orders-in-kit"
       hx-swap="beforeend"
       class="btn btn-primary btn-sm float-end" 
-      name="add">
+      name="add"
+      hx-on:click="this.parentNode.parentNode.remove()">
       Add Kit
     </button>
 

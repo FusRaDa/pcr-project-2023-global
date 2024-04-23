@@ -18,7 +18,7 @@ class Tag(models.Model):
 class Kit(models.Model):
   brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 
-  image = models.ImageField(null=True, blank=True, upload_to='main/static/kits', default='kits/default-kit.png')
+  image = models.ImageField(null=True, blank=True, upload_to='kits')
 
   name = models.CharField(blank=False, max_length=50)
   description = models.TextField(blank=False, default="Kit Description")
@@ -59,7 +59,7 @@ class Kit(models.Model):
   @property
   def abs_url(self):
     try:
-      url = self.logo.url
+      url = self.image.url
       abs = url.replace("/main", "")
       return abs
     except ValueError:

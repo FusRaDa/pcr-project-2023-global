@@ -97,6 +97,9 @@ def remove_kit_from_order(request, order_pk, kit_pk):
     kit = Kit.objects.get(pk=kit_pk)
     order.kits.remove(kit)
 
+    context = {'kit': kit, 'order': order}
+    return render(request, 'partials/kit_display.html', context)
+  
   return HttpResponse(status=200)
 
 
