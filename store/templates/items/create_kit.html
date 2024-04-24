@@ -5,7 +5,11 @@
 {% block title %} Create Kit {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
+
+  <div class="row">
+    <h3 class="text-center">Add New Kit</h3>
+  </div>
 
   <form method="POST" action="" enctype='multipart/form-data'>
     {% csrf_token %}

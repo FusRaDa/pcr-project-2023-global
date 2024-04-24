@@ -20,9 +20,9 @@ class Kit(models.Model):
 
   image = models.ImageField(null=True, blank=True, upload_to='kits')
 
-  name = models.CharField(blank=False, max_length=50)
+  name = models.CharField(blank=False, max_length=250)
   description = models.TextField(blank=False, default="Kit Description")
-  catalog_number = models.CharField(blank=False, max_length=25, unique=True)
+  catalog_number = models.CharField(blank=False, max_length=25)
   price = models.DecimalField(blank=False, decimal_places=2, max_digits=7) #USD
 
   affiliate_link = models.URLField(max_length=200, blank=True, null=True)
@@ -67,15 +67,23 @@ class Kit(models.Model):
     
   def __str__(self):
     return f"{self.name}-{self.catalog_number}"
-  
 
-class StoreGel(models.Model):
+
+class StoreLadder(models.Model):
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
 
-  name = models.CharField(blank=False, max_length=25, default="GEL")
+  name = models.CharField(blank=False, max_length=100, default="GEL")
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)  # microliters
 
-  wells = models.IntegerField(validators=[MinValueValidator(0)], default=12)
-  amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
+  def __str__(self):
+    return self.name
+
+
+class StoreDye(models.Model):
+  kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
+
+  name = models.CharField(blank=False, max_length=100, default="GEL")
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)  # microliters
 
   def __str__(self):
     return self.name
@@ -95,10 +103,25 @@ class StorePlate(models.Model):
     PCR = 'PCR', _('PCR')
     qPCR = 'qPCR', _('qPCR')
 
-  name = models.CharField(blank=False, max_length=25, default="PLATE")
-
+  name = models.CharField(blank=False, max_length=100, default="PLATE")
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.PCR, max_length=25)
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
+
+  def __str__(self):
+    return self.name
+  
+
+class StoreGel(models.Model):
+  kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
+
+  class Sizes(models.IntegerChoices):
+    TWELVE = 12, _('12')
+    TWENTY_FOUR = 24, _('24')
+    FOURTY_EIGHT = 48, _('48')
+
+  name = models.CharField(blank=False, max_length=100, default="GEL")
+  size = models.IntegerField(choices=Sizes.choices, default=Sizes.TWENTY_FOUR, blank=False)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
 
   def __str__(self):
@@ -108,35 +131,11 @@ class StorePlate(models.Model):
 class StoreTube(models.Model):
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
 
-  name = models.CharField(blank=False, max_length=25, default="TUBE")
+  name = models.CharField(blank=False, max_length=100, default="TUBE")
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
 
   def __str__(self):
     return self.name
-
-
-# class StoreDye(models.Model):
-#   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
-
-#   name = models.CharField(blank=False, max_length=25, default="GEL")
-
-#   wells = models.IntegerField(validators=[MinValueValidator(0)], default=12)
-#   amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
-
-#   def __str__(self):
-#     return self.name
-  
-
-# class StoreLadder(models.Model):
-#   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
-
-#   name = models.CharField(blank=False, max_length=25, default="GEL")
-
-#   wells = models.IntegerField(validators=[MinValueValidator(0)], default=12)
-#   amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
-
-#   def __str__(self):
-#     return self.name
 
 
 class StoreReagent(models.Model):
@@ -160,11 +159,12 @@ class StoreReagent(models.Model):
     X = 'X', _('X')
 
   class PCRReagent(models.TextChoices):
-    GENERAL = 'GENERAL', _('GENERAL')
-    POLYMERASE = 'POLYMERASE', _('POLYMERASE') #used as units/micro-liter
-    WATER = 'WATER', _('WATER')
+    GENERAL = 'GENERAL', _('General')
+    PRIMER = 'PRIMER', _('Primer')
+    POLYMERASE = 'POLYMERASE', _('Polymerase') #used as units/micro-liter
+    WATER = 'WATER', _('Water')
 
-  name = models.CharField(blank=False, max_length=50, default="REAGENT")
+  name = models.CharField(blank=False, max_length=100, default="REAGENT")
   usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.PCR, max_length=25)
   pcr_reagent = models.CharField(choices=PCRReagent.choices, blank=True, null=True, default=None, max_length=25) # determine calculations for type of pcr reagent
  
@@ -173,6 +173,16 @@ class StoreReagent(models.Model):
 
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)
+
+  def __str__(self):
+    return self.name
+  
+
+class StoreAccessory(models.Model):
+  kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
+
+  name = models.CharField(blank=False, max_length=100, default="ACCESSORY")
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
 
   def __str__(self):
     return self.name
