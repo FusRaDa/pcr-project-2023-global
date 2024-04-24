@@ -246,14 +246,9 @@ def add_to_inventory(request, order_pk, kit_pk):
         lot_number = form.cleaned_data.get('lot_number')
         if lot_number != None:
           kit_to_inventory(kit, request.user, lot_number)
-          print('add kit...')
           kit_order.remaining_transfers -= 1
           kit_order.save()
       return redirect('view_order', order.pk)
 
   context = {'formset': formset, 'kit': kit, 'order': order, 'kit_order': kit_order}
   return render(request, 'orders/add_to_inventory.html', context)
-  
-
-  
-

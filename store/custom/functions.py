@@ -3,7 +3,7 @@ import string
 import csv
 from django.core.files.storage import default_storage
 
-from pcr.models.inventory import Tube, Plate, Reagent, Gel
+from pcr.models.inventory import Tube, Plate, Reagent, Gel, Dye, Ladder
 
 
 def generate_random_file_name(length):
@@ -55,6 +55,8 @@ def kit_to_inventory(kit, user, lot_number):
       unit_volume = reagent.unit_volume,
       stock_concentration = reagent.stock_concentration,
       unit_concentration = reagent.unit_concentration,
+      forward_sequence = reagent.forward_sequence,
+      reverse_sequence = reagent.reverse_sequence,
     )
 
   for tube in kit.storetube_set.all():
@@ -74,7 +76,7 @@ def kit_to_inventory(kit, user, lot_number):
       brand = kit.brand,
       lot_number = lot_number,
       catalog_number = kit.catalog_number,
-      wells = gel.wells,
+      size = gel.size,
       amount = gel.amount,
     )
 
@@ -89,4 +91,23 @@ def kit_to_inventory(kit, user, lot_number):
       type = plate.type,
       amount = plate.amount,
     )
+  
+  for dye in kit.storedye_set.all():
+    Dye.objects.create(
+      user = user,
+      name = dye.name,
+      brand = kit.brand,
+      lot_number = lot_number,
+      catalog_number = kit.catalog_number,
+      amount = dye.amount,
+    )
 
+  for ladder in kit.storeladder_set.all():
+    Ladder.objects.create(
+      user = user,
+      name = ladder.name,
+      brand = kit.brand,
+      lot_number = lot_number,
+      catalog_number = kit.catalog_number,
+      amount = ladder.amount,
+    )
