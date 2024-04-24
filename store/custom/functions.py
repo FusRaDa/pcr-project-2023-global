@@ -1,10 +1,6 @@
-import csv
-from zipfile import ZipFile
 import random
 import string
-import os
-import shutil
-
+import csv
 from django.core.files.storage import default_storage
 
 from pcr.models.inventory import Tube, Plate, Reagent, Gel
@@ -26,13 +22,19 @@ def generate_order_files(order, inputs):
 
   rdm = generate_random_file_name(8)
   date = order.date_processed.strftime("%Y_%m_%d")
-  file_name = f"{order.user}_order_{date}_{rdm}.xlsx"
-  full_path = folder + file_name
+  excel_file = f"{order.user}_order_{date}_{rdm}.csv"
+  full_path = folder + excel_file
 
   with default_storage.open(full_path, 'w') as file:
 
     for brand in brands:
-      pass # generate xlsx
+      writer = csv.writer(file)
+      field = ['Catalog number', 'Quantity', brand.name.upper()]
+
+      writer.writerow(field)
+      for input in inputs:   
+        if input['brand'] == brand.name:
+          writer.writerow([input['catalog_number'], input['amount']])
 
   order.orders_file = full_path
   order.save()
