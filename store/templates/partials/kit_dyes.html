@@ -1,0 +1,18 @@
+<li class="list-group-item">{{dye.name}}
+  <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#dye-collapse-{{dye.pk}}" aria-expanded="false" aria-controls="dye-collapse-{{dye.pk}}">
+    ⮟
+  </button>
+
+  <div class="collapse" id="dye-collapse-{{dye.pk}}">
+    <div class="card-body"> 
+      <ul class="list-group">
+
+        <li class="list-group-item">Amount: {{dye.amount}}</li>
+        <a href="{% url 'edit_dye_store' dye.pk %}" class="list-group-item list-group-item-action active">
+          Edit Dye
+        </a>
+
+      </ul>
+    </div>
+  </div>
+</li>

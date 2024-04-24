@@ -25,6 +25,12 @@ urlpatterns = [
   path('create-tube-store/', items_views.create_tube, name='create_tube_store'),
   path('edit-tube-store/<int:pk>/', items_views.edit_tube, name='edit_tube_store'),
 
+  path('create-ladder-store/', items_views.create_ladder, name='create_ladder_store'),
+  path('edit-ladder-store/<int:pk>/', items_views.edit_ladder, name='edit_ladder_store'),
+
+  path('create-dye-store/', items_views.create_dye, name='create_dye_store'),
+  path('edit-dye-store/<int:pk>/', items_views.edit_dye, name='edit_dye_store'),
+
   path('create-gel-store/', items_views.create_gel, name='create_gel_store'),
   path('edit-gel-store/<int:pk>/', items_views.edit_gel, name='edit_gel_store'),
 

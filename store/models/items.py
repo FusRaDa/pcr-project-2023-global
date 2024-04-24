@@ -72,7 +72,7 @@ class Kit(models.Model):
 class StoreLadder(models.Model):
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
 
-  name = models.CharField(blank=False, max_length=100, default="GEL")
+  name = models.CharField(blank=False, max_length=100, default="LADDER")
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)  # microliters
 
   def __str__(self):
@@ -82,7 +82,7 @@ class StoreLadder(models.Model):
 class StoreDye(models.Model):
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
 
-  name = models.CharField(blank=False, max_length=100, default="GEL")
+  name = models.CharField(blank=False, max_length=100, default="DYE")
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)  # microliters
 
   def __str__(self):
@@ -174,16 +174,9 @@ class StoreReagent(models.Model):
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)
 
-  def __str__(self):
-    return self.name
+  forward_sequence = models.CharField(blank=True, null=True, max_length=100) # 3 to 5
+  reverse_sequence = models.CharField(blank=True, null=True, max_length=100) # 5 to 3
   
-
-class StoreAccessory(models.Model):
-  kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
-
-  name = models.CharField(blank=False, max_length=100, default="ACCESSORY")
-  amount = models.IntegerField(validators=[MinValueValidator(0)], default=1)
-
   def __str__(self):
     return self.name
   

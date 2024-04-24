@@ -124,6 +124,60 @@
       <div class="d-flex flex-wrap justify-content-center" id="gel-forms">
       </div>
     </div>
+
+    <div class="col-sm-3 form-width-18 mb-2">
+      <div class="card">
+        <div class="card-header">
+          Ladder List
+        </div>
+        
+        <ul class="list-group list-group-flush">
+          {% for ladder in kit.storeladder_set.all %}
+            {% include 'partials/kit_ladders.html' %}
+          {% endfor %}
+          <button 
+            id="ladders"
+            type="button" 
+            class="list-group-item list-group-item-action list-group-item-primary"
+            hx-get="{% url 'create_ladder_store' %}"
+            hx-target="#ladder-forms"
+            hx-include="[name='pk']"
+            hx-swap="beforeend">
+            + Ladder
+          </button>
+        </ul>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-center" id="ladder-forms">
+      </div>
+    </div>
+
+    <div class="col-sm-3 form-width-18 mb-2">
+      <div class="card">
+        <div class="card-header">
+          Dye List
+        </div>
+        
+        <ul class="list-group list-group-flush">
+          {% for dye in kit.storedye_set.all %}
+            {% include 'partials/kit_dyes.html' %}
+          {% endfor %}
+          <button 
+            id="dyes"
+            type="button" 
+            class="list-group-item list-group-item-action list-group-item-primary"
+            hx-get="{% url 'create_dye_store' %}"
+            hx-target="#dye-forms"
+            hx-include="[name='pk']"
+            hx-swap="beforeend">
+            + Dye
+          </button>
+        </ul>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-center" id="dye-forms">
+      </div>
+    </div>
  
   </div>
 

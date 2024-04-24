@@ -1,8 +1,9 @@
 from django.forms import ModelForm
 from django import forms
 from django.core.exceptions import ValidationError
+import re
 
-from ..models.items import Kit, StorePlate, StoreTube, StoreReagent, Tag, Review, StoreGel
+from ..models.items import Kit, StorePlate, StoreTube, StoreReagent, Tag, Review, StoreGel, StoreDye, StoreLadder
 from ..models.affiliates import Brand
 
 
@@ -47,8 +48,10 @@ class StoreGelForm(ModelForm):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.fields['name'].widget.attrs['class'] = 'form-control'
-    self.fields['wells'].widget.attrs['class'] = 'form-control'
+    self.fields['size'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+
+    self.fields['amount'].widget.attrs['min'] = 0
 
   class Meta:
     model = StoreGel
@@ -64,6 +67,8 @@ class StorePlateForm(ModelForm):
     self.fields['type'].widget.attrs['class'] = 'form-select'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
 
+    self.fields['amount'].widget.attrs['min'] = 0
+
   class Meta:
     model = StorePlate
     exclude = ['kit']
@@ -76,10 +81,39 @@ class StoreTubeForm(ModelForm):
     self.fields['name'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
 
+    self.fields['amount'].widget.attrs['min'] = 0
+
   class Meta:
     model = StoreTube
     exclude = ['kit']
 
+
+class StoreLadderForm(ModelForm):
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['amount'].widget.attrs['class'] = 'form-control'
+
+    self.fields['amount'].widget.attrs['min'] = 0
+
+  class Meta:
+    model = StoreLadder
+    exclude = ['kit']
+
+
+class StoreDyeForm(ModelForm):
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['amount'].widget.attrs['class'] = 'form-control'
+
+    self.fields['amount'].widget.attrs['min'] = 0
+
+  class Meta:
+    model = StoreDye
+    exclude = ['kit']
 
 class StoreReagentForm(ModelForm):
 
@@ -89,22 +123,14 @@ class StoreReagentForm(ModelForm):
     unit = cleaned_data.get('unit_concentration')
     pcr_reagent = cleaned_data.get('pcr_reagent')
     usage = cleaned_data.get('usage')
+    forward_sequence = cleaned_data.get('forward_sequence')
+    reverse_sequence = cleaned_data.get('reverse_sequence')
 
     if usage == StoreReagent.Usages.EXTRACTION and (stock != None or unit != None):
       raise ValidationError(
-        {'usage': ["If reagent is for extraction, stock concentration is not needed."]}
+        message="If reagent is for extraction, stock concentration is not needed."
       )
 
-    if stock != None and unit == None:
-      raise ValidationError(
-        message="Don't forget to assign a concentration unit to your stock concentration."
-      )
-    
-    if stock == None and unit != None:
-      raise ValidationError(
-        message="Leave unit concentration blank if a stock concentration is not needed."
-      )
-    
     if pcr_reagent != None and usage == StoreReagent.Usages.EXTRACTION:
       raise ValidationError(
         message="Leave PCR reagent type empty if reagent usage is for extraction."
@@ -115,14 +141,35 @@ class StoreReagentForm(ModelForm):
         message="Select PCR reagent type if reagent usage is for PCR."
       )
     
+    if pcr_reagent == StoreReagent.PCRReagent.POLYMERASE and unit != StoreReagent.ConcentrationUnits.UNITS:
+      raise ValidationError(
+        message="Polymerase reagents require a unit of U/\u00B5L. If your polymerase is in a different concentration, set PCR Reagent as General."
+      )
+    
     if pcr_reagent == StoreReagent.PCRReagent.WATER and (stock != None or unit != None):
       raise ValidationError(
         message="Water for PCR does not require concentration."
       )
-    
-    if pcr_reagent == StoreReagent.PCRReagent.POLYMERASE and unit != StoreReagent.ConcentrationUnits.UNITS:
+  
+    if usage == StoreReagent.Usages.PCR and pcr_reagent != StoreReagent.PCRReagent.WATER and (stock == None or unit == None):
       raise ValidationError(
-        message="Polymerase must have a concentration unit of U/\u00B5L."
+        message="All reagents for PCR except water must have a concentration."
+      )
+    
+    if pcr_reagent != StoreReagent.PCRReagent.PRIMER and forward_sequence != None or pcr_reagent != StoreReagent.PCRReagent.PRIMER and reverse_sequence != None:
+      raise ValidationError(
+        message="Only primers require a sequence."
+      )
+    
+    valid_seq = re.compile('[^GUACT]')
+    if forward_sequence and valid_seq.search(forward_sequence.upper()) is not None:
+      raise ValidationError(
+        message="Forward sequence for primer contains invalid characters."
+      )
+    
+    if reverse_sequence and valid_seq.search(reverse_sequence.upper()) is not None:
+      raise ValidationError(
+        message="Reverse sequence for primer contains invalid characters."
       )
 
   def __init__(self, *args, **kwargs):
@@ -134,6 +181,11 @@ class StoreReagentForm(ModelForm):
     self.fields['unit_volume'].widget.attrs['class'] = 'form-select'
     self.fields['stock_concentration'].widget.attrs['class'] = 'form-control'
     self.fields['unit_concentration'].widget.attrs['class'] = 'form-select'
+    self.fields['forward_sequence'].widget.attrs['class'] = 'form-control'
+    self.fields['reverse_sequence'].widget.attrs['class'] = 'form-control'
+
+    self.fields['volume'].widget.attrs['min'] = 0
+    self.fields['stock_concentration'].widget.attrs['min'] = 0
 
   class Meta:
     model = StoreReagent

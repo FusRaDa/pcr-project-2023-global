@@ -2,7 +2,7 @@
 
 {% load static %}
                                                                                                                                                                                                                               
-{% block title %} Edit Gel {% endblock %} 
+{% block title %} Edit Ladder {% endblock %} 
 
 {% block content %}
 <div class="container">
@@ -15,11 +15,6 @@
         <div class="text-center">
           <label class="form-label">Name</label>
           {{form.name}}
-        </div>
-    
-        <div class="text-center">
-          <label class="form-label">Wells</label>
-          {{form.wells}}
         </div>
     
         <div class="text-center">
@@ -40,8 +35,8 @@
 
     <div class="row justify-content-center">
       <div class="text-center mt-2">
-        <a class="btn btn-secondary" href="{% url 'edit_kit_items' gel.kit.pk %}">Cancel</a>
-        <button class="btn btn-primary" type="submit" name="update">Update Gel</button>
+        <a class="btn btn-secondary" href="{% url 'edit_kit_items' ladder.kit.pk %}">Cancel</a>
+        <button class="btn btn-primary" type="submit" name="update">Update Ladder</button>
       </div>
     </div>
 
@@ -50,7 +45,7 @@
   <div class="justify-content-center">
     <div class="col d-flex justify-content-center">
       <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Plate
+        Delete Tube
       </button>
     </div>
   </div>
@@ -59,7 +54,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Deleting Gel...</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Deleting Tube...</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -75,7 +70,7 @@
                 {% csrf_token %}
           
                 <div class="text-center mx-auto">
-                  <label class="form-label">Enter: "{{gel.name}}" &amp; Confirm</label>
+                  <label class="form-label">Enter: "{{ladder.name}}" &amp; Confirm</label>
                   {{del_form.confirm}}
                 </div>
 
