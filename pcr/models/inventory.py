@@ -25,7 +25,9 @@ class Ladder(models.Model):
   name = models.CharField(blank=False, max_length=100)
   brand = models.CharField(blank=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
+
   catalog_number = models.CharField(blank=False, max_length=100)
+  merged_catalog_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
@@ -61,7 +63,9 @@ class Dye(models.Model):
   name = models.CharField(blank=False, max_length=100)
   brand = models.CharField(blank=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
+
   catalog_number = models.CharField(blank=False, max_length=100)
+  merged_catalog_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
@@ -97,7 +101,9 @@ class Plate(models.Model):
   name = models.CharField(blank=False, max_length=100)
   brand = models.CharField(blank=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
+
   catalog_number = models.CharField(blank=False, max_length=100)
+  merged_catalog_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
@@ -147,7 +153,9 @@ class Gel(models.Model):
   name = models.CharField(blank=False, max_length=100)
   brand = models.CharField(blank=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
+
   catalog_number = models.CharField(blank=False, max_length=100)
+  merged_catalog_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
@@ -190,7 +198,9 @@ class Tube(models.Model):
   name = models.CharField(blank=False, max_length=100)
   brand = models.CharField(blank=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
+
   catalog_number = models.CharField(blank=False, max_length=100)
+  merged_catalog_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
@@ -250,7 +260,10 @@ class Reagent(models.Model):
   name = models.CharField(blank=False, max_length=100)
   brand = models.CharField(blank=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
+
   catalog_number = models.CharField(blank=False, max_length=100)
+  merged_catalog_numbers = models.JSONField(default=list)
+
   location = models.ManyToManyField(Location)
 
   usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.PCR, max_length=25)

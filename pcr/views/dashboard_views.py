@@ -236,7 +236,7 @@ def processes_display(request):
 # **PROCESS & BATCH** #
 
 
-# **REPORT VIEWS** #
+# **REPORT/DASHBOARD VIEWS** #
 @login_required(login_url='login')
 def inventory_report(request):
   
