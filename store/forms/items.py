@@ -48,7 +48,7 @@ class StoreGelForm(ModelForm):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.fields['name'].widget.attrs['class'] = 'form-control'
-    self.fields['size'].widget.attrs['class'] = 'form-control'
+    self.fields['size'].widget.attrs['class'] = 'form-select'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
 
     self.fields['amount'].widget.attrs['min'] = 0

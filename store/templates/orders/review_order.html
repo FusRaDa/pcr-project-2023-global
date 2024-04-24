@@ -125,6 +125,22 @@
               <td>{{gels.amount|dec_mult:kits.amount_ordered}}</td>
             </tr>
             {% endfor %}
+
+            {% for dye in order_kits.storedye_set.all %}
+            <tr class="table-danger">
+              <td>{{dye.name}}</td>
+              <td>{{dye.amount}} × {{kits.amount_ordered}}</td>
+              <td>{{dye.amount|dec_mult:kits.amount_ordered}}</td>
+            </tr>
+            {% endfor %}
+
+            {% for ladder in order_kits.storeladder_set.all %}
+            <tr class="table-info">
+              <td>{{ladder.name}}</td>
+              <td>{{ladder.amount}} × {{kits.amount_ordered}}</td>
+              <td>{{ladder.amount|dec_mult:kits.amount_ordered}}</td>
+            </tr>
+            {% endfor %}
           </tbody>
   
         </table>
