@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.contrib import messages
 from users.models import User
 
+from ..models.assay import Control
 from ..models.inventory import Location, Reagent, Tube, Plate, Gel, Ladder, Dye
 from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, LadderForm, DyeForm
 from ..forms.general import DeletionForm, SearchGelForm, SearchLadderForm, SearchPlateForm, SearchReagentForm, SearchTubeForm, SearchDyeForm
@@ -730,3 +731,19 @@ def edit_reagent(request, pk):
   context = {'form': form, 'reagent': reagent, 'del_form': del_form}
   return render(request, 'inventory/edit_reagent.html', context)
 # **REAGENTS VIEWS** #
+
+
+# **MERGEABLE VIEWS** #
+@login_required(login_url='login')
+def mergeable_items(request):
+  ladders = Ladder.objects.filter(user=request.user).order_by('catalog_number')
+  dyes = Dye.objects.filter(user=request.user).order_by('catalog_number')
+  plates = Plate.objects.filter(user=request.user).order_by('catalog_number')
+  gels = Gel.objects.filter(user=request.user).order_by('catalog_number')
+  tubes = Tube.objects.filter(user=request.user).order_by('catalog_number')
+  reagents = Reagent.objects.filter(user=request.user).order_by('catalog_number')
+  controls = Control.objects.filter(user=request.user).order_by('catalog_number')
+
+
+
+# **MERGEABLE VIEWS** #

@@ -1016,43 +1016,50 @@ def detect_mergeable_items(ladders, dyes, plates, gels, tubes, reagents, control
   controls_warn = False
 
   for index, val in enumerate(ladders):
-    if index != reagents.count() - 1:
-      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+    if index != ladders.count() - 1:
+      if val.brand != "" and val.catalog_number == ladders[index + 1].catalog_number and val.brand == ladders[index + 1].brand:
         ladders_warn = True
+        break
 
   for index, val in enumerate(dyes):
-    if index != reagents.count() - 1:
-      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+    if index != dyes.count() - 1:
+      if val.brand != "" and val.catalog_number == dyes[index + 1].catalog_number and val.brand == dyes[index + 1].brand:
         dyes_warn = True
+        break
 
   for index, val in enumerate(plates):
-    if index != reagents.count() - 1:
-      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+    if index != plates.count() - 1:
+      if val.brand != "" and val.catalog_number == plates[index + 1].catalog_number and val.brand == plates[index + 1].brand:
         plates_warn = True
+        break
         
   for index, val in enumerate(gels):
-    if index != reagents.count() - 1:
-      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+    if index != gels.count() - 1:
+      if val.brand != "" and val.catalog_number == gels[index + 1].catalog_number and val.brand == gels[index + 1].brand:
         gels_warn = True
+        break
 
   for index, val in enumerate(tubes):
-    if index != reagents.count() - 1:
-      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+    if index != tubes.count() - 1:
+      if val.brand != "" and val.catalog_number == tubes[index + 1].catalog_number and val.brand == tubes[index + 1].brand:
         tubes_warn = True
+        break
 
   for index, val in enumerate(reagents):
     if index != reagents.count() - 1:
       if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
         reagents_warn = True
+        break
 
   for index, val in enumerate(controls):
-    if index != reagents.count() - 1:
-      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+    if index != controls.count() - 1:
+      if val.brand != "" and val.catalog_number == controls[index + 1].catalog_number and val.brand == controls[index + 1].brand:
         controls_warn = True
+        break
 
   message = None
   if ladders_warn or dyes_warn or plates_warn or gels_warn or tubes_warn or reagents_warn or controls_warn:
-    message = "Inventory for "
+    message = "There are "
 
     if ladders_warn:
       message += "ladders, "
@@ -1075,6 +1082,76 @@ def detect_mergeable_items(ladders, dyes, plates, gels, tubes, reagents, control
     if controls_warn:
       message += "controls, "
 
-    message += "require your attention!"
+    message += "that have the same brand and catalog number that you may merge."
   
   return message
+
+
+def find_mergeable_items(ladders, dyes, plates, gels, tubes, reagents, controls):
+  mergeable_dict = {
+    'ladders': None,
+    'dyes': None,
+    'plates': None,
+    'gels': None,
+    'tubes': None,
+    'reagents': None,
+    'controls': None,
+  }
+
+  temp_ladders = []
+  for index, val in enumerate(ladders):
+    if index != ladders.count() - 1:
+      if val.brand != "" and val.catalog_number == ladders[index + 1].catalog_number and val.brand == ladders[index + 1].brand:
+        temp_ladders.append(val)
+        temp_ladders.append(ladders[index + 1])
+  mergeable_dict['ladders'] = list(set(temp_ladders))
+
+  temp_dyes = []
+  for index, val in enumerate(dyes):
+    if index != dyes.count() - 1:
+      if val.brand != "" and val.catalog_number == dyes[index + 1].catalog_number and val.brand == dyes[index + 1].brand:
+        temp_dyes.append(val)
+        temp_dyes.append(dyes[index + 1])
+  mergeable_dict['dyes'] = list(set(temp_dyes))
+
+  temp_plates = []
+  for index, val in enumerate(plates):
+    if index != plates.count() - 1:
+      if val.brand != "" and val.catalog_number == plates[index + 1].catalog_number and val.brand == plates[index + 1].brand:
+        temp_plates.append(val)
+        temp_plates.append(plates[index + 1])
+  mergeable_dict['plates'] = list(set(temp_plates))
+  
+  temp_gels = []
+  for index, val in enumerate(gels):
+    if index != gels.count() - 1:
+      if val.brand != "" and val.catalog_number == gels[index + 1].catalog_number and val.brand == gels[index + 1].brand:
+        temp_gels.append(val)
+        temp_gels.append(gels[index + 1])
+  mergeable_dict['gels'] = list(set(temp_gels))
+
+  temp_tubes = []
+  for index, val in enumerate(tubes):
+    if index != tubes.count() - 1:
+      if val.brand != "" and val.catalog_number == tubes[index + 1].catalog_number and val.brand == tubes[index + 1].brand:
+        temp_tubes.append(val)
+        temp_tubes.append(tubes[index + 1])
+  mergeable_dict['tubes'] = list(set(temp_tubes))
+
+  temp_reagents = []
+  for index, val in enumerate(reagents):
+    if index != reagents.count() - 1:
+      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+        temp_reagents.append(val)
+        temp_reagents.append(reagents[index + 1])
+  mergeable_dict['reagents'] = list(set(temp_reagents))
+
+  temp_controls = []
+  for index, val in enumerate(controls):
+    if index != controls.count() - 1:
+      if val.brand != "" and val.catalog_number == controls[index + 1].catalog_number and val.brand == controls[index + 1].brand:
+        temp_controls.append(val)
+        temp_controls.append(controls[index + 1])
+  mergeable_dict['controls'] = list(set(temp_controls))
+ 
+  return mergeable_dict
