@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
 from django.db.models import F
 
 from ..models.inventory import Reagent, Tube, Plate, Gel, Ladder, Dye
@@ -317,6 +316,8 @@ def inventory_report(request):
       message += "controls, "
 
     message += "require your attention!"
+
+  
 
   context = { 'message': message}
   return render(request, 'dashboard/inventory_dashboard.html', context)

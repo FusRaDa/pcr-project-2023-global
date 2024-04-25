@@ -14,7 +14,14 @@
 
   {% if message %}
   <div class="alert alert-danger text-center" role="alert">
-    {{message}}
+    <p><i class="fa-solid fa-triangle-exclamation"></i> {{message}}</p>
+  </div>
+  {% endif %}
+
+  {% if is_margeable %}
+  <div class="alert alert-info text-center" role="alert">
+    <p><i class="fa-solid fa-circle-exclamation"></i> There are inventory items with the same brand and catalog number that you can merge.</p>
+    <a class="btn btn-primary btn-sm ms-2" href="#" role="button">Merge Items</a>
   </div>
   {% endif %}
 
