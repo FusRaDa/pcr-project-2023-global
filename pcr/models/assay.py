@@ -26,6 +26,8 @@ class Control(models.Model):
 
   # Many-to-many with Assay
   name = models.CharField(blank=False, max_length=100)
+  brand = models.CharField(blank=True, null=True, max_length=100)
+  catalog_number = models.CharField(blank=True, null=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
   amount = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
 

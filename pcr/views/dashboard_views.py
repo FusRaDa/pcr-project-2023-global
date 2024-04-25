@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
 
+from ..custom.functions import detect_inventory_usage
+
 from ..models.inventory import Reagent, Tube, Plate, Gel, Ladder, Dye
 from ..models.assay import Assay, AssayCode, Control
 from ..models.batch import Batch
@@ -12,8 +14,7 @@ from ..models.pcr import Process
 # **INVENTORY PARTIALS** #
 @login_required(login_url='login')
 def ladders_display(request):
-  user = request.user
-  ladders = Ladder.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
+  ladders = Ladder.objects.filter(user=request.user).order_by(F('threshold_diff').asc(nulls_last=True))
 
   is_low = False
   is_expired = False
@@ -34,8 +35,7 @@ def ladders_display(request):
 
 @login_required(login_url='login')
 def dyes_display(request):
-  user = request.user
-  dyes = Dye.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
+  dyes = Dye.objects.filter(user=request.user).order_by(F('threshold_diff').asc(nulls_last=True))
   is_low = False
   is_expired = False
 
@@ -55,8 +55,7 @@ def dyes_display(request):
 
 @login_required(login_url='login')
 def plates_display(request):
-  user = request.user
-  plates = Plate.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
+  plates = Plate.objects.filter(user=request.user).order_by(F('threshold_diff').asc(nulls_last=True))
 
   is_low = False
   is_expired = False
@@ -77,8 +76,7 @@ def plates_display(request):
 
 @login_required(login_url='login')
 def gels_display(request):
-  user = request.user
-  gels = Gel.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
+  gels = Gel.objects.filter(user=request.user).order_by(F('threshold_diff').asc(nulls_last=True))
 
   is_low = False
   is_expired = False
@@ -99,8 +97,7 @@ def gels_display(request):
 
 @login_required(login_url='login')
 def tubes_display(request):
-  user = request.user
-  tubes = Tube.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
+  tubes = Tube.objects.filter(user=request.user).order_by(F('threshold_diff').asc(nulls_last=True))
 
   is_low = False
   is_expired = False
@@ -121,8 +118,7 @@ def tubes_display(request):
 
 @login_required(login_url='login')
 def reagents_display(request):
-  user = request.user
-  reagents = Reagent.objects.filter(user=user).order_by(F('threshold_diff').asc(nulls_last=True))
+  reagents = Reagent.objects.filter(user=request.user).order_by(F('threshold_diff').asc(nulls_last=True))
 
   is_low = False
   is_expired = False
@@ -144,8 +140,7 @@ def reagents_display(request):
 # **TESTS PARTIALS** #
 @login_required(login_url='login')
 def controls_display(request):
-  user = request.user
-  controls = Control.objects.filter(user=user).order_by('amount')
+  controls = Control.objects.filter(user=request.user).order_by('amount')
 
   is_low = False
   is_expired = False
@@ -204,8 +199,7 @@ def panels_chart(request):
 # **PROCESS & BATCH** #
 @login_required(login_url='login')
 def batches_display(request):
-  user = request.user
-  batches = Batch.objects.filter(user=user).order_by('-date_created')
+  batches = Batch.objects.filter(user=request.user).order_by('-date_created')
 
   in_que = False
 
@@ -220,8 +214,7 @@ def batches_display(request):
 
 @login_required(login_url='login')
 def processes_display(request):
-  user = request.user
-  processes = Process.objects.filter(user=user).order_by(F('date_processed').asc(nulls_last=False))
+  processes = Process.objects.filter(user=request.user).order_by(F('date_processed').asc(nulls_last=False))
 
   in_que = False
 
@@ -238,84 +231,23 @@ def processes_display(request):
 # **REPORT/DASHBOARD VIEWS** #
 @login_required(login_url='login')
 def inventory_report(request):
-  
-  ladders = Ladder.objects.filter(user=request.user)
-  dyes = Dye.objects.filter(user=request.user)
-  plates = Plate.objects.filter(user=request.user)
-  gels = Gel.objects.filter(user=request.user)
-  tubes = Tube.objects.filter(user=request.user)
-  reagents = Reagent.objects.filter(user=request.user)
-  controls = Control.objects.filter(user=request.user)
+  ladders = Ladder.objects.filter(user=request.user).order_by('catalog_number')
+  dyes = Dye.objects.filter(user=request.user).order_by('catalog_number')
+  plates = Plate.objects.filter(user=request.user).order_by('catalog_number')
+  gels = Gel.objects.filter(user=request.user).order_by('catalog_number')
+  tubes = Tube.objects.filter(user=request.user).order_by('catalog_number')
+  reagents = Reagent.objects.filter(user=request.user).order_by('catalog_number')
+  controls = Control.objects.filter(user=request.user).order_by('catalog_number')
 
-  ladders_warn = False
-  dyes_warn = False
-  plates_warn = False
-  gels_warn = False
-  tubes_warn = False
-  reagents_warn = False
-  controls_warn = False
-
-  for ladder in ladders:
-    if ladder.is_expired or ladder.month_exp or (ladder.threshold_diff is not None and ladder.threshold_diff <= 0):
-      ladders_warn = True
-      break
-
-  for dye in dyes:
-    if dye.is_expired or dye.month_exp or (dye.threshold_diff is not None and dye.threshold_diff <= 0):
-      dyes_warn = True
-      break
-
-  for plate in plates:
-    if plate.is_expired or plate.month_exp or (plate.threshold_diff is not None and plate.threshold_diff <= 0):
-      plates_warn = True
-      break
-
-  for gel in gels:
-    if gel.is_expired or gel.month_exp or (gel.threshold_diff is not None and gel.threshold_diff <= 0):
-      gels_warn = True
-      break
-
-  for tube in tubes:
-    if tube.is_expired or tube.month_exp or (tube.threshold_diff is not None and tube.threshold_diff <= 0):
-      tubes_warn = True
-      break
-
-  for reagent in reagents:
-    if reagent.is_expired or reagent.month_exp or (reagent.threshold_diff is not None and reagent.threshold_diff <= 0):
-      reagents_warn = True
-      break
-
-  for control in controls:
-    if control.is_expired or control.month_exp or control.amount <= 100:
-      controls_warn = True
-      break
-
-  message = None
-  if ladders_warn or dyes_warn or plates_warn or gels_warn or tubes_warn or reagents_warn:
-    message = "Inventory for "
-
-    if ladders_warn:
-      message += "ladders, "
-
-    if dyes_warn:
-      message += "dyes, "
-
-    if plates_warn:
-      message += "plates, "
-
-    if gels_warn:
-      message += "gels, "
-
-    if tubes_warn:
-      message += "tubes, "
-
-    if reagents_warn:
-      message += "reagents, "
-
-    if controls_warn:
-      message += "controls, "
-
-    message += "require your attention!"
+  message = detect_inventory_usage(
+    ladders=ladders,
+    dyes=dyes,
+    plates=plates,
+    gels=gels,
+    tubes=tubes,
+    reagents=reagents,
+    controls=controls,
+  )
 
   
 

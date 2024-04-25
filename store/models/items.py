@@ -136,7 +136,17 @@ class StoreTube(models.Model):
 
   def __str__(self):
     return self.name
+  
 
+# class StoreControl(models.Model):
+#   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
+
+#   name = models.CharField(blank=False, max_length=100)
+#   amount = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
+
+#   def __str__(self):
+#     return self.name
+  
 
 class StoreReagent(models.Model):
   kit = models.ForeignKey(Kit, on_delete=models.CASCADE)
