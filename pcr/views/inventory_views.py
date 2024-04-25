@@ -7,8 +7,9 @@ from urllib.parse import urlencode
 from django.db.models import F
 from django.db.models import Q
 from django.contrib import messages
-from users.models import User
 
+
+from ..custom.functions import find_mergeable_items
 from ..models.assay import Control
 from ..models.inventory import Location, Reagent, Tube, Plate, Gel, Ladder, Dye
 from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, LadderForm, DyeForm
@@ -744,6 +745,20 @@ def mergeable_items(request):
   reagents = Reagent.objects.filter(user=request.user).order_by('catalog_number')
   controls = Control.objects.filter(user=request.user).order_by('catalog_number')
 
+  items_dict = find_mergeable_items(
+    ladders=ladders,
+    dyes=dyes,
+    plates=plates,
+    gels=gels,
+    tubes=tubes,
+    reagents=reagents,
+    controls=controls,
+  )
+
+  print(items_dict)
+
+  context = {}
+  return render(request, 'inventory/mergeable_items.html', context)
 
 
 # **MERGEABLE VIEWS** #

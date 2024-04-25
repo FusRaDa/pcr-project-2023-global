@@ -1,0 +1,66 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Add Gel {% endblock %} 
+
+{% block content %}
+<div class="container mt-3">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">Mergeable Items</h3>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Exp. Date</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Catalog #</th>
+          <th scope="col">Lot #</th>
+          <th scope="col">Amount Stored (µL)</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for dye in page_obj %}
+          <tr class="dye-row {% if dye.is_expired %} table-danger {% endif %} {% if dye.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_dye' dye.pk %}">
+            <td>{{dye.exp_date}} {% if dye.is_expired %} (EXPIRED) {% endif %} {% if dye.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{dye.last_updated}}</td>
+            <td>{% if dye.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{dye.name}}</td>
+            <td>{{dye.brand}}</td>
+            <td>{{dye.catalog_number}}</td>
+            <td>{{dye.lot_number}}</td>
+            <td>{{dye.amount}}</td>
+            
+            <td>
+              {% for location in dye.location.all %}
+                <span class="badge text-bg-info">
+                  {{location}}
+                </span>
+              {% endfor %}
+            </td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+  </div>
+
+
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".link-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
+{% endblock %}

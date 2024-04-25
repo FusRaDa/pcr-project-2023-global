@@ -99,4 +99,6 @@ urlpatterns = [
   path('panels-chart/', dashboard_views.panels_chart, name='panels_chart'),
 
   path('dashboard/', dashboard_views.inventory_report, name='inventory_report'),
+
+  path('mergeable-items/', inventory_views.mergeable_items, name='mergeable_items'),
 ]

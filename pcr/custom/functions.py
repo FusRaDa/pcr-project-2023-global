@@ -1100,58 +1100,58 @@ def find_mergeable_items(ladders, dyes, plates, gels, tubes, reagents, controls)
 
   temp_ladders = []
   for index, val in enumerate(ladders):
-    if index != ladders.count() - 1:
-      if val.brand != "" and val.catalog_number == ladders[index + 1].catalog_number and val.brand == ladders[index + 1].brand:
-        temp_ladders.append(val)
-        temp_ladders.append(ladders[index + 1])
-  mergeable_dict['ladders'] = list(set(temp_ladders))
+    if index != ladders.count() - 1 and (val.brand != "" and val.brand != None):
+      if val.catalog_number == ladders[index + 1].catalog_number and val.brand == ladders[index + 1].brand:
+        temp_ladders.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_ladders = {str(item): item for item in temp_ladders} 
+  mergeable_dict['ladders'] = dedupe_ladders.values()
 
   temp_dyes = []
   for index, val in enumerate(dyes):
-    if index != dyes.count() - 1:
-      if val.brand != "" and val.catalog_number == dyes[index + 1].catalog_number and val.brand == dyes[index + 1].brand:
-        temp_dyes.append(val)
-        temp_dyes.append(dyes[index + 1])
-  mergeable_dict['dyes'] = list(set(temp_dyes))
+    if index != dyes.count() - 1 and (val.brand != "" and val.brand != None):
+      if val.catalog_number == dyes[index + 1].catalog_number and val.brand == dyes[index + 1].brand:
+        temp_dyes.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_dyes = {str(item): item for item in temp_dyes} 
+  mergeable_dict['dyes'] = dedupe_dyes.values()
 
   temp_plates = []
   for index, val in enumerate(plates):
-    if index != plates.count() - 1:
-      if val.brand != "" and val.catalog_number == plates[index + 1].catalog_number and val.brand == plates[index + 1].brand:
-        temp_plates.append(val)
-        temp_plates.append(plates[index + 1])
-  mergeable_dict['plates'] = list(set(temp_plates))
+    if index != plates.count() - 1 and (val.brand != "" and val.brand != None):
+      if val.catalog_number == plates[index + 1].catalog_number and val.brand == plates[index + 1].brand:
+        temp_plates.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_plates = {str(item): item for item in temp_plates}      
+  mergeable_dict['plates'] = dedupe_plates.values()
   
   temp_gels = []
   for index, val in enumerate(gels):
-    if index != gels.count() - 1:
-      if val.brand != "" and val.catalog_number == gels[index + 1].catalog_number and val.brand == gels[index + 1].brand:
-        temp_gels.append(val)
-        temp_gels.append(gels[index + 1])
-  mergeable_dict['gels'] = list(set(temp_gels))
+    if index != gels.count() - 1 and (val.brand != "" and val.brand != None):
+      if val.catalog_number == gels[index + 1].catalog_number and val.brand == gels[index + 1].brand:
+        temp_gels.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_gels = {str(item): item for item in temp_gels} 
+  mergeable_dict['gels'] = dedupe_gels.values()
 
   temp_tubes = []
   for index, val in enumerate(tubes):
-    if index != tubes.count() - 1:
-      if val.brand != "" and val.catalog_number == tubes[index + 1].catalog_number and val.brand == tubes[index + 1].brand:
-        temp_tubes.append(val)
-        temp_tubes.append(tubes[index + 1])
-  mergeable_dict['tubes'] = list(set(temp_tubes))
+    if index != tubes.count() - 1 and (val.brand != "" and val.brand != None):
+      if val.catalog_number == tubes[index + 1].catalog_number and val.brand == tubes[index + 1].brand:
+        temp_tubes.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_tubes = {str(item): item for item in temp_tubes} 
+  mergeable_dict['tubes'] = dedupe_tubes.values()
 
   temp_reagents = []
   for index, val in enumerate(reagents):
-    if index != reagents.count() - 1:
-      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
-        temp_reagents.append(val)
-        temp_reagents.append(reagents[index + 1])
-  mergeable_dict['reagents'] = list(set(temp_reagents))
+    if index != reagents.count() - 1 and (val.brand != "" and val.brand != None):
+      if val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+        temp_reagents.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_reagents = {str(item): item for item in temp_reagents} 
+  mergeable_dict['reagents'] = dedupe_reagents.values()
 
   temp_controls = []
   for index, val in enumerate(controls):
-    if index != controls.count() - 1:
-      if val.brand != "" and val.catalog_number == controls[index + 1].catalog_number and val.brand == controls[index + 1].brand:
-        temp_controls.append(val)
-        temp_controls.append(controls[index + 1])
-  mergeable_dict['controls'] = list(set(temp_controls))
+    if index != controls.count() - 1 and (val.brand != "" and val.brand != None):
+      if val.catalog_number == controls[index + 1].catalog_number and val.brand == controls[index + 1].brand:
+        temp_controls.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_controls = {str(item): item for item in temp_controls} 
+  mergeable_dict['controls'] = dedupe_controls.values()
  
   return mergeable_dict
