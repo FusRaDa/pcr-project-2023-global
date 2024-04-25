@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
 
-from ..custom.functions import detect_inventory_usage
+from ..custom.functions import detect_inventory_usage, detect_mergeable_items
 
 from ..models.inventory import Reagent, Tube, Plate, Gel, Ladder, Dye
 from ..models.assay import Assay, AssayCode, Control
@@ -239,7 +239,7 @@ def inventory_report(request):
   reagents = Reagent.objects.filter(user=request.user).order_by('catalog_number')
   controls = Control.objects.filter(user=request.user).order_by('catalog_number')
 
-  message = detect_inventory_usage(
+  inventory_message = detect_inventory_usage(
     ladders=ladders,
     dyes=dyes,
     plates=plates,
@@ -249,8 +249,16 @@ def inventory_report(request):
     controls=controls,
   )
 
-  
+  mergeable_message = detect_mergeable_items(
+    ladders=ladders,
+    dyes=dyes,
+    plates=plates,
+    gels=gels,
+    tubes=tubes,
+    reagents=reagents,
+    controls=controls,
+  )
 
-  context = { 'message': message}
+  context = { 'inventory_message': inventory_message, 'mergeable_message': mergeable_message}
   return render(request, 'dashboard/inventory_dashboard.html', context)
 # **REPORT VIEWS** #

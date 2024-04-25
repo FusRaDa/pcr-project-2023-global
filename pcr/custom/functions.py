@@ -977,7 +977,7 @@ def detect_inventory_usage(ladders, dyes, plates, gels, tubes, reagents, control
       break
 
   message = None
-  if ladders_warn or dyes_warn or plates_warn or gels_warn or tubes_warn or reagents_warn:
+  if ladders_warn or dyes_warn or plates_warn or gels_warn or tubes_warn or reagents_warn or controls_warn:
     message = "Inventory for "
 
     if ladders_warn:
@@ -1005,3 +1005,76 @@ def detect_inventory_usage(ladders, dyes, plates, gels, tubes, reagents, control
   
   return message
 
+
+def detect_mergeable_items(ladders, dyes, plates, gels, tubes, reagents, controls):
+  ladders_warn = False
+  dyes_warn = False
+  plates_warn = False
+  gels_warn = False
+  tubes_warn = False
+  reagents_warn = False
+  controls_warn = False
+
+  for index, val in enumerate(ladders):
+    if index != reagents.count() - 1:
+      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+        ladders_warn = True
+
+  for index, val in enumerate(dyes):
+    if index != reagents.count() - 1:
+      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+        dyes_warn = True
+
+  for index, val in enumerate(plates):
+    if index != reagents.count() - 1:
+      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+        plates_warn = True
+        
+  for index, val in enumerate(gels):
+    if index != reagents.count() - 1:
+      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+        gels_warn = True
+
+  for index, val in enumerate(tubes):
+    if index != reagents.count() - 1:
+      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+        tubes_warn = True
+
+  for index, val in enumerate(reagents):
+    if index != reagents.count() - 1:
+      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+        reagents_warn = True
+
+  for index, val in enumerate(controls):
+    if index != reagents.count() - 1:
+      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+        controls_warn = True
+
+  message = None
+  if ladders_warn or dyes_warn or plates_warn or gels_warn or tubes_warn or reagents_warn or controls_warn:
+    message = "Inventory for "
+
+    if ladders_warn:
+      message += "ladders, "
+
+    if dyes_warn:
+      message += "dyes, "
+
+    if plates_warn:
+      message += "plates, "
+
+    if gels_warn:
+      message += "gels, "
+
+    if tubes_warn:
+      message += "tubes, "
+
+    if reagents_warn:
+      message += "reagents, "
+
+    if controls_warn:
+      message += "controls, "
+
+    message += "require your attention!"
+  
+  return message

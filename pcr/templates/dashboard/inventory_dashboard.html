@@ -12,16 +12,16 @@
     <h4 class="text-center">Welcome back {{request.user.first_name}} {{request.user.last_name}}</h4>
   </div>
 
-  {% if message %}
+  {% if inventory_message %}
   <div class="alert alert-danger text-center" role="alert">
-    <p><i class="fa-solid fa-triangle-exclamation"></i> {{message}}</p>
+    <p><i class="fa-solid fa-triangle-exclamation"></i> {{inventory_message}}</p>
   </div>
   {% endif %}
 
-  {% if is_margeable %}
+  {% if mergeable_message %}
   <div class="alert alert-info text-center" role="alert">
-    <p><i class="fa-solid fa-circle-exclamation"></i> There are inventory items with the same brand and catalog number that you can merge.</p>
-    <a class="btn btn-primary btn-sm ms-2" href="#" role="button">Merge Items</a>
+    <i class="fa-solid fa-circle-info"></i> {{mergeable_message}}</p>
+    <a class="btn btn-primary btn-sm ms-2" href="#" role="button">View Mergeable Items</a>
   </div>
   {% endif %}
 
