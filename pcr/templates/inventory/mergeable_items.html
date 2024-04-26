@@ -27,6 +27,47 @@
       </thead>
 
       <tbody>
+        {% for ladder in page_obj %}
+          <tr class="ladder-row {% if ladder.is_expired %} table-danger {% endif %} {% if ladder.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_ladder' ladder.pk %}">
+            <td>{{ladder.exp_date}} {% if ladder.is_expired %} (EXPIRED) {% endif %} {% if ladder.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{ladder.last_updated}}</td>
+            <td>{% if ladder.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{ladder.name}}</td>
+            <td>{{ladder.brand}}</td>
+            <td>{{ladder.catalog_number}}</td>
+            <td>{{ladder.lot_number}}</td>
+            <td>{{ladder.amount}}</td>
+            
+            <td>
+              {% for location in ladder.location.all %}
+                <span class="badge text-bg-info">
+                  {{location}}
+                </span>
+              {% endfor %}
+            </td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Exp. Date</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Catalog #</th>
+          <th scope="col">Lot #</th>
+          <th scope="col">Amount Stored (µL)</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+
+      <tbody>
         {% for dye in page_obj %}
           <tr class="dye-row {% if dye.is_expired %} table-danger {% endif %} {% if dye.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_dye' dye.pk %}">
             <td>{{dye.exp_date}} {% if dye.is_expired %} (EXPIRED) {% endif %} {% if dye.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
@@ -48,11 +89,226 @@
           </tr>
         {% endfor %}
       </tbody>
+
     </table>
-
-
   </div>
 
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Exp. Date</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Catalog #</th>
+          <th scope="col">Lot #</th>
+          <th scope="col">Size</th>
+          <th scope="col">Type</th>
+          <th scope="col">Amount Stored</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for plate in page_obj %}
+          <tr class="plate-row {% if plate.is_expired %} table-danger {% endif %} {% if plate.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.pk %}">
+            <td>{{plate.exp_date}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{plate.last_updated}}</td>
+            <td>{% if plate.process_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{plate.name}}</td>
+            <td>{{plate.brand}}</td>
+            <td>{{plate.catalog_number}}</td>
+            <td>{{plate.lot_number}}</td>
+            <td>{{plate.size}}</td>
+            <td>{{plate.type}}</td>
+            <td>{{plate.amount}}</td>
+            
+            <td>
+              {% for location in plate.location.all %}
+                <span class="badge text-bg-info">
+                  {{location}}
+                </span>
+              {% endfor %}
+            </td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Exp. Date</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Catalog #</th>
+          <th scope="col">Lot #</th>
+          <th scope="col">Wells</th>
+          <th scope="col">Amount Stored</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for gel in page_obj %}
+          <tr class="plate-row {% if gel.is_expired %} table-danger {% endif %} {% if gel.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_gel' gel.pk %}">
+            <td>{{gel.exp_date}} {% if gel.is_expired %} (EXPIRED) {% endif %} {% if gel.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{gel.last_updated}}</td>
+            <td>{% if gel.process_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{gel.name}}</td>
+            <td>{{gel.brand}}</td>
+            <td>{{gel.catalog_number}}</td>
+            <td>{{gel.lot_number}}</td>
+            <td>{{gel.size}}</td>
+            <td>{{gel.amount}}</td>
+            
+            <td>
+              {% for location in gel.location.all %}
+                <span class="badge text-bg-info">
+                  {{location}}
+                </span>
+              {% endfor %}
+            </td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Exp. Date</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Catalog #</th>
+          <th scope="col">Lot #</th>
+          <th scope="col">Amount Stored</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for tube in page_obj %}
+          <tr class="tube-row {% if tube.is_expired %} table-danger {% endif %} {% if tube.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_tube' tube.pk %}">
+            <td>{{tube.exp_date}} {% if tube.is_expired %} (EXPIRED) {% endif %} {% if tube.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %} </td>
+            <td>{{tube.last_updated}}</td>
+            <td>{% if tube.extractionprotocol_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{tube.name}}</td>
+            <td>{{tube.brand}}</td>
+            <td>{{tube.catalog_number}}</td>
+            <td>{{tube.lot_number}}</td>
+            <td>{{tube.amount}}</td>
+
+            <td>
+              {% for location in tube.location.all %}
+                <span class="badge text-bg-info">
+                  {{location}}
+                </span>
+              {% endfor %}
+            </td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Exp. Date</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Catalog #</th>
+          <th scope="col">Lot #</th>
+          <th scope="col">Volume</th>
+          <th scope="col">Concentration</th>
+          <th scope="col">Location(s)</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for reagent in page_obj %}
+          <tr class="reagent-row {% if reagent.is_expired %} table-danger {% endif %} {% if reagent.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_reagent' reagent.pk %}">
+            <td>{{reagent.exp_date}} {% if reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{reagent.last_updated}}</td>
+            <td>{% if reagent.extractionprotocol_set.count > 0 or reagent.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{reagent.name}}</td>
+            <td>{{reagent.brand}}</td>
+            <td>{{reagent.catalog_number}}</td>
+            <td>{{reagent.lot_number}}</td>
+            <td>{{reagent.volume}} {{reagent.unit_volume}}</td>
+            <td>
+              {% if reagent.stock_concentration %}
+              {{reagent.stock_concentration}} {{reagent.unit_concentration}}
+              {% endif %}
+            </td>
+
+            <td>
+              {% for location in reagent.location.all %}
+                <span class="badge text-bg-info">
+                  {{location}}
+                </span>
+              {% endfor %}
+            </td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Exp. Date</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Catalog #</th>
+          <th scope="col">Lot #</th>
+          <th scope="col">Amount Stored (μL)</th>
+          <th scope="col">Location</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for control in page_obj %}
+          <tr class="tube-row {% if control.is_expired %} table-danger {% endif %} {% if control.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_control' control.pk %}">
+            <td>{{control.exp_date}} {% if control.is_expired %} (EXPIRED) {% endif %} {% if control.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+            <td>{{control.last_updated}}</td>
+            <td>{% if control.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{control.name}}</td>
+            <td>{{control.brand}}</td>
+            <td>{{control.catalog_number}}</td>
+            <td>{{control.lot_number}}</td>
+            <td>{{control.amount}}</td>
+
+            <td>
+              {% for location in control.location.all %}
+                <span class="badge text-bg-info">
+                  {{location}}
+                </span>
+              {% endfor %}
+            </td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
 
 </div>
 

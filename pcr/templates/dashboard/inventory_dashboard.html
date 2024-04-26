@@ -21,7 +21,7 @@
   {% if mergeable_message %}
   <div class="alert alert-info text-center" role="alert">
     <i class="fa-solid fa-circle-info"></i> {{mergeable_message}}</p>
-    <a class="btn btn-primary btn-sm ms-2" href="#" role="button">View Mergeable Items</a>
+    <a class="btn btn-primary btn-sm ms-2" href="{% url 'mergeable_items' %}" role="button">View Mergeable Items</a>
   </div>
   {% endif %}
 

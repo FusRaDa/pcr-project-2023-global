@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
+from django.utils.timezone import now
 
 import datetime
 from django.utils import timezone
@@ -31,6 +32,8 @@ class Control(models.Model):
   lot_number = models.CharField(blank=False, max_length=100)
   amount = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
 
+  last_updated = models.DateTimeField(auto_now=True)
+  date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
 
   location = models.ManyToManyField(Location)

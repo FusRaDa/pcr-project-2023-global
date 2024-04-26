@@ -745,7 +745,7 @@ def mergeable_items(request):
   reagents = Reagent.objects.filter(user=request.user).order_by('catalog_number')
   controls = Control.objects.filter(user=request.user).order_by('catalog_number')
 
-  items_dict = find_mergeable_items(
+  items = find_mergeable_items(
     ladders=ladders,
     dyes=dyes,
     plates=plates,
@@ -755,10 +755,48 @@ def mergeable_items(request):
     controls=controls,
   )
 
-  print(items_dict)
+  mergeable_ladders = []
+  if items['ladders']:
+    for ladder in items['ladders']:
+      ladders = Ladder.objects.filter(user=request.user, brand=ladder['brand'], catalog_number=ladder['cat'])
+      mergeable_ladders.append(ladders)
+
+  mergeable_dyes = []
+  if items['dyes']:
+    for dye in items['dyes']:
+      dyes = Dye.objects.filter(user=request.user, brand=dye['brand'], catalog_number=dye['cat'])
+      mergeable_dyes.append(dyes)
+      
+  mergeable_plates = []
+  if items['plates']:
+    for plate in items['plates']:
+      plates = Plate.objects.filter(user=request.user, brand=plate['brand'], catalog_number=plate['cat'])
+      mergeable_plates.append(plates)
+  
+  mergeable_gels = []
+  if items['gels']:
+    for gel in items['gels']:
+      gels = Gel.objects.filter(user=request.user, brand=gel['brand'], catalog_number=gel['cat'])
+      mergeable_gels.append(gels)
+  
+  mergeable_tubes = []
+  if items['tubes']:
+    for tube in items['tubes']:
+      tubes = Tube.objects.filter(user=request.user, brand=tube['brand'], catalog_number=tube['cat'])
+      mergeable_tubes.append(tubes)
+
+  mergeable_reagents = []
+  if items['reagents']:
+    for reagent in items['reagents']:
+      reagents = Reagent.objects.filter(user=request.user, brand=reagent['brand'], catalog_number=reagent['cat'])
+      mergeable_reagents.append(reagents)
+
+  mergeable_controls = []
+  if items['controls']:
+    for control in items['controls']:
+      controls = Control.objects.filter(user=request.user, brand=control['brand'], catalog_number=control['cat'])
+      mergeable_controls.append(controls)
 
   context = {}
   return render(request, 'inventory/mergeable_items.html', context)
-
-
 # **MERGEABLE VIEWS** #
