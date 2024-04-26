@@ -339,18 +339,26 @@ class ReagentForm(ModelForm):
 
 
 # **MERGEABLE FORMS** #
-class MergeLaddersForm(forms.Form):
+class MergeItemsForm(forms.Form):
+  confirm = forms.CharField()
 
-  merged_ladders = forms.ModelMultipleChoiceField(
+  mergeable_items = forms.ModelMultipleChoiceField(
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
     required=True)
   
   def __init__(self, *args, **kwargs):
-    self.ladders = kwargs.pop('ladders')
+    self.value = kwargs.pop('value')
+    self.merging = kwargs.pop('merging')
     super().__init__(*args, **kwargs) 
-    self.fields['merged_ladders'].queryset = self.ladders
- 
-  
+    self.fields['mergeable_items'].queryset = self.merging
+    self.fields['confirm'].widget.attrs['class'] = 'form-control'
 
+  def clean(self):
+    cleaned_data = super().clean()
+    confirm = cleaned_data.get('confirm')
+    if confirm != self.value:
+      raise ValidationError(
+        message="Invalid value entered, please try again."
+      )
 # **MERGEABLE FORMS** #
