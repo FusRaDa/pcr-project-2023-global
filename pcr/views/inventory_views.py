@@ -755,48 +755,78 @@ def mergeable_items(request):
     controls=controls,
   )
 
+  colors = ['table-primary', 'table-secondary', 'table-success', 'table-info', 'table-light', 'table-dark']
+  
   mergeable_ladders = []
   if items['ladders']:
+    color_index = 0
     for ladder in items['ladders']:
       ladders = Ladder.objects.filter(user=request.user, brand=ladder['brand'], catalog_number=ladder['cat'])
-      mergeable_ladders.append(ladders)
+      mergeable_ladders.append({'sets': ladders, 'color': colors[color_index]})
+      color_index += 1
+      if color_index > 5:
+          color_index = 0
 
   mergeable_dyes = []
   if items['dyes']:
+    color_index = 0
     for dye in items['dyes']:
       dyes = Dye.objects.filter(user=request.user, brand=dye['brand'], catalog_number=dye['cat'])
-      mergeable_dyes.append(dyes)
+      mergeable_dyes.append({'sets': dyes, 'color': colors[color_index]})
+      color_index += 1
+      if color_index > 5:
+          color_index = 0
       
   mergeable_plates = []
   if items['plates']:
+    color_index = 0
     for plate in items['plates']:
       plates = Plate.objects.filter(user=request.user, brand=plate['brand'], catalog_number=plate['cat'])
-      mergeable_plates.append(plates)
+      mergeable_plates.append({'sets': plates, 'color': colors[color_index]})
+      color_index += 1
+      if color_index > 5:
+          color_index = 0
   
   mergeable_gels = []
   if items['gels']:
+    color_index = 0
     for gel in items['gels']:
       gels = Gel.objects.filter(user=request.user, brand=gel['brand'], catalog_number=gel['cat'])
-      mergeable_gels.append(gels)
+      mergeable_gels.append({'sets': gels, 'color': colors[color_index]})
+      color_index += 1
+      if color_index > 5:
+          color_index = 0
   
   mergeable_tubes = []
   if items['tubes']:
+    color_index = 0
     for tube in items['tubes']:
       tubes = Tube.objects.filter(user=request.user, brand=tube['brand'], catalog_number=tube['cat'])
-      mergeable_tubes.append(tubes)
+      mergeable_tubes.append({'sets': tubes, 'color': colors[color_index]})
+      color_index += 1
+      if color_index > 5:
+          color_index = 0
 
   mergeable_reagents = []
   if items['reagents']:
+    color_index = 0
     for reagent in items['reagents']:
       reagents = Reagent.objects.filter(user=request.user, brand=reagent['brand'], catalog_number=reagent['cat'])
-      mergeable_reagents.append(reagents)
+      mergeable_reagents.append({'sets': reagents, 'color': colors[color_index]})
+      color_index += 1
+      if color_index > 5:
+          color_index = 0
 
   mergeable_controls = []
   if items['controls']:
+    color_index = 0
     for control in items['controls']:
       controls = Control.objects.filter(user=request.user, brand=control['brand'], catalog_number=control['cat'])
-      mergeable_controls.append(controls)
+      mergeable_controls.append({'sets': controls, 'color': colors[color_index]})
+      color_index += 1
+      if color_index > 5:
+          color_index = 0
 
-  context = {}
+  context = {'mergeable_ladders': mergeable_ladders, 'mergeable_dyes': mergeable_dyes, 'mergeable_plates': mergeable_plates, 'mergeable_gels': mergeable_gels, 'mergeable_tubes': mergeable_tubes, 'mergeable_reagents': mergeable_reagents, 'mergeable_controls': mergeable_controls}
   return render(request, 'inventory/mergeable_items.html', context)
 # **MERGEABLE VIEWS** #
