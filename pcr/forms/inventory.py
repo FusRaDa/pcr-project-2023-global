@@ -336,3 +336,21 @@ class ReagentForm(ModelForm):
   class Meta:
     model = Reagent
     exclude = ['user', 'last_updated', 'threshold_diff', 'merged_catalog_numbers']
+
+
+# **MERGEABLE FORMS** #
+class MergeLaddersForm(forms.Form):
+
+  merged_ladders = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=True)
+  
+  def __init__(self, *args, **kwargs):
+    self.ladders = kwargs.pop('ladders')
+    super().__init__(*args, **kwargs) 
+    self.fields['merged_ladders'].queryset = self.ladders
+ 
+  
+
+# **MERGEABLE FORMS** #

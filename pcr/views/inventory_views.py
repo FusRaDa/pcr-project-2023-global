@@ -12,7 +12,7 @@ from django.contrib import messages
 from ..custom.functions import find_mergeable_items
 from ..models.assay import Control
 from ..models.inventory import Location, Reagent, Tube, Plate, Gel, Ladder, Dye
-from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, LadderForm, DyeForm
+from ..forms.inventory import LocationForm, ReagentForm, TubeForm, PlateForm, GelForm, LadderForm, DyeForm, MergeLaddersForm
 from ..forms.general import DeletionForm, SearchGelForm, SearchLadderForm, SearchPlateForm, SearchReagentForm, SearchTubeForm, SearchDyeForm
 
 
@@ -829,4 +829,79 @@ def mergeable_items(request):
 
   context = {'mergeable_ladders': mergeable_ladders, 'mergeable_dyes': mergeable_dyes, 'mergeable_plates': mergeable_plates, 'mergeable_gels': mergeable_gels, 'mergeable_tubes': mergeable_tubes, 'mergeable_reagents': mergeable_reagents, 'mergeable_controls': mergeable_controls}
   return render(request, 'inventory/mergeable_items.html', context)
+
+
+@login_required(login_url='login')
+def merge_ladder(request, pk):
+  try:
+    ladder = Ladder.objects.get(user=request.user, pk=pk)
+
+    ladders = Ladder.objects.filter(catalog_number=ladder.catalog_number).exclude(pk__in=ladder)
+    if not ladders.count() > 0:
+      messages.error(request, "There is no ladder to merge.")
+      return redirect('inventory_report')
+
+    form = MergeLaddersForm(ladders=ladders)
+    if 'merge' in request.POST:
+      form = MergeLaddersForm(request.POST, ladders=ladders)
+      if form.is_valid():
+        merged_ladders = form.cleaned_data['merged_ladders']
+
+
+        for obj in merged_ladders:
+          # logic -> from merged ladders only add amount and catalog #'s to chosen ladder's merged_catalog_numbers list
+          pass
+
+
+    
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no ladder to merge.")
+    return redirect('inventory_report')
+  
+  context = {}
+  return render(request, 'inventory/merge_ladder.html', context)
+
+
+@login_required(login_url='login')
+def merge_dye(request, pk):
+  try:
+    dye = Dye.objects.get(user=request.user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no dye to merge.")
+    return redirect('inventory_report')
+  
+  context = {}
+  return render(request, 'inventory/merge_dye.html', context)
+
+
+@login_required(login_url='login')
+def merge_plate(request, pk):
+  try:
+    plate = Plate.objects.get(user=request.user, pk=pk)
+  except ObjectDoesNotExist:
+    messages.error(request, "There is no plate to merge.")
+    return redirect('inventory_report')
+  
+  context = {}
+  return render(request, 'inventory/merge_plate.html', context)
+
+
+@login_required(login_url='login')
+def merge_gel(request, pk):
+  pass
+
+
+@login_required(login_url='login')
+def merge_tube(request, pk):
+  pass
+
+
+@login_required(login_url='login')
+def merge_reagent(request, pk):
+  pass
+
+
+@login_required(login_url='login')
+def merge_control(request, pk):
+  pass
 # **MERGEABLE VIEWS** #
