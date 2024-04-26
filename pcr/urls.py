@@ -94,11 +94,16 @@ urlpatterns = [
   path('gels-display/', dashboard_views.gels_display, name='gels_display'),
   path('tubes-display/', dashboard_views.tubes_display, name='tubes_display'),
   path('reagents-display/', dashboard_views.reagents_display, name='reagents_display'),
-
   path('assays-chart/', dashboard_views.assays_chart, name='assays_chart'),
   path('panels-chart/', dashboard_views.panels_chart, name='panels_chart'),
-
   path('dashboard/', dashboard_views.inventory_report, name='inventory_report'),
 
   path('mergeable-items/', inventory_views.mergeable_items, name='mergeable_items'),
+  path('merge-ladder/<int:pk>/', inventory_views.merge_ladder, name='merge_ladder'),
+  path('merge-dye/<int:pk>/', inventory_views.merge_dye, name='merge_dye'),
+  path('merge-plate/<int:pk>/', inventory_views.merge_plate, name='merge_plate'),
+  path('merge-gel/<int:pk>/', inventory_views.merge_gel, name='merge_gel'),
+  path('merge-tube/<int:pk>', inventory_views.merge_tube, name='merge_tube'),
+  path('merge-reagent/<int:pk>', inventory_views.merge_reagent, name='merge_reagent'),
+  path('merge-control/<int:pk>', inventory_views.merge_control, name='merge_control'),
 ]

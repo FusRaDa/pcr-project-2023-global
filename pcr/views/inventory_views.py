@@ -850,7 +850,6 @@ def merge_ladder(request, pk):
         lot_numbers = []
         total_amount = 0
         for obj in mergeable_items:
-          # logic -> from merged ladders only add amount and catalog #'s to chosen ladder's merged_catalog_numbers list
           total_amount += obj.amount
           lot_numbers.append(obj.lot_number)
           obj.delete()
@@ -921,7 +920,6 @@ def merge_plate(request, pk):
         lot_numbers = []
         total_amount = 0
         for obj in mergeable_items:
-          # logic -> from merged ladders only add amount and catalog #'s to chosen ladder's merged_catalog_numbers list
           total_amount += obj.amount
           lot_numbers.append(obj.lot_number)
           obj.delete()
@@ -957,7 +955,6 @@ def merge_gel(request, pk):
         lot_numbers = []
         total_amount = 0
         for obj in mergeable_items:
-          # logic -> from merged ladders only add amount and catalog #'s to chosen ladder's merged_catalog_numbers list
           total_amount += obj.amount
           lot_numbers.append(obj.lot_number)
           obj.delete()
@@ -993,7 +990,6 @@ def merge_tube(request, pk):
         lot_numbers = []
         total_amount = 0
         for obj in mergeable_items:
-          # logic -> from merged ladders only add amount and catalog #'s to chosen ladder's merged_catalog_numbers list
           total_amount += obj.amount
           lot_numbers.append(obj.lot_number)
           obj.delete()
@@ -1029,7 +1025,6 @@ def merge_reagent(request, pk):
         lot_numbers = []
         total_amount = 0
         for obj in mergeable_items:
-          # logic -> from merged ladders only add amount and catalog #'s to chosen ladder's merged_catalog_numbers list
           total_amount += obj.volume_in_microliters
           lot_numbers.append(obj.lot_number)
           obj.delete()
@@ -1064,7 +1059,6 @@ def merge_control(request, pk):
       lot_numbers = []
       total_amount = 0
       for obj in mergeable_items:
-        # logic -> from merged ladders only add amount and catalog #'s to chosen ladder's merged_catalog_numbers list
         total_amount += obj.amount
         lot_numbers.append(obj.lot_number)
         obj.delete()
