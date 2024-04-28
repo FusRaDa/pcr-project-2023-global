@@ -106,4 +106,12 @@ urlpatterns = [
   path('merge-tube/<int:pk>', inventory_views.merge_tube, name='merge_tube'),
   path('merge-reagent/<int:pk>', inventory_views.merge_reagent, name='merge_reagent'),
   path('merge-control/<int:pk>', inventory_views.merge_control, name='merge_control'),
+
+  path('remove-ladder-lot-number/<int:pk>/<str:command>/', inventory_views.remove_ladder_lot_number, name='remove_ladder_lot_number'),
+  path('remove-dye-lot-number/<int:pk>/<str:command>/', inventory_views.remove_dye_lot_number, name='remove_dye_lot_number'),
+  path('remove-plate-lot-number/<int:pk>/<str:command>/', inventory_views.remove_plate_lot_number, name='remove_plate_lot_number'),
+  path('remove-gel-lot-number/<int:pk>/<str:command>/', inventory_views.remove_gel_lot_number, name='remove_gel_lot_number'),
+  path('remove-tube-lot-number/<int:pk>/<str:command>/', inventory_views.remove_tube_lot_number, name='remove_tube_lot_number'),
+  path('remove-reagent-lot-number/<int:pk>/<str:command>/', inventory_views.remove_reagent_lot_number, name='remove_reagent_lot_number'), 
+  path('remove-control-lot-number/<int:pk>/<str:command>/', inventory_views.remove_control_lot_number, name='remove_control_lot_number')
 ]

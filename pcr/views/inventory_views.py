@@ -1107,16 +1107,25 @@ def merge_control(request, pk):
 
 
 @login_required(login_url='login')
-def remove_ladder_last_lot_number(request, pk):
+def remove_ladder_lot_number(request, pk, command):
   try:
     ladder = Ladder.objects.get(user=request.user, pk=pk)
 
     if not len(ladder.merged_lot_numbers) > 0:
       messages.error(request, "There is no lot number to remove.")
       return redirect('edit_ladder', ladder.pk)
+    
+    if command == 'first':
+      ladder.merged_lot_numbers.pop(0)
+      ladder.save()
+    
+    if command == 'last':
+      ladder.merged_lot_numbers.pop()
+      ladder.save()
 
-    ladder.merged_lot_numbers.pop()
-    ladder.save()
+    if command == 'clear':
+      ladder.merged_lot_numbers.clear()
+      ladder.save()
     
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
@@ -1126,7 +1135,7 @@ def remove_ladder_last_lot_number(request, pk):
 
 
 @login_required(login_url='login')
-def remove_dye_last_lot_number(request, pk):
+def remove_dye_lot_number(request, pk, command):
   try:
     dye = Dye.objects.get(user=request.user, pk=pk)
 
@@ -1134,8 +1143,17 @@ def remove_dye_last_lot_number(request, pk):
       messages.error(request, "There is no lot number to remove.")
       return redirect('edit_dye', dye.pk)
 
-    dye.merged_lot_numbers.pop()
-    dye.save()
+    if command == 'first':
+      dye.merged_lot_numbers.pop(0)
+      dye.save()
+    
+    if command == 'last':
+      dye.merged_lot_numbers.pop()
+      dye.save()
+
+    if command == 'clear':
+      dye.merged_lot_numbers.clear()
+      dye.save()
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
@@ -1145,7 +1163,7 @@ def remove_dye_last_lot_number(request, pk):
 
 
 @login_required(login_url='login')
-def remove_plate_last_lot_number(request, pk):
+def remove_plate_lot_number(request, pk, command):
   try:
     plate = Plate.objects.get(user=request.user, pk=pk)
 
@@ -1153,8 +1171,17 @@ def remove_plate_last_lot_number(request, pk):
       messages.error(request, "There is no lot number to remove.")
       return redirect('edit_plate', plate.pk)
 
-    plate.merged_lot_numbers.pop()
-    plate.save()
+    if command == 'first':
+      plate.merged_lot_numbers.pop(0)
+      plate.save()
+    
+    if command == 'last':
+      plate.merged_lot_numbers.pop()
+      plate.save()
+
+    if command == 'clear':
+      plate.merged_lot_numbers.clear()
+      plate.save()
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
@@ -1164,7 +1191,7 @@ def remove_plate_last_lot_number(request, pk):
 
 
 @login_required(login_url='login')
-def remove_gel_last_lot_number(request, pk):
+def remove_gel_lot_number(request, pk, command):
   try:
     gel = Gel.objects.get(user=request.user, pk=pk)
 
@@ -1172,8 +1199,17 @@ def remove_gel_last_lot_number(request, pk):
       messages.error(request, "There is no lot number to remove.")
       return redirect('edit_gel', gel.pk)
 
-    gel.merged_lot_numbers.pop()
-    gel.save()
+    if command == 'first':
+      gel.merged_lot_numbers.pop(0)
+      gel.save()
+    
+    if command == 'last':
+      gel.merged_lot_numbers.pop()
+      gel.save()
+
+    if command == 'clear':
+      gel.merged_lot_numbers.clear()
+      gel.save()
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
@@ -1183,7 +1219,7 @@ def remove_gel_last_lot_number(request, pk):
 
 
 @login_required(login_url='login')
-def remove_tube_last_lot_number(request, pk):
+def remove_tube_lot_number(request, pk, command):
   try:
     tube = Tube.objects.get(user=request.user, pk=pk)
 
@@ -1191,8 +1227,17 @@ def remove_tube_last_lot_number(request, pk):
       messages.error(request, "There is no lot number to remove.")
       return redirect('edit_tube', tube.pk)
 
-    tube.merged_lot_numbers.pop()
-    tube.save()
+    if command == 'first':
+      tube.merged_lot_numbers.pop(0)
+      tube.save()
+    
+    if command == 'last':
+      tube.merged_lot_numbers.pop()
+      tube.save()
+
+    if command == 'clear':
+      tube.merged_lot_numbers.clear()
+      tube.save()
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
@@ -1202,7 +1247,7 @@ def remove_tube_last_lot_number(request, pk):
 
 
 @login_required(login_url='login')
-def remove_reagent_last_lot_number(request, pk):
+def remove_reagent_lot_number(request, pk, command):
   try:
     reagent = Reagent.objects.get(user=request.user, pk=pk)
 
@@ -1210,8 +1255,17 @@ def remove_reagent_last_lot_number(request, pk):
       messages.error(request, "There is no lot number to remove.")
       return redirect('edit_reagent', reagent.pk)
 
-    reagent.merged_lot_numbers.pop()
-    reagent.save()
+    if command == 'first':
+      reagent.merged_lot_numbers.pop(0)
+      reagent.save()
+    
+    if command == 'last':
+      reagent.merged_lot_numbers.pop()
+      reagent.save()
+
+    if command == 'clear':
+      reagent.merged_lot_numbers.clear()
+      reagent.save()
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
@@ -1221,7 +1275,7 @@ def remove_reagent_last_lot_number(request, pk):
 
 
 @login_required(login_url='login')
-def remove_control_last_lot_number(request, pk):
+def remove_control_lot_number(request, pk, command):
   try:
     control = Control.objects.get(user=request.user, pk=pk)
 
@@ -1229,8 +1283,17 @@ def remove_control_last_lot_number(request, pk):
       messages.error(request, "There is no lot number to remove.")
       return redirect('edit_control', control.pk)
 
-    control.merged_lot_numbers.pop()
-    control.save()
+    if command == 'first':
+      control.merged_lot_numbers.pop(0)
+      control.save()
+    
+    if command == 'last':
+      control.merged_lot_numbers.pop()
+      control.save()
+
+    if command == 'clear':
+      control.merged_lot_numbers.clear()
+      control.save()
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")

@@ -16,6 +16,33 @@
     {% csrf_token %}
     <div class="row justify-content-center mb-2">
 
+      {% if plate.merged_lot_numbers|length > 0 %}
+      <div class="col-sm-3 form-width-18">
+        <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="You have merged this item with the following lot numbers.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
+          <label class="form-label">Merged Lot Numbers</label>
+          <ul class="list-group">
+            <a href="#" class="list-group-item list-group-item-danger" aria-current="true">
+              <i class="fa-solid fa-arrow-down"></i> Remove First Lot# <i class="fa-solid fa-arrow-down"></i>
+            </a>
+            
+            {% for lot in plate.merged_lot_numbers %}
+            <li class="list-group-item">{{lot}}</li>
+            {% endfor %}
+
+            <a href="#" class="list-group-item list-group-item-danger" aria-current="true">
+              <i class="fa-solid fa-arrow-up"></i> Remove Last Lot# <i class="fa-solid fa-arrow-up"></i>
+            </a>
+          </ul>
+
+          <button type="button" class="btn btn-sm btn-danger mt-2">Remove All Lot#'s</button>
+
+        </div>
+      </div>
+      {% endif %}
+
       <div class="col-sm-3 form-width-18">
         <div class="text-center mt-3">
           <label class="form-label">Name</label>
