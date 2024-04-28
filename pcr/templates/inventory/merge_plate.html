@@ -59,7 +59,7 @@
       
             <tbody>
               {% for plate in plates %}
-                <tr class="link-row {{plates.color}} {% if plate.is_expired %} table-danger {% endif %} {% if plate.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.pk %}">
+                <tr class="link-row {% if plate.is_expired %} table-danger {% endif %} {% if plate.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.pk %}">
                   <td>{{plate.exp_date}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
                   <td>{{plate.last_updated}}</td>
                   <td>{% if plate.process_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{plate.name}}</td>

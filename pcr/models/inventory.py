@@ -54,7 +54,7 @@ class Ladder(models.Model):
       return False
 
   def __str__(self):
-    return self.name
+    return f"{self.name}-Lot#:{self.lot_number}"
   
 
 class Dye(models.Model):
@@ -92,7 +92,7 @@ class Dye(models.Model):
       return False
 
   def __str__(self):
-    return self.name
+    return f"{self.name}-Lot#:{self.lot_number}"
 
 
 class Plate(models.Model):

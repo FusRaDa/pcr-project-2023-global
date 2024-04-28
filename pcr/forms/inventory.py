@@ -358,6 +358,14 @@ class MergeItemsForm(forms.Form):
   def clean(self):
     cleaned_data = super().clean()
     confirm = cleaned_data.get('confirm')
+    mergeable_items = cleaned_data.get('mergeable_items')
+
+    for item in mergeable_items:
+      if item.is_expired:
+        raise ValidationError(
+          message=f"{item} is expired."
+        )
+      
     if confirm != self.value:
       raise ValidationError(
         message="Invalid value entered, please try again."

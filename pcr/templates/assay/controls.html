@@ -70,7 +70,7 @@
             <td>{% if control.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{control.name}}</td>
             <td>{{control.brand}}</td>
             <td>{{control.catalog_number}}</td>
-            <td>{{control.lot_number}}</td>
+            <td>{% if control.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{control.lot_number}}</td>
             <td>{{control.amount}}</td>
 
             <td>

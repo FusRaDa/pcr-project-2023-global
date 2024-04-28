@@ -1,0 +1,166 @@
+{% extends "base.html" %} 
+
+{% load static %}
+                                                                                                                                                                                                                              
+{% block title %} Merging Control {% endblock %} 
+
+{% block content %}
+<div class="container mt-3">
+
+  <div class="row justify-content-center mb-3">
+    <h3 class="text-center">Merge Control to {{control}}</h3>
+    <p class="text-center">Select the controls you wish to all merge to {{control}}.</p>
+  </div>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="row">
+
+      <div class="col-sm-2">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Mergeable Controls</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  {% for check in form.mergeable_items %}
+                    {{check}}
+                  {% endfor %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="col-sm-10">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Exp. Date</th>
+                <th scope="col">Last Updated</th>
+                <th scope="col">Name</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Catalog #</th>
+                <th scope="col">Lot #</th>
+                <th scope="col">Amount Stored (μL)</th>
+                <th scope="col">Location(s)</th>
+              </tr>
+            </thead>
+      
+            <tbody>
+              {% for control in controls %}
+                <tr class="link-row {% if control.is_expired %} table-danger {% endif %} {% if control.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_control' control.pk %}">
+                  <td>{{control.exp_date}} {% if control.is_expired %} (EXPIRED) {% endif %} {% if control.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+                  <td>{{control.last_updated}}</td>
+                  <td>{% if control.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{control.name}}</td>
+                  <td>{{control.brand}}</td>
+                  <td>{{control.catalog_number}}</td>
+                  <td>{{control.lot_number}}</td>
+                  <td>{{control.amount}}</td>
+                  
+                  <td>
+                    {% for location in control.location.all %}
+                      <span class="badge text-bg-info">
+                        {{location}}
+                      </span>
+                    {% endfor %}
+                  </td>
+      
+                </tr>
+              {% endfor %}
+            </tbody>
+      
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    {% if form.errors %}
+    <div class="alert alert-danger text-center" role="alert">
+      {% for key,value in form.errors.items %} 
+        {{ value|escape }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="text-center mt-2">
+      <a class="btn btn-secondary" href="{% url 'mergeable_items' %}">Cancel</a>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#merge-modal">
+        Merge To Ladder
+      </button>
+    </div>
+
+    <div class="modal fade" id="merge-modal" tabindex="-1" role="dialog" aria-labelledby="merge-modalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Merging Selected Control(s) To {{control}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            
+            <div class="container-sm">
+  
+              <div class="row justify-content-center">
+                <h5 class="text-center">Are you sure?</h5>
+              </div>
+
+              <div class="col">
+                <ol>
+                  <li>The amount of each selected control(s) will be added to {{control}}</li>
+                  <li>The lot numbers of each selected control(s) will be added to {{control}}</li>
+                  <li>Selected control(s) will be deleted</li>
+                </ol>
+              </div>
+              
+              <div class="row justify-content-center">
+                <div class="col-sm-8">
+    
+                  <div class="text-center mx-auto">
+                    <label class="form-label">Enter: "{{control.lot_number}}" &amp; Confirm</label>
+                    {{form.confirm}}
+                  </div>
+
+                  {% if form.errors %}
+                  <div class="row text-center mt-2">
+                    {% for key,value in form.errors.items %} 
+                      {{ value|escape }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+            
+                  <div class="text-center mt-2">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" name="merge">Confirm</button>
+                  </div>
+               
+                </div>
+              </div>
+  
+            </div>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".link-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>
+{% endblock %}

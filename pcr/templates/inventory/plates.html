@@ -84,7 +84,7 @@
             <td>{% if plate.process_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{plate.name}}</td>
             <td>{{plate.brand}}</td>
             <td>{{plate.catalog_number}}</td>
-            <td>{{plate.lot_number}}</td>
+            <td>{% if plate.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{plate.lot_number}}</td>
             <td>{{plate.size}}</td>
             <td>{{plate.type}}</td>
             <td>{{plate.amount}}</td>

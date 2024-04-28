@@ -71,7 +71,7 @@
             <td>{% if dye.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{dye.name}}</td>
             <td>{{dye.brand}}</td>
             <td>{{dye.catalog_number}}</td>
-            <td>{{dye.lot_number}}</td>
+            <td>{% if dye.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{dye.lot_number}}</td>
             <td>{{dye.amount}}</td>
             
             <td>

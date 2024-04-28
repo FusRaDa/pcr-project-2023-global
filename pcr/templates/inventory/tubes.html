@@ -70,7 +70,7 @@
             <td>{% if tube.extractionprotocol_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{tube.name}}</td>
             <td>{{tube.brand}}</td>
             <td>{{tube.catalog_number}}</td>
-            <td>{{tube.lot_number}}</td>
+            <td>{% if tube.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{tube.lot_number}}</td>
             <td>{{tube.amount}}</td>
 
             <td>

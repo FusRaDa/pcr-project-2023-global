@@ -77,7 +77,7 @@
             <td>{% if gel.process_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{gel.name}}</td>
             <td>{{gel.brand}}</td>
             <td>{{gel.catalog_number}}</td>
-            <td>{{gel.lot_number}}</td>
+            <td>{% if gel.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{gel.lot_number}}</td>
             <td>{{gel.size}}</td>
             <td>{{gel.amount}}</td>
             
