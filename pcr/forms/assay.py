@@ -83,7 +83,7 @@ class ControlForm(ModelForm):
     
   class Meta:
     model = Control
-    exclude = ['user']
+    exclude = ['user', 'merged_lot_numbers']
  
 
 class AssayForm(ModelForm):

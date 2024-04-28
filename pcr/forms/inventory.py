@@ -73,7 +73,7 @@ class LadderForm(ModelForm):
 
   class Meta:
     model = Ladder
-    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_catalog_numbers']
+    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_lot_numbers']
 
 
 class GelForm(ModelForm):
@@ -113,7 +113,7 @@ class GelForm(ModelForm):
 
   class Meta:
     model = Gel
-    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_catalog_numbers']
+    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_lot_numbers']
 
 
 class DyeForm(ModelForm):
@@ -152,7 +152,7 @@ class DyeForm(ModelForm):
 
   class Meta:
     model = Dye
-    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_catalog_numbers']
+    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_lot_numbers']
 
 
 class PlateForm(ModelForm):
@@ -193,7 +193,7 @@ class PlateForm(ModelForm):
 
   class Meta:
     model = Plate
-    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_catalog_numbers']
+    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_lot_numbers']
 
 
 class TubeForm(ModelForm):
@@ -232,7 +232,7 @@ class TubeForm(ModelForm):
 
   class Meta:
     model = Tube
-    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_catalog_numbers']
+    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_lot_numbers']
 
 
 class ReagentForm(ModelForm):
@@ -335,7 +335,7 @@ class ReagentForm(ModelForm):
   
   class Meta:
     model = Reagent
-    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_catalog_numbers']
+    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_lot_numbers']
 
 
 # **MERGEABLE FORMS** #

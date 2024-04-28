@@ -855,7 +855,7 @@ def merge_ladder(request, pk):
           obj.delete()
         
         ladder.amount += total_amount
-        ladder.merged_catalog_numbers.extend(lot_numbers)
+        ladder.merged_lot_numbers.extend(lot_numbers)
         ladder.save()
 
         return redirect('mergeable_items')
@@ -894,7 +894,7 @@ def merge_dye(request, pk):
           obj.delete()
         
         dye.amount += total_amount
-        dye.merged_catalog_numbers.extend(lot_numbers)
+        dye.merged_lot_numbers.extend(lot_numbers)
         dye.save()
 
         return redirect('mergeable_items')
@@ -925,18 +925,16 @@ def merge_plate(request, pk):
       if form.is_valid():
         mergeable_items = form.cleaned_data['mergeable_items']
 
-        print(mergeable_items)
+        lot_numbers = []
+        total_amount = 0
+        for obj in mergeable_items:
+          total_amount += obj.amount
+          lot_numbers.append(obj.lot_number)
+          obj.delete()
         
-        # lot_numbers = []
-        # total_amount = 0
-        # for obj in mergeable_items:
-        #   total_amount += obj.amount
-        #   lot_numbers.append(obj.lot_number)
-        #   obj.delete()
-        
-        # plate.amount += total_amount
-        # plate.merged_catalog_numbers.extend(lot_numbers)
-        # plate.save()
+        plate.amount += total_amount
+        plate.merged_lot_numbers.extend(lot_numbers)
+        plate.save()
 
         return redirect('mergeable_items')
       else:
@@ -974,7 +972,7 @@ def merge_gel(request, pk):
           obj.delete()
         
         gel.amount += total_amount
-        gel.merged_catalog_numbers.extend(lot_numbers)
+        gel.merged_lot_numbers.extend(lot_numbers)
         gel.save()
 
         return redirect('mergeable_items')
@@ -1013,7 +1011,7 @@ def merge_tube(request, pk):
           obj.delete()
         
         tube.amount += total_amount
-        tube.merged_catalog_numbers.extend(lot_numbers)
+        tube.merged_lot_numbers.extend(lot_numbers)
         tube.save()
 
         return redirect('mergeable_items')
@@ -1053,7 +1051,7 @@ def merge_reagent(request, pk):
         
         reagent.volume = reagent.volume_in_microliters + total_amount
         reagent.unit_volume = Reagent.VolumeUnits.MICROLITER
-        reagent.merged_catalog_numbers.extend(lot_numbers)
+        reagent.merged_lot_numbers.extend(lot_numbers)
         reagent.save()
 
         return redirect('mergeable_items')
@@ -1092,7 +1090,7 @@ def merge_control(request, pk):
           obj.delete()
         
         control.amount += total_amount
-        control.merged_catalog_numbers.extend(lot_numbers)
+        control.merged_lot_numbers.extend(lot_numbers)
         control.save()
 
         return redirect('mergeable_items')

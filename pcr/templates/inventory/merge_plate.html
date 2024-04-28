@@ -107,7 +107,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Merging Ladder</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">Merging Selected Plate(s) To {{plate}}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -116,6 +116,14 @@
   
               <div class="row justify-content-center">
                 <h5 class="text-center">Are you sure?</h5>
+              </div>
+
+              <div class="col">
+                <ol>
+                  <li>The amount of each selected plate(s) will be added to {{plate}}</li>
+                  <li>The lot numbers of each selected plate(s) will be added to {{plate}}</li>
+                  <li>Selected plate(s) will be deleted</li>
+                </ol>
               </div>
               
               <div class="row justify-content-center">

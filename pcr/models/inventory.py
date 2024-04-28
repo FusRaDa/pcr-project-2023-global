@@ -27,7 +27,7 @@ class Ladder(models.Model):
   lot_number = models.CharField(blank=False, max_length=100)
 
   catalog_number = models.CharField(blank=False, max_length=100)
-  merged_catalog_numbers = models.JSONField(default=list)
+  merged_lot_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
@@ -65,7 +65,7 @@ class Dye(models.Model):
   lot_number = models.CharField(blank=False, max_length=100)
 
   catalog_number = models.CharField(blank=False, max_length=100)
-  merged_catalog_numbers = models.JSONField(default=list)
+  merged_lot_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
@@ -103,7 +103,7 @@ class Plate(models.Model):
   lot_number = models.CharField(blank=False, max_length=100)
 
   catalog_number = models.CharField(blank=False, max_length=100)
-  merged_catalog_numbers = models.JSONField(default=list)
+  merged_lot_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
@@ -155,7 +155,7 @@ class Gel(models.Model):
   lot_number = models.CharField(blank=False, max_length=100)
 
   catalog_number = models.CharField(blank=False, max_length=100)
-  merged_catalog_numbers = models.JSONField(default=list)
+  merged_lot_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
@@ -200,7 +200,7 @@ class Tube(models.Model):
   lot_number = models.CharField(blank=False, max_length=100)
 
   catalog_number = models.CharField(blank=False, max_length=100)
-  merged_catalog_numbers = models.JSONField(default=list)
+  merged_lot_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
@@ -262,7 +262,7 @@ class Reagent(models.Model):
   lot_number = models.CharField(blank=False, max_length=100)
 
   catalog_number = models.CharField(blank=False, max_length=100)
-  merged_catalog_numbers = models.JSONField(default=list)
+  merged_lot_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
