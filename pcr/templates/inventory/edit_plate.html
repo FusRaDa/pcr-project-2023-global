@@ -24,21 +24,10 @@
           </span>
           <label class="form-label">Merged Lot Numbers</label>
           <ul class="list-group">
-            <a href="#" class="list-group-item list-group-item-danger" aria-current="true">
-              <i class="fa-solid fa-arrow-down"></i> Remove First Lot# <i class="fa-solid fa-arrow-down"></i>
-            </a>
-            
             {% for lot in plate.merged_lot_numbers %}
             <li class="list-group-item">{{lot}}</li>
             {% endfor %}
-
-            <a href="#" class="list-group-item list-group-item-danger" aria-current="true">
-              <i class="fa-solid fa-arrow-up"></i> Remove Last Lot# <i class="fa-solid fa-arrow-up"></i>
-            </a>
           </ul>
-
-          <button type="button" class="btn btn-sm btn-danger mt-2">Remove All Lot#'s</button>
-
         </div>
       </div>
       {% endif %}
