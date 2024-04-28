@@ -345,13 +345,14 @@ class MergeItemsForm(forms.Form):
   mergeable_items = forms.ModelMultipleChoiceField(
     queryset=None,
     widget=forms.CheckboxSelectMultiple,
-    required=True)
+    required=True,
+    error_messages={'required': 'Please select at least one item to merge.'})
   
   def __init__(self, *args, **kwargs):
     self.value = kwargs.pop('value')
-    self.merging = kwargs.pop('merging')
+    self.mergeable_items = kwargs.pop('mergeable_items')
     super().__init__(*args, **kwargs) 
-    self.fields['mergeable_items'].queryset = self.merging
+    self.fields['mergeable_items'].queryset = self.mergeable_items
     self.fields['confirm'].widget.attrs['class'] = 'form-control'
 
   def clean(self):

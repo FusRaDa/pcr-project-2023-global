@@ -836,7 +836,7 @@ def merge_ladder(request, pk):
   try:
     ladder = Ladder.objects.get(user=request.user, pk=pk)
 
-    ladders = Ladder.objects.filter(user=request.user, catalog_number=ladder.catalog_number).exclude(pk__in=ladder)
+    ladders = Ladder.objects.filter(user=request.user, catalog_number=ladder.catalog_number).exclude(pk=ladder.pk)
     if not ladders.count() > 0:
       messages.error(request, "There is no ladder to merge.")
       return redirect('inventory_report')
@@ -858,11 +858,15 @@ def merge_ladder(request, pk):
         ladder.merged_catalog_numbers.extend(lot_numbers)
         ladder.save()
 
+        return redirect('mergeable_items')
+      else:
+        print(form.errors)
+
   except ObjectDoesNotExist:
     messages.error(request, "There is no ladder to merge.")
     return redirect('inventory_report')
   
-  context = {}
+  context = {'ladder': ladder, 'form': form}
   return render(request, 'inventory/merge_ladder.html', context)
 
 
@@ -871,7 +875,7 @@ def merge_dye(request, pk):
   try:
     dye = Dye.objects.get(user=request.user, pk=pk)
 
-    dyes = Dye.objects.filter(user=request.user, catalog_number=dye.catalog_number).exclude(pk__in=dye)
+    dyes = Dye.objects.filter(user=request.user, catalog_number=dye.catalog_number).exclude(pk=dye.pk)
     if not dyes.count() > 0:
       messages.error(request, "There is no dye to merge.")
       return redirect('inventory_report')
@@ -893,6 +897,10 @@ def merge_dye(request, pk):
         dye.merged_catalog_numbers.extend(lot_numbers)
         dye.save()
 
+        return redirect('mergeable_items')
+      else:
+        print(form.errors)
+
   except ObjectDoesNotExist:
     messages.error(request, "There is no dye to merge.")
     return redirect('inventory_report')
@@ -906,7 +914,7 @@ def merge_plate(request, pk):
   try:
     plate = Plate.objects.get(user=request.user, pk=pk)
 
-    plates = Plate.objects.filter(user=request.user, catalog_number=plate.catalog_number).exclude(pk__in=plate)
+    plates = Plate.objects.filter(user=request.user, catalog_number=plate.catalog_number).exclude(pk=plate.pk)
     if not plates.count() > 0:
       messages.error(request, "There is no plate to merge.")
       return redirect('inventory_report')
@@ -917,22 +925,28 @@ def merge_plate(request, pk):
       if form.is_valid():
         mergeable_items = form.cleaned_data['mergeable_items']
 
-        lot_numbers = []
-        total_amount = 0
-        for obj in mergeable_items:
-          total_amount += obj.amount
-          lot_numbers.append(obj.lot_number)
-          obj.delete()
+        print(mergeable_items)
         
-        plate.amount += total_amount
-        plate.merged_catalog_numbers.extend(lot_numbers)
-        plate.save()
+        # lot_numbers = []
+        # total_amount = 0
+        # for obj in mergeable_items:
+        #   total_amount += obj.amount
+        #   lot_numbers.append(obj.lot_number)
+        #   obj.delete()
+        
+        # plate.amount += total_amount
+        # plate.merged_catalog_numbers.extend(lot_numbers)
+        # plate.save()
+
+        return redirect('mergeable_items')
+      else:
+        print(form.errors)
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no plate to merge.")
     return redirect('inventory_report')
   
-  context = {}
+  context = {'form': form, 'plate': plate, 'plates': plates}
   return render(request, 'inventory/merge_plate.html', context)
 
 
@@ -941,7 +955,7 @@ def merge_gel(request, pk):
   try:
     gel = Gel.objects.get(user=request.user, pk=pk)
 
-    gels = Gel.objects.filter(user=request.user, catalog_number=gel.catalog_number).exclude(pk__in=gel)
+    gels = Gel.objects.filter(user=request.user, catalog_number=gel.catalog_number).exclude(pk=gel.pk)
     if not gels.count() > 0:
       messages.error(request, "There is no gel to merge.")
       return redirect('inventory_report')
@@ -963,6 +977,10 @@ def merge_gel(request, pk):
         gel.merged_catalog_numbers.extend(lot_numbers)
         gel.save()
 
+        return redirect('mergeable_items')
+      else:
+        print(form.errors)
+
   except ObjectDoesNotExist:
     messages.error(request, "There is no gel to merge.")
     return redirect('inventory_report')
@@ -976,7 +994,7 @@ def merge_tube(request, pk):
   try:
     tube = Tube.objects.get(user=request.user, pk=pk)
 
-    tubes = Tube.objects.filter(user=request.user, catalog_number=tube.catalog_number).exclude(pk__in=tube)
+    tubes = Tube.objects.filter(user=request.user, catalog_number=tube.catalog_number).exclude(pk=tube.pk)
     if not tubes.count > 0:
       messages.error(request, "There is no tube to merge.")
       return redirect('inventory_report')
@@ -998,6 +1016,10 @@ def merge_tube(request, pk):
         tube.merged_catalog_numbers.extend(lot_numbers)
         tube.save()
 
+        return redirect('mergeable_items')
+      else:
+        print(form.errors)
+
   except ObjectDoesNotExist:
     messages.error(request, "There is no gel to merge.")
     return redirect('inventory_report')
@@ -1011,7 +1033,7 @@ def merge_reagent(request, pk):
   try:
     reagent = Reagent.objects.get(user=request.user, pk=pk)
 
-    reagents = Reagent.objects.filter(user=request.user, catalog_number=reagent.catalog_number).exclude(pk__in=reagent)
+    reagents = Reagent.objects.filter(user=request.user, catalog_number=reagent.catalog_number).exclude(pk=reagent.pk)
     if not reagents.count() > 0:
       messages.error(request, "There is no reagent to merge.")
       return redirect('inventory_report')
@@ -1034,6 +1056,10 @@ def merge_reagent(request, pk):
         reagent.merged_catalog_numbers.extend(lot_numbers)
         reagent.save()
 
+        return redirect('mergeable_items')
+      else:
+        print(form.errors)
+
   except ObjectDoesNotExist:
     messages.error(request, "There is no reagent to merge.")
     return redirect('inventory_report')
@@ -1047,25 +1073,31 @@ def merge_control(request, pk):
   try:
     control = Control.objects.get(user=request.user, pk=pk)
 
-    controls = Control.objects.filter(user=request.user, catalog_number=control.catalog_number).exclude(pk__in=control)
+    controls = Control.objects.filter(user=request.user, catalog_number=control.catalog_number).exclude(pk=control.pk)
     if not controls.count() > 0:
       messages.error(request, "There is no control to merge.")
       return redirect('inventory_report')
     
     form = MergeItemsForm(value=control.lot_number, mergeable_items=controls)
     if 'merge' in request.POST:
-      mergeable_items = form.cleaned_data['mergeable_items']
+      form = MergeItemsForm(request.POST, value=control.lot_number, mergeable_items=controls)
+      if form.is_valid():
+        mergeable_items = form.cleaned_data['mergeable_items']
 
-      lot_numbers = []
-      total_amount = 0
-      for obj in mergeable_items:
-        total_amount += obj.amount
-        lot_numbers.append(obj.lot_number)
-        obj.delete()
-      
-      control.amount += total_amount
-      control.merged_catalog_numbers.extend(lot_numbers)
-      control.save()
+        lot_numbers = []
+        total_amount = 0
+        for obj in mergeable_items:
+          total_amount += obj.amount
+          lot_numbers.append(obj.lot_number)
+          obj.delete()
+        
+        control.amount += total_amount
+        control.merged_catalog_numbers.extend(lot_numbers)
+        control.save()
+
+        return redirect('mergeable_items')
+      else:
+        print(form.errors)
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no control to merge.")

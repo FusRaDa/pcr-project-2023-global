@@ -2,7 +2,7 @@
 
 {% load static %}
                                                                                                                                                                                                                               
-{% block title %} Add Gel {% endblock %} 
+{% block title %} Mergeable Items {% endblock %} 
 
 {% block content %}
 <div class="container mt-3">
@@ -24,7 +24,7 @@
           <th scope="col">Catalog #</th>
           <th scope="col">Lot #</th>
           <th scope="col">Amount Stored (µL)</th>
-          <th scope="col">Location</th>
+          <th scope="col">Location(s)</th>
         </tr>
       </thead>
 
@@ -70,7 +70,7 @@
           <th scope="col">Catalog #</th>
           <th scope="col">Lot #</th>
           <th scope="col">Amount Stored (µL)</th>
-          <th scope="col">Location</th>
+          <th scope="col">Location(s)</th>
         </tr>
       </thead>
 
@@ -118,7 +118,7 @@
           <th scope="col">Size</th>
           <th scope="col">Type</th>
           <th scope="col">Amount Stored</th>
-          <th scope="col">Location</th>
+          <th scope="col">Location(s)</th>
         </tr>
       </thead>
 
@@ -167,7 +167,7 @@
           <th scope="col">Lot #</th>
           <th scope="col">Wells</th>
           <th scope="col">Amount Stored</th>
-          <th scope="col">Location</th>
+          <th scope="col">Location(s)</th>
         </tr>
       </thead>
 
@@ -214,7 +214,7 @@
           <th scope="col">Catalog #</th>
           <th scope="col">Lot #</th>
           <th scope="col">Amount Stored</th>
-          <th scope="col">Location</th>
+          <th scope="col">Location(s)</th>
         </tr>
       </thead>
 
@@ -261,7 +261,7 @@
           <th scope="col">Lot #</th>
           <th scope="col">Volume</th>
           <th scope="col">Concentration</th>
-          <th scope="col">Location(s)</th>
+          <th scope="col">Location(s)(s)</th>
         </tr>
       </thead>
 
@@ -312,7 +312,7 @@
           <th scope="col">Catalog #</th>
           <th scope="col">Lot #</th>
           <th scope="col">Amount Stored (μL)</th>
-          <th scope="col">Location</th>
+          <th scope="col">Location(s)</th>
         </tr>
       </thead>
 
@@ -350,12 +350,6 @@
 <script>
   jQuery(document).ready(function($) {
     $(".link-row").click(function() {
-        window.location = $(this).data("href");
-    });
-  });
-
-  jQuery(document).ready(function($) {
-    $(".plate-row").click(function() {
         window.location = $(this).data("href");
     });
   });
