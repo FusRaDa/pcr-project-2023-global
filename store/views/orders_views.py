@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
 from django.forms import modelformset_factory, formset_factory
 
 from django.core.paginator import Paginator
@@ -12,9 +11,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.db.models import Q
 
-# use in production with postgresql https://docs.djangoproject.com/en/3.2/ref/contrib/postgres/search/#trigramsimilarity
-from django.contrib.postgres.search import TrigramSimilarity
-
 from ..custom.functions import generate_order_files, kit_to_inventory
 
 from users.models import User
@@ -22,7 +18,6 @@ from ..models.items import Kit
 from ..models.orders import Order, KitOrder
 from ..forms.orders import KitOrderForm
 from ..forms.general import SearchStoreForm, ItemLotNumberForm
-from pcr.models.inventory import Plate, Tube, Reagent
 
 
 @login_required(login_url='login')

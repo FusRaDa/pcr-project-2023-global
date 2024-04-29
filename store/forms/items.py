@@ -17,6 +17,7 @@ class TagForm(ModelForm):
     model = Tag
     fields = '__all__'
 
+
 class KitForm(ModelForm):
 
   brand = forms.ModelChoiceField(
