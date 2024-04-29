@@ -39,6 +39,8 @@ class Ladder(models.Model):
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
 
+  image = models.ImageField(null=True, blank=True, upload_to='ladders')
+
   @property
   def is_expired(self):
     if self.exp_date != None and (self.exp_date <= timezone.now().date()):

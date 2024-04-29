@@ -13,9 +13,16 @@
     <p class="text-center"><a href="{% url 'inventory_guide' %}" target="_blank" class="text-center">Inventory Guide</a></p>
   </div>
 
-  <form method="POST" action="">
+  <form method="POST" action="" enctype='multipart/form-data'>
     {% csrf_token %}
     <div class="row justify-content-center mb-2">
+
+      {% if ladder.image %}
+      <div class="col-sm-3 form-width-18">
+        <p class="text-center mt-3">Ladder Template</p>
+        <img src="{{ladder.image.url}}" class="img-fluid" alt="...">
+      </div>
+      {% endif %}
 
       <div class="col-sm-3 form-width-18">
         <div class="text-center mt-3">
@@ -31,6 +38,14 @@
         <div class="text-center mt-3">
           <label class="form-label">Lot Number</label>
           {{form.lot_number}}
+        </div>
+
+        <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Add an image of what your ladder is expected to look like.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
+          <label class="form-label">Upload Template</label>
+          {{form.image}}
         </div>
       </div>
 
@@ -124,11 +139,12 @@
 
   </form>
 
+  {% if ladder.assay_set.all %}
   <div class="row justify-content-center mt-3">
     <h4 class="text-center">Correlations</h4>
 
     <div class="col-sm-6">
-      {% if ladder.assay_set.all %}
+
       <div class="table-responsive">
         <table class="table table-bordered table-hover">
 
@@ -139,7 +155,7 @@
           </thead>
 
           <tbody>
-            {% for ladder in ladder.assay_set.all %}
+            {% for assay in ladder.assay_set.all %}
             <tr class="link-row" data-href="{% url 'edit_assay' assay.pk %}">
               <td>{{assay.name}}</td>
             </tr>
@@ -148,10 +164,10 @@
 
         </table>
       </div>
-      {% endif %}
 
     </div>
   </div>
+  {% endif %}
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

@@ -124,11 +124,11 @@
 
   </form>
 
+  {% if tube.extractionprotocol_set.all %}
   <div class="row justify-content-center mt-3">
     <h4 class="text-center">Correlations</h4>
 
     <div class="col-sm-6">
-      {% if tube.extractionprotocol_set.all %}
       <div class="table-responsive">
         <table class="table table-bordered table-hover">
 
@@ -148,10 +148,10 @@
 
         </table>
       </div>
-      {% endif %}
 
     </div>
   </div>
+  {% endif %}
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

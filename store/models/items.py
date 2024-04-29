@@ -65,6 +65,10 @@ class Kit(models.Model):
     except ValueError:
       return '/static/kits/default-kit.png'
     
+  @property
+  def display_description(self):
+    return self.description[:100] + "..."
+    
   def __str__(self):
     return f"{self.name}-{self.catalog_number}"
 

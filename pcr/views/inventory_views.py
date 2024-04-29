@@ -143,7 +143,7 @@ def edit_ladder(request, pk):
   del_form = DeletionForm(value=ladder.name)
 
   if 'update' in request.POST:
-    form = LadderForm(request.POST, user=request.user, instance=ladder)
+    form = LadderForm(request.POST, request.FILES, user=request.user, instance=ladder)
     if form.is_valid():
 
       amount = form.cleaned_data['amount']
