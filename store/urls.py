@@ -25,6 +25,9 @@ urlpatterns = [
   path('create-tube-store/', items_views.create_tube, name='create_tube_store'),
   path('edit-tube-store/<int:pk>/', items_views.edit_tube, name='edit_tube_store'),
 
+  path('create-control-store/', items_views.create_control, name='create_control_store'),
+  path('edit-control-store/<int:pk>/', items_views.edit_control, name='edit_control_store'),
+
   path('create-ladder-store/', items_views.create_ladder, name='create_ladder_store'),
   path('edit-ladder-store/<int:pk>/', items_views.edit_ladder, name='edit_ladder_store'),
 

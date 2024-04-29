@@ -3,7 +3,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 import re
 
-from ..models.items import Kit, StorePlate, StoreTube, StoreReagent, Tag, Review, StoreGel, StoreDye, StoreLadder
+from ..models.items import Kit, StorePlate, StoreTube, StoreReagent, Tag, Review, StoreGel, StoreDye, StoreLadder, StoreControl
 from ..models.affiliates import Brand
 
 
@@ -85,6 +85,20 @@ class StoreTubeForm(ModelForm):
 
   class Meta:
     model = StoreTube
+    exclude = ['kit']
+
+
+class StoreControlForm(ModelForm):
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['name'].widget.attrs['class'] = 'form-control'
+    self.fields['amount'].widget.attrs['class'] = 'form-control'
+
+    self.fields['amount'].widget.attrs['min'] = 0
+
+  class Meta:
+    model = StoreControl
     exclude = ['kit']
 
 

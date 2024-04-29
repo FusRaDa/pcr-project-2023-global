@@ -178,6 +178,33 @@
       <div class="d-flex flex-wrap justify-content-center" id="dye-forms">
       </div>
     </div>
+
+    <div class="col-sm-3 form-width-18 mb-2">
+      <div class="card">
+        <div class="card-header">
+          Control List
+        </div>
+        
+        <ul class="list-group list-group-flush">
+          {% for control in kit.storecontrol_set.all %}
+            {% include 'partials/kit_controls.html' %}
+          {% endfor %}
+          <button 
+            id="controls"
+            type="button" 
+            class="list-group-item list-group-item-action list-group-item-primary"
+            hx-get="{% url 'create_control_store' %}"
+            hx-target="#tube-forms"
+            hx-include="[name='pk']"
+            hx-swap="beforeend">
+            + Control
+          </button>
+        </ul>
+      </div>
+      
+      <div class="d-flex flex-wrap justify-content-center" id="tube-forms">
+      </div>
+    </div>
  
   </div>
 

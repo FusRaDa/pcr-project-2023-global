@@ -4,6 +4,7 @@ import csv
 from django.core.files.storage import default_storage
 
 from pcr.models.inventory import Tube, Plate, Reagent, Gel, Dye, Ladder
+from pcr.models.assay import Control
 
 
 def generate_random_file_name(length):
@@ -67,6 +68,16 @@ def kit_to_inventory(kit, user, lot_number):
       lot_number = lot_number,
       catalog_number = kit.catalog_number,
       amount = tube.amount,
+    )
+
+  for control in kit.storecontrol_set.all():
+    Control.objects.create(
+      user = user,
+      name = control.name,
+      brand = kit.brand,
+      lot_number = lot_number,
+      catalog_number = kit.catalog_number,
+      amount = control.amount,
     )
 
   for gel in kit.storegel_set.all():
