@@ -100,19 +100,31 @@
     <div class="row justify-content-center">
       <div class="text-center mt-2">
         <a class="btn btn-secondary" href="{% url 'gels' %}">Cancel</a>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">
+          Delete Gel
+        </button>
         <button type="submit" class="btn btn-primary" name="update">Update Gel</button>
       </div>
+
+      {% if gel.merged_lot_numbers|length > 0 %}
+      <div class="col-sm-3 form-width-18">
+        <span class="d-inline-block float-start mt-3" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="You have merged this item with the following lot numbers.">
+          <i class="fa-solid fa-circle-info"></i>
+        </span>
+        <div class="text-center mt-3">
+          <label class="form-label">Merged Lot Numbers</label>
+        </div>
+        <ul class="list-group">
+          {% for lot in gel.merged_lot_numbers %}
+          <li class="list-group-item">{{lot}}<a hx-confirm="Are you sure you want to remove lot# {{lot}} from {{gel}}? " hx-on::after-request="this.parentNode.remove()" class="btn btn-danger btn-sm float-end" hx-post="{% url 'remove_gel_lot_number' gel.pk lot %}" role="button"><i class="fa-regular fa-square-minus"></i></a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
     </div>
 
   </form>
-
-  <div class="row justify-content-center">
-    <div class="col d-flex justify-content-center">
-      <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Gel
-      </button>
-    </div>
-  </div>
 
   <div class="row justify-content-center mt-3">
     <h4 class="text-center">Correlations</h4>
