@@ -12,9 +12,15 @@
     <p class="text-center"><a href="{% url 'inventory_guide' %}" target="_blank" class="text-center">Inventory Guide</a></p>
   </div>
 
-  {% for message in messages %}
-  <h6 class="messages text-center">{{ message }}</h6>
-  {% endfor %}
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      <h6 class="text-center message">{{ message }}</h6>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 
   <form method="POST" action="">
     {% csrf_token %}
@@ -152,7 +158,9 @@
     {% if form.errors %}
     <div class="row text-center mt-2">
       {% for key,value in form.errors.items %} 
+      <div class="alert alert-danger" role="alert">
         {{ value|escape }}
+      </div>
       {% endfor %}
     </div>
     {% endif %}
@@ -265,7 +273,9 @@
                   {% if del_form.errors %}
                   <div class="row text-center mt-2">
                     {% for key,value in del_form.errors.items %} 
+                    <div class="alert alert-danger" role="alert">
                       {{ value|escape }}
+                    </div>
                     {% endfor %}
                   </div>
                   {% endif %}

@@ -12,13 +12,15 @@
     <p class="text-center"><a href="{% url 'extraction_guide' %}" target="_blank" class="text-center">Extraction Guide</a></p>
   </div>
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      <h6 class="text-center message">{{ message }}</h6>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+  {% endif %}
 
   <div class="table-responsive mt-3">
     <table class="table table-bordered">
@@ -111,7 +113,9 @@
       <div class="row text-center mt-2">
       {% for errors in formset.errors %}
         {% for error in errors.values %}
+        <div class="alert alert-danger" role="alert">
           {{error}}
+        </div>
         {%endfor%}
       {% endfor %}
       </div>
@@ -162,7 +166,9 @@
               {% if del_form.errors %}
               <div class="row text-center mt-2">
                 {% for key,value in del_form.errors.items %} 
+                <div class="alert alert-danger" role="alert">
                   {{ value|escape }}
+                </div>
                 {% endfor %}
               </div>
               {% endif %}
@@ -244,7 +250,9 @@
               {% if samplesform.errors %}
               <div class="row text-center mt-2">
                 {% for key,value in samplesform.errors.items %} 
+                <div class="alert alert-danger" role="alert">
                   {{ value|escape }}
+                </div>
                 {% endfor %}
               </div>
               {% endif %}

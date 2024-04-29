@@ -118,7 +118,9 @@
               {% if clear_batch_form.errors %}
               <div class="row text-center mt-2">
                 {% for key,value in clear_batch_form.errors.items %} 
+                <div class="alert alert-danger" role="alert">
                   {{ value|escape }}
+                </div>
                 {% endfor %}
               </div>
               {% endif %}
@@ -160,7 +162,9 @@
               {% if clear_process_form.errors %}
               <div class="row text-center mt-2">
                 {% for key,value in clear_process_form.errors.items %} 
+                <div class="alert alert-danger" role="alert">
                   {{ value|escape }}
+                </div>
                 {% endfor %}
               </div>
               {% endif %}

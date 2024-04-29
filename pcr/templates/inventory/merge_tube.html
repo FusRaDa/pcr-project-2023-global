@@ -87,7 +87,9 @@
     {% if form.errors %}
     <div class="alert alert-danger text-center" role="alert">
       {% for key,value in form.errors.items %} 
+      <div class="alert alert-danger" role="alert">
         {{ value|escape }}
+      </div>
       {% endfor %}
     </div>
     {% endif %}
@@ -133,7 +135,9 @@
                   {% if form.errors %}
                   <div class="row text-center mt-2">
                     {% for key,value in form.errors.items %} 
+                    <div class="alert alert-danger" role="alert">
                       {{ value|escape }}
+                    </div>
                     {% endfor %}
                   </div>
                   {% endif %}

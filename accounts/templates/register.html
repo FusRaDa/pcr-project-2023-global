@@ -4098,18 +4098,22 @@
                 {% if form.errors %}
                 <div class="row text-center mt-2">
                   {% for key,value in form.errors.items %} 
+                  <div class="alert alert-danger" role="alert">
                     {{ value|escape }}
+                  </div>
                   {% endfor %}
                 </div>
                 {% endif %}
         
-                {% for message in messages %}
-                <div class="row">
-                  <div class="col d-flex justify-content-center"> 
-                    <h5 class="messages">{{ message }}</h5>
+                {% if messages %}
+                <div class="row justify-content-center">
+                  {% for message in messages %}
+                  <div class="alert alert-info" role="alert">
+                    <h6 class="text-center message">{{ message }}</h6>
                   </div>
+                  {% endfor %}
                 </div>
-                {% endfor %}
+                {% endif %}
         
                 <div class="text-center mt-2"> 
                   <button class="btn btn-warning" type="submit">Register Account</button>

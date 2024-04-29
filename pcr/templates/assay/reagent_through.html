@@ -61,7 +61,9 @@
       <div class="row text-center mt-2">
       {% for errors in reagentformset.errors %}
         {% for error in errors.values %}
+        <div class="alert alert-danger" role="alert">
           {{error}}
+        </div>
         {%endfor%}
       {% endfor %}
       </div>

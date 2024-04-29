@@ -12,13 +12,15 @@
     <p class="text-center"><a href="{% url 'protocols_guide' %}" target="_blank" class="text-center">Protocols Guide</a></p>
   </div>
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      <h6 class="text-center message">{{ message }}</h6>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+  {% endif %}
 
   <div class="row">
     <h6 class="text-center">Extracting -> {{protocol.type}}</h6>

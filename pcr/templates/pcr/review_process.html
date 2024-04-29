@@ -12,13 +12,15 @@
     <p class="text-center"><a href="{% url 'pcr_guide' %}" target="_blank" class="text-center">PCR Guide</a></p>
   </div>
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      <h6 class="text-center message">{{ message }}</h6>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+  {% endif %}
 
   <div class="row mt-3">
 
@@ -251,7 +253,9 @@
         {% if form.errors %}
         <div class="row text-center mt-2">
           {% for key,value in form.errors.items %} 
+          <div class="alert alert-danger" role="alert">
             {{ value|escape }}
+          </div>
           {% endfor %}
         </div>
         {% endif %}
