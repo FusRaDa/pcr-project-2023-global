@@ -1113,18 +1113,18 @@ def remove_ladder_lot_number(request, pk, lot):
 
     if not len(ladder.merged_lot_numbers) > 0:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_ladder', ladder.pk)
+      return redirect('ladders')
     
     if lot in ladder.merged_lot_numbers:
       ladder.merged_lot_numbers.remove(lot)
       ladder.save()
     else:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_ladder', ladder.pk)
+      return redirect('ladders')
     
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
-    return redirect('edit_ladder', ladder.pk)
+    return redirect('ladders')
   
   return HttpResponse(status=200)
 
@@ -1136,18 +1136,18 @@ def remove_dye_lot_number(request, pk, lot):
 
     if not len(dye.merged_lot_numbers) > 0:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_dye', dye.pk)
+      return redirect('dyes')
 
     if lot in dye.merged_lot_numbers:
       dye.merged_lot_numbers.remove(lot)
       dye.save()
     else:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_dye', dye.pk)
+      return redirect('dyes')
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
-    return redirect('edit_dye', dye.pk)
+    return redirect('dyes')
   
   return HttpResponse(status=200)
 
@@ -1159,18 +1159,18 @@ def remove_plate_lot_number(request, pk, lot):
 
     if not len(plate.merged_lot_numbers) > 0:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_plate', plate.pk)
+      return redirect('plates')
 
     if lot in plate.merged_lot_numbers:
       plate.merged_lot_numbers.remove(lot)
       plate.save()
     else:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_plate', plate.pk)
+      return redirect('plates')
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
-    return redirect('edit_plate', plate.pk)
+    return redirect('plates')
   
   return HttpResponse(status=200)
 
@@ -1182,18 +1182,18 @@ def remove_gel_lot_number(request, pk, lot):
 
     if not len(gel.merged_lot_numbers) > 0:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_gel', gel.pk)
+      return redirect('gels')
 
     if lot in gel.merged_lot_numbers:
       gel.merged_lot_numbers.remove(lot)
       gel.save()
     else:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_gel', gel.pk)
+      return redirect('gels')
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
-    return redirect('edit_gel', gel.pk)
+    return redirect('gels')
   
   return HttpResponse(status=200)
 
@@ -1205,18 +1205,18 @@ def remove_tube_lot_number(request, pk, lot):
 
     if not len(tube.merged_lot_numbers) > 0:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_tube', tube.pk)
+      return redirect('tubes')
 
     if lot in tube.merged_lot_numbers:
       tube.merged_lot_numbers.remove(lot)
       tube.save()
     else:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_tube', tube.pk)
+      return redirect('tubes')
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
-    return redirect('edit_tube', tube.pk)
+    return redirect('tubes')
   
   return HttpResponse(status=200)
 
@@ -1228,18 +1228,18 @@ def remove_reagent_lot_number(request, pk, lot):
 
     if not len(reagent.merged_lot_numbers) > 0:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_reagent', reagent.pk)
+      return redirect('reagents')
 
     if lot in reagent.merged_lot_numbers:
       reagent.merged_lot_numbers.remove(lot)
       reagent.save()
     else:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_reagent', reagent.pk)
+      return redirect('reagents')
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
-    return redirect('edit_reagent', reagent.pk)
+    return redirect('reagents')
   
   return HttpResponse(status=200)
 
@@ -1251,18 +1251,18 @@ def remove_control_lot_number(request, pk, lot):
 
     if not len(control.merged_lot_numbers) > 0:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_control', control.pk)
+      return redirect('controls')
 
     if lot in control.merged_lot_numbers:
       control.merged_lot_numbers.remove(lot)
       control.save()
     else:
       messages.error(request, "There is no lot number to remove.")
-      return redirect('edit_control', control.pk)
+      return redirect('controls')
 
   except ObjectDoesNotExist:
     messages.error(request, "There is no lot number to remove.")
-    return redirect('edit_control', control.pk)
+    return redirect('controls')
   
   return HttpResponse(status=200)
 # **MERGEABLE VIEWS** #

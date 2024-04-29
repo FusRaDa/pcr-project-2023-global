@@ -18,17 +18,17 @@
 
       {% if plate.merged_lot_numbers|length > 0 %}
       <div class="col-sm-3 form-width-18">
+        <span class="d-inline-block float-start mt-3" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="You have merged this item with the following lot numbers.">
+          <i class="fa-solid fa-circle-info"></i>
+        </span>
         <div class="text-center mt-3">
-          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="You have merged this item with the following lot numbers.">
-            <i class="fa-solid fa-circle-info"></i>
-          </span>
           <label class="form-label">Merged Lot Numbers</label>
-          <ul class="list-group">
-            {% for lot in plate.merged_lot_numbers %}
-            <li class="list-group-item">{{lot}}</li>
-            {% endfor %}
-          </ul>
         </div>
+        <ul class="list-group">
+          {% for lot in plate.merged_lot_numbers %}
+          <li class="list-group-item">{{lot}}<a hx-confirm="Are you sure you want to remove lot# {{lot}} from {{plate}}? " hx-on::after-request="this.parentNode.remove()" class="btn btn-danger btn-sm float-end" hx-post="{% url 'remove_plate_lot_number' plate.pk lot %}" role="button"><i class="fa-regular fa-square-minus"></i></a></li>
+          {% endfor %}
+        </ul>
       </div>
       {% endif %}
 
