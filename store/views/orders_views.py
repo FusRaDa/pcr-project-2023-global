@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory, formset_factory
 
 from django.core.paginator import Paginator
-from datetime import datetime
 from django.utils import timezone
 
 from django.http import HttpResponse

@@ -8,6 +8,17 @@ from users.models import User
 from ..models.affiliates import Brand
 
 
+# **DEFAULT TAGS** #
+# - LADDERS
+# - DYES
+# - PLATES
+# - GELS
+# - TUBES
+# - REAGENTS
+# - CONTROLS
+# **DEFAULT TAGS** #
+
+
 class Tag(models.Model):
   name = models.CharField(blank=False, max_length=50, unique=True)
 

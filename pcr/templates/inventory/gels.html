@@ -22,11 +22,10 @@
   </div>
   {% endif %}
 
-  <div class="row mt-3">
-    <div class="col d-flex justify-content-center"> 
-      <a href="{% url 'create_gel' %}">
-        <button type="button" class="btn btn-primary mb-2">Add New Gel</button>
-      </a>
+  <div class="row mt-3 mb-3">
+    <div class="col d-flex justify-content-center gap-2"> 
+      <a class="btn btn-success" href="{% url 'store' %}?text_search=gel">Search Store</a>
+      <a href="{% url 'create_gel' %}" class="btn btn-primary">Add New Gel</a>
     </div>
   </div>
 
