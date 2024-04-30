@@ -1,0 +1,66 @@
+<script src="https://unpkg.com/htmx.org@1.9.7" integrity="sha384-EAzY246d6BpbWR7sQ8+WEm40J8c3dHFsqC58IgPlh4kMbRRI6P6WA+LA/qGAyAu8" crossorigin="anonymous"></script>
+
+<div class="container mt-3 border border-3 border-secondary h-100">
+
+  <h5 class="text-center">Reagents</h5>
+
+  <div class="text-center mb-1">
+    <a class="btn btn-primary btn-sm position-relative" href="{% url 'reagents' %}" role="button">Manage Reagents
+
+      {% if is_low and not is_expired %}
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        Low
+        <span class="visually-hidden">unread messages</span>
+      </span>
+      {% endif %}
+
+      {% if is_expired and not is_low %}
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        Exp
+        <span class="visually-hidden">unread messages</span>
+      </span>
+      {% endif %}
+
+      {% if is_low and is_expired %}
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        Low &amp; Exp
+        <span class="visually-hidden">unread messages</span>
+      </span>
+      {% endif %}
+      
+    </a>
+  </div>
+
+  <div class="table-responsive">
+
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Lot Number</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for reagent in reagents %}
+          <tr class="link-row {% if reagent.threshold_diff is not None and reagent.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_reagent' reagent.pk %}">
+            <td>{{reagent.name}}</td>
+            <td>{{reagent.volume}} {{reagent.unit_volume}}</td>
+            <td>{{reagent.lot_number}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+  </div>
+
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".link-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>

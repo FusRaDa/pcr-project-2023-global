@@ -39,7 +39,7 @@
     <nav class="navbar bg-body-tertiary navbar-expand-lg">
       <div class="container-fluid">
 
-        <a class="navbar-brand" href="{% url 'register' %}">
+        <a class="navbar-brand" href="{% url 'inventory_report' %}">
           <img src="{% static 'images/pcr-prep-logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
           PCRprep
         </a>
@@ -51,7 +51,7 @@
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
 
           <div class="offcanvas-header">
-            <a class="navbar-brand" href="{% url 'register' %}">
+            <a class="navbar-brand" href="{% url 'inventory_report' %}">
               <img src="{% static 'images/pcr-prep-logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
               PCRprep
             </a>
@@ -62,13 +62,13 @@
 
             <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
 
-              {% comment %} <li class="nav-item">
+             <li class="nav-item">
                 <a class="nav-link" href="{% url 'store' %}">Store</a>
               </li>
 
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'orders' %}">Orders</a>
-              </li> {% endcomment %}
+              </li>
 
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -156,7 +156,7 @@
     <nav class="navbar bg-body-tertiary navbar-expand-lg">
       <div class="container-fluid">
 
-        <a class="navbar-brand" href="{% url 'register' %}">
+        <a class="navbar-brand" href="{% url 'inventory_report' %}">
           <img src="{% static 'images/pcr-prep-logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
           PCRprep
         </a>
@@ -168,7 +168,7 @@
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
 
           <div class="offcanvas-header">
-            <a class="navbar-brand" href="{% url 'register' %}">
+            <a class="navbar-brand" href="{% url 'inventory_report' %}">
               <img src="{% static 'images/pcr-prep-logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
               PCRprep
             </a>
@@ -206,6 +206,10 @@
 
 
     <!--Footer-->
+    <div class="alert alert-primary text-center mt-3" role="alert">
+      We want the best experience for you! Report a bug or have any questions? Please contact us at <a href="mailto:pcrprep@radatech.org">pcrprep@radatech.org</a>
+    </div>
+
     <div class="container-fluid bg-light">
       <footer class="py-3 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">

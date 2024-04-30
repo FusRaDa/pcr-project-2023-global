@@ -1,0 +1,66 @@
+<div class="container mt-3 border border-3 border-secondary h-100">
+  <h5 class="text-center">Most Used Assays</h5>
+  <canvas id="myChart-assay" style="width:100%;max-width:600px"></canvas>
+</div>
+
+<script>
+  var canvasPAssay = document.getElementById("myChart-assay");
+
+  var xValuesAssay = {{names_assays|safe}};
+  var yValuesAssay = {{numbers_assays|safe}};
+  var barColorsAssay = [
+    '#ff80ed',
+    '#065535',
+    '#133337',
+    '#ffc0cb',
+    '#008080',
+    '#ff0000',
+    '#e6e6fa',
+    '#ffd700',
+    '#00ffff',
+    '#ffa500',
+    '#0000ff',
+    '#b0e0e6',
+    '#40e0d0',
+    '#ff7373',
+    '#d3ffce',
+    '#666666',
+    '#bada55',
+    '#003366',
+    '#ffb6c1',
+    '#800000',
+    '#800080',
+    '#00ff00',
+    '#333333',
+    '#ff7f50',
+    '#008000',
+  ];
+
+  var myPieChartAssay = new Chart("myChart-assay", {
+    type: "pie",
+    data: {
+      labels: xValuesAssay,
+      datasets: [{
+        label: "Samples",
+        backgroundColor: barColorsAssay,
+        data: yValuesAssay
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: "World Wide Wine Production 2018"
+      }
+    }
+  });
+
+  canvasPAssay.onclick = function(e) {
+    var slice = myPieChartAssay.getElementsAtEventForMode(e, 'nearest', {intersect: true}, true);
+    if (!slice.length) return; // return if not clicked on slice
+    var labelAssay = myPieChartAssay.data.labels[slice[0].index];
+
+    dictAssay = {{assays_dict|safe}};
+
+    window.location.href = dictAssay[labelAssay]
+  }
+</script>

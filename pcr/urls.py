@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import batch_views, assay_code_views, extraction_protocol_views, assay_views, inventory_views, pcr_views
+from .views import batch_views, assay_code_views, extraction_protocol_views, assay_views, inventory_views, pcr_views, dashboard_views
 
 
 urlpatterns = [
@@ -21,7 +21,7 @@ urlpatterns = [
 
   path("assay-codes/", assay_code_views.assay_codes, name='assay_codes'),
   path("create-assay-code/", assay_code_views.create_assay_code, name='create_assay_code'),
-  path("assay-code/<int:pk>/", assay_code_views.edit_assay_code, name='edit_assay_code'),
+  path("edit-assay-code/<int:pk>/", assay_code_views.edit_assay_code, name='edit_assay_code'),
 
   path("assays/", assay_views.assays, name='assays'),
   path("create-assay/", assay_views.create_assay, name='create_assay'),
@@ -72,15 +72,46 @@ urlpatterns = [
 
   path("tcprotocols/", pcr_views.tcprotocols, name='tcprotocols'),
   path("create-tcprotocol/", pcr_views.create_tcprotocol, name='create_tcprotocol'),
-  path("edit_tcprotocol/<int:pk>/", pcr_views.edit_tcprotocol, name='edit_tcprotocol'),
+  path("edit-tcprotocol/<int:pk>/", pcr_views.edit_tcprotocol, name='edit_tcprotocol'),
 
   path("extracted-batches/", pcr_views.extracted_batches, name='extracted_batches'),
   path("add-batch-samples/<int:process_pk>/<int:batch_pk>/", pcr_views.add_batch_samples, name='add_batch_samples'),
   path("add-sample-to-process/<int:process_pk>/<int:sample_pk>/", pcr_views.add_sample_to_process, name='add_sample_to_process'),
   path("remove-sample-from-process/<int:process_pk>/<int:sample_pk>/", pcr_views.remove_sample_from_process, name='remove_sample_from_process'),
   path("review-process/<int:pk>/", pcr_views.review_process, name='review_process'),
-  path("process_paperwork/<int:pk>/", pcr_views.process_paperwork, name='process_paperwork'),
+  path("process-paperwork/<int:pk>/", pcr_views.process_paperwork, name='process_paperwork'),
 
   path('processes/', pcr_views.processes, name='processes'),
-  path('pcr_paperwork/<int:pk>/', pcr_views.pcr_paperwork, name='pcr_paperwork'),
+  path('pcr-paperwork/<int:pk>/', pcr_views.pcr_paperwork, name='pcr_paperwork'),
+
+  path('controls-display/', dashboard_views.controls_display, name='controls_display'),
+  path('batches-display/', dashboard_views.batches_display, name='batches_display'),
+  path('processes-display/', dashboard_views.processes_display, name='processes_display'),
+
+  path('ladders-display/', dashboard_views.ladders_display, name='ladders_display'),
+  path('dyes-display/', dashboard_views.dyes_display, name='dyes_display'),
+  path('plates-display/', dashboard_views.plates_display, name='plates_display'),
+  path('gels-display/', dashboard_views.gels_display, name='gels_display'),
+  path('tubes-display/', dashboard_views.tubes_display, name='tubes_display'),
+  path('reagents-display/', dashboard_views.reagents_display, name='reagents_display'),
+  path('assays-chart/', dashboard_views.assays_chart, name='assays_chart'),
+  path('panels-chart/', dashboard_views.panels_chart, name='panels_chart'),
+  path('dashboard/', dashboard_views.inventory_report, name='inventory_report'),
+
+  path('mergeable-items/', inventory_views.mergeable_items, name='mergeable_items'),
+  path('merge-ladder/<int:pk>/', inventory_views.merge_ladder, name='merge_ladder'),
+  path('merge-dye/<int:pk>/', inventory_views.merge_dye, name='merge_dye'),
+  path('merge-plate/<int:pk>/', inventory_views.merge_plate, name='merge_plate'),
+  path('merge-gel/<int:pk>/', inventory_views.merge_gel, name='merge_gel'),
+  path('merge-tube/<int:pk>', inventory_views.merge_tube, name='merge_tube'),
+  path('merge-reagent/<int:pk>', inventory_views.merge_reagent, name='merge_reagent'),
+  path('merge-control/<int:pk>', inventory_views.merge_control, name='merge_control'),
+
+  path('remove-ladder-lot-number/<int:pk>/<str:lot>/', inventory_views.remove_ladder_lot_number, name='remove_ladder_lot_number'),
+  path('remove-dye-lot-number/<int:pk>/<str:lot>/', inventory_views.remove_dye_lot_number, name='remove_dye_lot_number'),
+  path('remove-plate-lot-number/<int:pk>/<str:lot>/', inventory_views.remove_plate_lot_number, name='remove_plate_lot_number'),
+  path('remove-gel-lot-number/<int:pk>/<str:lot>/', inventory_views.remove_gel_lot_number, name='remove_gel_lot_number'),
+  path('remove-tube-lot-number/<int:pk>/<str:lot>/', inventory_views.remove_tube_lot_number, name='remove_tube_lot_number'),
+  path('remove-reagent-lot-number/<int:pk>/<str:lot>/', inventory_views.remove_reagent_lot_number, name='remove_reagent_lot_number'), 
+  path('remove-control-lot-number/<int:pk>/<str:lot>/', inventory_views.remove_control_lot_number, name='remove_control_lot_number')
 ]

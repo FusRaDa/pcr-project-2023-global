@@ -25,16 +25,21 @@ class Ladder(models.Model):
   name = models.CharField(blank=False, max_length=100)
   brand = models.CharField(blank=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
+
   catalog_number = models.CharField(blank=False, max_length=100)
+  merged_lot_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
-  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0) # microliters
+  threshold = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0)], default=0) # microliters
+  threshold_diff = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True, default=None) # amount - amount_used - threshold
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
   exp_date = models.DateField(blank=True, null=True, default=None)
+
+  image = models.ImageField(null=True, blank=True, upload_to='ladders')
 
   @property
   def is_expired(self):
@@ -51,7 +56,7 @@ class Ladder(models.Model):
       return False
 
   def __str__(self):
-    return self.name
+    return f"{self.name}-Lot#:{self.lot_number}"
   
 
 class Dye(models.Model):
@@ -60,12 +65,15 @@ class Dye(models.Model):
   name = models.CharField(blank=False, max_length=100)
   brand = models.CharField(blank=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
+
   catalog_number = models.CharField(blank=False, max_length=100)
+  merged_lot_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
-  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  amount = models.IntegerField(validators=[MinValueValidator(0)], default=0) # microliters
+  threshold = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0)], default=0) # microliters
+  threshold_diff = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True, default=None) # amount - amount_used - threshold
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -86,7 +94,7 @@ class Dye(models.Model):
       return False
 
   def __str__(self):
-    return self.name
+    return f"{self.name}-Lot#:{self.lot_number}"
 
 
 class Plate(models.Model):
@@ -95,7 +103,9 @@ class Plate(models.Model):
   name = models.CharField(blank=False, max_length=100)
   brand = models.CharField(blank=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
+
   catalog_number = models.CharField(blank=False, max_length=100)
+  merged_lot_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
@@ -113,7 +123,9 @@ class Plate(models.Model):
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.NINETY_SIX, blank=False)
   type = models.CharField(choices=Types.choices, blank=False, default=Types.PCR, max_length=25)
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+
+  threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  threshold_diff = models.IntegerField(blank=True, null=True, default=None) # amount - amount_used - threshold
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -143,7 +155,9 @@ class Gel(models.Model):
   name = models.CharField(blank=False, max_length=100)
   brand = models.CharField(blank=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
+
   catalog_number = models.CharField(blank=False, max_length=100)
+  merged_lot_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
@@ -155,7 +169,8 @@ class Gel(models.Model):
   size = models.IntegerField(choices=Sizes.choices, default=Sizes.TWENTY_FOUR, blank=False)
 
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  threshold_diff = models.IntegerField(blank=True, null=True, default=None) # amount - amount_used - threshold
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -185,12 +200,15 @@ class Tube(models.Model):
   name = models.CharField(blank=False, max_length=100)
   brand = models.CharField(blank=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
+
   catalog_number = models.CharField(blank=False, max_length=100)
+  merged_lot_numbers = models.JSONField(default=list)
 
   location = models.ManyToManyField(Location)
 
   amount = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  threshold_diff = models.IntegerField(blank=True, null=True, default=None) # amount - amount_used - threshold
  
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
@@ -244,7 +262,10 @@ class Reagent(models.Model):
   name = models.CharField(blank=False, max_length=100)
   brand = models.CharField(blank=True, max_length=100)
   lot_number = models.CharField(blank=False, max_length=100)
+
   catalog_number = models.CharField(blank=False, max_length=100)
+  merged_lot_numbers = models.JSONField(default=list)
+
   location = models.ManyToManyField(Location)
 
   usage = models.CharField(choices=Usages.choices, blank=False, default=Usages.PCR, max_length=25)
@@ -252,7 +273,10 @@ class Reagent(models.Model):
  
   volume = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12, default=0)
   unit_volume = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25)
-  # threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0) # in microliters
+
+  threshold = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0)], default=0)
+  threshold_diff = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True, default=None) # volume_in_microliters - volume_used - threshold in microliters
+  threshold_unit = models.CharField(choices=VolumeUnits.choices, blank=False, default=VolumeUnits.MICROLITER, max_length=25) # in microliters
 
   stock_concentration = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12)
   unit_concentration = models.CharField(choices=ConcentrationUnits.choices, blank=True, null=True, default=None, max_length=25)
@@ -285,6 +309,15 @@ class Reagent(models.Model):
     if self.unit_volume == Reagent.VolumeUnits.MILLILITER:
       return Decimal(self.volume * 1000)
     if self.unit_volume == Reagent.VolumeUnits.MICROLITER:
+      return Decimal(self.volume)
+    
+  @property
+  def threshold_in_microliters(self):
+    if self.threshold_unit == Reagent.VolumeUnits.LITER:
+      return Decimal(self.volume * 1000000)
+    if self.threshold_unit == Reagent.VolumeUnits.MILLILITER:
+      return Decimal(self.volume * 1000)
+    if self.threshold_unit == Reagent.VolumeUnits.MICROLITER:
       return Decimal(self.volume)
 
   def __str__(self):

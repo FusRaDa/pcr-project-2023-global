@@ -45,7 +45,7 @@ def loginPage(request):
       if user is not None:
         record_user_login(user)
         login(request, user)
-        return redirect('reagents')
+        return redirect('inventory_report')
       else:
         messages.info(request, '**username and/or password is incorrect.**')
 

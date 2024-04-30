@@ -26,6 +26,16 @@
           <label class="form-label">PCR Reagent</label>
           {{form.pcr_reagent}}
         </div>
+
+        <div class="text-center mb-2">
+          <label class="form-label">Forward Sequence (5' to 3')</label>
+          {{form.forward_sequence}}
+        </div>
+    
+        <div class="text-center mb-2">
+          <label class="form-label">Reverse Sequence (3' to 5')</label>
+          {{form.reverse_sequence}}
+        </div>
     
         <div class="text-center">
           <label class="form-label">Volume</label>
@@ -53,7 +63,9 @@
     {% if form.errors %}
       <div class="row text-center mt-2">
         {% for key,value in form.errors.items %} 
+        <div class="alert alert-danger" role="alert">
           {{ value|escape }}
+        </div>
         {% endfor %}
       </div>
       {% endif %}
@@ -102,7 +114,9 @@
                 {% if del_form.errors %}
                 <div class="row text-center mt-2">
                   {% for key,value in del_form.errors.items %} 
+                  <div class="alert alert-danger" role="alert">
                     {{ value|escape }}
+                  </div>
                   {% endfor %}
                 </div>
                 {% endif %}

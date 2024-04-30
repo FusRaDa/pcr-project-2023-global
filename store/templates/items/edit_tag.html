@@ -5,7 +5,7 @@
 {% block title %} Edit Tag {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
 
   <div class="row justify-content-center">
     <h3 class="text-center">Edit Tag</h3>
@@ -27,7 +27,9 @@
     {% if form.errors %}
     <div class="row text-center mt-2">
       {% for key,value in form.errors.items %} 
+      <div class="alert alert-danger" role="alert">
         {{ value|escape }}
+      </div>
       {% endfor %}
     </div>
     {% endif %}
@@ -76,7 +78,9 @@
                 {% if del_form.errors %}
                 <div class="row text-center mt-2">
                   {% for key,value in del_form.errors.items %} 
+                  <div class="alert alert-danger" role="alert">
                     {{ value|escape }}
+                  </div>
                   {% endfor %}
                 </div>
                 {% endif %}

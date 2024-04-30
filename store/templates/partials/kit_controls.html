@@ -1,0 +1,18 @@
+<li class="list-group-item">{{control.name}}
+  <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#control-collapse-{{control.pk}}" aria-expanded="false" aria-controls="control-collapse-{{control.pk}}">
+    ⮟
+  </button>
+
+  <div class="collapse" id="control-collapse-{{control.pk}}">
+    <div class="card-body"> 
+      <ul class="list-group">
+
+        <li class="list-group-item">Amount (µL): {{control.amount}}</li>
+        <a href="{% url 'edit_control_store' control.pk %}" class="list-group-item list-group-item-action active">
+          Edit Control
+        </a>
+
+      </ul>
+    </div>
+  </div>
+</li>

@@ -5,19 +5,21 @@
 {% block title %} Store {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
 
-  <div class"row">
-    <h5 class="text-center">Previous Orders</h5>
+  <div class="row justify-content-center">
+    <h3 class="text-center">Previous Orders</h3>
   </div>
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      <h6 class="text-center message">{{ message }}</h6>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+  {% endif %}
 
   <div class="row">
 

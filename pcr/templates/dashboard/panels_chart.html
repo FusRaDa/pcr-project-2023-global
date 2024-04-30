@@ -1,0 +1,66 @@
+<div class="container mt-3 border border-3 border-secondary h-100">
+  <h5 class="text-center">Most Used Panels</h5>
+  <canvas id="myChart-panel" style="width:100%;max-width:600px"></canvas>
+</div>
+
+<script>
+  var canvasPpanel = document.getElementById("myChart-panel");
+
+  var xValuesPanel = {{names_codes|safe}};
+  var yValuesPanel = {{numbers_codes|safe}};
+  var barColorsPanel = [
+    '#ff80ed',
+    '#065535',
+    '#133337',
+    '#ffc0cb',
+    '#008080',
+    '#ff0000',
+    '#e6e6fa',
+    '#ffd700',
+    '#00ffff',
+    '#ffa500',
+    '#0000ff',
+    '#b0e0e6',
+    '#40e0d0',
+    '#ff7373',
+    '#d3ffce',
+    '#666666',
+    '#bada55',
+    '#003366',
+    '#ffb6c1',
+    '#800000',
+    '#800080',
+    '#00ff00',
+    '#333333',
+    '#ff7f50',
+    '#008000',
+  ];
+
+  var myPieChartPanel = new Chart("myChart-panel", {
+    type: "pie",
+    data: {
+      labels: xValuesPanel,
+      datasets: [{
+        label: "Batches",
+        backgroundColor: barColorsPanel,
+        data: yValuesPanel
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: "World Wide Wine Production 2018"
+      }
+    }
+  });
+
+  canvasPpanel.onclick = function(e) {
+    var slice = myPieChartPanel.getElementsAtEventForMode(e, 'nearest', {intersect: true}, true);
+    if (!slice.length) return; // return if not clicked on slice
+    var labelPanel = myPieChartPanel.data.labels[slice[0].index];
+
+    dictPanel = {{assay_codes_dict|safe}};
+
+    window.location.href = dictPanel[labelPanel]
+  }
+</script>

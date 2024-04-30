@@ -1,0 +1,71 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Inventory Dashboard {% endblock %} 
+
+{% block content %}
+<div class="container mt-3">
+
+  <div class="row justify-content-center">
+    <h1 class="text-center">Inventory Dashboard</h1>
+    <h4 class="text-center">Welcome back {{request.user.first_name}} {{request.user.last_name}}</h4>
+  </div>
+
+  {% for message in messages %}
+  <div class="alert alert-danger text-center" role="alert">
+      <h5 class="text-center">{{ message }}</h5>
+  </div>
+  {% endfor %}
+
+  {% if inventory_message %}
+  <div class="alert alert-danger text-center" role="alert">
+    <p><i class="fa-solid fa-triangle-exclamation"></i> {{inventory_message}}</p>
+  </div>
+  {% endif %}
+
+  {% if mergeable_message %}
+  <div class="alert alert-info text-center" role="alert">
+    <i class="fa-solid fa-circle-info"></i> {{mergeable_message}}</p>
+    <a class="btn btn-primary btn-sm ms-2" href="{% url 'mergeable_items' %}" role="button">View Mergeable Items</a>
+  </div>
+  {% endif %}
+
+  <div class="row gap-2 mt-3">
+    <div class="col" hx-get="{% url 'batches_display' %}" hx-trigger="load">Loading...</div>
+
+    <div class="col" hx-get="{% url 'processes_display' %}" hx-trigger="load">Loading...</div>
+
+    <div class="col" hx-get="{% url 'controls_display' %}" hx-trigger="load">Loading...</div>
+  </div>
+
+  <div class="row gap-2 mt-3">
+    <div class="col" hx-get="{% url 'reagents_display' %}" hx-trigger="load">Loading...</div>
+
+    <div class="col" hx-get="{% url 'tubes_display' %}" hx-trigger="load">Loading...</div>
+  </div>
+
+  <div class="row gap-2 mt-3">
+    <div class="col" hx-get="{% url 'plates_display' %}" hx-trigger="load">Loading...</div>
+
+    <div class="col" hx-get="{% url 'gels_display' %}" hx-trigger="load">Loading...</div>
+  </div>
+
+  <div class="row gap-2 mt-3">
+    <div class="col" hx-get="{% url 'ladders_display' %}" hx-trigger="load">Loading...</div>
+
+    <div class="col" hx-get="{% url 'dyes_display' %}" hx-trigger="load">Loading...</div>
+  </div>
+
+  <div class="row gap-2 mt-3">
+    <div class="col" hx-get="{% url 'assays_chart' %}" hx-trigger="load">Loading...</div>
+
+    <div class="col" hx-get="{% url 'panels_chart' %}" hx-trigger="load">Loading...</div>
+  </div>
+
+</div>
+{% endblock %}
+
+
+
+

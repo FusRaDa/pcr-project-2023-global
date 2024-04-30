@@ -3,7 +3,9 @@
   <button type="button" class="btn btn-danger btn-sm float-end" name="remove"
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
     hx-post="{% url 'remove_kit_from_order' order.pk kit.pk %}"
-    hx-on:click="this.parentNode.remove()">
+    hx-on:click="this.parentNode.remove()"
+    hx-target="#kit-display"
+    hx-swap="afterbegin">
     Remove
   </button>
 </li>

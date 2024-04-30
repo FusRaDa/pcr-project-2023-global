@@ -12,19 +12,20 @@
     <p class="text-center"><a href="{% url 'inventory_guide' %}" target="_blank" class="text-center">Inventory Guide</a></p>
   </div>
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      <h6 class="text-center message">{{ message }}</h6>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+  {% endif %}
 
-  <div class="row mt-3">
-    <div class="col d-flex justify-content-center"> 
-      <a href="{% url 'create_gel' %}">
-        <button type="button" class="btn btn-primary mb-2">Add New Gel</button>
-      </a>
+  <div class="row mt-3 mb-3">
+    <div class="col d-flex justify-content-center gap-2"> 
+      <a class="btn btn-success" href="{% url 'store' %}?text_search=gel">Search Store</a>
+      <a href="{% url 'create_gel' %}" class="btn btn-primary">Add New Gel</a>
     </div>
   </div>
 
@@ -74,10 +75,10 @@
           <tr class="plate-row {% if gel.is_expired %} table-danger {% endif %} {% if gel.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_gel' gel.pk %}">
             <td>{{gel.exp_date}} {% if gel.is_expired %} (EXPIRED) {% endif %} {% if gel.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{gel.last_updated}}</td>
-            <td>{{gel.name}}</td>
+            <td>{% if gel.process_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{gel.name}}</td>
             <td>{{gel.brand}}</td>
             <td>{{gel.catalog_number}}</td>
-            <td>{{gel.lot_number}}</td>
+            <td>{% if gel.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{gel.lot_number}}</td>
             <td>{{gel.size}}</td>
             <td>{{gel.amount}}</td>
             

@@ -5,8 +5,8 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
 from ..models.affiliates import Brand
-from ..models.items import Kit, StorePlate, StoreReagent, StoreTube, Tag, Review, StoreGel
-from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm, TagForm, ReviewForm, StoreGelForm
+from ..models.items import Kit, StorePlate, StoreReagent, StoreTube, Tag, Review, StoreGel, StoreDye, StoreLadder, StoreControl
+from ..forms.items import KitForm, StorePlateForm, StoreReagentForm, StoreTubeForm, TagForm, ReviewForm, StoreGelForm, StoreDyeForm, StoreLadderForm, StoreControlForm
 from ..forms.general import DeletionForm
 
 
@@ -211,6 +211,100 @@ def edit_tube(request, pk):
 
 
 @staff_member_required(login_url='login')
+def create_ladder(request):
+  form = StoreLadderForm()
+  if request.method == 'POST':
+    form = StoreLadderForm(request.POST)
+    if form.is_valid():
+      kit_pk = int(request.POST['pk'])
+      kit = Kit.objects.get(pk=kit_pk)
+      ladder = form.save(commit=False)
+      ladder.kit = kit
+      ladder.save()
+      context = {'ladder': ladder}
+      return render(request, 'partials/kit_ladders.html', context)
+    else:
+      print(form.errors)
+
+  context = {'form': form}
+  return render(request, 'partials/store_ladder_form.html', context)
+
+
+@staff_member_required(login_url='login')
+def edit_ladder(request, pk):
+  ladder = StoreLadder.objects.get(pk=pk)
+
+  form = StoreLadderForm(instance=ladder)
+  del_form = DeletionForm(value=ladder.name)
+
+  if 'update' in request.POST:
+    form = StoreLadderForm(request.POST, instance=ladder)
+    if form.is_valid():
+      form.save()
+      return redirect('edit_kit_items', ladder.kit.pk)
+    else:
+      print(form.errors)
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=ladder.name)
+    if del_form.is_valid():
+      ladder.delete()
+      return redirect('edit_kit_items', ladder.kit.pk)
+    else:
+      print(del_form.errors)
+  
+  context = {'form': form, 'del_form': del_form, 'ladder': ladder}
+  return render(request, 'items/edit_ladder.html', context)
+
+
+@staff_member_required(login_url='login')
+def create_dye(request):
+  form = StoreDyeForm()
+  if request.method == 'POST':
+    form = StoreDyeForm(request.POST)
+    if form.is_valid():
+      kit_pk = int(request.POST['pk'])
+      kit = Kit.objects.get(pk=kit_pk)
+      dye = form.save(commit=False)
+      dye.kit = kit
+      dye.save()
+      context = {'dye': dye}
+      return render(request, 'partials/kit_dyes.html', context)
+    else:
+      print(form.errors)
+
+  context = {'form': form}
+  return render(request, 'partials/store_dye_form.html', context)
+
+
+@staff_member_required(login_url='login')
+def edit_dye(request, pk):
+  dye = StoreDye.objects.get(pk=pk)
+
+  form = StoreDyeForm(instance=dye)
+  del_form = DeletionForm(value=dye.name)
+
+  if 'update' in request.POST:
+    form = StoreDyeForm(request.POST, instance=dye)
+    if form.is_valid():
+      form.save()
+      return redirect('edit_kit_items', dye.kit.pk)
+    else:
+      print(form.errors)
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=dye.name)
+    if del_form.is_valid():
+      dye.delete()
+      return redirect('edit_kit_items', dye.kit.pk)
+    else:
+      print(del_form.errors)
+  
+  context = {'form': form, 'del_form': del_form, 'dye': dye}
+  return render(request, 'items/edit_dye.html', context)
+
+
+@staff_member_required(login_url='login')
 def create_gel(request):
   form = StoreGelForm()
   if request.method == 'POST':
@@ -304,6 +398,53 @@ def edit_plate(request, pk):
   return render(request, 'items/edit_plate.html', context)
 
 
+@staff_member_required(login_url='login')
+def create_control(request):
+  form = StoreControlForm()
+  if request.method == 'POST':
+    form = StoreControlForm(request.POST)
+    if form.is_valid():
+      kit_pk = int(request.POST['pk'])
+      kit = Kit.objects.get(pk=kit_pk)
+      control = form.save(commit=False)
+      control.kit = kit
+      control.save()
+      context = {'control': control}
+      return render(request, 'partials/kit_controls.html', context)
+    else:
+      print(form.errors)
+
+  context = {'form': form}
+  return render(request, 'partials/store_control_form.html', context)
+
+
+@staff_member_required(login_url='login')
+def edit_control(request, pk):
+  control = StoreControl.objects.get(pk=pk)
+
+  form = StoreControlForm(instance=control)
+  del_form = DeletionForm(value=control.name)
+
+  if 'update' in request.POST:
+    form = StoreControlForm(request.POST, instance=control)
+    if form.is_valid():
+      form.save()
+      return redirect('edit_kit_items', control.kit.pk)
+    else:
+      print(form.errors)
+
+  if 'delete' in request.POST:
+    del_form = DeletionForm(request.POST, value=control.name)
+    if del_form.is_valid():
+      control.delete()
+      return redirect('edit_kit_items', control.kit.pk)
+    else:
+      print(del_form.errors)
+
+  context = {'form': form, 'del_form': del_form, 'control': control}
+  return render(request, 'items/edit_control.html', context)
+
+
 @login_required(login_url='login')
 def reviews(request, pk):
   form = ReviewForm()
@@ -362,7 +503,4 @@ def edit_review(request, pk):
     return redirect('reviews', review.kit.pk)
   
   context = {'form': form, 'review': review}
-  return render(request, 'items/edit_review.html', context)
-
-
-  
+  return render(request, 'items/edit_review.html', context)  

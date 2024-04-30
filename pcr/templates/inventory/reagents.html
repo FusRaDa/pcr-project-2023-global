@@ -12,19 +12,20 @@
     <p class="text-center"><a href="{% url 'inventory_guide' %}" target="_blank" class="text-center">Inventory Guide</a></p>
   </div>
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      <h6 class="text-center message">{{ message }}</h6>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+  {% endif %}
 
-  <div class="row mt-3">
-    <div class="col d-flex justify-content-center"> 
-      <a href="{% url 'create_reagent'%}">
-        <button type="button" class="btn btn-primary mb-2">Add New Reagent</button>
-      </a>
+  <div class="row mt-3 mb-3">
+    <div class="col d-flex justify-content-center gap-2"> 
+      <a class="btn btn-success" href="{% url 'store' %}?text_search=reagent">Search Store</a>
+      <a href="{% url 'create_reagent'%}" class="btn btn-primary">Add New Reagent</a>
     </div>
   </div>
 
@@ -80,10 +81,10 @@
           <tr class="reagent-row {% if reagent.is_expired %} table-danger {% endif %} {% if reagent.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_reagent' reagent.pk %}">
             <td>{{reagent.exp_date}} {% if reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{reagent.last_updated}}</td>
-            <td>{{reagent.name}}</td>
+            <td>{% if reagent.extractionprotocol_set.count > 0 or reagent.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{reagent.name}}</td>
             <td>{{reagent.brand}}</td>
             <td>{{reagent.catalog_number}}</td>
-            <td>{{reagent.lot_number}}</td>
+            <td>{% if reagent.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{reagent.lot_number}}</td>
             <td>{{reagent.volume}} {{reagent.unit_volume}}</td>
             <td>
               {% if reagent.stock_concentration %}

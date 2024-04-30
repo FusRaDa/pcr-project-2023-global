@@ -9,7 +9,7 @@ from ..models.items import Tag
 class SearchStoreForm(forms.Form):
   text_search = forms.CharField(required=False)
 
-  price = forms.ChoiceField(choices=[('price', 'Ascending'), ('-price', 'Descending')], initial='Descending', required=True)
+  price = forms.ChoiceField(choices=[(None, '------'), ('-price', 'Descending'), ('price', 'Ascending')], required=False)
 
   brands = forms.ModelMultipleChoiceField(
     queryset=Brand.objects.all(),

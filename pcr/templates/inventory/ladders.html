@@ -12,19 +12,20 @@
     <p class="text-center"><a href="{% url 'inventory_guide' %}" target="_blank" class="text-center">Inventory Guide</a></p>
   </div>
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      <h6 class="text-center message">{{ message }}</h6>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+  {% endif %}
 
-  <div class="row mt-3">
-    <div class="col d-flex justify-content-center"> 
-      <a href="{% url 'create_ladder' %}">
-        <button type="button" class="btn btn-primary mb-2">Add New Ladder</button>
-      </a>
+  <div class="row mt-3 mb-3">
+    <div class="col d-flex justify-content-center gap-2"> 
+      <a class="btn btn-success" href="{% url 'store' %}?text_search=ladder">Search Store</a>
+      <a href="{% url 'create_ladder' %}" class="btn btn-primary">Add New Ladder</a>
     </div>
   </div>
 
@@ -67,10 +68,10 @@
           <tr class="ladder-row {% if ladder.is_expired %} table-danger {% endif %} {% if ladder.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_ladder' ladder.pk %}">
             <td>{{ladder.exp_date}} {% if ladder.is_expired %} (EXPIRED) {% endif %} {% if ladder.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{ladder.last_updated}}</td>
-            <td>{{ladder.name}}</td>
+            <td>{% if ladder.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{ladder.name}}</td>
             <td>{{ladder.brand}}</td>
             <td>{{ladder.catalog_number}}</td>
-            <td>{{ladder.lot_number}}</td>
+            <td>{% if ladder.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{ladder.lot_number}}</td>
             <td>{{ladder.amount}}</td>
             
             <td>

@@ -12,19 +12,20 @@
     <p class="text-center"><a href="{% url 'inventory_guide' %}" target="_blank" class="text-center">Inventory Guide</a></p>
   </div>
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      <h6 class="text-center message">{{ message }}</h6>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+  {% endif %}
 
-  <div class="row mt-3">
-    <div class="col d-flex justify-content-center"> 
-      <a href="{% url 'create_tube'%}">
-        <button type="button" class="btn btn-primary mb-2">Add New Tube</button>
-      </a>
+  <div class="row mt-3 mb-3">
+    <div class="col d-flex justify-content-center gap-2"> 
+      <a class="btn btn-success" href="{% url 'store' %}?text_search=tube">Search Store</a>
+      <a href="{% url 'create_tube'%}" class="btn btn-primary">Add New Tube</a>
     </div>
   </div>
 
@@ -67,10 +68,10 @@
           <tr class="tube-row {% if tube.is_expired %} table-danger {% endif %} {% if tube.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_tube' tube.pk %}">
             <td>{{tube.exp_date}} {% if tube.is_expired %} (EXPIRED) {% endif %} {% if tube.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %} </td>
             <td>{{tube.last_updated}}</td>
-            <td>{{tube.name}}</td>
+            <td>{% if tube.extractionprotocol_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{tube.name}}</td>
             <td>{{tube.brand}}</td>
             <td>{{tube.catalog_number}}</td>
-            <td>{{tube.lot_number}}</td>
+            <td>{% if tube.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{tube.lot_number}}</td>
             <td>{{tube.amount}}</td>
 
             <td>

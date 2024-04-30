@@ -1,10 +1,10 @@
-import csv
-from zipfile import ZipFile
 import random
 import string
-import os
+import csv
+from django.core.files.storage import default_storage
 
-from pcr.models.inventory import Tube, Plate, Reagent, Gel
+from pcr.models.inventory import Tube, Plate, Reagent, Gel, Dye, Ladder
+from pcr.models.assay import Control
 
 
 def generate_random_file_name(length):
@@ -14,45 +14,31 @@ def generate_random_file_name(length):
 
 
 def generate_order_files(order, inputs):
-  path = 'static/orders/'
+  folder = 'orders/'
 
   brand_arr = []
   for kit in order.kits.all():
     brand_arr.append(kit.brand)
-
   brands = set(brand_arr)
 
-  files = []
-  for brand in brands:
+  rdm = generate_random_file_name(8)
+  date = order.date_processed.strftime("%Y_%m_%d")
+  excel_file = f"{order.user}_order_{date}_{rdm}.csv"
+  full_path = folder + excel_file
 
-    with open(path + f"{brand}_order_list_{order.pk}.csv", 'w', newline='') as file:
+  with default_storage.open(full_path, 'w') as file:
+
+    for brand in brands:
       writer = csv.writer(file)
-      field = ['Catalog number', 'Quantity']
+      field = ['Catalog number', 'Quantity', brand.name.upper()]
 
       writer.writerow(field)
       for input in inputs:   
         if input['brand'] == brand.name:
           writer.writerow([input['catalog_number'], input['amount']])
-    
-    files.append(file.name)
 
-  rdm = generate_random_file_name(8)
-  date = order.date_processed.strftime("%Y_%m_%d")
-  file_name = f"{order.user}_order_{date}_{rdm}.zip"
-
-  with ZipFile(path + file_name, 'w') as zipf:
-
-    for file in files:
-      arcname = file.rsplit('/', 1)[-1]
-      zipf.write(file, arcname=arcname)
-      os.remove(file)
-
-  local_file = open(path + file_name, 'rb')
-  order.orders_file.save(file_name, local_file)
-  local_file.close()
-
-  os.remove(path + file_name)
-
+  order.orders_file = full_path
+  order.save()
 
 
 def kit_to_inventory(kit, user, lot_number):
@@ -70,6 +56,8 @@ def kit_to_inventory(kit, user, lot_number):
       unit_volume = reagent.unit_volume,
       stock_concentration = reagent.stock_concentration,
       unit_concentration = reagent.unit_concentration,
+      forward_sequence = reagent.forward_sequence,
+      reverse_sequence = reagent.reverse_sequence,
     )
 
   for tube in kit.storetube_set.all():
@@ -82,6 +70,16 @@ def kit_to_inventory(kit, user, lot_number):
       amount = tube.amount,
     )
 
+  for control in kit.storecontrol_set.all():
+    Control.objects.create(
+      user = user,
+      name = control.name,
+      brand = kit.brand,
+      lot_number = lot_number,
+      catalog_number = kit.catalog_number,
+      amount = control.amount,
+    )
+
   for gel in kit.storegel_set.all():
     Gel.objects.create(
       user = user,
@@ -89,7 +87,7 @@ def kit_to_inventory(kit, user, lot_number):
       brand = kit.brand,
       lot_number = lot_number,
       catalog_number = kit.catalog_number,
-      wells = gel.wells,
+      size = gel.size,
       amount = gel.amount,
     )
 
@@ -104,4 +102,23 @@ def kit_to_inventory(kit, user, lot_number):
       type = plate.type,
       amount = plate.amount,
     )
+  
+  for dye in kit.storedye_set.all():
+    Dye.objects.create(
+      user = user,
+      name = dye.name,
+      brand = kit.brand,
+      lot_number = lot_number,
+      catalog_number = kit.catalog_number,
+      amount = dye.amount,
+    )
 
+  for ladder in kit.storeladder_set.all():
+    Ladder.objects.create(
+      user = user,
+      name = ladder.name,
+      brand = kit.brand,
+      lot_number = lot_number,
+      catalog_number = kit.catalog_number,
+      amount = ladder.amount,
+    )

@@ -165,12 +165,21 @@ def batch_samples(request, pk):
 
     for reagent in batch.extraction_protocol.reagentextraction_set.all():
       total_used_reagents = reagent.amount_per_sample * batch.sample_set.count()
+
+      if reagent.reagent.threshold > 0:
+        reagent.reagent.threshold_diff = reagent.reagent.volume_in_microliters - total_used_reagents - reagent.reagent.threshold_in_microliters
+
       reagent.reagent.volume = reagent.reagent.volume_in_microliters - total_used_reagents
+
       reagent.reagent.unit_volume = Reagent.VolumeUnits.MICROLITER
       reagent.reagent.save()
     
     for tube in batch.extraction_protocol.tubeextraction_set.all():
       total_used_tubes = tube.amount_per_sample * batch.sample_set.count()
+
+      if tube.tube.threshold > 0:
+        tube.tube.threshold_diff = tube.tube.amount - total_used_tubes - tube.tube.threshold
+
       tube.tube.amount -= total_used_tubes
       tube.tube.save()
       

@@ -12,19 +12,20 @@
     <p class="text-center"><a href="{% url 'inventory_guide' %}" target="_blank" class="text-center">Inventory Guide</a></p>
   </div>
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      <h6 class="text-center message">{{ message }}</h6>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+  {% endif %}
 
-  <div class="row mt-3">
-    <div class="col d-flex justify-content-center"> 
-      <a href="{% url 'create_plate' %}">
-        <button type="button" class="btn btn-primary mb-2">Add New Plate</button>
-      </a>
+  <div class="row mt-3 mb-3">
+    <div class="col d-flex justify-content-center gap-2"> 
+      <a class="btn btn-success" href="{% url 'store' %}?text_search=plate">Search Store</a>
+      <a href="{% url 'create_plate' %}" class="btn btn-primary">Add New Plate</a>
     </div>
   </div>
 
@@ -81,10 +82,10 @@
           <tr class="plate-row {% if plate.is_expired %} table-danger {% endif %} {% if plate.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.pk %}">
             <td>{{plate.exp_date}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{plate.last_updated}}</td>
-            <td>{{plate.name}}</td>
+            <td>{% if plate.process_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{plate.name}}</td>
             <td>{{plate.brand}}</td>
             <td>{{plate.catalog_number}}</td>
-            <td>{{plate.lot_number}}</td>
+            <td>{% if plate.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{plate.lot_number}}</td>
             <td>{{plate.size}}</td>
             <td>{{plate.type}}</td>
             <td>{{plate.amount}}</td>

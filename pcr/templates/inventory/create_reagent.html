@@ -101,6 +101,19 @@
       </div>
       
       <div class="col-sm-3 form-width-18">
+        <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Set the volume of this reagent that you wish to maintain in your lab. Otherwise, leave it at 0.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
+          <label class="form-label">Threshold</label>
+          {{form.threshold}}
+        </div>
+
+        <div class="text-center mt-3">
+          <label class="form-label">Threshold Unit</label>
+          {{form.threshold_unit}}
+        </div>
+
         <div class="text-center mb-2 mt-3">
           <label class="form-label">Expiration Date</label>
           {{form.exp_date}}
@@ -135,7 +148,9 @@
     {% if form.errors %}
     <div class="row text-center mt-2">
       {% for key,value in form.errors.items %} 
+      <div class="alert alert-danger" role="alert">
         {{ value|escape }}
+      </div>
       {% endfor %}
     </div>
     {% endif %}

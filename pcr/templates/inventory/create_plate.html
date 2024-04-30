@@ -56,6 +56,14 @@
           <label class="form-label">Amount Stored</label>
           {{form.amount}}
         </div>
+
+        <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Set the amount of plates that you wish to maintain in your lab. Otherwise, leave it at 0.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
+          <label class="form-label">Threshold</label>
+          {{form.threshold}}
+        </div>
       </div>
 
       <div class="col-sm-3 form-width-18">
@@ -92,7 +100,9 @@
     {% if form.errors %}
     <div class="row text-center mt-2">
       {% for key,value in form.errors.items %} 
+      <div class="alert alert-danger" role="alert">
         {{ value|escape }}
+      </div>
       {% endfor %}
     </div>
     {% endif %}

@@ -65,13 +65,16 @@ class LadderForm(ModelForm):
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+    self.fields['image'].widget.attrs['class'] = 'form-control'
 
     self.fields['amount'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
 
   class Meta:
     model = Ladder
-    exclude = ['user', 'last_updated']
+    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_lot_numbers']
 
 
 class GelForm(ModelForm):
@@ -103,13 +106,15 @@ class GelForm(ModelForm):
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['size'].widget.attrs['class'] = 'form-select'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
     self.fields['amount'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
 
   class Meta:
     model = Gel
-    exclude = ['user', 'last_updated']
+    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_lot_numbers']
 
 
 class DyeForm(ModelForm):
@@ -140,13 +145,15 @@ class DyeForm(ModelForm):
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
     self.fields['amount'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
 
   class Meta:
     model = Dye
-    exclude = ['user', 'last_updated']
+    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_lot_numbers']
 
 
 class PlateForm(ModelForm):
@@ -179,13 +186,15 @@ class PlateForm(ModelForm):
     self.fields['size'].widget.attrs['class'] = 'form-select'
     self.fields['type'].widget.attrs['class'] = 'form-select'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
     self.fields['amount'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
 
   class Meta:
     model = Plate
-    exclude = ['user', 'last_updated']
+    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_lot_numbers']
 
 
 class TubeForm(ModelForm):
@@ -216,13 +225,15 @@ class TubeForm(ModelForm):
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['catalog_number'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
     self.fields['amount'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
 
   class Meta:
     model = Tube
-    exclude = ['user', 'last_updated']
+    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_lot_numbers']
 
 
 class ReagentForm(ModelForm):
@@ -316,9 +327,48 @@ class ReagentForm(ModelForm):
     self.fields['reverse_sequence'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold_unit'].widget.attrs['class'] = 'form-select'
+
     self.fields['volume'].widget.attrs['min'] = 0
     self.fields['stock_concentration'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
   
   class Meta:
     model = Reagent
-    exclude = ['user', 'last_updated']
+    exclude = ['user', 'last_updated', 'threshold_diff', 'merged_lot_numbers']
+
+
+# **MERGEABLE FORMS** #
+class MergeItemsForm(forms.Form):
+  confirm = forms.CharField()
+
+  mergeable_items = forms.ModelMultipleChoiceField(
+    queryset=None,
+    widget=forms.CheckboxSelectMultiple,
+    required=True,
+    error_messages={'required': 'Please select at least one item to merge.'})
+  
+  def __init__(self, *args, **kwargs):
+    self.value = kwargs.pop('value')
+    self.mergeable_items = kwargs.pop('mergeable_items')
+    super().__init__(*args, **kwargs) 
+    self.fields['mergeable_items'].queryset = self.mergeable_items
+    self.fields['confirm'].widget.attrs['class'] = 'form-control'
+
+  def clean(self):
+    cleaned_data = super().clean()
+    confirm = cleaned_data.get('confirm')
+    mergeable_items = cleaned_data.get('mergeable_items')
+
+    for item in mergeable_items:
+      if item.is_expired:
+        raise ValidationError(
+          message=f"{item} is expired."
+        )
+      
+    if confirm != self.value:
+      raise ValidationError(
+        message="Invalid value entered, please try again."
+      )
+# **MERGEABLE FORMS** #

@@ -137,7 +137,9 @@
                   {% if del_form.errors %}
                   <div class="row text-center mt-2">
                     {% for key,value in del_form.errors.items %} 
+                    <div class="alert alert-danger" role="alert">
                       {{ value|escape }}
+                    </div>
                     {% endfor %}
                   </div>
                   {% endif %}

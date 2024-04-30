@@ -6,10 +6,10 @@
 {% block title %} Store {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
 
   <div class="row">
-    <h5 class="text-center">Viewing Order</h5>
+    <h3 class="text-center">Viewing Order</h3>
   </div>
 
   <div class="row">
@@ -25,8 +25,8 @@
  
       <table class="table table-bordered">
         <thead>
-          <tr class="table-dark">
-            <th scope="col" class="col-sm-3">{{kits.name}} × {{kit_order.amount_ordered}}</th>
+          <tr>
+            <th scope="col" class="col-sm-3">{{kits.name}} × {{kit_order.amount_ordered}} <a class="btn btn-primary btn-sm float-end" href="{% url 'reviews' kits.pk %}" role="button">Kit Details</a></th>
             <th scope="col" class="col-sm-2">Amount</th>
             <th scope="col" class="col-sm-1">Total</th>
           </tr>
@@ -62,6 +62,30 @@
             <td>{{gels.name}}</td>
             <td>{{gels.amount}} × {{kit_order.amount_ordered}}</td>
             <td>{{gels.amount|dec_mult:kit_order.amount_ordered}}</td>
+          </tr>
+          {% endfor %}
+
+          {% for ladders in kits.storeladder_set.all %}
+          <tr class="table-danger">
+            <td>{{ladders.name}}</td>
+            <td>{{ladders.amount}} × {{kit_order.amount_ordered}}</td>
+            <td>{{ladders.amount|dec_mult:kit_order.amount_ordered}}</td>
+          </tr>
+          {% endfor %}
+
+          {% for dyes in kits.storedye_set.all %}
+          <tr class="table-info">
+            <td>{{dyes.name}}</td>
+            <td>{{dyes.amount}} × {{kit_order.amount_ordered}}</td>
+            <td>{{dyes.amount|dec_mult:kit_order.amount_ordered}}</td>
+          </tr>
+          {% endfor %}
+
+          {% for controls in kits.storecontrol_set.all %}
+          <tr class="table-light">
+            <td>{{controls.name}}</td>
+            <td>{{controls.amount}} × {{kit_order.amount_ordered}}</td>
+            <td>{{controls.amount|dec_mult:kit_order.amount_ordered}}</td>
           </tr>
           {% endfor %}
         </tbody>

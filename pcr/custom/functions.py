@@ -931,3 +931,227 @@ def process_gels(all_samples, gels, minimum_samples_in_gel):
     
   return pcr_data
 
+
+def detect_inventory_usage(ladders, dyes, plates, gels, tubes, reagents, controls):
+  ladders_warn = False
+  dyes_warn = False
+  plates_warn = False
+  gels_warn = False
+  tubes_warn = False
+  reagents_warn = False
+  controls_warn = False
+
+  for ladder in ladders:
+    if ladder.is_expired or ladder.month_exp or (ladder.threshold_diff is not None and ladder.threshold_diff <= 0):
+      ladders_warn = True
+      break
+
+  for dye in dyes:
+    if dye.is_expired or dye.month_exp or (dye.threshold_diff is not None and dye.threshold_diff <= 0):
+      dyes_warn = True
+      break
+
+  for plate in plates:
+    if plate.is_expired or plate.month_exp or (plate.threshold_diff is not None and plate.threshold_diff <= 0):
+      plates_warn = True
+      break
+
+  for gel in gels:
+    if gel.is_expired or gel.month_exp or (gel.threshold_diff is not None and gel.threshold_diff <= 0):
+      gels_warn = True
+      break
+
+  for tube in tubes:
+    if tube.is_expired or tube.month_exp or (tube.threshold_diff is not None and tube.threshold_diff <= 0):
+      tubes_warn = True
+      break
+
+  for reagent in reagents:
+    if reagent.is_expired or reagent.month_exp or (reagent.threshold_diff is not None and reagent.threshold_diff <= 0):
+      reagents_warn = True
+      break
+
+  for control in controls:
+    if control.is_expired or control.month_exp or control.amount <= 100:
+      controls_warn = True
+      break
+
+  message = None
+  if ladders_warn or dyes_warn or plates_warn or gels_warn or tubes_warn or reagents_warn or controls_warn:
+    message = "Inventory for "
+
+    if ladders_warn:
+      message += "ladders, "
+
+    if dyes_warn:
+      message += "dyes, "
+
+    if plates_warn:
+      message += "plates, "
+
+    if gels_warn:
+      message += "gels, "
+
+    if tubes_warn:
+      message += "tubes, "
+
+    if reagents_warn:
+      message += "reagents, "
+
+    if controls_warn:
+      message += "controls, "
+
+    message += "require your attention!"
+  
+  return message
+
+
+def detect_mergeable_items(ladders, dyes, plates, gels, tubes, reagents, controls):
+  ladders_warn = False
+  dyes_warn = False
+  plates_warn = False
+  gels_warn = False
+  tubes_warn = False
+  reagents_warn = False
+  controls_warn = False
+
+  for index, val in enumerate(ladders):
+    if index != ladders.count() - 1:
+      if val.brand != "" and val.catalog_number == ladders[index + 1].catalog_number and val.brand == ladders[index + 1].brand:
+        ladders_warn = True
+        break
+
+  for index, val in enumerate(dyes):
+    if index != dyes.count() - 1:
+      if val.brand != "" and val.catalog_number == dyes[index + 1].catalog_number and val.brand == dyes[index + 1].brand:
+        dyes_warn = True
+        break
+
+  for index, val in enumerate(plates):
+    if index != plates.count() - 1:
+      if val.brand != "" and val.catalog_number == plates[index + 1].catalog_number and val.brand == plates[index + 1].brand:
+        plates_warn = True
+        break
+        
+  for index, val in enumerate(gels):
+    if index != gels.count() - 1:
+      if val.brand != "" and val.catalog_number == gels[index + 1].catalog_number and val.brand == gels[index + 1].brand:
+        gels_warn = True
+        break
+
+  for index, val in enumerate(tubes):
+    if index != tubes.count() - 1:
+      if val.brand != "" and val.catalog_number == tubes[index + 1].catalog_number and val.brand == tubes[index + 1].brand:
+        tubes_warn = True
+        break
+
+  for index, val in enumerate(reagents):
+    if index != reagents.count() - 1:
+      if val.brand != "" and val.catalog_number == reagents[index + 1].catalog_number and val.brand == reagents[index + 1].brand:
+        reagents_warn = True
+        break
+
+  for index, val in enumerate(controls):
+    if index != controls.count() - 1:
+      if val.brand != "" and val.catalog_number == controls[index + 1].catalog_number and val.brand == controls[index + 1].brand:
+        controls_warn = True
+        break
+
+  message = None
+  if ladders_warn or dyes_warn or plates_warn or gels_warn or tubes_warn or reagents_warn or controls_warn:
+    message = "There are "
+
+    if ladders_warn:
+      message += "ladders, "
+
+    if dyes_warn:
+      message += "dyes, "
+
+    if plates_warn:
+      message += "plates, "
+
+    if gels_warn:
+      message += "gels, "
+
+    if tubes_warn:
+      message += "tubes, "
+
+    if reagents_warn:
+      message += "reagents, "
+
+    if controls_warn:
+      message += "controls, "
+
+    message += "that share the same catalog number that you may merge."
+  
+  return message
+
+
+def find_mergeable_items(ladders, dyes, plates, gels, tubes, reagents, controls):
+  mergeable_dict = {
+    'ladders': None,
+    'dyes': None,
+    'plates': None,
+    'gels': None,
+    'tubes': None,
+    'reagents': None,
+    'controls': None,
+  }
+
+  temp_ladders = []
+  for index, val in enumerate(ladders):
+    if index != ladders.count() - 1 and val.catalog_number != None:
+      if val.catalog_number == ladders[index + 1].catalog_number:
+        temp_ladders.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_ladders = {str(item): item for item in temp_ladders} 
+  mergeable_dict['ladders'] = dedupe_ladders.values()
+
+  temp_dyes = []
+  for index, val in enumerate(dyes):
+    if index != dyes.count() - 1 and val.catalog_number != None:
+      if val.catalog_number == dyes[index + 1].catalog_number:
+        temp_dyes.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_dyes = {str(item): item for item in temp_dyes} 
+  mergeable_dict['dyes'] = dedupe_dyes.values()
+
+  temp_plates = []
+  for index, val in enumerate(plates):
+    if index != plates.count() - 1 and val.catalog_number != None:
+      if val.catalog_number == plates[index + 1].catalog_number:
+        temp_plates.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_plates = {str(item): item for item in temp_plates}      
+  mergeable_dict['plates'] = dedupe_plates.values()
+  
+  temp_gels = []
+  for index, val in enumerate(gels):
+    if index != gels.count() - 1 and val.catalog_number != None:
+      if val.catalog_number == gels[index + 1].catalog_number:
+        temp_gels.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_gels = {str(item): item for item in temp_gels} 
+  mergeable_dict['gels'] = dedupe_gels.values()
+
+  temp_tubes = []
+  for index, val in enumerate(tubes):
+    if index != tubes.count() - 1 and val.catalog_number != None:
+      if val.catalog_number == tubes[index + 1].catalog_number:
+        temp_tubes.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_tubes = {str(item): item for item in temp_tubes} 
+  mergeable_dict['tubes'] = dedupe_tubes.values()
+
+  temp_reagents = []
+  for index, val in enumerate(reagents):
+    if index != reagents.count() - 1 and val.catalog_number != None:
+      if val.catalog_number == reagents[index + 1].catalog_number:
+        temp_reagents.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_reagents = {str(item): item for item in temp_reagents} 
+  mergeable_dict['reagents'] = dedupe_reagents.values()
+
+  temp_controls = []
+  for index, val in enumerate(controls):
+    if index != controls.count() - 1 and val.catalog_number != None:
+      if val.catalog_number == controls[index + 1].catalog_number:
+        temp_controls.append({'brand': val.brand, 'cat': val.catalog_number})
+  dedupe_controls = {str(item): item for item in temp_controls} 
+  mergeable_dict['controls'] = dedupe_controls.values()
+ 
+  return mergeable_dict

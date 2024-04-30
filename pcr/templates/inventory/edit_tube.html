@@ -9,6 +9,7 @@
 
   <div class="row justify-content-center">
     <h3 class="text-center">{{tube.name}}</h3>
+    <h6 class="text-center">Added on {{tube.date_created}}</h6>
     <p class="text-center"><a href="{% url 'inventory_guide' %}" target="_blank" class="text-center">Inventory Guide</a></p>
   </div>
 
@@ -42,6 +43,14 @@
         <div class="text-center mt-3">
           <label class="form-label">Amount Stored</label>
           {{form.amount}}
+        </div>
+
+        <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Set the amount of tubes that you wish to maintain in your lab. Otherwise, leave it at 0.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
+          <label class="form-label">Threshold</label>
+          {{form.threshold}}
         </div>
       </div>
 
@@ -79,7 +88,9 @@
     {% if form.errors %}
     <div class="row text-center mt-2">
       {% for key,value in form.errors.items %} 
+      <div class="alert alert-danger" role="alert">
         {{ value|escape }}
+      </div>
       {% endfor %}
     </div>
     {% endif %}
@@ -87,50 +98,60 @@
     <div class="row justify-content-center">
       <div class="text-center mt-2">
         <a class="btn btn-secondary" href="{% url 'tubes' %}">Cancel</a>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">
+          Delete Tube
+        </button>
         <button class="btn btn-primary" type="submit" name="update">Update Tube</button>
       </div>
+
+      {% if tube.merged_lot_numbers|length > 0 %}
+      <div class="col-sm-3 form-width-18">
+        <span class="d-inline-block float-start mt-3" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="You have merged this item with the following lot numbers.">
+          <i class="fa-solid fa-circle-info"></i>
+        </span>
+        <div class="text-center mt-3">
+          <label class="form-label">Merged Lot Numbers</label>
+        </div>
+        <ul class="list-group">
+          {% for lot in tube.merged_lot_numbers %}
+          <li class="list-group-item">{{lot}}<a hx-confirm="Are you sure you want to remove lot# {{lot}} from {{tube}}? " hx-on::after-request="this.parentNode.remove()" class="btn btn-danger btn-sm float-end" hx-post="{% url 'remove_tube_lot_number' tube.pk lot %}" role="button"><i class="fa-regular fa-square-minus"></i></a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
     </div>
 
   </form>
 
-  {% comment %} <div class="row justify-content-center">
-    <div class="col-sm-4">
+  {% if tube.extractionprotocol_set.all %}
+  <div class="row justify-content-center mt-3">
+    <h4 class="text-center">Correlations</h4>
 
-      {% if tube.extractionprotocol_set.all %}
-      <h5 class="text-center">Protocols</h5>
+    <div class="col-sm-6">
       <div class="table-responsive">
         <table class="table table-bordered table-hover">
 
           <thead>
             <tr>
-              <th scope="col" class="col-sm-3">Name</th>
-              <th scope="col" class="col-sm-3">Type</th>
+              <th scope="col" class="col-sm-3">Extraction Protocols</th>
             </tr>
           </thead>
 
           <tbody>
             {% for protocol in tube.extractionprotocol_set.all %}
-            <tr class="batch-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
+            <tr class="link-row" data-href="{% url 'edit_extraction_protocol' protocol.pk %}">
               <td>{{protocol.name}}</td>
-              <td>{{protocol.type}}</td>
             </tr>
             {% endfor %}
           </tbody>
 
         </table>
       </div>
-      {% endif %}
 
-    </div>
-  </div> {% endcomment %}
-
-  <div class="row justify-content-center mt-2">
-    <div class="col d-flex justify-content-center">
-      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">
-        Delete Tube
-      </button>
     </div>
   </div>
+  {% endif %}
 
   <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -160,7 +181,9 @@
                   {% if del_form.errors %}
                   <div class="row text-center mt-2">
                     {% for key,value in del_form.errors.items %} 
+                    <div class="alert alert-danger" role="alert">
                       {{ value|escape }}
+                    </div>
                     {% endfor %}
                   </div>
                   {% endif %}
@@ -191,7 +214,7 @@
   });
 
   jQuery(document).ready(function($) {
-    $(".batch-row").click(function() {
+    $(".link-row").click(function() {
         window.location = $(this).data("href");
     });
   });

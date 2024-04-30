@@ -1,0 +1,50 @@
+<div class="container mt-3 border border-3 border-secondary h-100">
+
+  <h5 class="text-center">Extraction Batches</h5>
+
+  <div class="text-center mb-1">
+    <a class="btn btn-primary btn-sm position-relative" href="{% url 'controls' %}" role="button">Manage Batches
+
+      {% if in_que %}
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+        In Queue
+        <span class="visually-hidden">unread messages</span>
+      </span>
+      {% endif %}
+
+    </a>
+  </div>
+
+  <div class="table-responsive">
+
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Lab ID</th>
+          <th scope="col">Panel</th>
+          <th scope="col">Number of Samples</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for batch in batches %}
+          <tr class="link-row {% if not batch.is_extracted %} table-success {% endif %}" {% if not batch.is_extracted %} data-href="{% url 'batch_samples' batch.pk %}" {% else %} data-href="{% url 'extracted_batches' %}" {% endif %}>
+            <td><span class="badge text-bg-primary">{{batch.lab_id}}</span></td>
+            <td><span class="badge text-bg-success">{{batch.code.name}}</span></td>
+            <td>{{batch.sample_set.count}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".link-row").click(function() {
+        window.location = $(this).data("href");
+    });
+  });
+</script>

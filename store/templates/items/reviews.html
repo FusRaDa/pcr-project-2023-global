@@ -5,29 +5,39 @@
 {% block title %} Store {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
 
   <div class="row">
-    <h5 class="text-center">Reviews for Kit: {{kit.name}}</h5>
+    <h3 class="text-center">Reviews/Details for Kit: {{kit.name}}</h3>
   </div>
 
-  {% for message in messages %}
-  <div class="row">
-    <div class="col d-flex justify-content-center"> 
-      <h5 class="messages">{{ message }}</h5>
+  {% if messages %}
+  <div class="row justify-content-center">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      <h6 class="text-center message">{{ message }}</h6>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+  {% endif %}
   
   <div class="row">
 
     <div class="col-sm-6">
 
+      <div class="card mb-2 mt-2">
+        <h5 class="card-header">{{kit.name}} - Cat#: {{kit.catalog_number}}</h5>
+        <div class="card-body">
+          <h5 class="card-title">Price per kit: {{kit.price}} USD</h5>
+          <p class="card-text">{{kit.description}}</p>
+        </div>
+      </div>
+
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th scope="col" class="col-sm-4">Cat#: {{kit.catalog_number}}</th>
+              <th scope="col" class="col-sm-4">PCRprep Components</th>
               <th scope="col" class="col-sm-2">Amount</th>
             </tr>
           </thead>
@@ -58,6 +68,27 @@
             <tr class="table-secondary">
               <td>{{gels.name}}</td>
               <td>{{gels.amount}}</td>
+            </tr>
+            {% endfor %}
+
+            {% for ladders in kit.storeladder_set.all %}
+            <tr class="table-danger">
+              <td>{{ladders.name}}</td>
+              <td>{{ladders.amount}} µL</td>
+            </tr>
+            {% endfor %}
+
+            {% for dyes in kit.storedye_set.all %}
+            <tr class="table-info">
+              <td>{{dyes.name}}</td>
+              <td>{{dyes.amount}} µL</td>
+            </tr>
+            {% endfor %}
+
+            {% for controls in kit.storecontrol_set.all %}
+            <tr class="table-light">
+              <td>{{controls.name}}</td>
+              <td>{{controls.amount}} µL</td>
             </tr>
             {% endfor %}
           </tbody>

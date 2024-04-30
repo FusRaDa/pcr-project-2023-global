@@ -1,0 +1,36 @@
+<form 
+  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+  hx-post="{% url 'create_dye_store' %}"
+  hx-include="[name='pk']"
+  hx-target="#dyes"
+  hx-swap="beforebegin"
+  hx-on::after-request="this.remove()"
+  hx-trigger="click from:#submit-all">
+  <div class="border border-2 border-primary mt-2 px-2">
+
+    <button 
+      type="button" 
+      class="btn-close float-end"
+      hx-on:click="this.parentNode.parentNode.remove()">
+    </button>
+
+    <div class="text-center mb-2">
+      <label class="form-label">Name</label>
+      {{form.name}}
+    </div>
+
+    <div class="text-center mb-2">
+      <label class="form-label">Amount (&#181;L)</label>
+      {{form.amount}}
+    </div>
+
+    {% if form.errors %}
+    <div class="row text-center mt-2">
+      {% for key,value in form.errors.items %} 
+        {{ value|escape }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+  </div>
+</form> 

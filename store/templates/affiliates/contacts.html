@@ -5,7 +5,7 @@
 {% block title %} Contacts {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
 
   <div class="row">
     <div class="col d-flex justify-content-center"> 
@@ -16,7 +16,9 @@
   {% if messages %}
   <div class="row justify-content-center">
     {% for message in messages %}
-    <h6 class="text-center message">{{ message }}</h6>
+    <div class="alert alert-danger" role="alert">
+      <h6 class="text-center message">{{ message }}</h6>
+    </div>
     {% endfor %}
   </div>
   {% endif %}

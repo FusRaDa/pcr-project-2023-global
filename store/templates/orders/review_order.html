@@ -6,7 +6,11 @@
 {% block title %} Store {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
+
+  <div class="row justify-content-center">
+    <h3 class="text-center">Review Your Order</h3>
+  </div>
 
   <div class="row justify-content-center mt-2">
 
@@ -119,6 +123,22 @@
               <td>{{gels.name}}</td>
               <td>{{gels.amount}} × {{kits.amount_ordered}}</td>
               <td>{{gels.amount|dec_mult:kits.amount_ordered}}</td>
+            </tr>
+            {% endfor %}
+
+            {% for dye in order_kits.storedye_set.all %}
+            <tr class="table-danger">
+              <td>{{dye.name}}</td>
+              <td>{{dye.amount}} × {{kits.amount_ordered}}</td>
+              <td>{{dye.amount|dec_mult:kits.amount_ordered}}</td>
+            </tr>
+            {% endfor %}
+
+            {% for ladder in order_kits.storeladder_set.all %}
+            <tr class="table-info">
+              <td>{{ladder.name}}</td>
+              <td>{{ladder.amount}} × {{kits.amount_ordered}}</td>
+              <td>{{ladder.amount|dec_mult:kits.amount_ordered}}</td>
             </tr>
             {% endfor %}
           </tbody>

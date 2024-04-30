@@ -1,19 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
 from django.forms import modelformset_factory, formset_factory
 
 from django.core.paginator import Paginator
-from datetime import datetime
 from django.utils import timezone
 
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.db.models import Q
-
-# use in production with postgresql https://docs.djangoproject.com/en/3.2/ref/contrib/postgres/search/#trigramsimilarity
-from django.contrib.postgres.search import TrigramSimilarity
 
 from ..custom.functions import generate_order_files, kit_to_inventory
 
@@ -22,11 +17,9 @@ from ..models.items import Kit
 from ..models.orders import Order, KitOrder
 from ..forms.orders import KitOrderForm
 from ..forms.general import SearchStoreForm, ItemLotNumberForm
-from pcr.models.inventory import Plate, Tube, Reagent
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def store(request):
   orders = Order.objects.filter(user=request.user, has_ordered=False)
   if not orders.exists():
@@ -34,7 +27,7 @@ def store(request):
   else:
     order = Order.objects.get(user=request.user, has_ordered=False)
 
-  kits = Kit.objects.all().order_by('name')
+  kits = Kit.objects.all().exclude(pk__in=order.kits.all()).order_by('name')
 
   form = SearchStoreForm()
   if request.method == 'GET':
@@ -51,7 +44,11 @@ def store(request):
       if tags:
         filters['tags__in'] = tags
 
-      kits = Kit.objects.filter(**filters).filter(Q(name__icontains=text_search) | Q(description__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(price)
+      if not price:
+        kits = Kit.objects.filter(**filters).filter(Q(name__icontains=text_search) | Q(description__icontains=text_search) | Q(catalog_number__icontains=text_search)).exclude(pk__in=order.kits.all()).order_by('name')
+      else:
+        kits = Kit.objects.filter(**filters).filter(Q(name__icontains=text_search) | Q(description__icontains=text_search) | Q(catalog_number__icontains=text_search)).exclude(pk__in=order.kits.all()).order_by(price)
+  
     else:
       print(form.errors)
 
@@ -63,8 +60,7 @@ def store(request):
   return render(request, 'orders/store.html', context)
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def add_kit_to_order(request, order_pk, kit_pk):
   try:
     order = Order.objects.get(user=request.user, pk=order_pk, has_ordered=False)
@@ -83,8 +79,7 @@ def add_kit_to_order(request, order_pk, kit_pk):
       return render(request, 'partials/kit_order.html', context)
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def remove_kit_from_order(request, order_pk, kit_pk):
   try:
     order = Order.objects.get(user=request.user, pk=order_pk, has_ordered=False)
@@ -96,11 +91,13 @@ def remove_kit_from_order(request, order_pk, kit_pk):
     kit = Kit.objects.get(pk=kit_pk)
     order.kits.remove(kit)
 
+    context = {'kit': kit, 'order': order}
+    return render(request, 'partials/kit_display.html', context)
+  
   return HttpResponse(status=200)
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def review_order(request, pk):
   try:
     order = Order.objects.get(user=request.user, has_ordered=False, pk=pk)
@@ -169,16 +166,14 @@ def review_order(request, pk):
   return render(request, 'orders/review_order.html', context)
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def orders(request):
   orders = Order.objects.filter(user=request.user, has_ordered=True).order_by('-date_processed')
   context = {'orders': orders}
   return render(request, 'orders/orders.html', context)
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def view_order(request, pk):
   try:
     order = Order.objects.get(user=request.user, has_ordered=True, pk=pk)
@@ -194,8 +189,7 @@ def view_order(request, pk):
   return render(request, 'orders/view_order.html', context)
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def copy_order(request, pk):
   try:
     past_order = Order.objects.get(user=request.user, pk=pk)
@@ -217,8 +211,7 @@ def copy_order(request, pk):
   return redirect('store')
 
 
-# @login_required(login_url='login')
-@staff_member_required(login_url='login')
+@login_required(login_url='login')
 def add_to_inventory(request, order_pk, kit_pk):
   try:
     order = Order.objects.get(user=request.user, pk=order_pk)
@@ -247,14 +240,9 @@ def add_to_inventory(request, order_pk, kit_pk):
         lot_number = form.cleaned_data.get('lot_number')
         if lot_number != None:
           kit_to_inventory(kit, request.user, lot_number)
-          print('add kit...')
           kit_order.remaining_transfers -= 1
           kit_order.save()
       return redirect('view_order', order.pk)
 
   context = {'formset': formset, 'kit': kit, 'order': order, 'kit_order': kit_order}
   return render(request, 'orders/add_to_inventory.html', context)
-  
-
-  
-
