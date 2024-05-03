@@ -345,6 +345,7 @@ class ReagentForm(ModelForm):
     self.fields['volume'].widget.attrs['min'] = 0
     self.fields['stock_concentration'].widget.attrs['min'] = 0
     self.fields['threshold'].widget.attrs['min'] = 0
+    self.fields['mixture_volume_per_reaction'].widget.attrs['min'] = 0
   
   class Meta:
     model = Reagent

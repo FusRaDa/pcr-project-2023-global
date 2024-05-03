@@ -59,6 +59,11 @@
       {{form.unit_concentration}}
     </div>
 
+    <div class="text-center mb-2">
+      <label class="form-label">Mixture Volume Per Reaction (µL)</label>
+      {{form.mixture_volume_per_reaction}}
+    </div>
+
     {% if form.errors %}
     <div class="row text-center mt-2">
       {% for key,value in form.errors.items %} 

@@ -58,6 +58,7 @@ def kit_to_inventory(kit, user, lot_number):
       unit_concentration = reagent.unit_concentration,
       forward_sequence = reagent.forward_sequence,
       reverse_sequence = reagent.reverse_sequence,
+      mixture_volume_per_reaction = reagent.mixture_volume_per_reaction
     )
 
   for tube in kit.storetube_set.all():
