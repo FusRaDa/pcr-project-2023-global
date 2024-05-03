@@ -139,6 +139,8 @@ class ReagentAssay(models.Model):
           if reagent.reagent.pcr_reagent == Reagent.PCRReagent.POLYMERASE:
             vol = reagent.final_concentration / reagent.reagent.stock_concentration
             sum += vol
+          if reagent.reagent.pcr_reagent == Reagent.PCRReagent.MIXTURE:
+            sum += reagent.reagent.mixture_volume_per_reaction
           else:
             dil_f = reagent.reagent.stock_concentration / reagent.final_concentration
             vol = reagent.assay.reaction_volume / dil_f
@@ -150,6 +152,10 @@ class ReagentAssay(models.Model):
     if self.reagent.pcr_reagent == Reagent.PCRReagent.POLYMERASE:
       volume = self.final_concentration / self.reagent.stock_concentration 
       return volume
+    
+    if self.reagent.pcr_reagent == Reagent.PCRReagent.MIXTURE:
+      volume = reagent.reagent.mixture_volume_per_reaction
+      return volume
 
     df = self.reagent.stock_concentration / self.final_concentration 
     volume = Decimal("{:.2f}".format(self.assay.reaction_volume / df))
@@ -158,7 +164,7 @@ class ReagentAssay(models.Model):
   
   @property
   def dilution_factor(self):
-    if self.reagent.pcr_reagent == Reagent.PCRReagent.WATER or self.reagent.pcr_reagent == Reagent.PCRReagent.POLYMERASE:
+    if self.reagent.pcr_reagent == Reagent.PCRReagent.WATER or self.reagent.pcr_reagent == Reagent.PCRReagent.POLYMERASE or self.reagent.pcr_reagent == Reagent.PCRReagent.MIXTURE:
       return None
     df = Decimal("{:.2f}".format(self.reagent.stock_concentration / self.final_concentration))
     return df

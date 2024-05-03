@@ -256,6 +256,7 @@ class ReagentForm(ModelForm):
     usage = cleaned_data.get('usage')
     forward_sequence = cleaned_data.get('forward_sequence')
     reverse_sequence = cleaned_data.get('reverse_sequence')
+    mixture_volume = cleaned_data.get('mixture_volume_per_reaction')
 
     if Reagent.objects.filter(user=self.user).count() >= LIMITS.MAX_REAGENT_LIMIT and self.instance.pk == None:
       raise ValidationError(
@@ -282,12 +283,22 @@ class ReagentForm(ModelForm):
         message="Polymerase reagents require a unit of U/\u00B5L. If your polymerase is in a different concentration, set PCR Reagent as General."
       )
     
+    if mixture_volume and pcr_reagent != Reagent.PCRReagent.MIXTURE:
+      raise ValidationError(
+        message="Mixture volumes per reaction are required for reagents that are enzyme mixtures with no specified stock concentration."
+      )
+    
+    if pcr_reagent == Reagent.PCRReagent.MIXTURE and not mixture_volume:
+      raise ValidationError(
+        message="Reagents that are enzyme mixtures must have a volume per reaction used."
+      )
+    
     if pcr_reagent == Reagent.PCRReagent.WATER and (stock != None or unit != None):
       raise ValidationError(
         message="Water for PCR does not require concentration."
       )
   
-    if usage == Reagent.Usages.PCR and pcr_reagent != Reagent.PCRReagent.WATER and (stock == None or unit == None):
+    if usage == Reagent.Usages.PCR and pcr_reagent != Reagent.PCRReagent.WATER and pcr_reagent != Reagent.PCRReagent.MIXTURE and (stock == None or unit == None):
       raise ValidationError(
         message="All reagents for PCR except water must have a concentration."
       )
@@ -325,6 +336,7 @@ class ReagentForm(ModelForm):
     self.fields['unit_concentration'].widget.attrs['class'] = 'form-select'
     self.fields['forward_sequence'].widget.attrs['class'] = 'form-control'
     self.fields['reverse_sequence'].widget.attrs['class'] = 'form-control'
+    self.fields['mixture_volume_per_reaction'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
 
     self.fields['threshold'].widget.attrs['class'] = 'form-control'

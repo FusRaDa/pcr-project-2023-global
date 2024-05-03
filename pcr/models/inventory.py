@@ -254,9 +254,10 @@ class Reagent(models.Model):
     X = 'X', _('X')
 
   class PCRReagent(models.TextChoices):
-    GENERAL = 'GENERAL', _('General')
-    PRIMER = 'PRIMER', _('Primer')
-    POLYMERASE = 'POLYMERASE', _('Polymerase') #used as units/micro-liter
+    GENERAL = 'GENERAL', _('General') # buffers, dntp's, anything with a stock concentration
+    PRIMER = 'PRIMER', _('Primer') # has stock concentration but also a reverse/forward sequence
+    POLYMERASE = 'POLYMERASE', _('Polymerase') # used as units/micro-liter
+    MIXTURE = 'MIXTURE', _('Mixture') # enzyme mixtures with not stock concentration
     WATER = 'WATER', _('Water')
 
   name = models.CharField(blank=False, max_length=100)
@@ -283,6 +284,8 @@ class Reagent(models.Model):
 
   forward_sequence = models.CharField(blank=True, null=True, max_length=100) # 3 to 5
   reverse_sequence = models.CharField(blank=True, null=True, max_length=100) # 5 to 3
+
+  mixture_volume_per_reaction = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12) # in microliters
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)

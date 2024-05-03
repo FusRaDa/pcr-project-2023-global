@@ -48,7 +48,7 @@
         </div>
 
         <div class="text-center mt-3">
-          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="If this reagent is for PCR, is it a primer, diluent (such as water), or a polymerase with a concentration unit of U/μL? If not, select General">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="If this reagent is for PCR, is it a primer, diluent (such as water), a polymerase with a concentration unit of U/μL, or an enzyme mixture without a specified stock concentration? If not, select General">
             <i class="fa-solid fa-circle-info"></i>
           </span>
           <label class="form-label">PCR Reagent Type</label>
@@ -96,6 +96,14 @@
             <i class="fa-solid fa-circle-info"></i>
           </span>
           <label class="form-label">Concentration Unit</label>
+          {{form.unit_concentration}}
+        </div>
+
+        <div class="text-center mt-3">
+          <span class="d-inline-block float-start" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-content="Set the amount of mixture used per reaction if this reagent is an enzyme mixture without a specified stock concentration.">
+            <i class="fa-solid fa-circle-info"></i>
+          </span>
+          <label class="form-label">Mixture Volume Per Reaction (µL)</label>
           {{form.unit_concentration}}
         </div>
       </div>
