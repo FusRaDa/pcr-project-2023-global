@@ -16,7 +16,7 @@ from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
 from ..models.inventory import Reagent
-from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_gels, all_pcr_samples, samples_by_assay_multiplicates
+from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_gels, all_pcr_samples, samples_by_assay_multiplicates, send_theshold_alert_email_ext, send_theshold_alert_email_pcr
 
 
 @login_required(login_url='login')

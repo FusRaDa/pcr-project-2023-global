@@ -1,8 +1,10 @@
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+import math
+
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
 from ..models.inventory import Plate
-import math
-
 from ..models.inventory import Reagent
 from ..models.pcr import Process
 
@@ -1157,8 +1159,16 @@ def find_mergeable_items(ladders, dyes, plates, gels, tubes, reagents, controls)
   return mergeable_dict
 
 
-def send_theshold_alert_email_pcr(inventory_alerts):
-  pass
+def send_theshold_alert_email_pcr(request, inventory_alerts):
+  mail_subject = f"{request.user.first_name}, PCRprep inventory requires your attention!"
+  message = render_to_string('email/pcr_inventory_alert.html', {
+    'user': f"{request.user.first_name} {request.user.last_name}",
+    'inventory': inventory_alerts,
+    'protocol': 'https' if request.is_secure() else 'http',
+  })
+  email = EmailMessage(mail_subject, message, to=[request.user.email])
+  email.send()
+ 
 
 
 def send_theshold_alert_email_ext(inventory_alerts):

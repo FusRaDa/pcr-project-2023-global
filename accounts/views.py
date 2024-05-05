@@ -16,12 +16,7 @@ from users.models import User
 from .tokens import account_activation_token
 from .models import EmailOrUsernameModelBackend
 from .forms import CreateUserForm, LoginUserForm
-from .functions import create_test_objects
 from analytics.functions import record_user_login
-
-from pcr.models.assay import Assay, AssayCode, Control
-from pcr.models.batch import Batch
-from pcr.models.pcr import Process
 
 from pcr.custom.constants import LIMITS
 
