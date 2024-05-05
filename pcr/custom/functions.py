@@ -1170,6 +1170,5 @@ def send_theshold_alert_email_pcr(request, inventory_alerts):
   email.send()
  
 
-
-def send_theshold_alert_email_ext(inventory_alerts):
+def send_theshold_alert_email_ext(request, inventory_alerts):
   pass

@@ -1,4 +1,174 @@
 {% autoescape off %}
 Hello {{ user }},
 
+You recently created PCR paperwork on {{ inventory_alerts.date }}. 
+
+We noticed that the following items require your attention as they have reached the assigned threshold:
 {% endautoescape %}
+
+{% if inventory_alerts.qpcr_plates %}
+<table>
+  <tr>
+    <th>qPCR Plate</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory_alerts.qpcr_plates %}
+  <tr>
+    <td>{{item.name}}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{% url 'edit_plate' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+
+{% if inventory_alerts.pcr_plates %}
+<table>
+  <tr>
+    <th>qPCR Plate</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory_alerts.pcr_plate %}
+  <tr>
+    <td>{{item.name}}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{% url 'edit_plate' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+
+{% if inventory_alerts.gels %}
+<table>
+  <tr>
+    <th>qPCR Plate</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory_alerts.gels %}
+  <tr>
+    <td>{{item.name}}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{% url 'edit_gel' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+
+{% if inventory_alerts.controls %}
+<table>
+  <tr>
+    <th>qPCR Plate</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory_alerts.controls %}
+  <tr>
+    <td>{{item.name}}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{% url 'edit_control' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+
+{% if inventory_alerts.reagents %}
+<table>
+  <tr>
+    <th>qPCR Plate</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory_alerts.reagents %}
+  <tr>
+    <td>{{item.name}}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{% url 'edit_reagent' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+
+{% if inventory_alerts.dyes %}
+<table>
+  <tr>
+    <th>qPCR Plate</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory_alerts.dyes %}
+  <tr>
+    <td>{{item.name}}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{% url 'edit_dye' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+
+{% if inventory_alerts.ladders %}
+<table>
+  <tr>
+    <th>qPCR Plate</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory_alerts.ladders %}
+  <tr>
+    <td>{{item.name}}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{% url 'edit_ladder' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}

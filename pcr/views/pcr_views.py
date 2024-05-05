@@ -16,7 +16,7 @@ from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
 from ..models.inventory import Reagent
-from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_gels, all_pcr_samples, samples_by_assay_multiplicates, send_theshold_alert_email_ext, send_theshold_alert_email_pcr
+from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_gels, all_pcr_samples, samples_by_assay_multiplicates, send_theshold_alert_email_pcr
 
 
 @login_required(login_url='login')
@@ -832,6 +832,7 @@ def process_paperwork(request, pk):
 
         if diff <= 0:
           inventory_alerts['qpcr_plates'].append({
+            'pk': plate['plate'].pk,
             'item': plate['plate'].name, 
             'lot': plate['plate'].lot_number,
             'cat': plate['plate'].catalog_number,
@@ -850,6 +851,7 @@ def process_paperwork(request, pk):
 
         if diff <= 0:
           inventory_alerts['pcr_plates'].append({
+            'pk': plate['plate'].pk,
             'item': plate['plate'].name, 
             'lot': plate['plate'].lot_number,
             'cat': plate['plate'].catalog_number,
@@ -868,6 +870,7 @@ def process_paperwork(request, pk):
 
         if diff <= 0:
           inventory_alerts['gels'].append({
+            'pk': gel['gel'].pk,
             'item': gel['gel'].name, 
             'lot': gel['gel'].lot_number,
             'cat': gel['gel'].catalog_number,
@@ -889,6 +892,7 @@ def process_paperwork(request, pk):
 
         if diff <= 0:
           inventory_alerts['controls'].append({
+            'pk': control_dict['control'].pk,
             'item': control_dict['control'].name, 
             'lot': control_dict['control'].lot_number,
             'cat': control_dict['control'].catalog_number,
@@ -909,6 +913,7 @@ def process_paperwork(request, pk):
 
         if diff <= 0:
           inventory_alerts['reagents'].append({
+            'pk': reagent_dict['reagent'].pk,
             'item': reagent_dict['reagent'].name, 
             'lot': reagent_dict['reagent'].lot_number,
             'cat': reagent_dict['reagent'].catalog_number,
@@ -934,6 +939,7 @@ def process_paperwork(request, pk):
 
         if diff <= 0:
           inventory_alerts['dyes'].append({
+            'pk': dye_dict['dye'].pk,
             'item': dye_dict['dye'].name, 
             'lot': dye_dict['dye'].lot_number,
             'cat': dye_dict['dye'].catalog_number,
@@ -951,6 +957,7 @@ def process_paperwork(request, pk):
 
         if diff <= 0:
           inventory_alerts['ladders'].append({
+            'pk': ladder_dict['ladder'].pk,
             'item': ladder_dict['ladder'].name, 
             'lot': ladder_dict['ladder'].lot_number,
             'cat': ladder_dict['ladder'].catalog_number,
@@ -961,6 +968,8 @@ def process_paperwork(request, pk):
       ladder_dict['ladder'].save()
     # **FINAL UPDATE OF ALL DYES & LADDERS IN DB** #
 
+    if inventory_alerts['qpcr_plates'] or inventory_alerts['pcr_plates'] or inventory_alerts['gels'] or inventory_alerts['controls'] or inventory_alerts['reagents'] or inventory_alerts['dyes'] or inventory_alerts['ladders']:
+      send_theshold_alert_email_pcr(request, inventory_alerts)
     # **ALERT DATA** #
       
     return redirect('processes')
