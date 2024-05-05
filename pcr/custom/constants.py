@@ -26,6 +26,10 @@ class LIMITS:
   MAX_GEL_LIMIT = 1000
   MAX_TUBE_LIMIT = 1000
   MAX_REAGENT_LIMIT = 1000
+
+
+class ControlThreshold:
+  THRESHOLD = 100 # in miocroliters
   
 
   

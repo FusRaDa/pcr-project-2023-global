@@ -1155,3 +1155,11 @@ def find_mergeable_items(ladders, dyes, plates, gels, tubes, reagents, controls)
   mergeable_dict['controls'] = dedupe_controls.values()
  
   return mergeable_dict
+
+
+def send_theshold_alert_email_pcr(inventory_alerts):
+  pass
+
+
+def send_theshold_alert_email_ext(inventory_alerts):
+  pass

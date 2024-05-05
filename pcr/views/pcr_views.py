@@ -15,7 +15,8 @@ from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
-from ..models.inventory import Reagent, Plate
+from ..models.inventory import Reagent
+from ..custom.constants import ControlThreshold
 from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_gels, all_pcr_samples, samples_by_assay_multiplicates
 
 
@@ -702,6 +703,7 @@ def process_paperwork(request, pk):
         return redirect(request.path_info)
     # **VALIDATION FOR PLATES & GELS** #
       
+
     # **VALIDATION FOR CONTROLS** #
     for control_dict in all_controls:
       name = control_dict['control'].name
@@ -810,11 +812,32 @@ def process_paperwork(request, pk):
     
     process.save()
 
+    # **ALERT DATA** #
+    inventory_alerts = {
+      'date': process.date_processed,
+      'qpcr_plates': [],
+      'pcr_plates': [],
+      'gels': [],
+      'controls': [],
+      'reagents': [],
+      'dyes': [],
+      'ladders': [],
+    }
+
     # **FINAL UPDATE OF ALL PLATES AND GELS IN DB** #
     for plate in qpcr_plates:
 
       if plate['plate'].threshold > 0:
-        plate['plate'].threshold_diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+        diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+        plate['plate'].threshold_diff = diff
+
+        if diff <= 0:
+          inventory_alerts['qpcr_plates'].append({
+            'plate': plate['plate'].name, 
+            'lot': plate['plate'].lot_number,
+            'cat': plate['plate'].catalog_number,
+            'amount': plate['plate'].amount,
+            })
 
       plate['plate'].amount -= plate['used']
       plate['plate'].save()
@@ -880,6 +903,8 @@ def process_paperwork(request, pk):
       ladder_dict['ladder'].amount -= ladder_dict['total']
       ladder_dict['ladder'].save()
     # **FINAL UPDATE OF ALL DYES & LADDERS IN DB** #
+
+    # **ALERT DATA** #
       
     return redirect('processes')
 
