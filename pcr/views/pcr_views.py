@@ -16,7 +16,6 @@ from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
 from ..models.inventory import Reagent
-from ..custom.constants import ControlThreshold
 from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_gels, all_pcr_samples, samples_by_assay_multiplicates
 
 
@@ -833,11 +832,11 @@ def process_paperwork(request, pk):
 
         if diff <= 0:
           inventory_alerts['qpcr_plates'].append({
-            'plate': plate['plate'].name, 
+            'item': plate['plate'].name, 
             'lot': plate['plate'].lot_number,
             'cat': plate['plate'].catalog_number,
             'amount': plate['plate'].amount,
-            })
+          })
 
       plate['plate'].amount -= plate['used']
       plate['plate'].save()
@@ -846,7 +845,16 @@ def process_paperwork(request, pk):
     for plate in pcr_plates:
 
       if plate['plate'].threshold > 0:
-        plate['plate'].threshold_diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+        diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+        plate['plate'].threshold_diff = diff
+
+        if diff <= 0:
+          inventory_alerts['pcr_plates'].append({
+            'item': plate['plate'].name, 
+            'lot': plate['plate'].lot_number,
+            'cat': plate['plate'].catalog_number,
+            'amount': plate['plate'].amount,
+          })
 
       plate['plate'].amount -= plate['used']
       plate['plate'].save()
@@ -854,8 +862,17 @@ def process_paperwork(request, pk):
 
     for gel in gels:
 
-      if plate['plate'].threshold > 0:
-        plate['plate'].threshold_diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+      if gel['gel'].threshold > 0:
+        diff = gel['gel'].amount - gel['used'] - gel['gel'].threshold 
+        plate['plate'].threshold_diff = diff
+
+        if diff <= 0:
+          inventory_alerts['gels'].append({
+            'item': gel['gel'].name, 
+            'lot': gel['gel'].lot_number,
+            'cat': gel['gel'].catalog_number,
+            'amount': gel['gel'].amount,
+          })
 
       gel['gel'].amount -= gel['used']
       gel['gel'].save()
@@ -865,6 +882,19 @@ def process_paperwork(request, pk):
 
     # **FINAL UPDATE OF ALL CONTROLS IN DB** #
     for control_dict in all_controls:
+
+      if control_dict['control'].threshold > 0:
+        diff = control_dict['control'].amount - Decimal(control_dict['total']) - control_dict['control'].threshold
+        control_dict['control'].threshold_diff = diff
+
+        if diff <= 0:
+          inventory_alerts['controls'].append({
+            'item': control_dict['control'].name, 
+            'lot': control_dict['control'].lot_number,
+            'cat': control_dict['control'].catalog_number,
+            'amount': control_dict['control'].amount,
+          })
+
       control_dict['control'].amount -= Decimal(control_dict['total'])
       control_dict['control'].save()
     # **FINAL UPDATE OF ALL CONTROLS IN DB** #
@@ -874,7 +904,16 @@ def process_paperwork(request, pk):
     for reagent_dict in all_reagents:
 
       if reagent_dict['reagent'].threshold > 0:
-        reagent_dict['reagent'].threshold_diff = Decimal(reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] - reagent_dict['reagent'].threshold_in_microliters)
+        diff = Decimal(reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] - reagent_dict['reagent'].threshold_in_microliters)
+        reagent_dict['reagent'].threshold_diff = diff
+
+        if diff <= 0:
+          inventory_alerts['reagents'].append({
+            'item': reagent_dict['reagent'].name, 
+            'lot': reagent_dict['reagent'].lot_number,
+            'cat': reagent_dict['reagent'].catalog_number,
+            'amount': reagent_dict['reagent'].volume,
+          })
 
       if process.is_plus_one_well == True:
         reagent_dict['reagent'].volume = Decimal(reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] - reagent_dict['volume_per_sample'])
@@ -890,7 +929,16 @@ def process_paperwork(request, pk):
     for dye_dict in all_dyes:
 
       if dye_dict['dye'].threshold > 0:
-        dye_dict['dye'].threshold_diff = Decimal(dye_dict['amount'] - dye_dict['total'] - dye_dict['dye'].threshold)
+        diff = Decimal(dye_dict['amount'] - dye_dict['total'] - dye_dict['dye'].threshold)
+        dye_dict['dye'].threshold_diff = diff
+
+        if diff <= 0:
+          inventory_alerts['dyes'].append({
+            'item': dye_dict['dye'].name, 
+            'lot': dye_dict['dye'].lot_number,
+            'cat': dye_dict['dye'].catalog_number,
+            'amount': dye_dict['dye'].amount,
+          })
 
       dye_dict['dye'].amount -= dye_dict['total']
       dye_dict['dye'].save()
@@ -898,7 +946,16 @@ def process_paperwork(request, pk):
     for ladder_dict in all_ladders:
 
       if ladder_dict['ladder'].threshold > 0:
-        ladder_dict['ladder'].threshold_diff = Decimal(ladder_dict['amount'] - ladder_dict['total'] - ladder_dict['ladder'].threshold)
+        diff = Decimal(ladder_dict['amount'] - ladder_dict['total'] - ladder_dict['ladder'].threshold)
+        ladder_dict['ladder'].threshold_diff = diff
+
+        if diff <= 0:
+          inventory_alerts['ladders'].append({
+            'item': ladder_dict['ladder'].name, 
+            'lot': ladder_dict['ladder'].lot_number,
+            'cat': ladder_dict['ladder'].catalog_number,
+            'amount': ladder_dict['ladder'].amount,
+          })
 
       ladder_dict['ladder'].amount -= ladder_dict['total']
       ladder_dict['ladder'].save()

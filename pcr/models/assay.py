@@ -32,6 +32,9 @@ class Control(models.Model):
   lot_number = models.CharField(blank=False, max_length=100)
   amount = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
 
+  threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  threshold_diff = models.IntegerField(blank=True, null=True, default=None) # amount - amount_used - threshold
+
   merged_lot_numbers = models.JSONField(default=list)
 
   last_updated = models.DateTimeField(auto_now=True)
