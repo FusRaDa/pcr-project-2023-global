@@ -1,4 +1,54 @@
 {% autoescape off %}
 Hello {{ user }},
 
+You recently created PCR paperwork for extraction on {{ inventory_alerts.date }}. 
+
+We noticed that the following items require your attention as they have reached the assigned threshold:
 {% endautoescape %}
+
+{% if inventory_alerts.reagents %}
+<table>
+  <tr>
+    <th>Reagents</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory_alerts.reagents %}
+  <tr>
+    <td>{{item.name}}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{% url 'edit_reagent' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+
+{% if inventory_alerts.tubes %}
+<table>
+  <tr>
+    <th>Tubes</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory_alerts.tubes %}
+  <tr>
+    <td>{{item.name}}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{% url 'edit_tube' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}

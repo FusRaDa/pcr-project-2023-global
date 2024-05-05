@@ -8,7 +8,7 @@ from ..models.inventory import Reagent
 from ..models.batch import Batch, Sample
 from ..forms.batch import BatchForm, SampleForm, SampleAssayForm, NumberSamplesForm
 from ..forms.general import DeletionForm
-from ..custom.functions import create_samples
+from ..custom.functions import create_samples, send_theshold_alert_email_ext
 
 
 @login_required(login_url='login')
@@ -163,11 +163,29 @@ def batch_samples(request, pk):
       
     batch.is_extracted = True
 
+    # **ALERT DATA** #
+    inventory_alerts = {
+      'date': batch.date_created,
+      'reagents': [],
+      'tubes': [],
+    }
+
+    # **FINAL UPDATE OF DB** #
     for reagent in batch.extraction_protocol.reagentextraction_set.all():
       total_used_reagents = reagent.amount_per_sample * batch.sample_set.count()
 
       if reagent.reagent.threshold > 0:
-        reagent.reagent.threshold_diff = reagent.reagent.volume_in_microliters - total_used_reagents - reagent.reagent.threshold_in_microliters
+        diff = reagent.reagent.volume_in_microliters - total_used_reagents - reagent.reagent.threshold_in_microliters
+        reagent.reagent.threshold_diff = diff
+
+        if diff <= 0:
+          inventory_alerts['reagents'].append({
+            'pk': reagent.pk,
+            'item': reagent.name, 
+            'lot': reagent.lot_number,
+            'cat': reagent.catalog_number,
+            'amount': reagent.volume,
+          })
 
       reagent.reagent.volume = reagent.reagent.volume_in_microliters - total_used_reagents
 
@@ -178,10 +196,25 @@ def batch_samples(request, pk):
       total_used_tubes = tube.amount_per_sample * batch.sample_set.count()
 
       if tube.tube.threshold > 0:
-        tube.tube.threshold_diff = tube.tube.amount - total_used_tubes - tube.tube.threshold
+        diff = tube.tube.amount - total_used_tubes - tube.tube.threshold
+        tube.tube.threshold_diff = diff
+
+        if diff <= 0:
+          inventory_alerts['tubes'].append({
+            'pk': tube.pk,
+            'item': tube.name, 
+            'lot': tube.lot_number,
+            'cat': tube.catalog_number,
+            'amount': tube.amount,
+          })
 
       tube.tube.amount -= total_used_tubes
       tube.tube.save()
+    # **FINAL UPDATE OF DB** #
+
+    if inventory_alerts['reagents'] or inventory_alerts['tubes']:
+      send_theshold_alert_email_ext(request, inventory_alerts)
+    # **ALERT DATA** #
       
     batch.save()
     return redirect('extracted_batches')

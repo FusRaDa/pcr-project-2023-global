@@ -1,7 +1,7 @@
 {% autoescape off %}
 Hello {{ user }},
 
-You recently created PCR paperwork on {{ inventory_alerts.date }}. 
+You recently created PCR paperwork for PCR on {{ inventory_alerts.date }}. 
 
 We noticed that the following items require your attention as they have reached the assigned threshold:
 {% endautoescape %}
@@ -29,11 +29,12 @@ We noticed that the following items require your attention as they have reached 
 </table>
 {% endif %}
 
+<br>
 
 {% if inventory_alerts.pcr_plates %}
 <table>
   <tr>
-    <th>qPCR Plate</th>
+    <th>PCR Plate</th>
     <th>Catalog Number</th>
     <th>Lot Number</th>
     <th>Remaining Amount</th>
@@ -53,11 +54,12 @@ We noticed that the following items require your attention as they have reached 
 </table>
 {% endif %}
 
+<br>
 
 {% if inventory_alerts.gels %}
 <table>
   <tr>
-    <th>qPCR Plate</th>
+    <th>Gels</th>
     <th>Catalog Number</th>
     <th>Lot Number</th>
     <th>Remaining Amount</th>
@@ -77,11 +79,12 @@ We noticed that the following items require your attention as they have reached 
 </table>
 {% endif %}
 
+<br>
 
 {% if inventory_alerts.controls %}
 <table>
   <tr>
-    <th>qPCR Plate</th>
+    <th>Controls</th>
     <th>Catalog Number</th>
     <th>Lot Number</th>
     <th>Remaining Amount</th>
@@ -101,11 +104,12 @@ We noticed that the following items require your attention as they have reached 
 </table>
 {% endif %}
 
+<br>
 
 {% if inventory_alerts.reagents %}
 <table>
   <tr>
-    <th>qPCR Plate</th>
+    <th>Reagents</th>
     <th>Catalog Number</th>
     <th>Lot Number</th>
     <th>Remaining Amount</th>
@@ -125,11 +129,12 @@ We noticed that the following items require your attention as they have reached 
 </table>
 {% endif %}
 
+<br>
 
 {% if inventory_alerts.dyes %}
 <table>
   <tr>
-    <th>qPCR Plate</th>
+    <th>Dyes</th>
     <th>Catalog Number</th>
     <th>Lot Number</th>
     <th>Remaining Amount</th>
@@ -149,11 +154,12 @@ We noticed that the following items require your attention as they have reached 
 </table>
 {% endif %}
 
+<br>
 
 {% if inventory_alerts.ladders %}
 <table>
   <tr>
-    <th>qPCR Plate</th>
+    <th>Ladders</th>
     <th>Catalog Number</th>
     <th>Lot Number</th>
     <th>Remaining Amount</th>

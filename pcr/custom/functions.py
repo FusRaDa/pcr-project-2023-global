@@ -1171,4 +1171,11 @@ def send_theshold_alert_email_pcr(request, inventory_alerts):
  
 
 def send_theshold_alert_email_ext(request, inventory_alerts):
-  pass
+  mail_subject = f"{request.user.first_name}, PCRprep inventory requires your attention!"
+  message = render_to_string('email/ext_inventory_alert.html', {
+    'user': f"{request.user.first_name} {request.user.last_name}",
+    'inventory': inventory_alerts,
+    'protocol': 'https' if request.is_secure() else 'http',
+  })
+  email = EmailMessage(mail_subject, message, to=[request.user.email])
+  email.send()
