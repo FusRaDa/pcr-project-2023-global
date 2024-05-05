@@ -3,7 +3,7 @@ Hello {{ user }},
 
 You recently created PCR paperwork for PCR on {{ inventory_alerts.date }}. 
 
-We noticed that the following items require your attention as they have reached the assigned threshold:
+We noticed that the following items require your attention as they have reached the assigned threshold or will expire within 30 days:
 {% endautoescape %}
 
 {% if inventory_alerts.qpcr_plates %}
@@ -18,7 +18,7 @@ We noticed that the following items require your attention as they have reached 
   
   {% for item in inventory_alerts.qpcr_plates %}
   <tr>
-    <td>{{item.name}}</td>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
     <td>{{item.cat}}</td>
     <td>{{item.lot}}</td>
     <td>{{item.amount}}</td>
@@ -43,7 +43,7 @@ We noticed that the following items require your attention as they have reached 
   
   {% for item in inventory_alerts.pcr_plate %}
   <tr>
-    <td>{{item.name}}</td>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
     <td>{{item.cat}}</td>
     <td>{{item.lot}}</td>
     <td>{{item.amount}}</td>
@@ -68,7 +68,7 @@ We noticed that the following items require your attention as they have reached 
   
   {% for item in inventory_alerts.gels %}
   <tr>
-    <td>{{item.name}}</td>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
     <td>{{item.cat}}</td>
     <td>{{item.lot}}</td>
     <td>{{item.amount}}</td>
@@ -93,7 +93,7 @@ We noticed that the following items require your attention as they have reached 
   
   {% for item in inventory_alerts.controls %}
   <tr>
-    <td>{{item.name}}</td>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
     <td>{{item.cat}}</td>
     <td>{{item.lot}}</td>
     <td>{{item.amount}}</td>
@@ -118,7 +118,7 @@ We noticed that the following items require your attention as they have reached 
   
   {% for item in inventory_alerts.reagents %}
   <tr>
-    <td>{{item.name}}</td>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
     <td>{{item.cat}}</td>
     <td>{{item.lot}}</td>
     <td>{{item.amount}}</td>
@@ -143,7 +143,7 @@ We noticed that the following items require your attention as they have reached 
   
   {% for item in inventory_alerts.dyes %}
   <tr>
-    <td>{{item.name}}</td>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
     <td>{{item.cat}}</td>
     <td>{{item.lot}}</td>
     <td>{{item.amount}}</td>
@@ -168,7 +168,7 @@ We noticed that the following items require your attention as they have reached 
   
   {% for item in inventory_alerts.ladders %}
   <tr>
-    <td>{{item.name}}</td>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
     <td>{{item.cat}}</td>
     <td>{{item.lot}}</td>
     <td>{{item.amount}}</td>

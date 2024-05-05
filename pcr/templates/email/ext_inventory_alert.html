@@ -3,7 +3,7 @@ Hello {{ user }},
 
 You recently created PCR paperwork for extraction on {{ inventory_alerts.date }}. 
 
-We noticed that the following items require your attention as they have reached the assigned threshold:
+We noticed that the following items require your attention as they have reached the assigned threshold or will expire within 30 days:
 {% endautoescape %}
 
 {% if inventory_alerts.reagents %}
@@ -18,7 +18,7 @@ We noticed that the following items require your attention as they have reached 
   
   {% for item in inventory_alerts.reagents %}
   <tr>
-    <td>{{item.name}}</td>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
     <td>{{item.cat}}</td>
     <td>{{item.lot}}</td>
     <td>{{item.amount}}</td>
@@ -42,7 +42,7 @@ We noticed that the following items require your attention as they have reached 
   
   {% for item in inventory_alerts.tubes %}
   <tr>
-    <td>{{item.name}}</td>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
     <td>{{item.cat}}</td>
     <td>{{item.lot}}</td>
     <td>{{item.amount}}</td>

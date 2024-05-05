@@ -178,13 +178,14 @@ def batch_samples(request, pk):
         diff = reagent.reagent.volume_in_microliters - total_used_reagents - reagent.reagent.threshold_in_microliters
         reagent.reagent.threshold_diff = diff
 
-        if diff <= 0:
+        if diff <= 0 or reagent.month_exp:
           inventory_alerts['reagents'].append({
-            'pk': reagent.pk,
-            'item': reagent.name, 
-            'lot': reagent.lot_number,
-            'cat': reagent.catalog_number,
-            'amount': reagent.volume,
+            'exp': reagent.reagent.month_exp,
+            'pk': reagent.reagent.pk,
+            'item': reagent.reagent.name, 
+            'lot': reagent.reagent.lot_number,
+            'cat': reagent.reagent.catalog_number,
+            'amount': reagent.reagent.volume,
           })
 
       reagent.reagent.volume = reagent.reagent.volume_in_microliters - total_used_reagents
@@ -199,13 +200,14 @@ def batch_samples(request, pk):
         diff = tube.tube.amount - total_used_tubes - tube.tube.threshold
         tube.tube.threshold_diff = diff
 
-        if diff <= 0:
+        if diff <= 0 or tube.month_exp:
           inventory_alerts['tubes'].append({
-            'pk': tube.pk,
-            'item': tube.name, 
-            'lot': tube.lot_number,
-            'cat': tube.catalog_number,
-            'amount': tube.amount,
+            'exp': tube.tube.month_exp,
+            'pk': tube.tube.pk,
+            'item': tube.tube.name, 
+            'lot': tube.tube.lot_number,
+            'cat': tube.tube.catalog_number,
+            'amount': tube.tube.amount,
           })
 
       tube.tube.amount -= total_used_tubes

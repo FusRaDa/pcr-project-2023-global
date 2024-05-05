@@ -830,8 +830,9 @@ def process_paperwork(request, pk):
         diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
         plate['plate'].threshold_diff = diff
 
-        if diff <= 0:
+        if diff <= 0 or plate['plate'].month_exp:
           inventory_alerts['qpcr_plates'].append({
+            'exp': plate['plate'].month_exp,
             'pk': plate['plate'].pk,
             'item': plate['plate'].name, 
             'lot': plate['plate'].lot_number,
@@ -849,8 +850,9 @@ def process_paperwork(request, pk):
         diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
         plate['plate'].threshold_diff = diff
 
-        if diff <= 0:
+        if diff <= 0 or plate['plate'].month_exp: 
           inventory_alerts['pcr_plates'].append({
+            'exp': plate['plate'].month_exp,
             'pk': plate['plate'].pk,
             'item': plate['plate'].name, 
             'lot': plate['plate'].lot_number,
@@ -868,8 +870,9 @@ def process_paperwork(request, pk):
         diff = gel['gel'].amount - gel['used'] - gel['gel'].threshold 
         plate['plate'].threshold_diff = diff
 
-        if diff <= 0:
+        if diff <= 0 or gel['gel'].month_exp:
           inventory_alerts['gels'].append({
+            'exp': gel['gel'].month_exp,
             'pk': gel['gel'].pk,
             'item': gel['gel'].name, 
             'lot': gel['gel'].lot_number,
@@ -890,8 +893,9 @@ def process_paperwork(request, pk):
         diff = control_dict['control'].amount - Decimal(control_dict['total']) - control_dict['control'].threshold
         control_dict['control'].threshold_diff = diff
 
-        if diff <= 0:
+        if diff <= 0 or control_dict['control'].month_exp:
           inventory_alerts['controls'].append({
+            'exp': control_dict['control'].month_exp,
             'pk': control_dict['control'].pk,
             'item': control_dict['control'].name, 
             'lot': control_dict['control'].lot_number,
@@ -911,8 +915,9 @@ def process_paperwork(request, pk):
         diff = Decimal(reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] - reagent_dict['reagent'].threshold_in_microliters)
         reagent_dict['reagent'].threshold_diff = diff
 
-        if diff <= 0:
+        if diff <= 0 or reagent_dict['reagent'].month_exp:
           inventory_alerts['reagents'].append({
+            'exp': reagent_dict['reagent'].month_exp,
             'pk': reagent_dict['reagent'].pk,
             'item': reagent_dict['reagent'].name, 
             'lot': reagent_dict['reagent'].lot_number,
@@ -937,8 +942,9 @@ def process_paperwork(request, pk):
         diff = Decimal(dye_dict['amount'] - dye_dict['total'] - dye_dict['dye'].threshold)
         dye_dict['dye'].threshold_diff = diff
 
-        if diff <= 0:
+        if diff <= 0 or dye_dict['dye'].month_exp:
           inventory_alerts['dyes'].append({
+            'exp': dye_dict['dye'].month_exp,
             'pk': dye_dict['dye'].pk,
             'item': dye_dict['dye'].name, 
             'lot': dye_dict['dye'].lot_number,
@@ -955,8 +961,9 @@ def process_paperwork(request, pk):
         diff = Decimal(ladder_dict['amount'] - ladder_dict['total'] - ladder_dict['ladder'].threshold)
         ladder_dict['ladder'].threshold_diff = diff
 
-        if diff <= 0:
+        if diff <= 0 or ladder_dict['ladder'].month_exp:
           inventory_alerts['ladders'].append({
+            'exp': ladder_dict['ladder'].month_exp,
             'pk': ladder_dict['ladder'].pk,
             'item': ladder_dict['ladder'].name, 
             'lot': ladder_dict['ladder'].lot_number,
