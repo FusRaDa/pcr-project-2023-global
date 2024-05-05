@@ -1,5 +1,6 @@
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
 import math
 
 from ..models.batch import Batch, Sample
@@ -1163,10 +1164,12 @@ def send_theshold_alert_email_pcr(request, inventory_alerts):
   mail_subject = f"{request.user.first_name}, PCRprep inventory requires your attention!"
   message = render_to_string('email/pcr_inventory_alert.html', {
     'user': f"{request.user.first_name} {request.user.last_name}",
+    'domain': get_current_site(request).domain,
     'inventory': inventory_alerts,
     'protocol': 'https' if request.is_secure() else 'http',
   })
   email = EmailMessage(mail_subject, message, to=[request.user.email])
+  email.content_subtype = "html" # this is the crucial part 
   email.send()
  
 
@@ -1174,8 +1177,10 @@ def send_theshold_alert_email_ext(request, inventory_alerts):
   mail_subject = f"{request.user.first_name}, PCRprep inventory requires your attention!"
   message = render_to_string('email/ext_inventory_alert.html', {
     'user': f"{request.user.first_name} {request.user.last_name}",
+    'domain': get_current_site(request).domain,
     'inventory': inventory_alerts,
     'protocol': 'https' if request.is_secure() else 'http',
   })
   email = EmailMessage(mail_subject, message, to=[request.user.email])
+  email.content_subtype = "html" # this is the crucial part 
   email.send()

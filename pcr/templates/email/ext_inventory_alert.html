@@ -1,54 +1,81 @@
-{% autoescape off %}
-Hello {{ user }},
+<!DOCTYPE html>
+<html>
 
-You recently created PCR paperwork for extraction on {{ inventory_alerts.date }}. 
+<head>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
+</head>
 
-We noticed that the following items require your attention as they have reached the assigned threshold or will expire within 30 days:
-{% endautoescape %}
+<body>
 
-{% if inventory_alerts.reagents %}
-<table>
+<p>Hello {{ user }},</p>
+
+<p>You recently created PCR paperwork for PCR on {% now "F jS Y" %}.</p>
+
+<p>We noticed that the following items require your attention as they have reached the assigned threshold or will expire within 30 days:</p>
+
+{% if inventory.reagents %}
+<table class="table">
   <tr>
-    <th>Reagents</th>
-    <th>Catalog Number</th>
-    <th>Lot Number</th>
-    <th>Remaining Amount</th>
-    <th>URL</th>
+    <th scope="col">Reagents</th>
+    <th scope="col">Catalog Number</th>
+    <th scope="col">Lot Number</th>
+    <th scope="col">Remaining Amount (μL)</th>
+    <th scope="col">URL</th>
   </tr>
   
-  {% for item in inventory_alerts.reagents %}
+  {% for item in inventory.reagents %}
   <tr>
     <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
     <td>{{item.cat}}</td>
     <td>{{item.lot}}</td>
     <td>{{item.amount}}</td>
-    <td>{% url 'edit_reagent' item.pk %}</td>
+    <td>{{domain}}{% url 'edit_reagent' item.pk %}</td>
   </tr>
   {% endfor %}
 
 </table>
 {% endif %}
 
+<br>
 
-{% if inventory_alerts.tubes %}
-<table>
+{% if inventory.tubes %}
+<table class="table">
   <tr>
-    <th>Tubes</th>
-    <th>Catalog Number</th>
-    <th>Lot Number</th>
-    <th>Remaining Amount</th>
-    <th>URL</th>
+    <th scope="col">Tubes</th>
+    <th scope="col">Catalog Number</th>
+    <th scope="col">Lot Number</th>
+    <th scope="col">Remaining Amount</th>
+    <th scope="col">URL</th>
   </tr>
   
-  {% for item in inventory_alerts.tubes %}
+  {% for item in inventory.tubes %}
   <tr>
     <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
     <td>{{item.cat}}</td>
     <td>{{item.lot}}</td>
     <td>{{item.amount}}</td>
-    <td>{% url 'edit_tube' item.pk %}</td>
+    <td>{{domain}}{% url 'edit_tube' item.pk %}</td>
   </tr>
   {% endfor %}
 
 </table>
 {% endif %}
+
+</body>
+</html>

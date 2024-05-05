@@ -86,6 +86,12 @@ def batch_samples(request, pk):
 
   samples = batch.sample_set.all()
 
+  extractable = False
+  for sample in samples:
+    if sample.sample_id == "" or sample.sample_id == None:
+      extractable = True
+      break
+
   formset = SampleFormSet(instance=batch)
   del_form = DeletionForm(value=batch.name)
   samplesform = NumberSamplesForm()
@@ -178,11 +184,11 @@ def batch_samples(request, pk):
         diff = reagent.reagent.volume_in_microliters - total_used_reagents - reagent.reagent.threshold_in_microliters
         reagent.reagent.threshold_diff = diff
 
-        if diff <= 0 or reagent.month_exp:
+        if diff <= 0 or reagent.reagent.month_exp:
           inventory_alerts['reagents'].append({
             'exp': reagent.reagent.month_exp,
             'pk': reagent.reagent.pk,
-            'item': reagent.reagent.name, 
+            'name': reagent.reagent.name, 
             'lot': reagent.reagent.lot_number,
             'cat': reagent.reagent.catalog_number,
             'amount': reagent.reagent.volume,
@@ -200,11 +206,11 @@ def batch_samples(request, pk):
         diff = tube.tube.amount - total_used_tubes - tube.tube.threshold
         tube.tube.threshold_diff = diff
 
-        if diff <= 0 or tube.month_exp:
+        if diff <= 0 or tube.tube.month_exp:
           inventory_alerts['tubes'].append({
             'exp': tube.tube.month_exp,
             'pk': tube.tube.pk,
-            'item': tube.tube.name, 
+            'name': tube.tube.name, 
             'lot': tube.tube.lot_number,
             'cat': tube.tube.catalog_number,
             'amount': tube.tube.amount,
@@ -221,7 +227,7 @@ def batch_samples(request, pk):
     batch.save()
     return redirect('extracted_batches')
 
-  context = {'batch': batch, 'data': data, 'formset': formset, 'del_form': del_form, 'samplesform': samplesform}
+  context = {'batch': batch, 'data': data, 'formset': formset, 'del_form': del_form, 'samplesform': samplesform, 'extractable': extractable}
   return render(request, 'batch/batch_samples.html', context)
 
 

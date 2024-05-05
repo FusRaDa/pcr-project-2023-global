@@ -834,7 +834,7 @@ def process_paperwork(request, pk):
           inventory_alerts['qpcr_plates'].append({
             'exp': plate['plate'].month_exp,
             'pk': plate['plate'].pk,
-            'item': plate['plate'].name, 
+            'name': plate['plate'].name, 
             'lot': plate['plate'].lot_number,
             'cat': plate['plate'].catalog_number,
             'amount': plate['plate'].amount,
@@ -854,7 +854,7 @@ def process_paperwork(request, pk):
           inventory_alerts['pcr_plates'].append({
             'exp': plate['plate'].month_exp,
             'pk': plate['plate'].pk,
-            'item': plate['plate'].name, 
+            'name': plate['plate'].name, 
             'lot': plate['plate'].lot_number,
             'cat': plate['plate'].catalog_number,
             'amount': plate['plate'].amount,
@@ -874,7 +874,7 @@ def process_paperwork(request, pk):
           inventory_alerts['gels'].append({
             'exp': gel['gel'].month_exp,
             'pk': gel['gel'].pk,
-            'item': gel['gel'].name, 
+            'name': gel['gel'].name, 
             'lot': gel['gel'].lot_number,
             'cat': gel['gel'].catalog_number,
             'amount': gel['gel'].amount,
@@ -897,7 +897,7 @@ def process_paperwork(request, pk):
           inventory_alerts['controls'].append({
             'exp': control_dict['control'].month_exp,
             'pk': control_dict['control'].pk,
-            'item': control_dict['control'].name, 
+            'name': control_dict['control'].name, 
             'lot': control_dict['control'].lot_number,
             'cat': control_dict['control'].catalog_number,
             'amount': control_dict['control'].amount,
@@ -919,7 +919,7 @@ def process_paperwork(request, pk):
           inventory_alerts['reagents'].append({
             'exp': reagent_dict['reagent'].month_exp,
             'pk': reagent_dict['reagent'].pk,
-            'item': reagent_dict['reagent'].name, 
+            'name': reagent_dict['reagent'].name, 
             'lot': reagent_dict['reagent'].lot_number,
             'cat': reagent_dict['reagent'].catalog_number,
             'amount': reagent_dict['reagent'].volume,
@@ -946,7 +946,7 @@ def process_paperwork(request, pk):
           inventory_alerts['dyes'].append({
             'exp': dye_dict['dye'].month_exp,
             'pk': dye_dict['dye'].pk,
-            'item': dye_dict['dye'].name, 
+            'name': dye_dict['dye'].name, 
             'lot': dye_dict['dye'].lot_number,
             'cat': dye_dict['dye'].catalog_number,
             'amount': dye_dict['dye'].amount,
@@ -965,7 +965,7 @@ def process_paperwork(request, pk):
           inventory_alerts['ladders'].append({
             'exp': ladder_dict['ladder'].month_exp,
             'pk': ladder_dict['ladder'].pk,
-            'item': ladder_dict['ladder'].name, 
+            'name': ladder_dict['ladder'].name, 
             'lot': ladder_dict['ladder'].lot_number,
             'cat': ladder_dict['ladder'].catalog_number,
             'amount': ladder_dict['ladder'].amount,
