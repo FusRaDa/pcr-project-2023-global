@@ -153,6 +153,25 @@
 
             </li>
             {% endif %}
+
+            {% if location.control_set.all %}
+            <li class="list-group-item"> Controls
+              <button type="button" class="btn btn-primary btn-sm float-end btn-arrow" data-bs-toggle="collapse" data-bs-target="#control-collapse-{{location.pk}}" aria-expanded="false" aria-controls="control-collapse-{{location.pk}}">
+                ⮟
+              </button>
+
+              <div class="collapse" id="control-collapse-{{location.pk}}">
+                <div class="card-body"> 
+                  <ul class="list-group">
+                    {% for control in location.control_set.all %}
+                    <li class="list-group-item">{{control}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+
+            </li>
+            {% endif %}
           </ul>
           <div class="card-body">
             <a href="{% url 'edit_location' location.pk %}" class="card-link">Edit Location</a>

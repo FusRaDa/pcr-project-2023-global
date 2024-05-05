@@ -38,18 +38,13 @@
     </div>
     {% endif %}
 
-    <div class="row justify-content-center mt-2">
+    <div class="row justify-content-center mt-2 mb-2">
       <div class="text-center">
         <a class="btn btn-secondary" href="{% url 'locations' %}">Cancel</a>
-        <button type="submit" class="btn btn-primary" name="update">Update Location</button>
-      </div>
-    </div>
-
-    <div class="row justify-content-center mt-2">
-      <div class="col d-flex justify-content-center">
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">
           Delete Location
         </button>
+        <button type="submit" class="btn btn-primary" name="update">Update Location</button>
       </div>
     </div>
 
@@ -164,6 +159,41 @@
                 {{reagent.stock_concentration}} {{reagent.unit_concentration}}
                 {% endif %}
               </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+      {% endif %}
+
+      {% if location.control_set.all %}
+      <h5 class="text-center">Controls</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+
+          <thead>
+            <tr>
+              <th scope="col">Exp. Date</th>
+              <th scope="col">Last Updated</th>
+              <th scope="col">Name</th>
+              <th scope="col">Brand</th>
+              <th scope="col">Catalog #</th>
+              <th scope="col">Lot #</th>
+              <th scope="col">Amount Stored (μL)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for control in location.control_set.all %}
+            <tr class="batch-row" data-href="{% url 'edit_control' control.pk %}">
+              <td>{{control.exp_date}}</td>
+              <td>{{control.last_updated}}</td>
+              <td>{{control.name}}</td>
+              <td>{{control.brand}}</td>
+              <td>{{control.catalog_number}}</td>
+              <td>{{control.lot_number}}</td>
+              <td>{{control.amount}}</td>
             </tr>
             {% endfor %}
           </tbody>
