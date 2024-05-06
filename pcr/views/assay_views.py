@@ -322,11 +322,12 @@ def controls(request):
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']
+      sort = form.cleaned_data['sort']
 
       filters = {}
       if location:
         filters['location'] = location
-      controls = Control.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(lot_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+      controls = Control.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
     else:
       print(form.errors)
 

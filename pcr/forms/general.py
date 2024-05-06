@@ -39,6 +39,9 @@ class SearchControlForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
+  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -46,6 +49,7 @@ class SearchControlForm(forms.Form):
 
     self.fields['location'].widget.attrs['class'] = 'form-select'
     self.fields['text_search'].widget.attrs['class'] = 'form-control'
+    self.fields['sort'].widget.attrs['class'] = 'form-select'
 
 
 class SearchAssayForm(forms.Form):
@@ -68,6 +72,9 @@ class SearchTubeForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
+  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -75,6 +82,8 @@ class SearchTubeForm(forms.Form):
 
     self.fields['text_search'].widget.attrs['class'] = 'form-control'
     self.fields['location'].widget.attrs['class'] = 'form-select'
+    self.fields['sort'].widget.attrs['class'] = 'form-select'
+
 
 
 class SearchLadderForm(forms.Form):
@@ -82,7 +91,7 @@ class SearchLadderForm(forms.Form):
   location = forms.ModelChoiceField(queryset=None, required=False)
 
   SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
-  sort = forms.ChoiceField(choices=SORT_CHOICES, required=False)
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -91,12 +100,16 @@ class SearchLadderForm(forms.Form):
 
     self.fields['text_search'].widget.attrs['class'] = 'form-control'
     self.fields['location'].widget.attrs['class'] = 'form-select'
+    self.fields['sort'].widget.attrs['class'] = 'form-select'
 
 
 class SearchDyeForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
+  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -104,6 +117,7 @@ class SearchDyeForm(forms.Form):
 
     self.fields['text_search'].widget.attrs['class'] = 'form-control'
     self.fields['location'].widget.attrs['class'] = 'form-select'
+    self.fields['sort'].widget.attrs['class'] = 'form-select'
 
 
 class SearchPlateForm(forms.Form):
@@ -116,6 +130,9 @@ class SearchPlateForm(forms.Form):
   TYPE_CHOICES = [(None, '------'), (Plate.Types.PCR, 'PCR'), (Plate.Types.qPCR, 'qPCR')]
   type = forms.ChoiceField(choices=TYPE_CHOICES, required=False)
 
+  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -125,6 +142,7 @@ class SearchPlateForm(forms.Form):
     self.fields['location'].widget.attrs['class'] = 'form-select'
     self.fields['size'].widget.attrs['class'] = 'form-select'
     self.fields['type'].widget.attrs['class'] = 'form-select'
+    self.fields['sort'].widget.attrs['class'] = 'form-select'
 
 
 class SearchGelForm(forms.Form):
@@ -134,6 +152,9 @@ class SearchGelForm(forms.Form):
   CHOICES = [(None, '------'), (Gel.Sizes.TWELVE, '12'), (Gel.Sizes.TWENTY_FOUR, '24'), (Gel.Sizes.FOURTY_EIGHT, '48')]
   size = forms.ChoiceField(choices=CHOICES, required=False)
 
+  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -142,6 +163,7 @@ class SearchGelForm(forms.Form):
     self.fields['text_search'].widget.attrs['class'] = 'form-control'
     self.fields['location'].widget.attrs['class'] = 'form-select'
     self.fields['size'].widget.attrs['class'] = 'form-select'
+    self.fields['sort'].widget.attrs['class'] = 'form-select'
 
 
 class SearchReagentForm(forms.Form):
@@ -154,6 +176,9 @@ class SearchReagentForm(forms.Form):
   PCR_REAGENT_CHOICES = [(None, '------'), (Reagent.PCRReagent.GENERAL, 'GENERAL'), (Reagent.PCRReagent.PRIMER, 'PRIMER'), (Reagent.PCRReagent.POLYMERASE, 'POLYMERASE'), (Reagent.PCRReagent.WATER, 'WATER')]
   pcr_reagent = forms.ChoiceField(choices=PCR_REAGENT_CHOICES, required=False)
 
+  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
@@ -163,6 +188,7 @@ class SearchReagentForm(forms.Form):
     self.fields['usage'].widget.attrs['class'] = 'form-select'
     self.fields['location'].widget.attrs['class'] = 'form-select'
     self.fields['pcr_reagent'].widget.attrs['class'] = 'form-select'
+    self.fields['sort'].widget.attrs['class'] = 'form-select'
 
 
 class SearchBatchForm(forms.Form):

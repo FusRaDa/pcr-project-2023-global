@@ -29,11 +29,17 @@
     </div>
   </div>
 
-  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
-    <div class="col-sm-5">
+  <form class="row gx-3 gy-2 mb-2" method="GET" action="">
+    <div class="col-sm-4">
       <div class="input-group">
         <div class="input-group-text">Name/Brand/Catalog#/Lot#</div>
         {{form.text_search}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Sort by</div>
+        {{form.sort}}
       </div>
     </div>
     <div class="col-sm-3">
@@ -71,9 +77,9 @@
               {% if not ladder.exp_date %} <span class="badge text-bg-warning">No Exp</span> {% else %} <span class="badge text-bg-success">Exp</span> {% endif %} 
               {% if not ladder.threshold %} <span class="badge text-bg-warning">No Threshold</span> {% else %} <span class="badge text-bg-success">Threshold</span> {% endif %} 
             </td>
-            <td>{{ladder.exp_date}} {% if ladder.is_expired %} (EXPIRED) {% endif %} {% if ladder.month_exp %} (&#60;1 MONTH TILL EXP)</td>
+            <td>{{ladder.exp_date}} {% if ladder.is_expired %} (EXPIRED) {% endif %} {% if ladder.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{ladder.last_updated}}</td>
-            <td>{% if ladder.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{ladder.name}} {% endif %} {% if ladder.threshold_diff <= 0 %} (LOW) {% endif %}</td>
+            <td>{% if ladder.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{ladder.name}} {% if ladder.threshold_diff <= 0 %} (LOW) {% endif %}</td>
             <td>{{ladder.brand}}</td>
             <td>{{ladder.catalog_number}}</td>
             <td>{% if ladder.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{ladder.lot_number}}</td>

@@ -30,10 +30,16 @@
   </div>
 
   <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
+    <div class="col-sm-4">
+      <div class="input-group">
+        <div class="input-group-text">Name/Brand/Catalog#/Lot#</div>
+        {{form.text_search}}
+      </div>
+    </div>
     <div class="col-sm-3">
       <div class="input-group">
-        <div class="input-group-text">Name/Lot#</div>
-        {{form.text_search}}
+        <div class="input-group-text">Sort by</div>
+        {{form.sort}}
       </div>
     </div>
     <div class="col-sm-3">
