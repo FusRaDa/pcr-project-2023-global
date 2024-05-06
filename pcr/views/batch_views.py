@@ -137,36 +137,39 @@ def batch_samples(request, pk):
   
   if 'extracted' in request.POST:
     # **VALIDATE** #
-    invalid_samples = []
+    invalid_samples = False
     for sample in samples:
       if not sample.sample_id:
-        invalid_samples.append(f"{sample.lab_id_num}")
+        invalid_samples = True
 
-    if len(invalid_samples) > 0:
-      messages.error(request, f"Samples {invalid_samples} have not been given a sample ID. Please update before proceeding.")
-      return redirect(request.path_info)
+    if invalid_samples:
+      messages.error(request, "All samples must have an ID.")
     
+    invalid_items = False
     for reagent in batch.extraction_protocol.reagentextraction_set.all():
       if reagent.reagent.is_expired:
-        messages.error(request, f"Reagent: {reagent.name} is expired")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Reagent: {reagent.reagent.name} is expired. <a href="/edit-reagent/{reagent.reagent.pk}" target="_blank">Update here.</a>')
       
       total_used_reagents = reagent.amount_per_sample * batch.sample_set.count()
       rem_reagents = reagent.reagent.volume_in_microliters - total_used_reagents
       if rem_reagents < 0:
-        messages.error(request, f"The amount of {reagent.reagent.name} lot#{reagent.reagent.lot_number} is insufficent. Update the amount of reagents.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'The amount of {reagent.reagent.name} lot#{reagent.reagent.lot_number} is insufficent. <a href="/edit-reagent/{reagent.reagent.pk}" target="_blank">Update here.</a>')
       
     for tube in batch.extraction_protocol.tubeextraction_set.all():
       if tube.tube.is_expired:
-        messages.error(request, f"Tube: {tube.name} is expired")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Tube: {tube.tube.name} is expired. <a href="/edit-tube/{tube.tube.pk}" target="_blank">Update here.</a>')
       
       total_used_tubes = tube.amount_per_sample * batch.sample_set.count()
       rem_tubes = tube.tube.amount - total_used_tubes
       if rem_tubes < 0:
-        messages.error(request, f"The amount of {tube.tube.name} lot#{tube.tube.lot_number} is insufficent. Update the amount of tubes.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'The amount of {tube.tube.name} lot#{tube.tube.lot_number} is insufficent. <a href="/edit-tube/{tube.tube.pk}" target="_blank">Update here.</a>')
+    
+    if invalid_samples or invalid_items:
+      return redirect(request.path_info)
     # **VALIDATE** #
       
     batch.is_extracted = True

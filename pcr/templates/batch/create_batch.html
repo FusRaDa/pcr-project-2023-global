@@ -169,9 +169,6 @@
 
     <div class="col-sm-3">
       <h5 class="text-center">Previous Batches</h5>
-      <div class="text-center mb-2">
-      <button type="button" class="btn btn-sm btn-primary">Add Next Lab ID</button>
-      </div>
       <ul class="list-group">
         {% for batch in batches %}
         <a {% if batch.is_extracted %} href="{% url 'extracted_batches' %}" {% else %} href="{% url 'batch_samples' batch.pk %}" {% endif %} class="list-group-item list-group-item-action">{{batch}} {% if batch.is_extracted %} <span class="badge text-bg-success float-end">Extracted</span> {% else %} <span class="badge text-bg-warning float-end">In Que</span>{% endif %}</a>
