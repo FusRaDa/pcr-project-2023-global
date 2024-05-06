@@ -13,7 +13,7 @@ from ..custom.functions import create_samples, send_theshold_alert_email_ext
 
 @login_required(login_url='login')
 def batches(request):
-  batches = Batch.objects.filter(user=request.user, is_extracted=False).order_by('date_created')
+  batches = Batch.objects.filter(user=request.user, is_extracted=False).order_by('-date_created')
   context = {'batches': batches}
   return render(request, 'batch/batches.html', context)
 
@@ -21,6 +21,8 @@ def batches(request):
 @login_required(login_url='login')
 def create_batch(request):
   form = BatchForm(user=request.user)
+
+  batches = Batch.objects.filter(user=request.user).order_by('-lab_id')[:10]
 
   if request.method == "POST":
     form = BatchForm(request.POST, user=request.user)
@@ -60,7 +62,7 @@ def create_batch(request):
     else:
       print(form.errors)
   
-  context = {'form': form}
+  context = {'form': form, 'batches': batches}
   return render(request, 'batch/create_batch.html', context)
 
 
