@@ -674,32 +674,33 @@ def process_paperwork(request, pk):
         
 
     # **VALIDATION FOR PLATES & GELS** #
+    invalid_items = False
     for plate in qpcr_plates:
       if plate['plate'].is_expired:
-        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} is expired.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Plate: {plate.name} lot#: {plate.lot_number} is expired. Update the <a href="/edit-plate/{plate['plate'].pk}" target="_blank"> plate </a> or process.')
       
       if plate['amount'] < 0:
-        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for qPCR has an insufficient amount for this process. {plate['amount']} plates are required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Plate: {plate.name} lot#: {plate.lot_number} for qPCR has an insufficient amount for this process. {plate['amount']} plates are required. Update the <a href="/edit-plate/{plate['plate'].pk}" target="_blank"> plate </a> or process.')
     
     for plate in pcr_plates:
       if plate['plate'].is_expired:
-        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} is expired.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Plate: {plate.name} lot#: {plate.lot_number} is expired. Update the <a href="/edit-plate/{plate['plate'].pk}" target="_blank"> plate </a> or process.')
       
       if plate['amount'] < 0:
-        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for PCR has an insufficient amount for this process. {plate['amount']} plates are required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Plate: {plate.name} lot#: {plate.lot_number} for PCR has an insufficient amount for this process. {plate['amount']} plates are required. Update the <a href="/edit-plate/{plate['plate'].pk}" target="_blank"> plate </a> or process.')
 
     for gel in gels:
       if gel['gel'].is_expired:
-        messages.error(request, f"Gel: {gel.name} lot#: {gel.lot_number} is expired.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Gel: {gel.name} lot#: {gel.lot_number} is expired. Update the <a href="/edit-gel/{gel['gel'].pk}" target="_blank"> gel </a> or process.')
       
       if gel['amount'] < 0:
-        messages.error(request, f"Gel: {gel.name} lot#: {gel.lot_number} has an insufficient amount for this process. {gel['amount']} gels are required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Gel: {gel.name} lot#: {gel.lot_number} has an insufficient amount for this process. {gel['amount']} gels are required. Update the <a href="/edit-gel/{gel['gel'].pk}" target="_blank"> gel </a> or process.')
     # **VALIDATION FOR PLATES & GELS** #
       
 
@@ -709,12 +710,12 @@ def process_paperwork(request, pk):
       lot_number = control_dict['control'].lot_number
 
       if control_dict['control'].is_expired:
-        messages.error(request, f"Control: {name} lot#: {lot_number} is expired")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Control: {name} lot#: {lot_number} is expired. Update the <a href="/edit-control/{control_dict['control'].pk}" target="_blank"> control </a> or edit corresponding assays.')
       
       if control_dict['control'].amount - control_dict['total'] < 0:
-        messages.error(request, f"Control: {name} lot#: {lot_number} has an insufficient amount for this process. {round(control_dict['total'], 2)}µl is required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Control: {name} lot#: {lot_number} has an insufficient amount for this process. {round(control_dict['total'], 2)}µl is required. Update the <a href="/edit-control/{control_dict['control'].pk}" target="_blank"> control </a> or edit corresponding assays.')
     # **VALIDATION FOR CONTROLS** #
       
     
@@ -724,12 +725,12 @@ def process_paperwork(request, pk):
       lot_number = reagent_dict['reagent'].lot_number
       
       if reagent_dict['reagent'].is_expired:
-        messages.error(request, f"Reagent: {name} lot#: {lot_number} is expired")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Reagent: {name} lot#: {lot_number} is expired. Update the <a href="/edit-reagent/{reagent_dict['reagent'].pk}" target="_blank"> reagent </a> or edit corresponding assays.')
       
       if reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] < 0:
-        messages.error(request, f"Reagent: {name} lot#: {lot_number} has an insufficient amount for this process. {round(reagent_dict['total'], 2)}µl is required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Reagent: {name} lot#: {lot_number} has an insufficient amount for this process. {round(reagent_dict['total'], 2)}µl is required. Update the <a href="/edit-reagent/{reagent_dict['reagent'].pk}" target="_blank"> reagent </a> or edit corresponding assays.')
     # **VALIDATION FOR REAGENTS** #
       
 
@@ -739,27 +740,28 @@ def process_paperwork(request, pk):
       lot_number = dye_dict['dye'].lot_number
 
       if dye_dict['dye'].is_expired:
-        messages.error(request, f"Dye: {name} lot#: {lot_number} is expired.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Dye: {name} lot#: {lot_number} is expired. Update the <a href="/edit-dye/{dye_dict['dye'].pk}" target="_blank"> dye </a> or edit corresponding assays.')
 
       if dye_dict['dye'].amount - dye_dict['total'] < 0:
-        name = dye_dict['dye'].name
-        lot_number = dye_dict['dye'].lot_number
-        messages.error(request, f"Dye: {name} lot#: {lot_number} has an insufficient amount for this process.  {round(dye_dict['total'], 2)}µl is required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Dye: {name} lot#: {lot_number} has an insufficient amount for this process.  {round(dye_dict['total'], 2)}µl is required. Update the <a href="/edit-dye/{dye_dict['dye'].pk}" target="_blank"> dye </a> or edit corresponding assays.')
       
     for ladder_dict in all_ladders:
       name = ladder_dict['ladder'].name
       lot_number = ladder_dict['ladder'].lot_number
 
       if ladder_dict['ladder'].is_expired:
-        messages.error(request, f"Ladder: {name} lot#: {lot_number} is expired.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Ladder: {name} lot#: {lot_number} is expired. Update the <a href="/edit-ladder/{ladder_dict['ladder'].pk}" target="_blank"> ladder</a> or edit corresponding assays.')
     
       if ladder_dict['ladder'].amount - ladder_dict['total'] < 0:
-        messages.error(request, f"Ladder: {name} lot#: {lot_number} has an insufficient amount for this process.  {round(ladder_dict['total'], 2)}µl is required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'The amount of {name} lot#: {lot_number} is insufficient. At least {round(ladder_dict['total'], 2)}µl is required. Update the <a href="/edit-ladder/{ladder_dict['ladder'].pk}" target="_blank"> ladder </a> or edit corresponding assays.')
     # **VALIDATION FOR DYES & LADDERS** #
+
+    if invalid_items:
+      return redirect(request.path_info)
       
     process.is_processed = True
     process.date_processed = timezone.now()
