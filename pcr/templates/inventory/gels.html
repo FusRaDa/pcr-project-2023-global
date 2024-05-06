@@ -58,6 +58,7 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
+          <th scope="col">Status</th>
           <th scope="col">Exp. Date</th>
           <th scope="col">Last Updated</th>
           <th scope="col">Name</th>
@@ -72,10 +73,14 @@
 
       <tbody>
         {% for gel in page_obj %}
-          <tr class="plate-row {% if gel.is_expired %} table-danger {% endif %} {% if gel.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_gel' gel.pk %}">
-            <td>{{gel.exp_date}} {% if gel.is_expired %} (EXPIRED) {% endif %} {% if gel.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+          <tr class="plate-row {% if gel.is_expired %} table-danger {% endif %} {% if gel.month_exp or gel.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_gel' gel.pk %}">
+            <td>
+              {% if not gel.exp_date %} <span class="badge text-bg-warning">No Exp</span> {% else %} <span class="badge text-bg-success">Exp</span> {% endif %} 
+              {% if not gel.threshold %} <span class="badge text-bg-warning">No Threshold</span> {% else %} <span class="badge text-bg-success">Threshold</span> {% endif %} 
+            </td>
+            <td>{{gel.exp_date}} {% if gel.is_expired %} (EXPIRED) {% endif %} {% if gel.month_exp %} (&#60;1 MONTH TILL EXP)</td>
             <td>{{gel.last_updated}}</td>
-            <td>{% if gel.process_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{gel.name}}</td>
+            <td>{% if gel.process_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{gel.name}} {% endif %} {% if gel.threshold_diff <= 0 %} (LOW) {% endif %}</td>
             <td>{{gel.brand}}</td>
             <td>{{gel.catalog_number}}</td>
             <td>{% if gel.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{gel.lot_number}}</td>

@@ -52,6 +52,7 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
+          <th scope="col">Status</th>
           <th scope="col">Exp. Date</th>
           <th scope="col">Last Updated</th>
           <th scope="col">Name</th>
@@ -65,10 +66,14 @@
 
       <tbody>
         {% for tube in page_obj %}
-          <tr class="tube-row {% if tube.is_expired %} table-danger {% endif %} {% if tube.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_tube' tube.pk %}">
-            <td>{{tube.exp_date}} {% if tube.is_expired %} (EXPIRED) {% endif %} {% if tube.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %} </td>
+          <tr class="tube-row {% if tube.is_expired %} table-danger {% endif %} {% if tube.month_exp or tube.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_tube' tube.pk %}">
+            <td>
+              {% if not tube.exp_date %} <span class="badge text-bg-warning">No Exp</span> {% else %} <span class="badge text-bg-success">Exp</span> {% endif %} 
+              {% if not tube.threshold %} <span class="badge text-bg-warning">No Threshold</span> {% else %} <span class="badge text-bg-success">Threshold</span> {% endif %} 
+            </td>
+            <td>{{tube.exp_date}} {% if tube.is_expired %} (EXPIRED) {% endif %} {% if tube.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{tube.last_updated}}</td>
-            <td>{% if tube.extractionprotocol_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{tube.name}}</td>
+            <td>{% if tube.extractionprotocol_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{tube.name}} {% if tube.threshold_diff <= 0 %} (LOW) {% endif %}</td>
             <td>{{tube.brand}}</td>
             <td>{{tube.catalog_number}}</td>
             <td>{% if tube.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{tube.lot_number}}</td>

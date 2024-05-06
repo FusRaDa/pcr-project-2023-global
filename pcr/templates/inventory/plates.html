@@ -64,6 +64,7 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
+          <th scope="col">Status</th>
           <th scope="col">Exp. Date</th>
           <th scope="col">Last Updated</th>
           <th scope="col">Name</th>
@@ -79,10 +80,14 @@
 
       <tbody>
         {% for plate in page_obj %}
-          <tr class="plate-row {% if plate.is_expired %} table-danger {% endif %} {% if plate.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.pk %}">
+          <tr class="plate-row {% if plate.is_expired %} table-danger {% endif %} {% if plate.month_exp or plate.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.pk %}">
+            <td>
+              {% if not plate.exp_date %} <span class="badge text-bg-warning">No Exp</span> {% else %} <span class="badge text-bg-success">Exp</span> {% endif %} 
+              {% if not plate.threshold %} <span class="badge text-bg-warning">No Threshold</span> {% else %} <span class="badge text-bg-success">Threshold</span> {% endif %} 
+            </td>
             <td>{{plate.exp_date}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{plate.last_updated}}</td>
-            <td>{% if plate.process_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{plate.name}}</td>
+            <td>{% if plate.process_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{plate.name}} {% if plate.threshold_diff <= 0 %} (LOW) {% endif %}</td>
             <td>{{plate.brand}}</td>
             <td>{{plate.catalog_number}}</td>
             <td>{% if plate.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{plate.lot_number}}</td>

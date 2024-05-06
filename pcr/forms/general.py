@@ -81,6 +81,9 @@ class SearchLadderForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
+  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=False)
+
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
     super().__init__(*args, **kwargs) 
