@@ -267,6 +267,11 @@ class ReagentForm(ModelForm):
       raise ValidationError(
         message="If reagent is for extraction, stock concentration is not needed."
       )
+    
+    if usage == Reagent.Usages.EXTRACTION and mixture_volume:
+      raise ValidationError(
+        message="If reagent is for extraction, leave mixture volume per reaction empty."
+      )
 
     if pcr_reagent != None and usage == Reagent.Usages.EXTRACTION:
       raise ValidationError(
@@ -291,6 +296,11 @@ class ReagentForm(ModelForm):
     if pcr_reagent == Reagent.PCRReagent.MIXTURE and not mixture_volume:
       raise ValidationError(
         message="Reagents that are enzyme mixtures must have a volume per reaction used."
+      )
+    
+    if pcr_reagent == Reagent.PCRReagent.MIXTURE and (stock != None or unit != None):
+      raise ValidationError(
+        message="Reagents that are mixtures do not need a stock concentration."
       )
     
     if pcr_reagent == Reagent.PCRReagent.WATER and (stock != None or unit != None):
