@@ -1,5 +1,5 @@
-<li class="list-group-item">
-  {{tube}}
+<li class="list-group-item {% if tube.is_expired or tube.is_low %} list-group-item-danger {% endif %}">
+  <a href="{% url 'edit_tube' tube.pk %}" target="_blank"> {{tube}} </a>
   <button 
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
     hx-post="{% url 'remove_tube_extraction' protocol.pk tube.pk %}"

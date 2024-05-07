@@ -54,6 +54,12 @@ class Control(models.Model):
     if self.exp_date != None and (self.exp_date > timezone.now().date()) and (self.exp_date - timezone.now().date() <= datetime.timedelta(days=30)):
       return True
     return False
+  
+  @property
+  def is_low(self):
+    if self.threshold_diff <= 0:
+      return True
+    return False
 
   def __str__(self):
     return f"{self.name}-Lot#:{self.lot_number}"

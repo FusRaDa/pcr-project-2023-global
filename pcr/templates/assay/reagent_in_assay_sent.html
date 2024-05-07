@@ -1,5 +1,5 @@
-<li class="list-group-item">
-  {{reagent}}
+<li class="list-group-item {% if reagent.is_expired or reagent.is_low %} list-group-item-danger {% endif %}">
+  <a href="{% url 'edit_reagent' reagent.pk %}" target="_blank"> {{reagent}} </a>
   <button 
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
     hx-post="{% url 'remove_reagent_assay' assay.pk reagent.pk %}"
