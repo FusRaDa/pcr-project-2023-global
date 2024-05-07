@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
+</head>
+
+<body>
+
+<p>Hello {{ user }},</p>
+
+<p>You recently created PCR paperwork for PCR on {% now "F jS Y" %}.</p>
+
+<p>We noticed that the following items require your attention as they have reached the assigned threshold or will expire within 30 days:</p>
+{% if inventory.qpcr_plates %}
+<table>
+  <tr>
+    <th>qPCR Plates</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory.qpcr_plates %}
+  <tr>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{{domain}}{% url 'edit_plate' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+<br>
+
+{% if inventory.pcr_plates %}
+<table>
+  <tr>
+    <th>PCR Plates</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory.pcr_plate %}
+  <tr>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{{domain}}{% url 'edit_plate' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+<br>
+
+{% if inventory.gels %}
+<table>
+  <tr>
+    <th>Gels</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory.gels %}
+  <tr>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{{domain}}{% url 'edit_gel' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+<br>
+
+{% if inventory.controls %}
+<table>
+  <tr>
+    <th>Controls</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory.controls %}
+  <tr>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{{domain}}{% url 'edit_control' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+<br>
+
+{% if inventory.reagents %}
+<table>
+  <tr>
+    <th>Reagents</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory.reagents %}
+  <tr>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{{domain}}{% url 'edit_reagent' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+<br>
+
+{% if inventory.dyes %}
+<table>
+  <tr>
+    <th>Dyes</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory.dyes %}
+  <tr>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{{domain}}{% url 'edit_dye' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+<br>
+
+{% if inventory.ladders %}
+<table>
+  <tr>
+    <th>Ladders</th>
+    <th>Catalog Number</th>
+    <th>Lot Number</th>
+    <th>Remaining Amount</th>
+    <th>URL</th>
+  </tr>
+  
+  {% for item in inventory.ladders %}
+  <tr>
+    <td>{{item.name}} {% if item.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+    <td>{{item.cat}}</td>
+    <td>{{item.lot}}</td>
+    <td>{{item.amount}}</td>
+    <td>{{domain}}{% url 'edit_ladder' item.pk %}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endif %}
+
+</body>
+</html>

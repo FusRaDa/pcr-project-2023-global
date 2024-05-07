@@ -32,6 +32,9 @@ class Control(models.Model):
   lot_number = models.CharField(blank=False, max_length=100)
   amount = models.DecimalField(decimal_places=2, blank=False, validators=[MinValueValidator(0)], max_digits=12) # in microliters
 
+  threshold = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+  threshold_diff = models.IntegerField(blank=True, null=True, default=None) # amount - amount_used - threshold
+
   merged_lot_numbers = models.JSONField(default=list)
 
   last_updated = models.DateTimeField(auto_now=True)
@@ -49,6 +52,12 @@ class Control(models.Model):
   @property
   def month_exp(self):
     if self.exp_date != None and (self.exp_date > timezone.now().date()) and (self.exp_date - timezone.now().date() <= datetime.timedelta(days=30)):
+      return True
+    return False
+  
+  @property
+  def is_low(self):
+    if self.threshold_diff <= 0:
       return True
     return False
 
@@ -103,6 +112,16 @@ class Assay(models.Model):
   def mm_volume(self):
     sub = self.reaction_volume - self.sample_volume
     return sub
+  
+  @property
+  def is_alert(self):
+    for reagent in self.reagents.all():
+      if reagent.is_expired or (reagent.threshold_diff != None and reagent.threshold_diff <= 0):
+        return True
+    for control in self.controls.all():
+      if control.is_expired or (control.threshold_diff != None and control.threshold_diff <= 0):
+        return True
+    return False
 
   def __str__(self):
     return self.name

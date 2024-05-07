@@ -29,12 +29,17 @@
     </div>
   </div>
 
-  <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="POST" action="">
-    {% csrf_token %}
-    <div class="col-sm-5">
+  <form class="row gx-3 gy-2 mb-2" method="GET" action="">
+    <div class="col-sm-4">
       <div class="input-group">
         <div class="input-group-text">Name/Brand/Catalog#/Lot#</div>
         {{form.text_search}}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <div class="input-group-text">Sort by</div>
+        {{form.sort}}
       </div>
     </div>
     <div class="col-sm-3">
@@ -53,6 +58,7 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
+          <th scope="col">Status</th>
           <th scope="col">Exp. Date</th>
           <th scope="col">Last Updated</th>
           <th scope="col">Name</th>
@@ -66,10 +72,14 @@
 
       <tbody>
         {% for dye in page_obj %}
-          <tr class="dye-row {% if dye.is_expired %} table-danger {% endif %} {% if dye.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_dye' dye.pk %}">
-            <td>{{dye.exp_date}} {% if dye.is_expired %} (EXPIRED) {% endif %} {% if dye.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+          <tr class="dye-row {% if dye.is_expired %} table-danger {% endif %} {% if dye.month_exp or dye.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_dye' dye.pk %}">
+            <td>
+              {% if not dye.exp_date %} <span class="badge text-bg-warning">No Exp</span> {% else %} <span class="badge text-bg-success">Exp</span> {% endif %} 
+              {% if not dye.threshold %} <span class="badge text-bg-warning">No Threshold</span> {% else %} <span class="badge text-bg-success">Threshold</span> {% endif %} 
+            </td>
+            <td>{{dye.exp_date}} {% if dye.is_expired %} (EXPIRED) {% endif %} {% if dye.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %} </td>
             <td>{{dye.last_updated}}</td>
-            <td>{% if dye.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{dye.name}}</td>
+            <td>{% if dye.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{dye.name}} {% if dye.threshold_diff <= 0 %} (LOW) {% endif %}</td>
             <td>{{dye.brand}}</td>
             <td>{{dye.catalog_number}}</td>
             <td>{% if dye.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{dye.lot_number}}</td>

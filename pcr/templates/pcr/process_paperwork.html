@@ -17,7 +17,7 @@
   <div class="row justify-content-center">
     {% for message in messages %}
     <div class="alert alert-danger" role="alert">
-      <h6 class="text-center message">{{ message }}</h6>
+      <h6 class="text-center message">{{ message|safe }}</h6>
     </div>
     {% endfor %}
   </div>
@@ -32,158 +32,180 @@
     </div>
   </div>
 
-  {% if qpcr_plates %}
-    <h6 class="text-center">Estimated Plate Usage - qPCR</h6>
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Plate</th>
-            <th scope="col">Catalog Number</th>
-            <th scope="col">Lot Number</th>
-            <th scope="col">Current Amount</th>
-            <th scope="col">Amount Used</th>
-            <th scope="col">Amount Remaining</th>
-          </tr>
-        </thead>
+  <div class="row">
 
-        <tbody>
-          {% for plate in qpcr_plates %}
-            <tr class="row-link {% if plate.amount < 0 or plate.is_expired %} table-danger {% endif %} {% if plate.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.plate.pk %}">
-              <td>{{plate.name}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
-              <td>{{plate.catalog_number}}</td>
-              <td>{{plate.lot_number}}</td>
-              <td>{{plate.plate.amount}}</td>
-              <td>{{plate.used}}</td>
-              <td>{{plate.amount}}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-
-      </table>
-    </div>
-  {% endif %}
-
-  {% if pcr_plates %}
-    <h6 class="text-center">Estimated Plate Usage - PCR</h6>
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Plate</th>
-            <th scope="col">Catalog Number</th>
-            <th scope="col">Lot Number</th>
-            <th scope="col">Current Amount</th>
-            <th scope="col">Amount Used</th>
-            <th scope="col">Amount Remaining</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {% for plate in pcr_plates %}
-          <tr class="row-link {% if plate.amount < 0 or plate.is_expired %} table-danger {% endif %} {% if plate.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.plate.pk %}">
-              <td>{{plate.name}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
-              <td>{{plate.catalog_number}}</td>
-              <td>{{plate.lot_number}}</td>
-              <td>{{plate.plate.amount}}</td>
-              <td>{{plate.used}}</td>
-              <td>{{plate.amount}}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-
-      </table>
-    </div>
-  {% endif %}
-
-  {% if gels %}
-    <h6 class="text-center">Estimated Gel Usage</h6>
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Gel</th>
-            <th scope="col">Catalog Number</th>
-            <th scope="col">Lot Number</th>
-            <th scope="col">Current Amount</th>
-            <th scope="col">Amount Used</th>
-            <th scope="col">Amount Remaining</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {% for gel in gels %}
-            <tr class="row-link {% if gel.amount < 0 or gel.is_expired %} table-danger {% endif %} {% if gel.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_gel' gel.gel.pk %}">
-              <td>{{gel.name}} {% if gel.is_expired %} (EXPIRED) {% endif %} {% if gel.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
-              <td>{{gel.catalog_number}}</td>
-              <td>{{gel.lot_number}}</td>
-              <td>{{gel.gel.amount}}</td>
-              <td>{{gel.used}}</td>
-              <td>{{gel.amount}}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-
-      </table>
-    </div>
-  {% endif %}
-  
-  <h6 class="text-center">Estimated Reagent Usage</h6>
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Reagent</th>
-          <th scope="col">Catalog Number</th>
-          <th scope="col">Lot Number</th>
-          <th scope="col">Current Amount (μL)</th>
-          <th scope="col">Amount Used (μL)</th>
-          <th scope="col">Amount Remaining (μL)</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {% for reagent in reagent_usage %}
-          <tr class="row-link {% if reagent.reagent.is_expired %} table-danger {% endif %} {% if reagent.reagent.month_exp %} table-warning {% endif %} {% if reagent.usage|round_str:2|remaining_amounts:reagent.reagent.volume_in_microliters < 0 %} table-danger {% endif %}" data-href="{% url 'edit_reagent' reagent.reagent.pk %}">
-            <td>{{reagent.reagent.name}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
-            <td>{{reagent.reagent.catalog_number}}</td>
-            <td>{{reagent.reagent.lot_number}}</td>
-            <td>{{reagent.reagent.volume_in_microliters}}</td>
-            <td>{{reagent.usage|round_str:2}}</td>
-            <td>{{reagent.usage|round_str:2|remaining_amounts:reagent.reagent.volume_in_microliters}}</td>
-          </tr>
+    <div class="col-sm-3">
+      <h6 class="text-center">Correlated Assays</h6>
+      <ul class="list-group">
+        {% for assay in sorted_assays %}
+        <li class="list-group-item">{{assay}}
+          <a href="{% url 'edit_assay' assay.pk %}" class="btn btn-sm btn-primary position-relative float-end" target="_blank">Manage
+            {% if assay.is_alert %}
+            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+              <span class="visually-hidden">New alerts</span>
+            </span>
+            {% endif %}
+          </a>
+        </li>
         {% endfor %}
-      </tbody>
+      </ul>
+    </div>
 
-    </table>
-  </div>
+    <div class="col-sm-9">
+      {% if qpcr_plates %}
+        <h6 class="text-center">Estimated Plate Usage - qPCR</h6>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Plate</th>
+                <th scope="col">Catalog Number</th>
+                <th scope="col">Lot Number</th>
+                <th scope="col">Current Amount</th>
+                <th scope="col">Amount Used</th>
+                <th scope="col">Amount Remaining</th>
+              </tr>
+            </thead>
 
-  <h6 class="text-center">Estimated Control Usage</h6>
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Control</th>
-          <th scope="col">Lot Number</th>
-          <th scope="col">Current Amount (μL)</th>
-          <th scope="col">Amount Used (μL)</th>
-          <th scope="col">Amount Remaining (μL)</th>
-        </tr>
-      </thead>
+            <tbody>
+              {% for plate in qpcr_plates %}
+                <tr class="row-link {% if plate.amount < 0 or plate.is_expired %} table-danger {% endif %} {% if plate.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.plate.pk %}">
+                  <td>{{plate.name}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+                  <td>{{plate.catalog_number}}</td>
+                  <td>{{plate.lot_number}}</td>
+                  <td>{{plate.plate.amount}}</td>
+                  <td>{{plate.used}}</td>
+                  <td>{{plate.amount}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
 
-      <tbody>
-        {% for control in control_usage %}
-          <tr class="row-link {% if control.control.is_expired %} table-danger {% endif %} {% if control.control.month_exp %} table-warning {% endif %} {% if control.usage|round_str:2|remaining_amounts:control.control.amount < 0 %} table-danger {% endif %}" data-href="{% url 'edit_control' control.control.pk %}">
-            <td>{{control.control.name}} {% if control.control.is_expired %} (EXPIRED) {% endif %} {% if control.control.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
-            <td>{{control.control.lot_number}}</td>
-            <td>{{control.control.amount}}</td>
-            <td>{{control.usage|round_str:2}}</td>
-            <td>{{control.usage|round_str:2|remaining_amounts:control.control.amount}}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
+          </table>
+        </div>
+      {% endif %}
 
-    </table>
+      {% if pcr_plates %}
+        <h6 class="text-center">Estimated Plate Usage - PCR</h6>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Plate</th>
+                <th scope="col">Catalog Number</th>
+                <th scope="col">Lot Number</th>
+                <th scope="col">Current Amount</th>
+                <th scope="col">Amount Used</th>
+                <th scope="col">Amount Remaining</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for plate in pcr_plates %}
+              <tr class="row-link {% if plate.amount < 0 or plate.is_expired %} table-danger {% endif %} {% if plate.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_plate' plate.plate.pk %}">
+                  <td>{{plate.name}} {% if plate.is_expired %} (EXPIRED) {% endif %} {% if plate.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+                  <td>{{plate.catalog_number}}</td>
+                  <td>{{plate.lot_number}}</td>
+                  <td>{{plate.plate.amount}}</td>
+                  <td>{{plate.used}}</td>
+                  <td>{{plate.amount}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+      {% endif %}
+
+      {% if gels %}
+        <h6 class="text-center">Estimated Gel Usage</h6>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Gel</th>
+                <th scope="col">Catalog Number</th>
+                <th scope="col">Lot Number</th>
+                <th scope="col">Current Amount</th>
+                <th scope="col">Amount Used</th>
+                <th scope="col">Amount Remaining</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for gel in gels %}
+                <tr class="row-link {% if gel.amount < 0 or gel.is_expired %} table-danger {% endif %} {% if gel.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_gel' gel.gel.pk %}">
+                  <td>{{gel.name}} {% if gel.is_expired %} (EXPIRED) {% endif %} {% if gel.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+                  <td>{{gel.catalog_number}}</td>
+                  <td>{{gel.lot_number}}</td>
+                  <td>{{gel.gel.amount}}</td>
+                  <td>{{gel.used}}</td>
+                  <td>{{gel.amount}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+      {% endif %}
+      
+      <h6 class="text-center">Estimated Reagent Usage</h6>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Reagent</th>
+              <th scope="col">Catalog Number</th>
+              <th scope="col">Lot Number</th>
+              <th scope="col">Current Amount (μL)</th>
+              <th scope="col">Amount Used (μL)</th>
+              <th scope="col">Amount Remaining (μL)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for reagent in reagent_usage %}
+              <tr class="row-link {% if reagent.reagent.is_expired %} table-danger {% endif %} {% if reagent.reagent.month_exp %} table-warning {% endif %} {% if reagent.usage|round_str:2|remaining_amounts:reagent.reagent.volume_in_microliters < 0 %} table-danger {% endif %}" data-href="{% url 'edit_reagent' reagent.reagent.pk %}">
+                <td>{{reagent.reagent.name}} {% if reagent.reagent.is_expired %} (EXPIRED) {% endif %} {% if reagent.reagent.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+                <td>{{reagent.reagent.catalog_number}}</td>
+                <td>{{reagent.reagent.lot_number}}</td>
+                <td>{{reagent.reagent.volume_in_microliters}}</td>
+                <td>{{reagent.usage|round_str:2}}</td>
+                <td>{{reagent.usage|round_str:2|remaining_amounts:reagent.reagent.volume_in_microliters}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+
+      <h6 class="text-center">Estimated Control Usage</h6>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Control</th>
+              <th scope="col">Lot Number</th>
+              <th scope="col">Current Amount (μL)</th>
+              <th scope="col">Amount Used (μL)</th>
+              <th scope="col">Amount Remaining (μL)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for control in control_usage %}
+              <tr class="row-link {% if control.control.is_expired %} table-danger {% endif %} {% if control.control.month_exp %} table-warning {% endif %} {% if control.usage|round_str:2|remaining_amounts:control.control.amount < 0 %} table-danger {% endif %}" data-href="{% url 'edit_control' control.control.pk %}">
+                <td>{{control.control.name}} {% if control.control.is_expired %} (EXPIRED) {% endif %} {% if control.control.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
+                <td>{{control.control.lot_number}}</td>
+                <td>{{control.control.amount}}</td>
+                <td>{{control.usage|round_str:2}}</td>
+                <td>{{control.usage|round_str:2|remaining_amounts:control.control.amount}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+    </div>
   </div>
 
   <div class="modal fade" id="process-modal" tabindex="-1" role="dialog" aria-labelledby="populate-modalLabel" aria-hidden="true">

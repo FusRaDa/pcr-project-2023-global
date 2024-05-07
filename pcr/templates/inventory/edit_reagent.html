@@ -85,7 +85,7 @@
 
       <div class="col-sm-3 form-width-18">
         <div class="text-center mt-3">
-          <label class="form-label">Volume Stored</label>
+          <label class="form-label {% if reagent.is_low %} text-danger {% endif %}">Volume Stored</label>
           {{form.volume}}
         </div>
 
@@ -134,7 +134,7 @@
         </div>
         
         <div class="text-center mb-2 mt-3">
-          <label class="form-label">Expiration Date</label>
+          <label class="form-label {% if reagent.is_expired %} text-danger {% endif %}">Expiration Date</label>
           {{form.exp_date}}
         </div>
 

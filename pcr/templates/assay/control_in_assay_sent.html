@@ -1,5 +1,5 @@
-<li class="list-group-item">
-  {{control.name}}
+<li class="list-group-item {% if control.is_expired or control.is_low %} list-group-item-danger {% endif %}">
+  <a href="{% url 'edit_control' control.pk %}" target="_blank"> {{control}} </a>
   <button 
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
     hx-post="{% url 'remove_control_assay' assay.pk control.pk %}"

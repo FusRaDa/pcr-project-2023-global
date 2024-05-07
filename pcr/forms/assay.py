@@ -78,12 +78,14 @@ class ControlForm(ModelForm):
     self.fields['lot_number'].widget.attrs['class'] = 'form-control'
     self.fields['amount'].widget.attrs['class'] = 'form-control'
     self.fields['exp_date'].widget.attrs['class'] = 'form-control'
+    self.fields['threshold'].widget.attrs['class'] = 'form-control'
 
     self.fields['amount'].widget.attrs['min'] = 0
+    self.fields['threshold'].widget.attrs['min'] = 0
     
   class Meta:
     model = Control
-    exclude = ['user', 'merged_lot_numbers']
+    exclude = ['user', 'merged_lot_numbers', 'threshold_diff']
  
 
 class AssayForm(ModelForm):

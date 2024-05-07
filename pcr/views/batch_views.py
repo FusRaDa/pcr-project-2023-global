@@ -8,12 +8,12 @@ from ..models.inventory import Reagent
 from ..models.batch import Batch, Sample
 from ..forms.batch import BatchForm, SampleForm, SampleAssayForm, NumberSamplesForm
 from ..forms.general import DeletionForm
-from ..custom.functions import create_samples
+from ..custom.functions import create_samples, send_theshold_alert_email_ext
 
 
 @login_required(login_url='login')
 def batches(request):
-  batches = Batch.objects.filter(user=request.user, is_extracted=False).order_by('date_created')
+  batches = Batch.objects.filter(user=request.user, is_extracted=False).order_by('-date_created')
   context = {'batches': batches}
   return render(request, 'batch/batches.html', context)
 
@@ -21,6 +21,8 @@ def batches(request):
 @login_required(login_url='login')
 def create_batch(request):
   form = BatchForm(user=request.user)
+
+  batches = Batch.objects.filter(user=request.user).order_by('-lab_id')[:10]
 
   if request.method == "POST":
     form = BatchForm(request.POST, user=request.user)
@@ -60,7 +62,7 @@ def create_batch(request):
     else:
       print(form.errors)
   
-  context = {'form': form}
+  context = {'form': form, 'batches': batches}
   return render(request, 'batch/create_batch.html', context)
 
 
@@ -85,6 +87,12 @@ def batch_samples(request, pk):
     return redirect('batches')
 
   samples = batch.sample_set.all()
+
+  extractable = False
+  for sample in samples:
+    if sample.sample_id == "" or sample.sample_id == None:
+      extractable = True
+      break
 
   formset = SampleFormSet(instance=batch)
   del_form = DeletionForm(value=batch.name)
@@ -129,45 +137,67 @@ def batch_samples(request, pk):
   
   if 'extracted' in request.POST:
     # **VALIDATE** #
-    invalid_samples = []
+    invalid_samples = False
     for sample in samples:
       if not sample.sample_id:
-        invalid_samples.append(f"{sample.lab_id_num}")
+        invalid_samples = True
 
-    if len(invalid_samples) > 0:
-      messages.error(request, f"Samples {invalid_samples} have not been given a sample ID. Please update before proceeding.")
-      return redirect(request.path_info)
+    if invalid_samples:
+      messages.error(request, "All samples must have an ID.")
     
+    invalid_items = False
     for reagent in batch.extraction_protocol.reagentextraction_set.all():
       if reagent.reagent.is_expired:
-        messages.error(request, f"Reagent: {reagent.name} is expired")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Reagent: {reagent.reagent.name} is expired. Either update the <a href="/edit-extraction-protocol/{batch.extraction_protocol.pk}" target="_blank"> protocol </a> or <a href="/edit-reagent/{reagent.reagent.pk}" target="_blank">reagent.</a>')
       
       total_used_reagents = reagent.amount_per_sample * batch.sample_set.count()
       rem_reagents = reagent.reagent.volume_in_microliters - total_used_reagents
       if rem_reagents < 0:
-        messages.error(request, f"The amount of {reagent.reagent.name} lot#{reagent.reagent.lot_number} is insufficent. Update the amount of reagents.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'The amount of {reagent.reagent.name} lot#{reagent.reagent.lot_number} is insufficent. At least {total_used_reagents}µl is required. Either update the <a href="/edit-extraction-protocol/{batch.extraction_protocol.pk}" target="_blank"> protocol </a> or <a href="/edit-reagent/{reagent.reagent.pk}" target="_blank">reagent.</a>')
       
     for tube in batch.extraction_protocol.tubeextraction_set.all():
       if tube.tube.is_expired:
-        messages.error(request, f"Tube: {tube.name} is expired")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Tube: {tube.tube.name} is expired. Either update the <a href="/edit-extraction-protocol/{batch.extraction_protocol.pk}" target="_blank"> protocol </a> or <a href="/edit-tube/{tube.tube.pk}" target="_blank"> tube.</a>')
       
       total_used_tubes = tube.amount_per_sample * batch.sample_set.count()
       rem_tubes = tube.tube.amount - total_used_tubes
       if rem_tubes < 0:
-        messages.error(request, f"The amount of {tube.tube.name} lot#{tube.tube.lot_number} is insufficent. Update the amount of tubes.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'The amount of {tube.tube.name} lot#{tube.tube.lot_number} is insufficent. At least {total_used_tubes} is required. Either update the <a href="/edit-extraction-protocol/{batch.extraction_protocol.pk}" target="_blank"> protocol </a> or <a href="/edit-tube/{tube.tube.pk}" target="_blank"> tube.</a>')
+    
+    if invalid_samples or invalid_items:
+      return redirect(request.path_info)
     # **VALIDATE** #
       
     batch.is_extracted = True
 
+    # **ALERT DATA** #
+    inventory_alerts = {
+      'date': batch.date_created,
+      'reagents': [],
+      'tubes': [],
+    }
+
+    # **FINAL UPDATE OF DB** #
     for reagent in batch.extraction_protocol.reagentextraction_set.all():
       total_used_reagents = reagent.amount_per_sample * batch.sample_set.count()
 
       if reagent.reagent.threshold > 0:
-        reagent.reagent.threshold_diff = reagent.reagent.volume_in_microliters - total_used_reagents - reagent.reagent.threshold_in_microliters
+        diff = reagent.reagent.volume_in_microliters - total_used_reagents - reagent.reagent.threshold_in_microliters
+        reagent.reagent.threshold_diff = diff
+
+        if diff <= 0 or reagent.reagent.month_exp:
+          inventory_alerts['reagents'].append({
+            'exp': reagent.reagent.month_exp,
+            'pk': reagent.reagent.pk,
+            'name': reagent.reagent.name, 
+            'lot': reagent.reagent.lot_number,
+            'cat': reagent.reagent.catalog_number,
+            'amount': reagent.reagent.volume,
+          })
 
       reagent.reagent.volume = reagent.reagent.volume_in_microliters - total_used_reagents
 
@@ -178,15 +208,31 @@ def batch_samples(request, pk):
       total_used_tubes = tube.amount_per_sample * batch.sample_set.count()
 
       if tube.tube.threshold > 0:
-        tube.tube.threshold_diff = tube.tube.amount - total_used_tubes - tube.tube.threshold
+        diff = tube.tube.amount - total_used_tubes - tube.tube.threshold
+        tube.tube.threshold_diff = diff
+
+        if diff <= 0 or tube.tube.month_exp:
+          inventory_alerts['tubes'].append({
+            'exp': tube.tube.month_exp,
+            'pk': tube.tube.pk,
+            'name': tube.tube.name, 
+            'lot': tube.tube.lot_number,
+            'cat': tube.tube.catalog_number,
+            'amount': tube.tube.amount,
+          })
 
       tube.tube.amount -= total_used_tubes
       tube.tube.save()
+    # **FINAL UPDATE OF DB** #
+
+    if inventory_alerts['reagents'] or inventory_alerts['tubes']:
+      send_theshold_alert_email_ext(request, inventory_alerts)
+    # **ALERT DATA** #
       
     batch.save()
     return redirect('extracted_batches')
 
-  context = {'batch': batch, 'data': data, 'formset': formset, 'del_form': del_form, 'samplesform': samplesform}
+  context = {'batch': batch, 'data': data, 'formset': formset, 'del_form': del_form, 'samplesform': samplesform, 'extractable': extractable}
   return render(request, 'batch/batch_samples.html', context)
 
 

@@ -15,8 +15,8 @@ from ..forms.pcr import ThermalCyclerProtocolForm, ProcessForm
 from ..models.pcr import ThermalCyclerProtocol, Process
 from ..models.batch import Batch, Sample
 from ..models.assay import Assay
-from ..models.inventory import Reagent, Plate
-from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_gels, all_pcr_samples, samples_by_assay_multiplicates
+from ..models.inventory import Reagent
+from ..custom.functions import samples_by_assay, dna_pcr_samples, rna_pcr_samples, dna_qpcr_samples, rna_qpcr_samples, process_plates, process_gels, all_pcr_samples, samples_by_assay_multiplicates, send_theshold_alert_email_pcr
 
 
 @login_required(login_url='login')
@@ -233,6 +233,13 @@ def process_paperwork(request, pk):
   
   samples = process.samples.all()
   assay_samples = samples_by_assay_multiplicates(samples)
+
+  all_assays = []
+  for sample in samples:
+    for assay in sample.assays.all():
+      all_assays.append(assay)
+  assays = list(set(all_assays))
+  sorted_assays = sorted(assays, key=lambda x: x.name, reverse=False)
 
   requires_dna_pcr = False
   requires_rna_pcr = False
@@ -674,46 +681,65 @@ def process_paperwork(request, pk):
         
 
     # **VALIDATION FOR PLATES & GELS** #
+    invalid_items = False
     for plate in qpcr_plates:
+      name = plate['plate'].name
+      lot_number = plate['plate'].lot_number
+      pk = plate['plate'].pk
+      amount = plate['amount']
+
       if plate['plate'].is_expired:
-        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} is expired.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Plate: {name} lot#: {lot_number} is expired. Update the <a href="/edit-plate/{pk}" target="_blank"> plate </a> or process.')
       
       if plate['amount'] < 0:
-        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for qPCR has an insufficient amount for this process. {plate['amount']} plates are required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Plate: {name} lot#: {lot_number} for qPCR has an insufficient amount for this process. {amount} plates are required. Update the <a href="/edit-plate/{pk}" target="_blank"> plate </a> or process.')
     
     for plate in pcr_plates:
+      name = plate['plate'].name
+      lot_number = plate['plate'].lot_number
+      pk = plate['plate'].pk
+      amount = plate['amount']
+
       if plate['plate'].is_expired:
-        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} is expired.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Plate: {name} lot#: {lot_number} is expired. Update the <a href="/edit-plate/{pk}" target="_blank"> plate </a> or process.')
       
       if plate['amount'] < 0:
-        messages.error(request, f"Plate: {plate.name} lot#: {plate.lot_number} for PCR has an insufficient amount for this process. {plate['amount']} plates are required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Plate: {name} lot#: {lot_number} for PCR has an insufficient amount for this process. {amount} plates are required. Update the <a href="/edit-plate/{pk}" target="_blank"> plate </a> or process.')
 
     for gel in gels:
+      name = gel['gel'].name
+      lot_number = gel['gel'].lot_number
+      pk = gel['gel'].pk
+      amount = gel['amount']
+
       if gel['gel'].is_expired:
-        messages.error(request, f"Gel: {gel.name} lot#: {gel.lot_number} is expired.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Gel: {name} lot#: {lot_number} is expired. Update the <a href="/edit-gel/{pk}" target="_blank"> gel </a> or process.')
       
       if gel['amount'] < 0:
-        messages.error(request, f"Gel: {gel.name} lot#: {gel.lot_number} has an insufficient amount for this process. {gel['amount']} gels are required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Gel: {name} lot#: {lot_number} has an insufficient amount for this process. {amount} gels are required. Update the <a href="/edit-gel/{pk}" target="_blank"> gel </a> or process.')
     # **VALIDATION FOR PLATES & GELS** #
       
+
     # **VALIDATION FOR CONTROLS** #
     for control_dict in all_controls:
       name = control_dict['control'].name
       lot_number = control_dict['control'].lot_number
+      pk = control_dict['control'].pk
+      total = round(control_dict['total'], 2)
 
       if control_dict['control'].is_expired:
-        messages.error(request, f"Control: {name} lot#: {lot_number} is expired")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Control: {name} lot#: {lot_number} is expired. Update the <a href="/edit-control/{pk}" target="_blank"> control </a> or edit corresponding assays.')
       
       if control_dict['control'].amount - control_dict['total'] < 0:
-        messages.error(request, f"Control: {name} lot#: {lot_number} has an insufficient amount for this process. {round(control_dict['total'], 2)}µl is required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Control: {name} lot#: {lot_number} has an insufficient amount for this process. {total}µl is required. Update the <a href="/edit-control/{pk}" target="_blank"> control </a> or edit corresponding assays.')
     # **VALIDATION FOR CONTROLS** #
       
     
@@ -721,14 +747,16 @@ def process_paperwork(request, pk):
     for reagent_dict in all_reagents:
       name = reagent_dict['reagent'].name
       lot_number = reagent_dict['reagent'].lot_number
+      pk = reagent_dict['reagent'].pk
+      total = round(reagent_dict['total'], 2)
       
       if reagent_dict['reagent'].is_expired:
-        messages.error(request, f"Reagent: {name} lot#: {lot_number} is expired")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Reagent: {name} lot#: {lot_number} is expired. Update the <a href="/edit-reagent/{pk}" target="_blank"> reagent </a> or edit corresponding assays.')
       
       if reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] < 0:
-        messages.error(request, f"Reagent: {name} lot#: {lot_number} has an insufficient amount for this process. {round(reagent_dict['total'], 2)}µl is required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Reagent: {name} lot#: {lot_number} has an insufficient amount for this process. {total}µl is required. Update the <a href="/edit-reagent/{pk}" target="_blank"> reagent </a> or edit corresponding assays.')
     # **VALIDATION FOR REAGENTS** #
       
 
@@ -736,29 +764,34 @@ def process_paperwork(request, pk):
     for dye_dict in all_dyes:
       name = dye_dict['dye'].name
       lot_number = dye_dict['dye'].lot_number
+      pk = dye_dict['dye'].pk
+      total = round(dye_dict['total'], 2)
 
       if dye_dict['dye'].is_expired:
-        messages.error(request, f"Dye: {name} lot#: {lot_number} is expired.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Dye: {name} lot#: {lot_number} is expired. Update the <a href="/edit-dye/{pk}" target="_blank"> dye </a> or edit corresponding assays.')
 
       if dye_dict['dye'].amount - dye_dict['total'] < 0:
-        name = dye_dict['dye'].name
-        lot_number = dye_dict['dye'].lot_number
-        messages.error(request, f"Dye: {name} lot#: {lot_number} has an insufficient amount for this process.  {round(dye_dict['total'], 2)}µl is required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Dye: {name} lot#: {lot_number} has an insufficient amount for this process. {total}µl is required. Update the <a href="/edit-dye/{pk}" target="_blank"> dye </a> or edit corresponding assays.')
       
     for ladder_dict in all_ladders:
       name = ladder_dict['ladder'].name
       lot_number = ladder_dict['ladder'].lot_number
+      pk = ladder_dict['ladder'].pk
+      total = round(ladder_dict['total'], 2)
 
       if ladder_dict['ladder'].is_expired:
-        messages.error(request, f"Ladder: {name} lot#: {lot_number} is expired.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'Ladder: {name} lot#: {lot_number} is expired. Update the <a href="/edit-ladder/{pk}" target="_blank"> ladder</a> or edit corresponding assays.')
     
       if ladder_dict['ladder'].amount - ladder_dict['total'] < 0:
-        messages.error(request, f"Ladder: {name} lot#: {lot_number} has an insufficient amount for this process.  {round(ladder_dict['total'], 2)}µl is required. Please update inventory or change selection.")
-        return redirect(request.path_info)
+        invalid_items = True
+        messages.error(request, f'The amount of {name} lot#: {lot_number} is insufficient. At least {total}µl is required. Update the <a href="/edit-ladder/{pk}" target="_blank"> ladder </a> or edit corresponding assays.')
     # **VALIDATION FOR DYES & LADDERS** #
+
+    if invalid_items:
+      return redirect(request.path_info)
       
     process.is_processed = True
     process.date_processed = timezone.now()
@@ -810,11 +843,34 @@ def process_paperwork(request, pk):
     
     process.save()
 
+    # **ALERT DATA** #
+    inventory_alerts = {
+      'date': process.date_processed,
+      'qpcr_plates': [],
+      'pcr_plates': [],
+      'gels': [],
+      'controls': [],
+      'reagents': [],
+      'dyes': [],
+      'ladders': [],
+    }
+
     # **FINAL UPDATE OF ALL PLATES AND GELS IN DB** #
     for plate in qpcr_plates:
 
       if plate['plate'].threshold > 0:
-        plate['plate'].threshold_diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+        diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+        plate['plate'].threshold_diff = diff
+
+        if diff <= 0 or plate['plate'].month_exp:
+          inventory_alerts['qpcr_plates'].append({
+            'exp': plate['plate'].month_exp,
+            'pk': plate['plate'].pk,
+            'name': plate['plate'].name, 
+            'lot': plate['plate'].lot_number,
+            'cat': plate['plate'].catalog_number,
+            'amount': plate['plate'].amount,
+          })
 
       plate['plate'].amount -= plate['used']
       plate['plate'].save()
@@ -823,7 +879,18 @@ def process_paperwork(request, pk):
     for plate in pcr_plates:
 
       if plate['plate'].threshold > 0:
-        plate['plate'].threshold_diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+        diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+        plate['plate'].threshold_diff = diff
+
+        if diff <= 0 or plate['plate'].month_exp: 
+          inventory_alerts['pcr_plates'].append({
+            'exp': plate['plate'].month_exp,
+            'pk': plate['plate'].pk,
+            'name': plate['plate'].name, 
+            'lot': plate['plate'].lot_number,
+            'cat': plate['plate'].catalog_number,
+            'amount': plate['plate'].amount,
+          })
 
       plate['plate'].amount -= plate['used']
       plate['plate'].save()
@@ -831,8 +898,19 @@ def process_paperwork(request, pk):
 
     for gel in gels:
 
-      if plate['plate'].threshold > 0:
-        plate['plate'].threshold_diff = plate['plate'].amount - plate['used'] - plate['plate'].threshold 
+      if gel['gel'].threshold > 0:
+        diff = gel['gel'].amount - gel['used'] - gel['gel'].threshold 
+        plate['plate'].threshold_diff = diff
+
+        if diff <= 0 or gel['gel'].month_exp:
+          inventory_alerts['gels'].append({
+            'exp': gel['gel'].month_exp,
+            'pk': gel['gel'].pk,
+            'name': gel['gel'].name, 
+            'lot': gel['gel'].lot_number,
+            'cat': gel['gel'].catalog_number,
+            'amount': gel['gel'].amount,
+          })
 
       gel['gel'].amount -= gel['used']
       gel['gel'].save()
@@ -842,6 +920,21 @@ def process_paperwork(request, pk):
 
     # **FINAL UPDATE OF ALL CONTROLS IN DB** #
     for control_dict in all_controls:
+
+      if control_dict['control'].threshold > 0:
+        diff = control_dict['control'].amount - Decimal(control_dict['total']) - control_dict['control'].threshold
+        control_dict['control'].threshold_diff = diff
+
+        if diff <= 0 or control_dict['control'].month_exp:
+          inventory_alerts['controls'].append({
+            'exp': control_dict['control'].month_exp,
+            'pk': control_dict['control'].pk,
+            'name': control_dict['control'].name, 
+            'lot': control_dict['control'].lot_number,
+            'cat': control_dict['control'].catalog_number,
+            'amount': control_dict['control'].amount,
+          })
+
       control_dict['control'].amount -= Decimal(control_dict['total'])
       control_dict['control'].save()
     # **FINAL UPDATE OF ALL CONTROLS IN DB** #
@@ -851,7 +944,18 @@ def process_paperwork(request, pk):
     for reagent_dict in all_reagents:
 
       if reagent_dict['reagent'].threshold > 0:
-        reagent_dict['reagent'].threshold_diff = Decimal(reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] - reagent_dict['reagent'].threshold_in_microliters)
+        diff = Decimal(reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] - reagent_dict['reagent'].threshold_in_microliters)
+        reagent_dict['reagent'].threshold_diff = diff
+
+        if diff <= 0 or reagent_dict['reagent'].month_exp:
+          inventory_alerts['reagents'].append({
+            'exp': reagent_dict['reagent'].month_exp,
+            'pk': reagent_dict['reagent'].pk,
+            'name': reagent_dict['reagent'].name, 
+            'lot': reagent_dict['reagent'].lot_number,
+            'cat': reagent_dict['reagent'].catalog_number,
+            'amount': reagent_dict['reagent'].volume,
+          })
 
       if process.is_plus_one_well == True:
         reagent_dict['reagent'].volume = Decimal(reagent_dict['reagent'].volume_in_microliters - reagent_dict['total'] - reagent_dict['volume_per_sample'])
@@ -867,7 +971,18 @@ def process_paperwork(request, pk):
     for dye_dict in all_dyes:
 
       if dye_dict['dye'].threshold > 0:
-        dye_dict['dye'].threshold_diff = Decimal(dye_dict['amount'] - dye_dict['total'] - dye_dict['dye'].threshold)
+        diff = Decimal(dye_dict['amount'] - dye_dict['total'] - dye_dict['dye'].threshold)
+        dye_dict['dye'].threshold_diff = diff
+
+        if diff <= 0 or dye_dict['dye'].month_exp:
+          inventory_alerts['dyes'].append({
+            'exp': dye_dict['dye'].month_exp,
+            'pk': dye_dict['dye'].pk,
+            'name': dye_dict['dye'].name, 
+            'lot': dye_dict['dye'].lot_number,
+            'cat': dye_dict['dye'].catalog_number,
+            'amount': dye_dict['dye'].amount,
+          })
 
       dye_dict['dye'].amount -= dye_dict['total']
       dye_dict['dye'].save()
@@ -875,11 +990,26 @@ def process_paperwork(request, pk):
     for ladder_dict in all_ladders:
 
       if ladder_dict['ladder'].threshold > 0:
-        ladder_dict['ladder'].threshold_diff = Decimal(ladder_dict['amount'] - ladder_dict['total'] - ladder_dict['ladder'].threshold)
+        diff = Decimal(ladder_dict['amount'] - ladder_dict['total'] - ladder_dict['ladder'].threshold)
+        ladder_dict['ladder'].threshold_diff = diff
+
+        if diff <= 0 or ladder_dict['ladder'].month_exp:
+          inventory_alerts['ladders'].append({
+            'exp': ladder_dict['ladder'].month_exp,
+            'pk': ladder_dict['ladder'].pk,
+            'name': ladder_dict['ladder'].name, 
+            'lot': ladder_dict['ladder'].lot_number,
+            'cat': ladder_dict['ladder'].catalog_number,
+            'amount': ladder_dict['ladder'].amount,
+          })
 
       ladder_dict['ladder'].amount -= ladder_dict['total']
       ladder_dict['ladder'].save()
     # **FINAL UPDATE OF ALL DYES & LADDERS IN DB** #
+
+    if inventory_alerts['qpcr_plates'] or inventory_alerts['pcr_plates'] or inventory_alerts['gels'] or inventory_alerts['controls'] or inventory_alerts['reagents'] or inventory_alerts['dyes'] or inventory_alerts['ladders']:
+      send_theshold_alert_email_pcr(request, inventory_alerts)
+    # **ALERT DATA** #
       
     return redirect('processes')
 
@@ -888,7 +1018,8 @@ def process_paperwork(request, pk):
     'dna_pcr_json': dna_pcr_json, 'rna_pcr_json': rna_pcr_json, 
     'qpcr_plates': qpcr_plates, 'pcr_plates': pcr_plates, 'gels': gels,
     'pcr_gels_json': pcr_gels_json, 'process': process, 
-    'reagent_usage': reagent_usage, 'control_usage': control_usage
+    'reagent_usage': reagent_usage, 'control_usage': control_usage,
+    'sorted_assays': sorted_assays,
     }
   return render(request, 'pcr/process_paperwork.html', context)
 

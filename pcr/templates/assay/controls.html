@@ -30,10 +30,16 @@
   </div>
 
   <form class="row gx-3 gy-2 align-items-center justify-content-center mb-2" method="GET" action="">
+    <div class="col-sm-4">
+      <div class="input-group">
+        <div class="input-group-text">Name/Brand/Catalog#/Lot#</div>
+        {{form.text_search}}
+      </div>
+    </div>
     <div class="col-sm-3">
       <div class="input-group">
-        <div class="input-group-text">Name/Lot#</div>
-        {{form.text_search}}
+        <div class="input-group-text">Sort by</div>
+        {{form.sort}}
       </div>
     </div>
     <div class="col-sm-3">
@@ -52,6 +58,7 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
+          <th scope="col">Status</th>
           <th scope="col">Exp. Date</th>
           <th scope="col">Last Updated</th>
           <th scope="col">Name</th>
@@ -65,10 +72,14 @@
 
       <tbody>
         {% for control in page_obj %}
-          <tr class="tube-row {% if control.is_expired %} table-danger {% endif %} {% if control.month_exp %} table-warning {% endif %}" data-href="{% url 'edit_control' control.pk %}">
+          <tr class="tube-row {% if control.is_expired %} table-danger {% endif %} {% if control.month_exp or control.threshold_diff <= 0 %} table-warning {% endif %}" data-href="{% url 'edit_control' control.pk %}">
+            <td>
+              {% if not control.exp_date %} <span class="badge text-bg-warning">No Exp</span> {% else %} <span class="badge text-bg-success">Exp</span> {% endif %} 
+              {% if not control.threshold %} <span class="badge text-bg-warning">No Threshold</span> {% else %} <span class="badge text-bg-success">Threshold</span> {% endif %} 
+            </td>
             <td>{{control.exp_date}} {% if control.is_expired %} (EXPIRED) {% endif %} {% if control.month_exp %} (&#60;1 MONTH TILL EXP) {% endif %}</td>
             <td>{{control.last_updated}}</td>
-            <td>{% if control.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{control.name}}</td>
+            <td>{% if control.assay_set.count > 0 %} <i class="fa-solid fa-mortar-pestle"></i> {% endif %} {{control.name}} {% if control.threshold_diff <= 0 %} (LOW) {% endif %}</td>
             <td>{{control.brand}}</td>
             <td>{{control.catalog_number}}</td>
             <td>{% if control.merged_lot_numbers|length > 0 %} <i class="fa-solid fa-cubes-stacked"></i> {% endif %} {{control.lot_number}}</td>

@@ -88,11 +88,13 @@ def ladders(request):
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']
+      sort = form.cleaned_data['sort']
 
       filters = {}
       if location:
         filters['location'] = location
-      ladders = Ladder.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+
+      ladders = Ladder.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -183,13 +185,15 @@ def gels(request):
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']
       size = form.cleaned_data['size']
+      sort = form.cleaned_data['sort']
 
       filters = {}
       if location:
         filters['location'] = location
       if size:
         filters['size'] = size
-      gels = Gel.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+
+      gels = Gel.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -280,12 +284,13 @@ def dyes(request):
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']
+      sort = form.cleaned_data['sort']
 
       filters = {}
       if location:
         filters['location'] = location
 
-      dyes = Dye.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+      dyes = Dye.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -378,6 +383,7 @@ def plates(request):
       location = form.cleaned_data['location']
       size = form.cleaned_data['size']
       type = form.cleaned_data['type']
+      sort = form.cleaned_data['sort']
 
       filters = {}
       if location:
@@ -387,7 +393,7 @@ def plates(request):
       if type:
         filters['type'] = type
 
-      plates = Plate.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+      plates = Plate.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -478,11 +484,12 @@ def tubes(request):
     if form.is_valid():
       text_search = form.cleaned_data['text_search']
       location = form.cleaned_data['location']
+      sort = form.cleaned_data['sort']
 
       filters = {}
       if location:
         filters['location'] = location
-      tubes = Tube.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F('exp_date').asc(nulls_last=True))
+      tubes = Tube.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
     else:
       print(form.errors)
 
@@ -576,6 +583,7 @@ def reagents(request):
       location = form.cleaned_data['location']
       usage = form.cleaned_data['usage']
       pcr_reagent = form.cleaned_data['pcr_reagent']
+      sort = form.cleaned_data['sort']
 
       filters = {}
       if location:
@@ -584,7 +592,7 @@ def reagents(request):
         filters['usage'] = usage
       if pcr_reagent:
         filters['pcr_reagent'] = pcr_reagent
-      reagents = Reagent.objects.filter(user=request.user, **filters).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F('exp_date').asc(nulls_last=True))
+      reagents = Reagent.objects.filter(user=request.user, **filters).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F(sort).asc(nulls_last=True))
     else:
       print(form.errors)
 

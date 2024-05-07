@@ -54,6 +54,12 @@ class Ladder(models.Model):
       return True
     else:
       return False
+    
+  @property
+  def is_low(self):
+    if self.threshold_diff <= 0:
+      return True
+    return False
 
   def __str__(self):
     return f"{self.name}-Lot#:{self.lot_number}"
@@ -92,6 +98,12 @@ class Dye(models.Model):
       return True
     else:
       return False
+    
+  @property
+  def is_low(self):
+    if self.threshold_diff <= 0:
+      return True
+    return False
 
   def __str__(self):
     return f"{self.name}-Lot#:{self.lot_number}"
@@ -144,6 +156,12 @@ class Plate(models.Model):
       return True
     else:
       return False
+    
+  @property
+  def is_low(self):
+    if self.threshold_diff <= 0:
+      return True
+    return False
 
   def __str__(self):
     return f"{self.name}-Lot#:{self.lot_number}"
@@ -189,6 +207,12 @@ class Gel(models.Model):
       return True
     else:
       return False
+    
+  @property
+  def is_low(self):
+    if self.threshold_diff <= 0:
+      return True
+    return False
 
   def __str__(self):
     return f"{self.name}-Lot#:{self.lot_number}"
@@ -227,6 +251,12 @@ class Tube(models.Model):
       return True
     else:
       return False
+    
+  @property
+  def is_low(self):
+    if self.threshold_diff <= 0:
+      return True
+    return False
 
   def __str__(self):
     return f"{self.name}-Lot#:{self.lot_number}"
@@ -304,6 +334,12 @@ class Reagent(models.Model):
       return True
     else:
       return False
+    
+  @property
+  def is_low(self):
+    if self.threshold_diff <= 0:
+      return True
+    return False
 
   @property
   def volume_in_microliters(self):

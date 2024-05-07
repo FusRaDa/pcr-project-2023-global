@@ -148,3 +148,7 @@ def profile(request):
   context = {'limits': limits, 'clear_batch_form': clear_batch_form, 'clear_process_form': clear_process_form}
   return render(request, 'profile.html', context)
 
+
+# @login_required(login_url='login')
+# def interval_inventory_reports(request):
+#   pass
