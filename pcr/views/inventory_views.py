@@ -770,7 +770,7 @@ def mergeable_items(request):
   if items['ladders']:
     color_index = 0
     for ladder in items['ladders']:
-      ladders = Ladder.objects.filter(user=request.user, brand=ladder['brand'], catalog_number=ladder['cat'])
+      ladders = Ladder.objects.filter(user=request.user, name__iexact=ladder['name'], catalog_number=ladder['cat'])
       mergeable_ladders.append({'sets': ladders, 'color': colors[color_index]})
       color_index += 1
       if color_index > 5:
@@ -780,7 +780,7 @@ def mergeable_items(request):
   if items['dyes']:
     color_index = 0
     for dye in items['dyes']:
-      dyes = Dye.objects.filter(user=request.user, brand=dye['brand'], catalog_number=dye['cat'])
+      dyes = Dye.objects.filter(user=request.user, name__iexact=dye['name'], catalog_number=dye['cat'])
       mergeable_dyes.append({'sets': dyes, 'color': colors[color_index]})
       color_index += 1
       if color_index > 5:
@@ -790,7 +790,7 @@ def mergeable_items(request):
   if items['plates']:
     color_index = 0
     for plate in items['plates']:
-      plates = Plate.objects.filter(user=request.user, brand=plate['brand'], catalog_number=plate['cat'])
+      plates = Plate.objects.filter(user=request.user, name__iexact=plate['name'], catalog_number=plate['cat'])
       mergeable_plates.append({'sets': plates, 'color': colors[color_index]})
       color_index += 1
       if color_index > 5:
@@ -800,7 +800,7 @@ def mergeable_items(request):
   if items['gels']:
     color_index = 0
     for gel in items['gels']:
-      gels = Gel.objects.filter(user=request.user, brand=gel['brand'], catalog_number=gel['cat'])
+      gels = Gel.objects.filter(user=request.user, name__iexact=gel['name'], catalog_number=gel['cat'])
       mergeable_gels.append({'sets': gels, 'color': colors[color_index]})
       color_index += 1
       if color_index > 5:
@@ -810,7 +810,7 @@ def mergeable_items(request):
   if items['tubes']:
     color_index = 0
     for tube in items['tubes']:
-      tubes = Tube.objects.filter(user=request.user, brand=tube['brand'], catalog_number=tube['cat'])
+      tubes = Tube.objects.filter(user=request.user, name__iexact=tube['name'], catalog_number=tube['cat'])
       mergeable_tubes.append({'sets': tubes, 'color': colors[color_index]})
       color_index += 1
       if color_index > 5:
@@ -820,7 +820,7 @@ def mergeable_items(request):
   if items['reagents']:
     color_index = 0
     for reagent in items['reagents']:
-      reagents = Reagent.objects.filter(user=request.user, brand=reagent['brand'], catalog_number=reagent['cat'])
+      reagents = Reagent.objects.filter(user=request.user, name__iexact=reagent['name'], catalog_number=reagent['cat'])
       mergeable_reagents.append({'sets': reagents, 'color': colors[color_index]})
       color_index += 1
       if color_index > 5:
@@ -830,7 +830,7 @@ def mergeable_items(request):
   if items['controls']:
     color_index = 0
     for control in items['controls']:
-      controls = Control.objects.filter(user=request.user, brand=control['brand'], catalog_number=control['cat'])
+      controls = Control.objects.filter(user=request.user, name__iexact=control['name'], catalog_number=control['cat'])
       mergeable_controls.append({'sets': controls, 'color': colors[color_index]})
       color_index += 1
       if color_index > 5:
@@ -845,7 +845,7 @@ def merge_ladder(request, pk):
   try:
     ladder = Ladder.objects.get(user=request.user, pk=pk)
 
-    ladders = Ladder.objects.filter(user=request.user, catalog_number=ladder.catalog_number).exclude(pk=ladder.pk)
+    ladders = Ladder.objects.filter(user=request.user, name__iexact=ladder.name, catalog_number=ladder.catalog_number).exclude(pk=ladder.pk)
     if not ladders.count() > 0:
       messages.error(request, "There is no ladder to merge.")
       return redirect('inventory_report')
@@ -867,7 +867,7 @@ def merge_ladder(request, pk):
         ladder.merged_lot_numbers.extend(lot_numbers)
         ladder.save()
 
-        return redirect('mergeable_items')
+        return redirect('ladders')
       else:
         print(form.errors)
 
@@ -884,7 +884,7 @@ def merge_dye(request, pk):
   try:
     dye = Dye.objects.get(user=request.user, pk=pk)
 
-    dyes = Dye.objects.filter(user=request.user, catalog_number=dye.catalog_number).exclude(pk=dye.pk)
+    dyes = Dye.objects.filter(user=request.user, name__iexact=dye.name, catalog_number=dye.catalog_number).exclude(pk=dye.pk)
     if not dyes.count() > 0:
       messages.error(request, "There is no dye to merge.")
       return redirect('inventory_report')
@@ -906,7 +906,7 @@ def merge_dye(request, pk):
         dye.merged_lot_numbers.extend(lot_numbers)
         dye.save()
 
-        return redirect('mergeable_items')
+        return redirect('dyes')
       else:
         print(form.errors)
 
@@ -923,7 +923,7 @@ def merge_plate(request, pk):
   try:
     plate = Plate.objects.get(user=request.user, pk=pk)
 
-    plates = Plate.objects.filter(user=request.user, catalog_number=plate.catalog_number).exclude(pk=plate.pk)
+    plates = Plate.objects.filter(user=request.user, name__iexact=plate.name, catalog_number=plate.catalog_number).exclude(pk=plate.pk)
     if not plates.count() > 0:
       messages.error(request, "There is no plate to merge.")
       return redirect('inventory_report')
@@ -945,7 +945,7 @@ def merge_plate(request, pk):
         plate.merged_lot_numbers.extend(lot_numbers)
         plate.save()
 
-        return redirect('mergeable_items')
+        return redirect('plates')
       else:
         print(form.errors)
 
@@ -962,7 +962,7 @@ def merge_gel(request, pk):
   try:
     gel = Gel.objects.get(user=request.user, pk=pk)
 
-    gels = Gel.objects.filter(user=request.user, catalog_number=gel.catalog_number).exclude(pk=gel.pk)
+    gels = Gel.objects.filter(user=request.user, name__iexact=gel.name, catalog_number=gel.catalog_number).exclude(pk=gel.pk)
     if not gels.count() > 0:
       messages.error(request, "There is no gel to merge.")
       return redirect('inventory_report')
@@ -984,7 +984,7 @@ def merge_gel(request, pk):
         gel.merged_lot_numbers.extend(lot_numbers)
         gel.save()
 
-        return redirect('mergeable_items')
+        return redirect('gels')
       else:
         print(form.errors)
 
@@ -1001,7 +1001,7 @@ def merge_tube(request, pk):
   try:
     tube = Tube.objects.get(user=request.user, pk=pk)
 
-    tubes = Tube.objects.filter(user=request.user, catalog_number=tube.catalog_number).exclude(pk=tube.pk)
+    tubes = Tube.objects.filter(user=request.user, name__iexact=tube.name, catalog_number=tube.catalog_number).exclude(pk=tube.pk)
     if not tubes.count > 0:
       messages.error(request, "There is no tube to merge.")
       return redirect('inventory_report')
@@ -1023,7 +1023,7 @@ def merge_tube(request, pk):
         tube.merged_lot_numbers.extend(lot_numbers)
         tube.save()
 
-        return redirect('mergeable_items')
+        return redirect('tubes')
       else:
         print(form.errors)
 
@@ -1040,7 +1040,7 @@ def merge_reagent(request, pk):
   try:
     reagent = Reagent.objects.get(user=request.user, pk=pk)
 
-    reagents = Reagent.objects.filter(user=request.user, catalog_number=reagent.catalog_number).exclude(pk=reagent.pk)
+    reagents = Reagent.objects.filter(user=request.user, name__iexact=reagent.name, catalog_number=reagent.catalog_number).exclude(pk=reagent.pk)
     if not reagents.count() > 0:
       messages.error(request, "There is no reagent to merge.")
       return redirect('inventory_report')
@@ -1063,7 +1063,7 @@ def merge_reagent(request, pk):
         reagent.merged_lot_numbers.extend(lot_numbers)
         reagent.save()
 
-        return redirect('mergeable_items')
+        return redirect('reagents')
       else:
         print(form.errors)
 
@@ -1080,7 +1080,7 @@ def merge_control(request, pk):
   try:
     control = Control.objects.get(user=request.user, pk=pk)
 
-    controls = Control.objects.filter(user=request.user, catalog_number=control.catalog_number).exclude(pk=control.pk)
+    controls = Control.objects.filter(user=request.user, name__iexact=control.name, catalog_number=control.catalog_number).exclude(pk=control.pk)
     if not controls.count() > 0:
       messages.error(request, "There is no control to merge.")
       return redirect('inventory_report')
@@ -1102,7 +1102,7 @@ def merge_control(request, pk):
         control.merged_lot_numbers.extend(lot_numbers)
         control.save()
 
-        return redirect('mergeable_items')
+        return redirect('controls')
       else:
         print(form.errors)
 

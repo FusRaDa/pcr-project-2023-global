@@ -57,7 +57,7 @@ class Control(models.Model):
   
   @property
   def is_low(self):
-    if self.threshold_diff <= 0:
+    if self.threshold_diff and self.threshold_diff <= 0:
       return True
     return False
 

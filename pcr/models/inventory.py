@@ -57,7 +57,7 @@ class Ladder(models.Model):
     
   @property
   def is_low(self):
-    if self.threshold_diff <= 0:
+    if self.threshold_diff and self.threshold_diff <= 0:
       return True
     return False
 
@@ -101,7 +101,7 @@ class Dye(models.Model):
     
   @property
   def is_low(self):
-    if self.threshold_diff <= 0:
+    if self.threshold_diff and self.threshold_diff <= 0:
       return True
     return False
 
@@ -159,7 +159,7 @@ class Plate(models.Model):
     
   @property
   def is_low(self):
-    if self.threshold_diff <= 0:
+    if self.threshold_diff and self.threshold_diff <= 0:
       return True
     return False
 
@@ -210,7 +210,7 @@ class Gel(models.Model):
     
   @property
   def is_low(self):
-    if self.threshold_diff <= 0:
+    if self.threshold_diff and self.threshold_diff <= 0:
       return True
     return False
 
@@ -254,7 +254,7 @@ class Tube(models.Model):
     
   @property
   def is_low(self):
-    if self.threshold_diff <= 0:
+    if self.threshold_diff and self.threshold_diff <= 0:
       return True
     return False
 
@@ -337,7 +337,7 @@ class Reagent(models.Model):
     
   @property
   def is_low(self):
-    if self.threshold_diff <= 0:
+    if self.threshold_diff and self.threshold_diff <= 0:
       return True
     return False
 
