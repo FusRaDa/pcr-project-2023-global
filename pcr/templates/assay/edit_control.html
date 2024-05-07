@@ -50,7 +50,7 @@
         </div>
 
         <div class="text-center mt-3">
-          <label class="form-label">Amount Stored (µL)</label>
+          <label class="form-label {% if control.is_low %} text-danger {% endif %}">Amount Stored (µL)</label>
           {{form.amount}}
         </div>
 
@@ -65,7 +65,7 @@
 
       <div class="col-sm-3 form-width-18">
         <div class="text-center mb-2 mt-3">
-          <label class="form-label">Expiration Date</label>
+          <label class="form-label {% if control.is_expired %} text-danger {% endif %}">Expiration Date</label>
           {{form.exp_date}}
         </div>
 
