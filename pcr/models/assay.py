@@ -106,6 +106,16 @@ class Assay(models.Model):
   def mm_volume(self):
     sub = self.reaction_volume - self.sample_volume
     return sub
+  
+  @property
+  def is_alert(self):
+    for reagent in self.reagents.all():
+      if reagent.is_expired or (reagent.threshold_diff != None and reagent.threshold_diff <= 0):
+        return True
+    for control in self.controls.all():
+      if control.is_expired or (control.threshold_diff != None and control.threshold_diff <= 0):
+        return True
+    return False
 
   def __str__(self):
     return self.name
