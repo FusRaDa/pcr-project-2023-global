@@ -288,14 +288,14 @@ class ReagentForm(ModelForm):
         message="Polymerase reagents require a unit of U/\u00B5L. If your polymerase is in a different concentration, set PCR Reagent as General."
       )
     
-    if mixture_volume and pcr_reagent != Reagent.PCRReagent.MIXTURE:
+    if mixture_volume > 0 and pcr_reagent != Reagent.PCRReagent.MIXTURE:
       raise ValidationError(
         message="Mixture volumes per reaction are required for reagents that are enzyme mixtures with no specified stock concentration."
       )
     
-    if pcr_reagent == Reagent.PCRReagent.MIXTURE and not mixture_volume:
+    if pcr_reagent == Reagent.PCRReagent.MIXTURE and not mixture_volume > 0:
       raise ValidationError(
-        message="Reagents that are enzyme mixtures must have a volume per reaction used."
+        message="Reagents that are enzyme mixtures must have a volume per reaction set."
       )
     
     if pcr_reagent == Reagent.PCRReagent.MIXTURE and (stock != None or unit != None):

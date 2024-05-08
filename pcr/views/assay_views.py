@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import F
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -169,11 +169,15 @@ def add_reagent_assay(request, assay_pk, reagent_pk):
     messages.error(request, "There is no reagent or assay found.")
     return redirect('assays')
   
+  # mixture validation
+  if reagent.mixture_volume_per_reaction > assay.reaction_volume:
+    return HttpResponse(status=403)
+  
   if 'add_reagent' in request.POST:
     if not assay.reagents.contains(reagent):
       assay.reagents.add(reagent)
-
-      if reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.pcr_reagent != Reagent.PCRReagent.POLYMERASE:
+    
+      if reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.pcr_reagent != Reagent.PCRReagent.POLYMERASE and reagent.pcr_reagent != Reagent.PCRReagent.MIXTURE:
         reagent_assay = ReagentAssay.objects.get(assay=assay, reagent=reagent)
         reagent_assay.final_concentration_unit = reagent.unit_concentration
         reagent_assay.save()
@@ -327,7 +331,11 @@ def controls(request):
       filters = {}
       if location:
         filters['location'] = location
-      controls = Control.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+
+      if sort == 'exp_date' or sort == 'threshold_diff':
+        controls = Control.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+      else:
+        controls = Control.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
     else:
       print(form.errors)
 

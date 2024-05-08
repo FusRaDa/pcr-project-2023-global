@@ -1,13 +1,24 @@
 <li class="list-group-item {% if reagent.is_expired or reagent.is_low %} list-group-item-danger {% endif %}">
-  <a href="{% url 'edit_reagent' reagent.pk %}" target="_blank"> {{reagent}} </a>
-  <button 
-    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-    hx-post="{% url 'add_reagent_assay' assay.pk reagent.pk %}"
-    hx-on:click="this.parentNode.remove()"
-    hx-target="#reagents-list"
-    hx-swap="beforeend"
-    class="btn btn-success btn-sm float-end" 
-    name="add_reagent">
-    <i class="fa-solid fa-plus"></i>
-  </button>
+  <a href="{% url 'edit_reagent' reagent.pk %}" target="_blank"> {{reagent}}</a>
+
+  {% if reagent.mixture_volume_per_reaction >= assay.reaction_volume %}
+    <span class="d-inline-block float-end" tabindex="0" data-bs-placement="top" data-bs-toggle="popover" data-bs-trigger="hover focus" 
+      data-bs-content="You cannot add this mixture because it's volume per reaction is equal or greater than this assay's reaction volume. You can either change the assays reaction volume or the reagent's volume per reaction.">
+      <button class="btn btn-success btn-sm float-end disabled">
+        <i class="fa-solid fa-plus"></i>
+      </button>
+    </span>
+  {% else%}
+    <button 
+      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+      hx-post="{% url 'add_reagent_assay' assay.pk reagent.pk %}"
+      hx-on:click="this.parentNode.remove()"
+      hx-target="#reagents-list"
+      hx-swap="beforeend"
+      class="btn btn-success btn-sm float-end {% if reagent.mixture_volume_per_reaction > assay.reaction_volume %}  {% endif %}" 
+      name="add_reagent">
+      <i class="fa-solid fa-plus"></i>
+    </button>
+  {% endif %}
+
 </li>

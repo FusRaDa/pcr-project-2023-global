@@ -93,8 +93,10 @@ def ladders(request):
       filters = {}
       if location:
         filters['location'] = location
-
-      ladders = Ladder.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+      if sort == 'exp_date' or sort == 'threshold_diff':
+        ladders = Ladder.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+      else:
+        ladders = Ladder.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
     else:
       print(form.errors)
 
@@ -193,7 +195,10 @@ def gels(request):
       if size:
         filters['size'] = size
 
-      gels = Gel.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+      if sort == 'exp_date' or sort == 'threshold_diff':
+        gels = Gel.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+      else:
+        gels = Gel.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
     else:
       print(form.errors)
 
@@ -290,7 +295,10 @@ def dyes(request):
       if location:
         filters['location'] = location
 
-      dyes = Dye.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+      if sort == 'exp_date' or sort == 'threshold_diff':
+        dyes = Dye.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+      else:
+        dyes = Dye.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
     else:
       print(form.errors)
 
@@ -393,7 +401,10 @@ def plates(request):
       if type:
         filters['type'] = type
 
-      plates = Plate.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+      if sort == 'exp_date' or sort == 'threshold_diff':
+        plates = Plate.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+      else:
+        plates = Plate.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
     else:
       print(form.errors)
 
@@ -489,7 +500,11 @@ def tubes(request):
       filters = {}
       if location:
         filters['location'] = location
-      tubes = Tube.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+
+      if sort == 'exp_date' or sort == 'threshold_diff':
+        tubes = Tube.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+      else:
+        tubes = Tube.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
     else:
       print(form.errors)
 
@@ -592,7 +607,11 @@ def reagents(request):
         filters['usage'] = usage
       if pcr_reagent:
         filters['pcr_reagent'] = pcr_reagent
-      reagents = Reagent.objects.filter(user=request.user, **filters).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F(sort).asc(nulls_last=True))
+      
+      if sort == 'exp_date' or sort == 'threshold_diff':
+        reagents = Reagent.objects.filter(user=request.user, **filters).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F(sort).asc(nulls_last=True))
+      else:
+        reagents = Reagent.objects.filter(user=request.user, **filters).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(sort)
     else:
       print(form.errors)
 
@@ -1274,3 +1293,115 @@ def remove_control_lot_number(request, pk, lot):
   
   return HttpResponse(status=200)
 # **MERGEABLE VIEWS** #
+
+
+# **REAGENT PRESETS VIEWS** #
+@login_required(login_url='login')
+def preset_extraction_reagent(request):
+  reagent = Reagent.objects.create(
+    user = request.user,
+    name = "EXTRACTION REAGENT",
+    brand = "PRESET",
+    lot_number = "PRESET LOT NUMBER",
+    catalog_number = "PRESET CATALOG NUMBER",
+    usage = Reagent.Usages.EXTRACTION,
+    volume = 9999,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
+  )
+  context = {'reagent': reagent}
+  return render(request, 'inventory/preset_reagent.html', context)
+
+
+@login_required(login_url='login')
+def preset_general_pcr_reagent(request):
+  reagent = Reagent.objects.create(
+    user = request.user,
+    name = "GENERAL PCR REAGENT",
+    brand = "PRESET",
+    lot_number = "PRESET LOT NUMBER",
+    catalog_number = "PRESET CATALOG NUMBER",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.GENERAL,
+    volume = 9999,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
+    stock_concentration = 9999,
+    unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
+  )
+  context = {'reagent': reagent}
+  return render(request, 'inventory/preset_reagent.html', context)
+
+
+@login_required(login_url='login')
+def preset_primer_pcr_reagent(request):
+  reagent = Reagent.objects.create(
+    user = request.user,
+    name = "PRIMER PCR REAGENT",
+    brand = "PRESET",
+    lot_number = "PRESET LOT NUMBER",
+    catalog_number = "PRESET CATALOG NUMBER",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.PRIMER,
+    volume = 9999,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
+    stock_concentration = 9999,
+    unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
+    forward_sequence = "GGGGGGGGGGG",
+    reverse_sequence = "AAAAAAAAAAA",
+  )
+  context = {'reagent': reagent}
+  return render(request, 'inventory/preset_reagent.html', context)
+
+
+@login_required(login_url='login')
+def preset_polymerase_pcr_reagent(request):
+  reagent = Reagent.objects.create(
+    user = request.user,
+    name = "POLYMERASE PCR REAGENT",
+    brand = "PRESET",
+    lot_number = "PRESET LOT NUMBER",
+    catalog_number = "PRESET CATALOG NUMBER",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.POLYMERASE,
+    volume = 9999,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
+    stock_concentration = 9999,
+    unit_concentration = Reagent.ConcentrationUnits.UNITS,
+  )
+  context = {'reagent': reagent}
+  return render(request, 'inventory/preset_reagent.html', context)
+
+
+@login_required(login_url='login')
+def preset_mixture_pcr_reagent(request):
+  reagent = Reagent.objects.create(
+    user = request.user,
+    name = "MIXTURE PCR REAGENT",
+    brand = "PRESET",
+    lot_number = "PRESET LOT NUMBER",
+    catalog_number = "PRESET CATALOG NUMBER",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.MIXTURE,
+    volume = 9999,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
+    mixture_volume_per_reaction = 5,
+  )
+  context = {'reagent': reagent}
+  return render(request, 'inventory/preset_reagent.html', context)
+
+
+@login_required(login_url='login')
+def preset_water_pcr_reagent(request):
+  reagent = Reagent.objects.create(
+    user = request.user,
+    name = "WATER PCR REAGENT",
+    brand = "PRESET",
+    lot_number = "PRESET LOT NUMBER",
+    catalog_number = "PRESET CATALOG NUMBER",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.WATER,
+    volume = 9999,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
+  )
+  context = {'reagent': reagent}
+  return render(request, 'inventory/preset_reagent.html', context)
+# **REAGENT PRESETS VIEWS** #

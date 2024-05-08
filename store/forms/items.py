@@ -146,6 +146,11 @@ class StoreReagentForm(ModelForm):
       raise ValidationError(
         message="If reagent is for extraction, stock concentration is not needed."
       )
+    
+    if usage == StoreReagent.Usages.EXTRACTION and mixture_volume:
+      raise ValidationError(
+        message="If reagent is for extraction, leave mixture volume per reaction empty."
+      )
 
     if pcr_reagent != None and usage == StoreReagent.Usages.EXTRACTION:
       raise ValidationError(
@@ -162,14 +167,19 @@ class StoreReagentForm(ModelForm):
         message="Polymerase reagents require a unit of U/\u00B5L. If your polymerase is in a different concentration, set PCR Reagent as General."
       )
     
-    if mixture_volume and pcr_reagent != StoreReagent.PCRReagent.MIXTURE:
+    if mixture_volume > 0 and pcr_reagent != StoreReagent.PCRReagent.MIXTURE:
       raise ValidationError(
         message="Mixture volumes per reaction are required for reagents that are enzyme mixtures with no specified stock concentration."
       )
     
-    if pcr_reagent == StoreReagent.PCRReagent.MIXTURE and not mixture_volume:
+    if pcr_reagent == StoreReagent.PCRReagent.MIXTURE and not mixture_volume > 0:
       raise ValidationError(
-        message="Reagents that are enzyme mixtures must have a volume per reaction used."
+        message="Reagents that are enzyme mixtures must have a volume per reaction set."
+      )
+    
+    if pcr_reagent == StoreReagent.PCRReagent.MIXTURE and (stock != None or unit != None):
+      raise ValidationError(
+        message="Reagents that are mixtures do not need a stock concentration."
       )
     
     if pcr_reagent == StoreReagent.PCRReagent.WATER and (stock != None or unit != None):
