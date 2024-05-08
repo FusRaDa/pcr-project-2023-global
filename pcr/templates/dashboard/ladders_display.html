@@ -3,7 +3,7 @@
   <h5 class="text-center">Ladders</h5>
 
   <div class="text-center mb-1">
-    <a class="btn btn-primary btn-sm position-relative" href="{% url 'ladders' %}" role="button">Manage Ladders
+    <a class="btn btn-primary btn-sm position-relative" href="{% url 'ladders' %}?sort=threshold_diff" role="button">Manage Ladders
 
       {% if is_low and not is_expired %}
       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

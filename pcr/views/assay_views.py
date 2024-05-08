@@ -327,7 +327,11 @@ def controls(request):
       filters = {}
       if location:
         filters['location'] = location
-      controls = Control.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+
+      if sort == 'exp_date' or sort == 'threshold_diff':
+        controls = Control.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+      else:
+        controls = Control.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
     else:
       print(form.errors)
 

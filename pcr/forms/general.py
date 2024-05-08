@@ -39,7 +39,7 @@ class SearchControlForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
-  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  SORT_CHOICES = [('exp_date', "Expiration Date ⮝"), ('threshold_diff', "Closest to Threshold ⮝"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
   sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
@@ -72,7 +72,7 @@ class SearchTubeForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
-  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  SORT_CHOICES = [('exp_date', "Expiration Date ⮝"), ('threshold_diff', "Closest to Threshold ⮝"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
   sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
@@ -90,7 +90,7 @@ class SearchLadderForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
-  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
   sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
@@ -107,7 +107,7 @@ class SearchDyeForm(forms.Form):
   text_search = forms.CharField(max_length=100, required=False)
   location = forms.ModelChoiceField(queryset=None, required=False)
 
-  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
   sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
@@ -130,7 +130,7 @@ class SearchPlateForm(forms.Form):
   TYPE_CHOICES = [(None, '------'), (Plate.Types.PCR, 'PCR'), (Plate.Types.qPCR, 'qPCR')]
   type = forms.ChoiceField(choices=TYPE_CHOICES, required=False)
 
-  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
   sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
@@ -152,7 +152,7 @@ class SearchGelForm(forms.Form):
   CHOICES = [(None, '------'), (Gel.Sizes.TWELVE, '12'), (Gel.Sizes.TWENTY_FOUR, '24'), (Gel.Sizes.FOURTY_EIGHT, '48')]
   size = forms.ChoiceField(choices=CHOICES, required=False)
 
-  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
   sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
@@ -176,7 +176,7 @@ class SearchReagentForm(forms.Form):
   PCR_REAGENT_CHOICES = [(None, '------'), (Reagent.PCRReagent.GENERAL, 'General'), (Reagent.PCRReagent.PRIMER, 'Primer'), (Reagent.PCRReagent.POLYMERASE, 'Polymerase'), (Reagent.PCRReagent.MIXTURE, 'Mixture'), (Reagent.PCRReagent.WATER, 'Water')]
   pcr_reagent = forms.ChoiceField(choices=PCR_REAGENT_CHOICES, required=False)
 
-  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
+  SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
   sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
