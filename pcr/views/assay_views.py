@@ -171,9 +171,15 @@ def add_reagent_assay(request, assay_pk, reagent_pk):
   
   if 'add_reagent' in request.POST:
     if not assay.reagents.contains(reagent):
-      assay.reagents.add(reagent)
 
-      if reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.pcr_reagent != Reagent.PCRReagent.POLYMERASE:
+      # mixture validation
+      if reagent.mixture_volume_per_reaction > assay.reaction_volume:
+        messages.error(request, f'Reagent: {reagent.name } lot#: {reagent.lot_number} cannot be added to this assay since it\'s volume per reaction is greater than the assay\'s reaction volume. Either update the reaction volume or update the <a href="/edit_reagent/{reagent.pk}" target="_blank">reagent.</a>')
+        return redirect('edit_assay', assay.pk)
+      
+      assay.reagents.add(reagent)
+    
+      if reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.pcr_reagent != Reagent.PCRReagent.POLYMERASE and reagent.pcr_reagent != Reagent.PCRReagent.MIXTURE:
         reagent_assay = ReagentAssay.objects.get(assay=assay, reagent=reagent)
         reagent_assay.final_concentration_unit = reagent.unit_concentration
         reagent_assay.save()
