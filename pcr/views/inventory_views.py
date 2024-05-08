@@ -1345,8 +1345,8 @@ def preset_primer_pcr_reagent(request):
     unit_volume = Reagent.VolumeUnits.MICROLITER,
     stock_concentration = 9999,
     unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
-    forward_sequence = "GGGGGGGGGGGGGGGGGGGGGGGG",
-    reverse_sequence = "AAAAAAAAAAAAAAAAAAAAAAAA",
+    forward_sequence = "GGGGGGGGGGG",
+    reverse_sequence = "AAAAAAAAAAA",
   )
   context = {'reagent': reagent}
   return render(request, 'inventory/preset_reagent.html', context)

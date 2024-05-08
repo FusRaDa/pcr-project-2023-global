@@ -315,7 +315,7 @@ class Reagent(models.Model):
   forward_sequence = models.CharField(blank=True, null=True, max_length=100) # 3 to 5
   reverse_sequence = models.CharField(blank=True, null=True, max_length=100) # 5 to 3
 
-  mixture_volume_per_reaction = models.DecimalField(decimal_places=2, blank=True, null=True, default=None, validators=[MinValueValidator(0)], max_digits=12) # in microliters
+  mixture_volume_per_reaction = models.DecimalField(decimal_places=2, validators=[MinValueValidator(0)], max_digits=12, default=0) # in microliters
   
   last_updated = models.DateTimeField(auto_now=True)
   date_created = models.DateTimeField(default=now, editable=False)
