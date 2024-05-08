@@ -173,7 +173,7 @@ class SearchReagentForm(forms.Form):
   USAGE_CHOICES = [(None, '------'), (Reagent.Usages.EXTRACTION, 'EXTRACTION'), (Reagent.Usages.PCR, 'PCR')]
   usage = forms.ChoiceField(choices=USAGE_CHOICES, required=False)
 
-  PCR_REAGENT_CHOICES = [(None, '------'), (Reagent.PCRReagent.GENERAL, 'GENERAL'), (Reagent.PCRReagent.PRIMER, 'PRIMER'), (Reagent.PCRReagent.POLYMERASE, 'POLYMERASE'), (Reagent.PCRReagent.WATER, 'WATER')]
+  PCR_REAGENT_CHOICES = [(None, '------'), (Reagent.PCRReagent.GENERAL, 'General'), (Reagent.PCRReagent.PRIMER, 'Primer'), (Reagent.PCRReagent.POLYMERASE, 'Polymerase'), (Reagent.PCRReagent.MIXTURE, 'Mixture'), (Reagent.PCRReagent.WATER, 'Water')]
   pcr_reagent = forms.ChoiceField(choices=PCR_REAGENT_CHOICES, required=False)
 
   SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold")]
