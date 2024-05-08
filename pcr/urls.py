@@ -113,5 +113,12 @@ urlpatterns = [
   path('remove-gel-lot-number/<int:pk>/<str:lot>/', inventory_views.remove_gel_lot_number, name='remove_gel_lot_number'),
   path('remove-tube-lot-number/<int:pk>/<str:lot>/', inventory_views.remove_tube_lot_number, name='remove_tube_lot_number'),
   path('remove-reagent-lot-number/<int:pk>/<str:lot>/', inventory_views.remove_reagent_lot_number, name='remove_reagent_lot_number'), 
-  path('remove-control-lot-number/<int:pk>/<str:lot>/', inventory_views.remove_control_lot_number, name='remove_control_lot_number')
+  path('remove-control-lot-number/<int:pk>/<str:lot>/', inventory_views.remove_control_lot_number, name='remove_control_lot_number'),
+
+  path('preset-extraction-reagent/', inventory_views.preset_extraction_reagent, name='preset_extraction_reagent'),
+  path('preset-general-pcr-reagent/', inventory_views.preset_general_pcr_reagent, name='preset_general_pcr_reagent'),
+  path('preset-primer-pcr-reagent/', inventory_views.preset_primer_pcr_reagent, name='preset_primer_pcr_reagent'),
+  path('preset-polymerase-pcr-reagent/', inventory_views.preset_polymerase_pcr_reagent, name='preset_polymerase_pcr_reagent'),
+  path('preset-mixture-pcr-reagent/', inventory_views.preset_mixture_pcr_reagent, name='preset_mixture_pcr_reagent'),
+  path('preset-water-pcr-reagent/', inventory_views.preset_water_pcr_reagent, name='preset_water_pcr_reagent'),
 ]

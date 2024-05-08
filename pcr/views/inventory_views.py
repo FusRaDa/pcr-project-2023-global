@@ -1274,3 +1274,115 @@ def remove_control_lot_number(request, pk, lot):
   
   return HttpResponse(status=200)
 # **MERGEABLE VIEWS** #
+
+
+# **REAGENT PRESETS VIEWS** #
+@login_required(login_url='login')
+def preset_extraction_reagent(request):
+  reagent = Reagent.objects.create(
+    user = request.user,
+    name = "EXTRACTION REAGENT",
+    brand = "PRESET",
+    lot_number = "PRESET LOT NUMBER",
+    catalog_number = "PRESET CATALOG NUMBER",
+    usage = Reagent.Usages.EXTRACTION,
+    volume = 9999,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
+  )
+  context = {'reagent': reagent}
+  return render(request, 'inventory/preset_reagent.html', context)
+
+
+@login_required(login_url='login')
+def preset_general_pcr_reagent(request):
+  reagent = Reagent.objects.create(
+    user = request.user,
+    name = "GENERAL PCR REAGENT",
+    brand = "PRESET",
+    lot_number = "PRESET LOT NUMBER",
+    catalog_number = "PRESET CATALOG NUMBER",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.GENERAL,
+    volume = 9999,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
+    stock_concentration = 9999,
+    unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
+  )
+  context = {'reagent': reagent}
+  return render(request, 'inventory/preset_reagent.html', context)
+
+
+@login_required(login_url='login')
+def preset_primer_pcr_reagent(request):
+  reagent = Reagent.objects.create(
+    user = request.user,
+    name = "PRIMER PCR REAGENT",
+    brand = "PRESET",
+    lot_number = "PRESET LOT NUMBER",
+    catalog_number = "PRESET CATALOG NUMBER",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.PRIMER,
+    volume = 9999,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
+    stock_concentration = 9999,
+    unit_concentration = Reagent.ConcentrationUnits.MICROMOLES,
+    forward_sequence = "GGGGGGGGGGGGGGGGGGGGGGGG",
+    reverse_sequence = "AAAAAAAAAAAAAAAAAAAAAAAA",
+  )
+  context = {'reagent': reagent}
+  return render(request, 'inventory/preset_reagent.html', context)
+
+
+@login_required(login_url='login')
+def preset_polymerase_pcr_reagent(request):
+  reagent = Reagent.objects.create(
+    user = request.user,
+    name = "POLYMERASE PCR REAGENT",
+    brand = "PRESET",
+    lot_number = "PRESET LOT NUMBER",
+    catalog_number = "PRESET CATALOG NUMBER",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.POLYMERASE,
+    volume = 9999,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
+    stock_concentration = 9999,
+    unit_concentration = Reagent.ConcentrationUnits.UNITS,
+  )
+  context = {'reagent': reagent}
+  return render(request, 'inventory/preset_reagent.html', context)
+
+
+@login_required(login_url='login')
+def preset_mixture_pcr_reagent(request):
+  reagent = Reagent.objects.create(
+    user = request.user,
+    name = "MIXTURE PCR REAGENT",
+    brand = "PRESET",
+    lot_number = "PRESET LOT NUMBER",
+    catalog_number = "PRESET CATALOG NUMBER",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.MIXTURE,
+    volume = 9999,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
+    mixture_volume_per_reaction = 5,
+  )
+  context = {'reagent': reagent}
+  return render(request, 'inventory/preset_reagent.html', context)
+
+
+@login_required(login_url='login')
+def preset_water_pcr_reagent(request):
+  reagent = Reagent.objects.create(
+    user = request.user,
+    name = "WATER PCR REAGENT",
+    brand = "PRESET",
+    lot_number = "PRESET LOT NUMBER",
+    catalog_number = "PRESET CATALOG NUMBER",
+    usage = Reagent.Usages.PCR,
+    pcr_reagent = Reagent.PCRReagent.WATER,
+    volume = 9999,
+    unit_volume = Reagent.VolumeUnits.MICROLITER,
+  )
+  context = {'reagent': reagent}
+  return render(request, 'inventory/preset_reagent.html', context)
+# **REAGENT PRESETS VIEWS** #
