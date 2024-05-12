@@ -29,7 +29,7 @@ class Tag(models.Model):
 class Kit(models.Model):
   brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 
-  image = models.ImageField(null=True, blank=True, upload_to='kits')
+  image = models.ImageField(null=True, blank=True, upload_to='kits', default='kits/default-kit.png')
 
   name = models.CharField(blank=False, max_length=250)
   description = models.TextField(blank=False, default="Kit Description")
@@ -67,15 +67,6 @@ class Kit(models.Model):
   def review_num(self):
     return self.review_set.count()
   
-  @property
-  def abs_url(self):
-    try:
-      url = self.image.url
-      abs = url.replace("/main", "")
-      return abs
-    except ValueError:
-      return '/static/kits/default-kit.png'
-    
   @property
   def display_description(self):
     return self.description[:100] + "..."
