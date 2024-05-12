@@ -51,7 +51,7 @@
 
             <tbody>
               {% for kit in brand.kit_set.all %}
-                <tr class="batch-row" data-href="{% url 'edit_kit' kit.pk %}">
+                <tr class="batch-row {% if not kit.is_published %} table-warning {% endif %}" data-href="{% url 'edit_kit' kit.pk %}">
                   <td>{{kit.name}}</td>
                   <td>{{kit.catalog_number}}</td>
                   <td>{{kit.price}}</td>
