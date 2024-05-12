@@ -27,7 +27,7 @@ def store(request):
   else:
     order = Order.objects.get(user=request.user, has_ordered=False)
 
-  kits = Kit.objects.all().exclude(pk__in=order.kits.all()).order_by('name')
+  kits = Kit.objects.filter(is_published=True).exclude(pk__in=order.kits.all()).order_by('name')
 
   form = SearchStoreForm()
   if request.method == 'GET':
@@ -45,9 +45,9 @@ def store(request):
         filters['tags__in'] = tags
 
       if not price:
-        kits = Kit.objects.filter(**filters).filter(Q(name__icontains=text_search) | Q(description__icontains=text_search) | Q(catalog_number__icontains=text_search)).exclude(pk__in=order.kits.all()).order_by('name')
+        kits = Kit.objects.filter(is_published=True, **filters).filter(Q(name__icontains=text_search) | Q(description__icontains=text_search) | Q(catalog_number__icontains=text_search)).exclude(pk__in=order.kits.all()).order_by('name')
       else:
-        kits = Kit.objects.filter(**filters).filter(Q(name__icontains=text_search) | Q(description__icontains=text_search) | Q(catalog_number__icontains=text_search)).exclude(pk__in=order.kits.all()).order_by(price)
+        kits = Kit.objects.filter(is_published=True, **filters).filter(Q(name__icontains=text_search) | Q(description__icontains=text_search) | Q(catalog_number__icontains=text_search)).exclude(pk__in=order.kits.all()).order_by(price)
   
     else:
       print(form.errors)

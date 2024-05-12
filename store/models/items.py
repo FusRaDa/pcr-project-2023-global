@@ -40,6 +40,8 @@ class Kit(models.Model):
 
   tags = models.ManyToManyField(Tag)
 
+  is_published = models.BooleanField(default=False)
+
   class Meta:
     constraints = [
       models.UniqueConstraint(
