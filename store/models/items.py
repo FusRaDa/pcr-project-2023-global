@@ -71,7 +71,7 @@ class Kit(models.Model):
   
   @property
   def display_description(self):
-    return self.description[:100] + "..."
+    return self.description[:115] + "..."
     
   def __str__(self):
     return f"{self.name}-{self.catalog_number}"
