@@ -162,7 +162,7 @@ class StoreReagentForm(ModelForm):
         message="Select PCR reagent type if reagent usage is for PCR."
       )
     
-    if pcr_reagent == StoreReagent.PCRReagent.POLYMERASE and unit != StoreReagent.ConcentrationUnits.UNITS:
+    if (pcr_reagent == StoreReagent.PCRReagent.POLYMERASE and unit != StoreReagent.ConcentrationUnits.UNITS) or (pcr_reagent != StoreReagent.PCRReagent.POLYMERASE and unit == StoreReagent.ConcentrationUnits.UNITS):
       raise ValidationError(
         message="Polymerase reagents require a unit of U/\u00B5L. If your polymerase is in a different concentration, set PCR Reagent as General."
       )
@@ -211,7 +211,7 @@ class StoreReagentForm(ModelForm):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.fields['name'].widget.attrs['class'] = 'form-control'
-    self.fields['usage'].widget.attrs['class'] = 'form-control'
+    self.fields['usage'].widget.attrs['class'] = 'form-select'
     self.fields['pcr_reagent'].widget.attrs['class'] = 'form-select'
     self.fields['volume'].widget.attrs['class'] = 'form-control'
     self.fields['unit_volume'].widget.attrs['class'] = 'form-select'
