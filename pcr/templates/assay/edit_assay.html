@@ -169,7 +169,7 @@
 
     <div class="col-sm-3 mt-4">
       <h3 class="text-center"><u>Controls<a href="{% url 'controls_in_assay' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-arrows-left-right"></i></a></u></h3>
-      <div class="h-50 overflow-auto">
+      <div class="h-75 overflow-auto">
         <ul class="list-group" id="controls-list">
           {% for control in assay_controls %}
             {% include 'assay/control_in_assay.html' %}
@@ -186,7 +186,7 @@
         </div>
       </form>
 
-      <div class="h-50 overflow-auto">
+      <div class="h-75 overflow-auto">
         <ul class="list-group" id="controls-list-search">
           {% for control in controls %}
             {% include 'assay/add_control_assay.html' %}
@@ -197,7 +197,7 @@
 
     <div class="col-sm-3 mt-4">
       <h3 class="text-center"><u>Reagents<a href="{% url 'reagents_in_assay' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></a></u></h3>
-      <div class="h-50 overflow-auto">
+      <div class="h-75 overflow-auto">
         <ul class="list-group" id="reagents-list">
           {% for reagent in assay_reagents %}
             {% include 'assay/reagent_in_assay.html' %}
@@ -214,7 +214,7 @@
         </div>
       </form>
 
-      <div class="h-50 overflow-auto">
+      <div class="h-75 overflow-auto">
         <ul class="list-group" id="reagents-list-search">
           {% for reagent in reagents %}
             {% include 'assay/add_reagent_assay.html' %}

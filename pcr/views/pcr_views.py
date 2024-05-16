@@ -241,6 +241,12 @@ def process_paperwork(request, pk):
   assays = list(set(all_assays))
   sorted_assays = sorted(assays, key=lambda x: x.name, reverse=False)
 
+  #validate that assays are complete
+  for assay in sorted_assays:
+    if not assay.is_complete:
+      messages.error(request, f'Process cannot be completed. <a href="/edit-assay/{assay.pk}" target="_blank"> {assay.name} </a> is incomplete.')
+      return redirect('review_process', process.pk)
+
   requires_dna_pcr = False
   requires_rna_pcr = False
   requires_dna_qpcr = False
@@ -456,6 +462,12 @@ def process_paperwork(request, pk):
   # **GENERATE GELS FOR PCR** #
   
   if 'process' in request.POST:
+
+    #validate that assays are complete
+    for assay in sorted_assays:
+      if not assay.is_complete:
+        messages.error(request, f'Process cannot be completed. <a href="/edit-assay/{assay.pk}" target="_blank"> {assay.name} </a> is incomplete.')
+        return redirect('review_process', process.pk)
 
     # **RECOLLECT REAGENTS & CONTROLS FOR PCR & qPCR** #
     all_controls = []
