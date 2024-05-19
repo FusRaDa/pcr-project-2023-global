@@ -214,7 +214,7 @@ def batches_display(request):
 
 @login_required(login_url='login')
 def processes_display(request):
-  processes = Process.objects.filter(user=request.user).order_by(F('date_processed').asc(nulls_last=False))
+  processes = Process.objects.filter(user=request.user).order_by('date_processed')
 
   in_que = False
 

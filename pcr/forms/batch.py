@@ -5,7 +5,6 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-# from ..custom.constants import FREE_LIMITS
 from ..models.extraction import ExtractionProtocol
 from ..models.assay import Assay, AssayCode, Control
 from ..models.batch import Batch, Sample
@@ -25,7 +24,6 @@ class NumberSamplesForm(forms.Form):
 
 
 class BatchForm(ModelForm):
-
   number_of_samples = forms.IntegerField(
     validators=[MinValueValidator(1), MaxValueValidator(LIMITS.MAX_SAMPLES_PER_BATCH_LIMIT)])
 
@@ -56,6 +54,7 @@ class BatchForm(ModelForm):
     extraction_protocol_dna = cleaned_data.get('extraction_protocol_dna')
     extraction_protocol_rna = cleaned_data.get('extraction_protocol_rna')
     extraction_protocol_tn = cleaned_data.get('extraction_protocol_tn')
+    number_of_samples = cleaned_data.get('number_of_samples')
 
     if not self.user.is_subscribed:
       if Control.objects.filter(user=self.user).count() > LIMITS.CONTROL_LIMIT:
@@ -81,6 +80,11 @@ class BatchForm(ModelForm):
     if Batch.objects.filter(user=self.user).count() > LIMITS.MAX_BATCH_LIMIT:
       raise ValidationError(
         message=f"You have reached the maximum number of {LIMITS.MAX_BATCH_LIMIT} batches. Should you require more, please contact us!"
+      )
+    
+    if number_of_samples > LIMITS.MAX_SAMPLES_PER_BATCH_LIMIT:
+      raise ValidationError(
+        message="Each batch can only have a limit of 100 samples. Should you require more, please contact us!"
       )
 
     if len(lab_id) != 3:
