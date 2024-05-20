@@ -31,11 +31,13 @@
         <a href="{% url 'review_process' process.pk %}" class="btn btn-primary btn-sm mb-2">Review Process</a>
       </div>
 
-      <ol class="list-group list-group-numbered" id="process-samples">
-        {% for sample in process.samples.all %}
-          {% include 'pcr/samples_in_process.html' %}
-        {% endfor %}
-      </ol>
+      <div class="h-75 overflow-auto">
+        <ol class="list-group list-group-numbered" id="process-samples">
+          {% for sample in process.samples.all %}
+            {% include 'pcr/samples_in_process.html' %}
+          {% endfor %}
+        </ol>
+      </div>
     </div>
 
     <div class="col-sm-8">
