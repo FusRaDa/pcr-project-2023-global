@@ -157,6 +157,31 @@
         </div>
         {% endif %}
 
+        {% if process.is_dna_pcr or process.is_rna_pcr %}
+        <div class="card mt-2">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Gels
+              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#gel-collapse" aria-expanded="false" aria-controls="gel-collapse">
+                ⮝
+              </button>
+            </li>
+
+            <div class="collapse show" id="gel-collapse">
+              <div class="card-body"> 
+                <ul class="list-group">
+                  {% for gel in form.gel %}
+                    <li class="list-group-item">
+                      {{gel}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </div>
+        {% endif %}
+
         {% if process.is_dna_qpcr %}
         <div class="input-group mb-2 mt-2">
           <div class="input-group-text input-group-loading">Loading Method (qPCR - DNA)</div>
@@ -182,31 +207,6 @@
         <div class="input-group mb-2">
           <div class="input-group-text input-group-loading">Loading Method (PCR - RNA)</div>
           {{form.loading_method_rna}}
-        </div>
-        {% endif %}
-
-        {% if process.is_dna_pcr or process.is_rna_pcr %}
-        <div class="card mt-2">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              Gels
-              <button class="btn btn-primary btn-sm float-end btn-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#gel-collapse" aria-expanded="false" aria-controls="gel-collapse">
-                ⮝
-              </button>
-            </li>
-
-            <div class="collapse show" id="gel-collapse">
-              <div class="card-body"> 
-                <ul class="list-group">
-                  {% for gel in form.gel %}
-                    <li class="list-group-item">
-                      {{gel}}
-                    </li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-          </ul>
         </div>
         {% endif %}
 
