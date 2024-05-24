@@ -31,8 +31,8 @@
           <h5 class="card-title text-center">Latest Updates</h5>
           <ol class="list-group list-group-numbered list-group-flush">
             <li class="list-group-item"><a href="{% url 'faq_page' %}">Answers and questions...</a></li>
-            <li class="list-group-item"><a href="#">We're here to listen...</a></li>
-            <li class="list-group-item"><a href="#">Current list of features...</a></li>
+            <li class="list-group-item"><a href="https://discord.com/invite/9DXKkhDdtT">Join our community...</a></li>
+            <li class="list-group-item"><a href="{% url 'guide_page' %}">Read our guide...</a></li>
             <li class="list-group-item"><a href="{% url 'create_contact' %}">How you can work with us...</a></li>
             <li class="list-group-item"><a href="https://www.youtube.com/channel/UC4DJGnjrahhneltYoC-iF3w">Our YouTube channel...</a></li>
           </ol>
@@ -47,11 +47,11 @@
         <div class="card-body">
           <h5 class="card-title text-center">Guide</h5>
           <ol class="list-group list-group-numbered list-group-flush">
-            <li class="list-group-item"><a href="#">Add your reagents...</a></li>
-            <li class="list-group-item"><a href="#">Create your assays...</a></li>
-            <li class="list-group-item"><a href="#">Build your panels...</a></li>
-            <li class="list-group-item"><a href="#">Select your extractions...</a></li>
-            <li class="list-group-item"><a href="#">Generate your paperwork...</a></li>
+            <li class="list-group-item"><a href="{% url 'inventory_guide' %}">Add your reagents...</a></li>
+            <li class="list-group-item"><a href="{% url 'tests_guide' %}">Create your assays...</a></li>
+            <li class="list-group-item"><a href="{% url 'protocols_guide' %}">Build your panels...</a></li>
+            <li class="list-group-item"><a href="{% url 'extraction_guide' %}">Select your extractions...</a></li>
+            <li class="list-group-item"><a href="{% url 'pcr_guide' %}">Generate your paperwork...</a></li>
           </ol>
           <a href="{% url 'guide_page' %}" class="card-link float-end">Read Full Guide</a>
         </div>
