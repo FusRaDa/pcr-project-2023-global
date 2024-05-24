@@ -235,7 +235,7 @@ class ReagentAssayForm(ModelForm):
     final_concentration = cleaned_data.get('final_concentration')
     final_concentration_unit = cleaned_data.get('final_concentration_unit')
 
-    if self.instance.reagent.pcr_reagent != Reagent.PCRReagent.WATER.name and final_concentration == None:
+    if final_concentration == None and self.instance.reagent.pcr_reagent != Reagent.PCRReagent.MIXTURE.name and self.instance.reagent.pcr_reagent != Reagent.PCRReagent.WATER.name:
       raise ValidationError(
         message=f"Reagents ({self.instance.reagent.name}) that are not water must have a final concentration."
       )
@@ -253,7 +253,7 @@ class ReagentAssayForm(ModelForm):
     self.fields['final_concentration'].widget.attrs['required'] = 'True'
     self.fields['order'].widget.attrs['required'] = 'True'
 
-    if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name:
+    if self.instance.reagent.pcr_reagent == Reagent.PCRReagent.WATER.name or self.instance.reagent.pcr_reagent == Reagent.PCRReagent.MIXTURE.name:
       self.fields['final_concentration'].widget.attrs['disabled'] = 'True'
     
   class Meta:

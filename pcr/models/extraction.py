@@ -26,16 +26,27 @@ class ExtractionProtocol(models.Model):
   def is_complete(self):
     if self.tubes.count() < 1 or self.reagents.count() < 1:
       return False
-    
-    tubes = self.tubeextraction_set.all()
-    reagents = self.reagentextraction_set.all()
-    for tube in tubes:
+    for tube in self.tubeextraction_set.all():
       if tube.amount_per_sample == None:
         return False
-    for reagent in reagents:
+    for reagent in self.reagentextraction_set.all():
       if reagent.amount_per_sample == None:
         return False
     return True
+  
+  @property
+  def incomplete_tubes(self):
+    for tube in self.tubeextraction_set.all():
+      if tube.amount_per_sample == None:
+        return True
+    return False
+  
+  @property
+  def incomplete_reagents(self):
+    for reagent in self.reagentextraction_set.all():
+      if reagent.amount_per_sample == None:
+        return True
+    return False
 
   def __str__(self):
     return self.name

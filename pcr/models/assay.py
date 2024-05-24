@@ -101,12 +101,19 @@ class Assay(models.Model):
   def is_complete(self):
     if self.controls.count() < 1 or self.reagents.count() < 1:
       return False
-    
     for reagent in self.reagentassay_set.all():
-      if reagent.reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.final_concentration == None:
-        return False
-    
+      if reagent.reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.reagent.pcr_reagent != Reagent.PCRReagent.MIXTURE:
+        if reagent.final_concentration == None:
+          return False
     return True
+  
+  @property
+  def incomplete_reagents(self):
+    for reagent in self.reagentassay_set.all():
+      if reagent.reagent.pcr_reagent != Reagent.PCRReagent.WATER and reagent.reagent.pcr_reagent != Reagent.PCRReagent.MIXTURE:
+        if reagent.final_concentration == None:
+          return True
+    return False
   
   @property
   def mm_volume(self):

@@ -168,7 +168,13 @@
   <div class="row justify-content-center mt-4">
 
     <div class="col-sm-3 mt-4">
-      <h3 class="text-center"><u>Controls<a href="{% url 'controls_in_assay' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-arrows-left-right"></i></a></u></h3>
+      <h3 class="text-center">
+        <u>Controls
+          <a href="{% url 'controls_in_assay' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1">
+            <i class="fa-solid fa-arrows-left-right"></i>
+          </a>
+        </u>
+      </h3>
       <div class="h-75 overflow-auto">
         <ul class="list-group" id="controls-list">
           {% for control in assay_controls %}
@@ -196,7 +202,17 @@
     </div>
 
     <div class="col-sm-3 mt-4">
-      <h3 class="text-center"><u>Reagents<a href="{% url 'reagents_in_assay' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></a></u></h3>
+      <h3 class="text-center">
+        <u>Reagents<a href="{% url 'reagents_in_assay' assay.pk %}" class="btn btn-primary btn-sm ms-2 mb-1 position-relative">
+          <i class="fa-solid fa-flask"></i>
+          {% if assay.incomplete_reagents %}
+          <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+            <span class="visually-hidden">New alerts</span>
+          </span>
+          {% endif %}
+          </a>
+        </u>
+      </h3>
       <div class="h-75 overflow-auto">
         <ul class="list-group" id="reagents-list">
           {% for reagent in assay_reagents %}

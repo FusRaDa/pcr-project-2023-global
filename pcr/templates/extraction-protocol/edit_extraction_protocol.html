@@ -72,7 +72,18 @@
   <div class="row justify-content-center mt-4">
 
     <div class="col-sm-3 mt-4">
-      <h3 class="text-center"><u>Tubes<a href="{% url 'tubes_in_extraction' protocol.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-vial"></i></a></u></h3>
+      <h3 class="text-center">
+        <u>Tubes
+          <a href="{% url 'tubes_in_extraction' protocol.pk %}" class="btn btn-primary btn-sm ms-2 mb-1 position-relative">
+            <i class="fa-solid fa-vial"></i>
+            {% if protocol.incomplete_tubes %}
+            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+              <span class="visually-hidden">New alerts</span>
+            </span>
+            {% endif %}
+          </a>
+        </u>
+      </h3>
       <div class="h-75 overflow-auto">
         <ul class="list-group" id="tubes-list">
           {% for tube in protocol_tubes %}
@@ -100,7 +111,18 @@
     </div>
 
     <div class="col-sm-3 mt-4">
-      <h3 class="text-center"><u>Reagents<a href="{% url 'reagents_in_extraction' protocol.pk %}" class="btn btn-primary btn-sm ms-2 mb-1"><i class="fa-solid fa-flask"></i></a></u></h3>
+      <h3 class="text-center">
+        <u>Reagents
+          <a href="{% url 'reagents_in_extraction' protocol.pk %}" class="btn btn-primary btn-sm ms-2 mb-1 position-relative">
+            <i class="fa-solid fa-flask"></i>
+            {% if protocol.incomplete_reagents %}
+            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+              <span class="visually-hidden">New alerts</span>
+            </span>
+            {% endif %}
+          </a>
+        </u>
+      </h3>
       <div class="h-75 overflow-auto">
         <ul class="list-group" id="reagents-list">
           {% for reagent in protocol_reagents %}
@@ -185,5 +207,11 @@
       return old=='⮟' ?  '⮝' : '⮟';
     });
   });
+
+  $('.add-tube').click(function(){
+    console.log('alert')
+  });
+
+
 </script>
 {% endblock %}
