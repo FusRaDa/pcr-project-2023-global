@@ -93,6 +93,7 @@
                   <li><a class="dropdown-item" href="{% url 'fluorescence' %}">Fluorescence</a></li>
                   <li><a class="dropdown-item" href="{% url 'controls' %}">Controls</a></li>
                   <li><a class="dropdown-item" href="{% url 'assays' %}">Assays</a></li>  
+                  <li><a class="dropdown-item" href="{% url 'assay_codes' %}">Panels</a></li>
                 </ul>
               </li>
 
@@ -101,9 +102,8 @@
                   Protocols
                 </a>
                 <ul class="dropdown-menu">
-                  <a class="dropdown-item" href="{% url 'assay_codes' %}">Panels</a>
-                  <a class="dropdown-item" href="{% url 'extraction_protocols' %}">Extractions</a>
-                  <a class="dropdown-item" href="{% url 'tcprotocols' %}">Thermal Cycler</a>
+                  <li><a class="dropdown-item" href="{% url 'extraction_protocols' %}">Extractions</a></li>
+                  <li><a class="dropdown-item" href="{% url 'tcprotocols' %}">Thermal Cycler</a></li>
                 </ul>
               </li>
   
