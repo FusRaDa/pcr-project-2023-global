@@ -19,7 +19,7 @@ def is_verified(email):
   if r.status_code != 200:
       return False
   data = r.json()
-  if data['result'] == 'ok':
+  if data['result'] == 'ok' or data['result'] == 'catch_all':
       return True
   if data['credits'] == 0:
       return True
