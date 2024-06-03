@@ -70,7 +70,7 @@ def activateEmail(request, user, to_email):
   email = EmailMessage(mail_subject, message, to=[to_email], from_email=settings.EMAIL_ALIAS)
   email.content_subtype = 'html'
   if email.send():
-    messages.success(request, f'Welcome {user}! Check your email: {to_email} and click on the\
+    messages.success(request, f'Welcome {user.first_name}! Check your email: {to_email} and click on the\
       received activation link to confirm and complete the registration. Note: Check your spam folder.')
   else:
     messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
