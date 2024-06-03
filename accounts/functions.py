@@ -1,4 +1,7 @@
 import requests
+import re
+import random
+
 from django.core.mail import EmailMessage
 from pcr.models.pcr import ThermalCyclerProtocol
 from pcr.models.inventory import Tube, Plate, Reagent, Location
@@ -26,6 +29,13 @@ def is_verified(email):
   alert_admin(email, data)
   return False
 
+
+def generate_gmail_username(email):
+  split = re.split('@', email)
+  num = random.sample(range(1, 9), 2)
+  username = split[0] + "".join([str(elem) for elem in num])
+  return username
+   
 
 # python pcr/custom/test_user_object.py
 def create_test_objects(user):
