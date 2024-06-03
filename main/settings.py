@@ -186,6 +186,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_FROM = config('EMAIL_FROM')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_ALIAS = os.getenv('EMAIL_ALIAS')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -198,3 +199,6 @@ STRIPE_LIVE_MODE = os.getenv('STRIPE_LIVE_MODE', "False") == "True" # Change to 
 DJSTRIPE_WEBHOOK_SECRET = os.getenv('DJSTRIPE_WEBHOOK_SECRET') # Get it from the section in the Stripe dashboard where you added the webhook endpoint
 DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+
+# MillionVerifier
+MILLION_VERIFIER_KEY = os.getenv('MILLION_VERIFIER_KEY')

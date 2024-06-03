@@ -9,6 +9,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.conf import settings
 
 from .decorators import unauthenticated_user
 from users.models import User
@@ -17,7 +18,7 @@ from .tokens import account_activation_token
 from .models import EmailOrUsernameModelBackend
 from .forms import CreateUserForm, LoginUserForm
 from analytics.functions import record_user_login
-
+from .functions import is_verified
 from pcr.custom.constants import LIMITS
 
 
@@ -51,7 +52,7 @@ def loginPage(request):
   return render(request, "login.html", context)
   
 
-# this function is to send the activation email
+# this function is to send the activation email - https://github.com/leemunroe/responsive-html-email-template
 def activateEmail(request, user, to_email):
   mail_subject = 'Welcome to PCRprep!'
   message = render_to_string('template_activate_account.html', {
@@ -61,7 +62,7 @@ def activateEmail(request, user, to_email):
     'token': account_activation_token.make_token(user),
     'protocol': 'https' if request.is_secure() else 'http'
   })
-  email = EmailMessage(mail_subject, message, to=[to_email])
+  email = EmailMessage(mail_subject, message, to=[to_email], from_email=settings.EMAIL_ALIAS)
   if email.send():
     messages.success(request, f'Welcome {user}! Check your email: {to_email} and click on the\
       received activation link to confirm and complete the registration. Note: Check your spam folder.')
@@ -120,8 +121,8 @@ def register(request):
 
     form = CreateUserForm(request.POST)
     if form.is_valid():
-
       email = form.cleaned_data.get('email')
+
       if User.objects.filter(email=email).exists():
         messages.error(request, 'This email already exists, would you like to reset your password?')
         return redirect('login')
@@ -129,6 +130,10 @@ def register(request):
       try:
         validate_email(email)
       except ValidationError:
+        messages.error(request, 'This is an invalid email. Please try again.')
+        return redirect('register')
+      
+      if not is_verified(email):
         messages.error(request, 'This is an invalid email. Please try again.')
         return redirect('register')
 
