@@ -205,3 +205,7 @@ MILLION_VERIFIER_KEY = os.getenv('MILLION_VERIFIER_KEY')
 
 # Google Oauth
 GOOGLE_OAUTH_CLIENT_ID = os.getenv('GOOGLE_OAUTH_CLIENT_ID')
+
+# Referrer policy
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"

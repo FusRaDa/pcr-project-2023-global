@@ -150,11 +150,8 @@ def register(request):
     else:
       print(form.errors)
 
-  if settings.DEBUG:
-    uri = "http://localhost:8000"
-  else:
-    domain = get_current_site(request).domain
-    uri = 'https://' + domain
+  domain = get_current_site(request).domain
+  uri = 'https' if request.is_secure() else 'http' + domain
 
   context = {'form': form, 'limits': limits, 'uri': uri}
   return render(request, "register.html", context)
@@ -168,11 +165,11 @@ def auth_receiver(request):
     token = request.POST['credential']
 
     try:
-        user_data = id_token.verify_oauth2_token(
-            token, requests.Request(), settings.GOOGLE_OAUTH_CLIENT_ID
-        )
+      user_data = id_token.verify_oauth2_token(
+          token, requests.Request(), settings.GOOGLE_OAUTH_CLIENT_ID,
+      )
     except ValueError:
-        return HttpResponse(status=403)
+      return HttpResponse(status=403)
 
     # In a real app, I'd also save any new user here to the database. See below for a real example I wrote for Photon Designer.
     # You could also authenticate the user here using the details from Google (https://docs.djangoproject.com/en/4.2/topics/auth/default/#how-to-log-a-user-in)

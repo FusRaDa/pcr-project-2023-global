@@ -8,6 +8,7 @@
 -->
 <html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">
 	<head>
+    <script src="https://accounts.google.com/gsi/client" async></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEJQ4PHVWX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -28,8 +29,6 @@
     <link rel="stylesheet" href="{% static 'css/fontawesome-all.min.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async></script>
-   
     <style>
       @import url({% autoescape off %}{% static 'css/fontawesome-all.min.css' %}{% endautoescape %});
       @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600,700,300i,600i,700i|Raleway:600,800");
@@ -4085,21 +4084,21 @@
 
               <div class="d-flex justify-content-center mb-2">
                 <div id="g_id_onload"
-                    data-client_id="285056439453-063lum33ld2ga6sjlfe68jrm3srluou4.apps.googleusercontent.com"
-                    data-context="signup"
-                    data-ux_mode="redirect"
-                    data-login_uri="{{uri}}/auth-receiver"
-                    data-itp_support="true">
+                  data-client_id="285056439453-063lum33ld2ga6sjlfe68jrm3srluou4.apps.googleusercontent.com"
+                  data-context="signin"
+                  data-ux_mode="popup"
+                  data-login_uri="{% url 'auth_receiver' %}"
+                  data-itp_support="true">
                 </div>
 
                 <div class="g_id_signin"
-                    data-type="standard"
-                    data-shape="rectangular"
-                    data-theme="filled_blue"
-                    data-text="signup_with"
-                    data-size="large"
-                    data-logo_alignment="left"
-                    data-width="200">
+                  data-type="standard"
+                  data-shape="rectangular"
+                  data-theme="filled_blue"
+                  data-text="signin_with"
+                  data-size="large"
+                  data-logo_alignment="left"
+                  data-width="200">
                 </div>
               </div>
 
