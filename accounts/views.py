@@ -59,15 +59,16 @@ def loginPage(request):
 
 # this function is to send the activation email - https://github.com/leemunroe/responsive-html-email-template
 def activateEmail(request, user, to_email):
-  mail_subject = 'Welcome to PCRprep!'
+  mail_subject = f'Welcome {user.first_name}! Please confirm your PCRprep account here.'
   message = render_to_string('template_activate_account.html', {
-    'user': user.username,
+    'user': user.first_name,
     'domain': get_current_site(request).domain,
     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
     'token': account_activation_token.make_token(user),
     'protocol': 'https' if request.is_secure() else 'http'
   })
   email = EmailMessage(mail_subject, message, to=[to_email], from_email=settings.EMAIL_ALIAS)
+  email.content_subtype = 'html'
   if email.send():
     messages.success(request, f'Welcome {user}! Check your email: {to_email} and click on the\
       received activation link to confirm and complete the registration. Note: Check your spam folder.')
