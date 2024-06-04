@@ -1,10 +1,41 @@
+import requests
+import re
+import random
+
+from django.core.mail import EmailMessage
 from pcr.models.pcr import ThermalCyclerProtocol
 from pcr.models.inventory import Tube, Plate, Reagent, Location
 from pcr.models.extraction import ExtractionProtocol
-from pcr.models.assay import Assay, AssayCode, Control, Fluorescence
+from pcr.models.assay import Assay, Control, Fluorescence
+from django.conf import settings
 
-from users.models import User
 
+def alert_admin(email, data):
+  mail_subject = "Attempted Registration for PCRprep!"
+  message = f"User with email: {email} has attempted to register. Here is the Million Verifier data: {data}"
+  email = EmailMessage(mail_subject, message, to=[settings.EMAIL_HOST_USER], from_email=settings.EMAIL_ALIAS)
+  email.send()
+
+
+def is_verified(email):
+  r = requests.get(f'https://api.millionverifier.com/api/v3/?api={settings.MILLION_VERIFIER_KEY}&email={email}&timeout=10')
+  if r.status_code != 200:
+      return False
+  data = r.json()
+  if data['result'] == 'ok' or data['result'] == 'catch_all':
+      return True
+  if data['credits'] == 0:
+      return True
+  alert_admin(email, data)
+  return False
+
+
+def generate_gmail_username(email):
+  split = re.split('@', email)
+  num = random.sample(range(1, 9), 2)
+  username = split[0] + "".join([str(elem) for elem in num])
+  return username
+   
 
 # python pcr/custom/test_user_object.py
 def create_test_objects(user):

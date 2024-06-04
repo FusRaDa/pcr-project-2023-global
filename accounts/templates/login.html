@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block google %}
+<script src="https://accounts.google.com/gsi/client" async></script>
+{% endblock %}
+
 {% block seo %}
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEJQ4PHVWX"></script>
 <script>
@@ -63,6 +67,26 @@
         <img src="{% static 'images/pcr-prep-logo.png' %}"class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title text-center">Login</h5>
+
+          <div class="d-flex justify-content-center mb-2">
+            <div id="g_id_onload"
+              data-client_id="285056439453-063lum33ld2ga6sjlfe68jrm3srluou4.apps.googleusercontent.com"
+              data-context="signin"
+              data-ux_mode="popup"
+              data-login_uri="{% url 'auth_receiver' %}"
+              data-itp_support="true">
+            </div>
+
+            <div class="g_id_signin"
+              data-type="standard"
+              data-shape="rectangular"
+              data-theme="filled_blue"
+              data-text="signin_with"
+              data-size="large"
+              data-logo_alignment="left"
+              data-width="200">
+            </div>
+          </div>
 
           <form method="POST" action="">
             {% csrf_token %}

@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, get_user_model
 
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -9,6 +11,10 @@ from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.conf import settings
+
+from google.auth.transport import requests
+from google.oauth2 import id_token
 
 from .decorators import unauthenticated_user
 from users.models import User
@@ -17,7 +23,7 @@ from .tokens import account_activation_token
 from .models import EmailOrUsernameModelBackend
 from .forms import CreateUserForm, LoginUserForm
 from analytics.functions import record_user_login
-
+from .functions import is_verified, generate_gmail_username
 from pcr.custom.constants import LIMITS
 
 
@@ -51,19 +57,20 @@ def loginPage(request):
   return render(request, "login.html", context)
   
 
-# this function is to send the activation email
+# this function is to send the activation email - https://github.com/leemunroe/responsive-html-email-template
 def activateEmail(request, user, to_email):
-  mail_subject = 'Welcome to PCRprep!'
+  mail_subject = f'Welcome {user.first_name}! Please confirm your PCRprep account here.'
   message = render_to_string('template_activate_account.html', {
-    'user': user.username,
+    'user': user.first_name,
     'domain': get_current_site(request).domain,
     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
     'token': account_activation_token.make_token(user),
     'protocol': 'https' if request.is_secure() else 'http'
   })
-  email = EmailMessage(mail_subject, message, to=[to_email])
+  email = EmailMessage(mail_subject, message, to=[to_email], from_email=settings.EMAIL_ALIAS)
+  email.content_subtype = 'html'
   if email.send():
-    messages.success(request, f'Welcome {user}! Check your email: {to_email} and click on the\
+    messages.success(request, f'Welcome {user.first_name}! Check your email: {to_email} and click on the\
       received activation link to confirm and complete the registration. Note: Check your spam folder.')
   else:
     messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
@@ -120,8 +127,8 @@ def register(request):
 
     form = CreateUserForm(request.POST)
     if form.is_valid():
-
       email = form.cleaned_data.get('email')
+
       if User.objects.filter(email=email).exists():
         messages.error(request, 'This email already exists, would you like to reset your password?')
         return redirect('login')
@@ -129,6 +136,10 @@ def register(request):
       try:
         validate_email(email)
       except ValidationError:
+        messages.error(request, 'This is an invalid email. Please try again.')
+        return redirect('register')
+      
+      if not is_verified(email):
         messages.error(request, 'This is an invalid email. Please try again.')
         return redirect('register')
 
@@ -140,14 +151,53 @@ def register(request):
     else:
       print(form.errors)
 
-  context = {'form': form, 'limits': limits}
+  domain = get_current_site(request).domain
+  uri = 'https' if request.is_secure() else 'http' + domain
+
+  context = {'form': form, 'limits': limits, 'uri': uri}
   return render(request, "register.html", context)
+
+
+@csrf_exempt
+def auth_receiver(request):
+    """
+    Google calls this URL after the user has signed in with their Google account.
+    """
+    token = request.POST['credential']
+
+    try:
+      user_data = id_token.verify_oauth2_token(
+          token, requests.Request(), settings.GOOGLE_OAUTH_CLIENT_ID,
+      )
+
+      user_found = User.objects.filter(email=user_data['email']).first()
+      if not user_found:
+        user = User.objects.create(
+          username=generate_gmail_username(user_data['email']),
+          email=user_data['email'],
+          first_name=user_data['given_name'],
+          last_name=user_data['family_name']
+        )
+        login(request, user)
+      else:
+        login(request, user_found)
+
+    except ValueError:
+      return HttpResponse(status=403)
+
+    # request.session['user_data'] = user_data
+
+    return redirect('login')
   
 
 # logout user
 def logoutUser(request):
   logout(request)
   return redirect('login')
+
+
+def custom_403(request):
+  return render(request, '403.html', status=403)
 
 
 def custom_404(request):
