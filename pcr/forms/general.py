@@ -40,7 +40,7 @@ class SearchControlForm(forms.Form):
   location = forms.ModelChoiceField(queryset=None, required=False)
 
   SORT_CHOICES = [('exp_date', "Expiration Date ⮝"), ('threshold_diff', "Closest to Threshold ⮝"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
-  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=False, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -73,7 +73,7 @@ class SearchTubeForm(forms.Form):
   location = forms.ModelChoiceField(queryset=None, required=False)
 
   SORT_CHOICES = [('exp_date', "Expiration Date ⮝"), ('threshold_diff', "Closest to Threshold ⮝"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
-  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=False, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -91,7 +91,7 @@ class SearchLadderForm(forms.Form):
   location = forms.ModelChoiceField(queryset=None, required=False)
 
   SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
-  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=False, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -108,7 +108,7 @@ class SearchDyeForm(forms.Form):
   location = forms.ModelChoiceField(queryset=None, required=False)
 
   SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
-  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=False, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -131,7 +131,7 @@ class SearchPlateForm(forms.Form):
   type = forms.ChoiceField(choices=TYPE_CHOICES, required=False)
 
   SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
-  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=False, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -153,7 +153,7 @@ class SearchGelForm(forms.Form):
   size = forms.ChoiceField(choices=CHOICES, required=False)
 
   SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
-  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=False, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')
@@ -177,7 +177,7 @@ class SearchReagentForm(forms.Form):
   pcr_reagent = forms.ChoiceField(choices=PCR_REAGENT_CHOICES, required=False)
 
   SORT_CHOICES = [('exp_date', "Expiration Date"), ('threshold_diff', "Closest to Threshold"), ('-last_updated', "Last Updated ⮝"), ('last_updated', "Last Updated ⮟"), ('-date_created', "Date Created ⮝"), ('date_created', "Date Created ⮟")]
-  sort = forms.ChoiceField(choices=SORT_CHOICES, required=True, initial=SORT_CHOICES[0])
+  sort = forms.ChoiceField(choices=SORT_CHOICES, required=False, initial=SORT_CHOICES[0])
 
   def __init__(self, *args, **kwargs):
     self.user = kwargs.pop('user')

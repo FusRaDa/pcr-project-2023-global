@@ -93,10 +93,12 @@ def ladders(request):
       filters = {}
       if location:
         filters['location'] = location
-      if sort == 'exp_date' or sort == 'threshold_diff':
-        ladders = Ladder.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
-      else:
-        ladders = Ladder.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
+
+      if sort:
+        if sort == 'exp_date' or sort == 'threshold_diff':
+          ladders = Ladder.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+        else:
+          ladders = Ladder.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
     else:
       print(form.errors)
 
@@ -195,10 +197,11 @@ def gels(request):
       if size:
         filters['size'] = size
 
-      if sort == 'exp_date' or sort == 'threshold_diff':
-        gels = Gel.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
-      else:
-        gels = Gel.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
+      if sort:
+        if sort == 'exp_date' or sort == 'threshold_diff':
+          gels = Gel.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+        else:
+          gels = Gel.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
     else:
       print(form.errors)
 
@@ -295,10 +298,11 @@ def dyes(request):
       if location:
         filters['location'] = location
 
-      if sort == 'exp_date' or sort == 'threshold_diff':
-        dyes = Dye.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
-      else:
-        dyes = Dye.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
+      if sort:
+        if sort == 'exp_date' or sort == 'threshold_diff':
+          dyes = Dye.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+        else:
+          dyes = Dye.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
     else:
       print(form.errors)
 
@@ -401,10 +405,11 @@ def plates(request):
       if type:
         filters['type'] = type
 
-      if sort == 'exp_date' or sort == 'threshold_diff':
-        plates = Plate.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
-      else:
-        plates = Plate.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
+      if sort:
+        if sort == 'exp_date' or sort == 'threshold_diff':
+          plates = Plate.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+        else:
+          plates = Plate.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
     else:
       print(form.errors)
 
@@ -501,10 +506,11 @@ def tubes(request):
       if location:
         filters['location'] = location
 
-      if sort == 'exp_date' or sort == 'threshold_diff':
-        tubes = Tube.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
-      else:
-        tubes = Tube.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
+      if sort:
+        if sort == 'exp_date' or sort == 'threshold_diff':
+          tubes = Tube.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(F(sort).asc(nulls_last=True))
+        else:
+          tubes = Tube.objects.filter(user=request.user, **filters).filter(Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search)).order_by(sort)
     else:
       print(form.errors)
 
@@ -608,10 +614,11 @@ def reagents(request):
       if pcr_reagent:
         filters['pcr_reagent'] = pcr_reagent
       
-      if sort == 'exp_date' or sort == 'threshold_diff':
-        reagents = Reagent.objects.filter(user=request.user, **filters).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F(sort).asc(nulls_last=True))
-      else:
-        reagents = Reagent.objects.filter(user=request.user, **filters).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(sort)
+      if sort:
+        if sort == 'exp_date' or sort == 'threshold_diff':
+          reagents = Reagent.objects.filter(user=request.user, **filters).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(F(sort).asc(nulls_last=True))
+        else:
+          reagents = Reagent.objects.filter(user=request.user, **filters).filter((Q(name__icontains=text_search) | Q(brand__icontains=text_search) | Q(lot_number__icontains=text_search) | Q(catalog_number__icontains=text_search))).order_by(sort)
     else:
       print(form.errors)
 

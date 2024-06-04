@@ -169,6 +169,7 @@ from .cdn.conf import * # noqa
 # Custom settings
 handler404 = 'accounts.views.custom_404'
 handler500 = 'accounts.views.custom_500'
+handler403 = 'accounts.views.custom_403'
 
 # Custom user extension
 AUTH_USER_MODEL = 'users.User'

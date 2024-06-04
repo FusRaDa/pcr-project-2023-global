@@ -1,0 +1,25 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block title %} Your access credentials are invalid. {% endblock %} 
+
+{% block content %}
+<div class="container">
+
+  <div class="my-5">
+
+    <div class="d-flex justify-content-center">
+      <h1 class="text-center">Your access creditials are invalid. Refresh the page and login again.</h1>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <a href="{% url 'login' %}">
+        <img src="{% static 'images/pcr-prep-logo.png' %}"class="img-thumbnail" alt="...">
+      </a>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
