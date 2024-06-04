@@ -23,7 +23,7 @@ from .tokens import account_activation_token
 from .models import EmailOrUsernameModelBackend
 from .forms import CreateUserForm, LoginUserForm
 from analytics.functions import record_user_login
-from .functions import is_verified, generate_gmail_username
+from .functions import is_verified, generate_gmail_username, alert_admin
 from pcr.custom.constants import LIMITS
 
 
@@ -178,6 +178,7 @@ def auth_receiver(request):
           first_name=user_data['given_name'],
           last_name=user_data['family_name']
         )
+        alert_admin(user_data['email'], None)
         login(request, user)
       else:
         login(request, user_found)
