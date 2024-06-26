@@ -1,0 +1,30 @@
+{% extends "base.html" %} 
+
+{% load static %}
+
+{% block seo %}
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HEJQ4PHVWX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HEJQ4PHVWX');
+</script>
+{% endblock %}
+                                                                                                                                                                                                                              
+{% block title %} Email Opt-in {% endblock %} 
+
+{% block content %}
+<div class="container mt-3">
+
+  <div class="row justify-content-center">
+    <h1 class="text-center">Email Opt-in Process</h1>
+  </div>
+
+  <div class="row justify-content-center">
+    <p class="text-center fs-4">By registering an account, PCRprep will send you emails for the sake of keeping you up to date on your lab inventory. You may choose to disable email notifications in your account settings. PCRprep will also send you monthly emails for promotions and update on new features. You may unsubscribe directly to the emails we send you.</p>
+  </div>
+
+</div>
+{% endblock%}

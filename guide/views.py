@@ -26,6 +26,11 @@ def terms_conditions(request):
   return render(request, 'terms_conditions.html', context)
 
 
+def email_opt_in(request):
+  context = {}
+  return render(request, 'email_opt_in.html', context)
+
+
 def guide_page(request):
   context = {}
   return render(request, 'guide_page.html', context)
