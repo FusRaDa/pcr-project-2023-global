@@ -12,4 +12,4 @@ Last updated - 12/19/23
 
 SERVER HOSTING IS CURRENTLY DOWN - HERE IS A VIDEO SHOWCASE
 
-[![Watch the video](https://img.youtube.com/vi/8Y_Uiu18v0c/maxresdefault.jpg)](https://youtu.be/8Y_Uiu18v0c)
+[![Watch the video](https://img.youtube.com/vi/IJtDBgoFGRQ/maxresdefault.jpg)](https://youtu.be/IJtDBgoFGRQ)
