@@ -11,6 +11,4 @@ THIS IS THE MAIN BRANCH - Python 3.10.7
 Last updated - 12/19/23
 
 SERVER HOSTING IS CURRENTLY DOWN
-HERE IS A SHOWCASE OF THE APP - https://www.youtube.com/watch?v=IJtDBgoFGRQ&t=207s
-
-[![Watch the video](youtu.be/8Y_Uiu18v0c?si=6s-c9xjk9AUdx0MD/maxresdefault.jpg)]
+HERE IS A SHOWCASE OF THE APP - youtu.be/8Y_Uiu18v0c?si=6s-c9xjk9AUdx0MD
