@@ -6,8 +6,10 @@ The purpose of this project is create paperwork for lab technicians doing PCR by
 2 - Creating assays.
 3 - Creating plates and locations of samples.
 
+
 ## Watch a demonstration video here:
-<iframe width="560" height="315" src="https://www.youtube.com/embed/IJtDBgoFGRQ?si=VzWnSYkphX34KlvX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+https://www.youtube.com/embed/IJtDBgoFGRQ?si=VzWnSYkphX34KlvX
+
 
 ## Database Schema
-<img style="background-color: white;" src="./pcr-prep-schema.svg">
+![Alt text for the image](pcr-prep-schema-1.png)
