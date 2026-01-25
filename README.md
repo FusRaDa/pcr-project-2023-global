@@ -12,4 +12,9 @@ https://www.youtube.com/embed/IJtDBgoFGRQ?si=VzWnSYkphX34KlvX
 
 
 ## Database Schema
+
+### Schema details
+* The `User` table is alone as it has a many-to-one relationship with almost all tables of the rest of the first schema.
+* The second schema below refers to the store functionality of PCRprep.
+
 ![Alt text for the image](pcr-prep-schema-1.png)
